@@ -1,0 +1,270 @@
+.nt-ai-action-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nt-space-2);
+  min-height: var(--nt-control-height-md);
+  min-width: 0;
+  padding: 0 var(--nt-space-4);
+  border: 1px solid var(--nt-accent-border);
+  border-radius: var(--nt-radius-button);
+  background: var(--nt-accent);
+  color: var(--nt-accent-contrast);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--nt-duration-fast) var(--nt-ease-standard),
+    background-color var(--nt-duration-fast) var(--nt-ease-standard),
+    color var(--nt-duration-fast) var(--nt-ease-standard),
+    box-shadow var(--nt-duration-fast) var(--nt-ease-standard),
+    transform var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-ai-action-button::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--nt-accent-bg),
+    transparent
+  );
+  content: '';
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.nt-ai-action-button:hover {
+  border-color: var(--nt-accent-hover);
+  background: var(--nt-accent-hover);
+  color: var(--nt-accent-contrast);
+  box-shadow: var(--nt-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.nt-ai-action-button:hover::before {
+  opacity: 0.35;
+  animation: nt-ai-action-button-shine 1.1s var(--nt-ease-standard);
+}
+
+.nt-ai-action-button:focus-visible {
+  outline: none;
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-sm);
+}
+
+.nt-ai-action-button:active {
+  transform: translateY(0);
+}
+
+.nt-ai-action-button:disabled,
+.nt-ai-action-button[aria-disabled='true'],
+.nt-ai-action-button--disabled {
+  border-color: var(--nt-disabled-border);
+  background: var(--nt-disabled-bg);
+  color: var(--nt-disabled-text);
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.nt-ai-action-button__icon,
+.nt-ai-action-button__spark,
+.nt-ai-action-button__chevron {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+}
+
+.nt-ai-action-button__spark {
+  color: var(--nt-accent-contrast);
+}
+
+.nt-ai-action-button__label {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nt-ai-action-button__badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: var(--nt-space-1);
+  border-radius: var(--nt-radius-full);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-xs);
+  line-height: 1;
+}
+
+.nt-ai-action-button__spinner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+}
+
+.nt-ai-action-button__spinner::before {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--nt-radius-full);
+  content: '';
+  animation: nt-ai-action-button-spin var(--nt-duration-slower) linear infinite;
+}
+
+.nt-ai-action-button--loading {
+  cursor: wait;
+}
+
+.nt-ai-action-button--loading .nt-ai-action-button__icon,
+.nt-ai-action-button--loading .nt-ai-action-button__spark {
+  display: none;
+}
+
+.nt-ai-action-button--secondary {
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
+  color: var(--nt-accent-text);
+}
+
+.nt-ai-action-button--secondary:hover {
+  border-color: var(--nt-accent-border);
+  background: var(--nt-accent-bg);
+  color: var(--nt-accent-text);
+}
+
+.nt-ai-action-button--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--nt-accent-text);
+}
+
+.nt-ai-action-button--ghost:hover {
+  border-color: var(--nt-border-subtle);
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-accent-text);
+}
+
+.nt-ai-action-button--soft {
+  border-color: transparent;
+  background: var(--nt-accent-subtle);
+  color: var(--nt-accent-text);
+}
+
+.nt-ai-action-button--danger {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+  color: var(--nt-danger-text);
+}
+
+.nt-ai-action-button--danger:hover {
+  background: var(--nt-danger-bg-hover);
+  color: var(--nt-danger-text);
+}
+
+.nt-ai-action-button--success {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+  color: var(--nt-success-text);
+}
+
+.nt-ai-action-button--sm {
+  min-height: var(--nt-control-height-sm);
+  padding-inline: var(--nt-space-3);
+  font: var(--nt-text-label-xs);
+}
+
+.nt-ai-action-button--lg {
+  min-height: var(--nt-control-height-lg);
+  padding-inline: var(--nt-space-5);
+  font: var(--nt-text-label-md);
+}
+
+.nt-ai-action-button--icon {
+  width: var(--nt-control-height-md);
+  padding: 0;
+}
+
+.nt-ai-action-button--icon.nt-ai-action-button--sm {
+  width: var(--nt-control-height-sm);
+}
+
+.nt-ai-action-button--icon.nt-ai-action-button--lg {
+  width: var(--nt-control-height-lg);
+}
+
+.nt-ai-action-button--block {
+  display: flex;
+  width: 100%;
+}
+
+.nt-ai-action-button-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-ai-action-button-group--block {
+  display: flex;
+  width: 100%;
+}
+
+.nt-ai-action-button-group--block .nt-ai-action-button {
+  flex: 1 1 auto;
+}
+
+@keyframes nt-ai-action-button-shine {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes nt-ai-action-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-ai-action-button,
+  .nt-ai-action-button::before,
+  .nt-ai-action-button__spinner::before {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .nt-ai-action-button:hover {
+    transform: none;
+  }
+}

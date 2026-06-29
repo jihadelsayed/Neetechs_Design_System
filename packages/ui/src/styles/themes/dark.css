@@ -1,0 +1,120 @@
+:root,
+[data-nt-theme='dark'] {
+  color-scheme: dark;
+
+  /* App backgrounds */
+  --nt-bg-app: var(--nt-color-gray-950);
+  --nt-bg-shell: var(--nt-color-gray-925);
+  --nt-bg-sidebar: #050a16;
+  --nt-bg-header: rgba(5, 10, 22, 0.86);
+
+  /* Surfaces */
+  --nt-bg-surface: #0b1120;
+  --nt-bg-surface-muted: #111827;
+  --nt-bg-surface-raised: #111a2e;
+  --nt-bg-surface-hover: #172033;
+  --nt-bg-surface-active: #1e293b;
+  --nt-bg-overlay: rgba(2, 6, 23, 0.72);
+  --nt-bg-inverse: var(--nt-color-gray-50);
+
+  /* Borders */
+  --nt-border-subtle: rgba(148, 163, 184, 0.14);
+  --nt-border-muted: rgba(148, 163, 184, 0.18);
+  --nt-border-strong: rgba(148, 163, 184, 0.28);
+  --nt-border-interactive: rgba(249, 115, 22, 0.48);
+
+  /* Text */
+  --nt-text-primary: #f8fafc;
+  --nt-text-secondary: #cbd5e1;
+  --nt-text-muted: #94a3b8;
+  --nt-text-subtle: #64748b;
+  --nt-text-disabled: rgba(148, 163, 184, 0.5);
+  --nt-text-inverse: #020617;
+
+  /* Icons */
+  --nt-icon-primary: #e2e8f0;
+  --nt-icon-secondary: #94a3b8;
+  --nt-icon-muted: #64748b;
+  --nt-icon-disabled: rgba(148, 163, 184, 0.45);
+
+  /* Accent */
+  --nt-accent: var(--nt-color-orange-500);
+  --nt-accent-hover: var(--nt-color-orange-400);
+  --nt-accent-active: var(--nt-color-orange-600);
+  --nt-accent-muted: rgba(249, 115, 22, 0.14);
+  --nt-accent-subtle: rgba(249, 115, 22, 0.08);
+  --nt-accent-text: #fff7ed;
+  --nt-accent-contrast: #111827;
+
+  /* Focus */
+  --nt-focus-ring: rgba(249, 115, 22, 0.72);
+  --nt-focus-ring-muted: rgba(249, 115, 22, 0.28);
+
+  /* Selection */
+  --nt-selection-bg: rgba(249, 115, 22, 0.32);
+  --nt-selection-text: #fff7ed;
+
+  /* Scrollbar */
+  --nt-scrollbar-size: 0.75rem;
+  --nt-scrollbar-track: transparent;
+  --nt-scrollbar-thumb: rgba(148, 163, 184, 0.28);
+  --nt-scrollbar-thumb-hover: rgba(148, 163, 184, 0.42);
+
+  /* Semantic states */
+  --nt-success: var(--nt-color-green-400);
+  --nt-success-bg: rgba(34, 197, 94, 0.12);
+  --nt-success-border: rgba(34, 197, 94, 0.28);
+  --nt-success-text: #bbf7d0;
+
+  --nt-warning: var(--nt-color-yellow-400);
+  --nt-warning-bg: rgba(234, 179, 8, 0.12);
+  --nt-warning-border: rgba(234, 179, 8, 0.28);
+  --nt-warning-text: #fef08a;
+
+  --nt-danger: var(--nt-color-red-400);
+  --nt-danger-bg: rgba(239, 68, 68, 0.12);
+  --nt-danger-border: rgba(239, 68, 68, 0.28);
+  --nt-danger-text: #fecaca;
+
+  --nt-info: var(--nt-color-blue-400);
+  --nt-info-bg: rgba(59, 130, 246, 0.12);
+  --nt-info-border: rgba(59, 130, 246, 0.28);
+  --nt-info-text: #bfdbfe;
+
+  --nt-neutral: var(--nt-color-gray-400);
+  --nt-neutral-bg: rgba(148, 163, 184, 0.1);
+  --nt-neutral-border: rgba(148, 163, 184, 0.2);
+  --nt-neutral-text: #cbd5e1;
+
+  /* Disabled */
+  --nt-disabled-bg: rgba(148, 163, 184, 0.08);
+  --nt-disabled-border: rgba(148, 163, 184, 0.12);
+  --nt-disabled-text: rgba(148, 163, 184, 0.48);
+
+  /* Controls */
+  --nt-control-bg: rgba(15, 23, 42, 0.78);
+  --nt-control-bg-hover: rgba(30, 41, 59, 0.82);
+  --nt-control-bg-active: rgba(30, 41, 59, 1);
+  --nt-control-border: rgba(148, 163, 184, 0.2);
+  --nt-control-border-hover: rgba(148, 163, 184, 0.34);
+  --nt-control-border-focus: var(--nt-focus-ring);
+
+  /* AI */
+  --nt-ai-accent: var(--nt-color-purple-400);
+  --nt-ai-accent-hover: var(--nt-color-purple-300);
+  --nt-ai-bg: rgba(168, 85, 247, 0.1);
+  --nt-ai-bg-raised: rgba(88, 28, 135, 0.24);
+  --nt-ai-border: rgba(192, 132, 252, 0.28);
+  --nt-ai-glow: rgba(168, 85, 247, 0.22);
+  --nt-ai-user-bubble: rgba(249, 115, 22, 0.16);
+  --nt-ai-assistant-bubble: rgba(168, 85, 247, 0.12);
+
+  /* Status */
+  --nt-status-draft: var(--nt-neutral);
+  --nt-status-sent: var(--nt-info);
+  --nt-status-active: var(--nt-success);
+  --nt-status-paused: var(--nt-warning);
+  --nt-status-paid: var(--nt-success);
+  --nt-status-overdue: var(--nt-danger);
+  --nt-status-failed: var(--nt-danger);
+}

@@ -1,0 +1,217 @@
+.nt-alert {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--nt-space-3);
+  width: 100%;
+  padding: var(--nt-space-4);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+}
+
+.nt-alert__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+  margin-block-start: var(--nt-space-0-5);
+  color: var(--nt-text-muted);
+}
+
+.nt-alert__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-alert__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-alert__description {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-alert__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  margin-block-start: var(--nt-space-3);
+}
+
+.nt-alert__close {
+  position: absolute;
+  top: var(--nt-space-3);
+  right: var(--nt-space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-control-height-sm);
+  height: var(--nt-control-height-sm);
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-md);
+  background: transparent;
+  color: var(--nt-text-muted);
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-alert__close:hover {
+  border-color: var(--nt-border-subtle);
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-text-primary);
+}
+
+.nt-alert__close:focus-visible {
+  outline: none;
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
+}
+
+.nt-alert--dismissible {
+  padding-inline-end: var(--nt-space-12);
+}
+
+.nt-alert--info {
+  border-color: var(--nt-info-border);
+  background: var(--nt-info-bg);
+}
+
+.nt-alert--info .nt-alert__icon {
+  color: var(--nt-info-text);
+}
+
+.nt-alert--success {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+}
+
+.nt-alert--success .nt-alert__icon {
+  color: var(--nt-success-text);
+}
+
+.nt-alert--warning {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+}
+
+.nt-alert--warning .nt-alert__icon {
+  color: var(--nt-warning-text);
+}
+
+.nt-alert--danger {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+}
+
+.nt-alert--danger .nt-alert__icon {
+  color: var(--nt-danger-text);
+}
+
+.nt-alert--neutral {
+  border-color: var(--nt-neutral-border);
+  background: var(--nt-neutral-bg);
+}
+
+.nt-alert--neutral .nt-alert__icon {
+  color: var(--nt-neutral-text);
+}
+
+.nt-alert--accent {
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
+}
+
+.nt-alert--accent .nt-alert__icon {
+  color: var(--nt-accent);
+}
+
+.nt-alert--outline {
+  background: transparent;
+}
+
+.nt-alert--soft {
+  border-color: transparent;
+}
+
+.nt-alert--elevated {
+  box-shadow: var(--nt-shadow-sm);
+}
+
+.nt-alert--compact {
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-3);
+  border-radius: var(--nt-radius-lg);
+}
+
+.nt-alert--compact .nt-alert__icon {
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+}
+
+.nt-alert--compact .nt-alert__description {
+  font: var(--nt-text-caption);
+}
+
+.nt-alert--compact.nt-alert--dismissible {
+  padding-inline-end: var(--nt-space-10);
+}
+
+.nt-alert--inline {
+  display: inline-grid;
+  width: auto;
+}
+
+.nt-alert--banner {
+  border-inline: 0;
+  border-radius: 0;
+}
+
+.nt-alert--left-accent {
+  border-inline-start-width: 4px;
+}
+
+.nt-alert--center {
+  justify-items: center;
+  text-align: center;
+}
+
+.nt-alert--center .nt-alert__actions {
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .nt-alert {
+    gap: var(--nt-space-2);
+    padding: var(--nt-space-3);
+  }
+
+  .nt-alert--dismissible {
+    padding-inline-end: var(--nt-space-10);
+  }
+
+  .nt-alert__actions {
+    align-items: stretch;
+  }
+
+  .nt-alert__actions > * {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-alert__close {
+    transition: none !important;
+  }
+}

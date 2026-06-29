@@ -1,0 +1,220 @@
+.nt-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-shadow-sm);
+}
+
+.nt-card--interactive {
+  cursor: pointer;
+  transition:
+    border-color var(--nt-duration-fast) var(--nt-ease-standard),
+    background-color var(--nt-duration-fast) var(--nt-ease-standard),
+    box-shadow var(--nt-duration-fast) var(--nt-ease-standard),
+    transform var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-card--interactive:hover {
+  border-color: var(--nt-border-strong);
+  background: var(--nt-bg-surface-hover);
+  box-shadow: var(--nt-shadow-md);
+  transform: translateY(-1px);
+}
+
+.nt-card--interactive:focus-visible {
+  outline: none;
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-md);
+}
+
+.nt-card--flat {
+  box-shadow: none;
+}
+
+.nt-card--raised {
+  box-shadow: var(--nt-shadow-lg);
+}
+
+.nt-card--ghost {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.nt-card--muted {
+  background: var(--nt-bg-muted);
+}
+
+.nt-card--danger {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+}
+
+.nt-card--success {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+}
+
+.nt-card--warning {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+}
+
+.nt-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-4);
+  min-width: 0;
+  padding: var(--nt-space-5);
+  border-bottom: 1px solid var(--nt-border-subtle);
+}
+
+.nt-card__header-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-card__eyebrow {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.nt-card__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-card__subtitle {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-card__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  flex: 0 0 auto;
+}
+
+.nt-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+  padding: var(--nt-space-5);
+}
+
+.nt-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding: var(--nt-space-5);
+  border-top: 1px solid var(--nt-border-subtle);
+}
+
+.nt-card__media {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  background: var(--nt-bg-muted);
+}
+
+.nt-card__media > img,
+.nt-card__media > video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.nt-card__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-card__divider {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--nt-border-subtle);
+}
+
+.nt-card--compact .nt-card__header,
+.nt-card--compact .nt-card__body,
+.nt-card--compact .nt-card__footer {
+  padding: var(--nt-space-3);
+}
+
+.nt-card--compact .nt-card__body {
+  gap: var(--nt-space-3);
+}
+
+.nt-card--spacious .nt-card__header,
+.nt-card--spacious .nt-card__body,
+.nt-card--spacious .nt-card__footer {
+  padding: var(--nt-space-6);
+}
+
+.nt-card--spacious .nt-card__body {
+  gap: var(--nt-space-5);
+}
+
+.nt-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .nt-card__header,
+  .nt-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nt-card__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-card--interactive {
+    transition: none !important;
+  }
+
+  .nt-card--interactive:hover {
+    transform: none;
+  }
+}

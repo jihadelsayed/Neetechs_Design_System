@@ -1,0 +1,15 @@
+:root {
+  --nt-breakpoint-xs: 0;
+  --nt-breakpoint-sm: 40rem;   /* 640px */
+  --nt-breakpoint-md: 48rem;   /* 768px */
+  --nt-breakpoint-lg: 64rem;   /* 1024px */
+  --nt-breakpoint-xl: 80rem;   /* 1280px */
+  --nt-breakpoint-2xl: 96rem;  /* 1536px */
+
+  --nt-container-xs: 100%;
+  --nt-container-sm: 40rem;
+  --nt-container-md: 48rem;
+  --nt-container-lg: 64rem;
+  --nt-container-xl: 80rem;
+  --nt-container-2xl: 90rem;
+}

@@ -1,0 +1,498 @@
+.nt-billing-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-billing-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  padding: var(--nt-space-4);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-shadow-sm);
+}
+
+.nt-billing-metric__label {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-xs);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.nt-billing-metric__value {
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-md);
+  letter-spacing: var(--nt-letter-spacing-title);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-billing-metric__description {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-billing-metric--success {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+}
+
+.nt-billing-metric--warning {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+}
+
+.nt-billing-metric--danger {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+}
+
+.nt-billing-document {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-shadow-sm);
+}
+
+.nt-billing-document__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-4);
+  padding: var(--nt-space-5);
+  border-bottom: 1px solid var(--nt-border-subtle);
+}
+
+.nt-billing-document__header-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-billing-document__eyebrow {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-xs);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.nt-billing-document__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-md);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-billing-document__description {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-billing-document__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  flex: 0 0 auto;
+}
+
+.nt-billing-document__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-5);
+  min-width: 0;
+  padding: var(--nt-space-5);
+}
+
+.nt-billing-document__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-billing-document__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-billing-document__section-title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-document__section-description {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-billing-document__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-5);
+  border-top: 1px solid var(--nt-border-subtle);
+  background: var(--nt-bg-surface);
+}
+
+.nt-billing-document__footer-main,
+.nt-billing-document__footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-billing-document__footer-actions {
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
+.nt-billing-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nt-space-1);
+  min-height: 1.5rem;
+  padding: 0 var(--nt-space-2);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-full);
+  background: var(--nt-bg-muted);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-xs);
+  letter-spacing: var(--nt-letter-spacing-label);
+  white-space: nowrap;
+}
+
+.nt-billing-status__dot {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--nt-radius-full);
+  background: currentColor;
+}
+
+.nt-billing-status--draft {
+  border-color: var(--nt-border-subtle);
+  background: var(--nt-bg-muted);
+  color: var(--nt-text-muted);
+}
+
+.nt-billing-status--sent,
+.nt-billing-status--pending {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+  color: var(--nt-warning-text);
+}
+
+.nt-billing-status--accepted,
+.nt-billing-status--paid,
+.nt-billing-status--active {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+  color: var(--nt-success-text);
+}
+
+.nt-billing-status--overdue,
+.nt-billing-status--rejected,
+.nt-billing-status--cancelled {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+  color: var(--nt-danger-text);
+}
+
+.nt-billing-amount-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-billing-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-billing-amount-row__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-billing-amount-row__value {
+  flex: 0 0 auto;
+  color: var(--nt-text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nt-billing-amount-row--total {
+  padding-block-start: var(--nt-space-3);
+  border-top: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-amount-row--muted .nt-billing-amount-row__value {
+  color: var(--nt-text-muted);
+}
+
+.nt-billing-amount-row--success .nt-billing-amount-row__value {
+  color: var(--nt-success-text);
+}
+
+.nt-billing-amount-row--danger .nt-billing-amount-row__value {
+  color: var(--nt-danger-text);
+}
+
+.nt-billing-line-items {
+  width: 100%;
+  min-width: 0;
+  overflow: auto;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-surface);
+}
+
+.nt-billing-line-items__table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-billing-line-items__table th,
+.nt-billing-line-items__table td {
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border-bottom: 1px solid var(--nt-border-subtle);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.nt-billing-line-items__table th {
+  background: var(--nt-bg-muted);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-xs);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nt-billing-line-items__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.nt-billing-line-items__cell--numeric {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nt-billing-line-items__cell--truncate {
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-billing-payment-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding: var(--nt-space-4);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-muted);
+}
+
+.nt-billing-payment-box__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-billing-payment-box__label {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-xs);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.nt-billing-payment-box__value {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-billing-tax-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding: var(--nt-space-3);
+  border: 1px solid var(--nt-warning-border);
+  border-radius: var(--nt-radius-lg);
+  background: var(--nt-warning-bg);
+  color: var(--nt-warning-text);
+}
+
+.nt-billing-tax-note__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.nt-billing-tax-note__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-billing-tax-note__title {
+  margin: 0;
+  color: inherit;
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-tax-note__description {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-billing-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-billing-timeline__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-billing-timeline__marker {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  width: 1rem;
+}
+
+.nt-billing-timeline__marker::before {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-block-start: var(--nt-space-1);
+  border-radius: var(--nt-radius-full);
+  background: var(--nt-text-muted);
+  content: '';
+}
+
+.nt-billing-timeline__item--success .nt-billing-timeline__marker::before {
+  background: var(--nt-success);
+}
+
+.nt-billing-timeline__item--warning .nt-billing-timeline__marker::before {
+  background: var(--nt-warning);
+}
+
+.nt-billing-timeline__item--danger .nt-billing-timeline__marker::before {
+  background: var(--nt-danger);
+}
+
+.nt-billing-timeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-billing-timeline__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-timeline__meta {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-billing-document--compact .nt-billing-document__header,
+.nt-billing-document--compact .nt-billing-document__body,
+.nt-billing-document--compact .nt-billing-document__footer {
+  padding: var(--nt-space-3);
+}
+
+.nt-billing-document--flat,
+.nt-billing-metric--flat {
+  box-shadow: none;
+}
+
+.nt-billing-document--ghost,
+.nt-billing-metric--ghost {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 640px) {
+  .nt-billing-document__header,
+  .nt-billing-document__footer,
+  .nt-billing-document__section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nt-billing-document__actions,
+  .nt-billing-document__footer-actions {
+    justify-content: flex-start;
+  }
+
+  .nt-billing-payment-box {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,15 @@
+:root {
+  --nt-z-base: 0;
+  --nt-z-raised: 10;
+  --nt-z-sticky: 100;
+  --nt-z-header: 200;
+  --nt-z-sidebar: 300;
+  --nt-z-dropdown: 400;
+  --nt-z-popover: 500;
+  --nt-z-tooltip: 600;
+  --nt-z-drawer: 700;
+  --nt-z-modal: 800;
+  --nt-z-toast: 900;
+  --nt-z-command-palette: 1000;
+  --nt-z-max: 2147483647;
+}

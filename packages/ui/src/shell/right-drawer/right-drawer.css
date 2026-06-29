@@ -1,0 +1,108 @@
+.nt-right-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(28rem, 100vw);
+  height: 100vh;
+  min-width: 0;
+  background: var(--nt-bg-surface-raised);
+  border-inline-start: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-shadow-drawer);
+}
+
+.nt-right-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-height: var(--nt-header-height);
+  padding-inline: var(--nt-space-5);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-right-drawer__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+}
+
+.nt-right-drawer__title {
+  margin: 0;
+  overflow: hidden;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-right-drawer__description {
+  overflow: hidden;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-right-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-control-height-md);
+  height: var(--nt-control-height-md);
+  flex: 0 0 auto;
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-control);
+  background: transparent;
+  color: var(--nt-icon-secondary);
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-right-drawer__close:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-icon-primary);
+}
+
+.nt-right-drawer__close:focus-visible {
+  outline: 2px solid var(--nt-focus-ring);
+  outline-offset: 2px;
+}
+
+.nt-right-drawer__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--nt-space-5);
+  overflow-y: auto;
+}
+
+.nt-right-drawer__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-4) var(--nt-space-5);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-right-drawer--wide {
+  width: min(40rem, 100vw);
+}
+
+.nt-right-drawer--narrow {
+  width: min(22rem, 100vw);
+}
+
+@media (max-width: 48rem) {
+  .nt-right-drawer {
+    width: 100vw;
+  }
+
+  .nt-right-drawer__header,
+  .nt-right-drawer__body,
+  .nt-right-drawer__footer {
+    padding-inline: var(--nt-space-4);
+  }
+}

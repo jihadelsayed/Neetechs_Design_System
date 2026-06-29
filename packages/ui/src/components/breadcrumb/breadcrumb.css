@@ -1,0 +1,205 @@
+.nt-breadcrumb {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-breadcrumb__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--nt-space-1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-breadcrumb__link,
+.nt-breadcrumb__current {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1-5);
+  min-width: 0;
+  max-width: 16rem;
+  min-height: 1.75rem;
+  padding: 0 var(--nt-space-1-5);
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-md);
+  color: var(--nt-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nt-breadcrumb__link {
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-breadcrumb__link:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-text-primary);
+}
+
+.nt-breadcrumb__link:focus-visible {
+  outline: none;
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
+}
+
+.nt-breadcrumb__current {
+  color: var(--nt-text-primary);
+  cursor: default;
+}
+
+.nt-breadcrumb__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nt-breadcrumb__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+}
+
+.nt-breadcrumb__separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  color: var(--nt-text-subtle);
+  user-select: none;
+}
+
+.nt-breadcrumb__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-md);
+  background: transparent;
+  color: var(--nt-text-muted);
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-breadcrumb__ellipsis:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-text-primary);
+}
+
+.nt-breadcrumb__ellipsis:focus-visible {
+  outline: none;
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
+}
+
+.nt-breadcrumb--compact {
+  font: var(--nt-text-label-xs);
+}
+
+.nt-breadcrumb--compact .nt-breadcrumb__link,
+.nt-breadcrumb--compact .nt-breadcrumb__current,
+.nt-breadcrumb--compact .nt-breadcrumb__ellipsis {
+  min-height: 1.5rem;
+  padding-inline: var(--nt-space-1);
+}
+
+.nt-breadcrumb--spacious .nt-breadcrumb__list {
+  gap: var(--nt-space-2);
+}
+
+.nt-breadcrumb--spacious .nt-breadcrumb__link,
+.nt-breadcrumb--spacious .nt-breadcrumb__current,
+.nt-breadcrumb--spacious .nt-breadcrumb__ellipsis {
+  min-height: 2rem;
+  padding-inline: var(--nt-space-2);
+}
+
+.nt-breadcrumb--boxed {
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--nt-space-1);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-xl);
+  background: var(--nt-bg-muted);
+}
+
+.nt-breadcrumb--boxed .nt-breadcrumb__current {
+  background: var(--nt-bg-surface);
+  box-shadow: var(--nt-shadow-sm);
+}
+
+.nt-breadcrumb--ghost .nt-breadcrumb__link,
+.nt-breadcrumb--ghost .nt-breadcrumb__current {
+  padding-inline: 0;
+}
+
+.nt-breadcrumb--ghost .nt-breadcrumb__link:hover {
+  background: transparent;
+  color: var(--nt-text-primary);
+}
+
+.nt-breadcrumb--truncate {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.nt-breadcrumb--truncate .nt-breadcrumb__list {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.nt-breadcrumb--truncate .nt-breadcrumb__item {
+  min-width: 0;
+}
+
+.nt-breadcrumb--truncate .nt-breadcrumb__item:not(:last-child) {
+  flex: 0 0 auto;
+}
+
+.nt-breadcrumb--truncate .nt-breadcrumb__item:last-child {
+  flex: 1 1 auto;
+}
+
+.nt-breadcrumb--truncate .nt-breadcrumb__current {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .nt-breadcrumb__link,
+  .nt-breadcrumb__current {
+    max-width: 10rem;
+  }
+
+  .nt-breadcrumb--mobile-minimal .nt-breadcrumb__item:not(:first-child):not(:last-child) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-breadcrumb__link,
+  .nt-breadcrumb__ellipsis {
+    transition: none !important;
+  }
+}

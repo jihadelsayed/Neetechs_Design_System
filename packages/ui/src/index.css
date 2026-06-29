@@ -1,0 +1,6 @@
+@import './styles/index.css';
+@import './shell/index.css';
+@import './components/index.css';
+@import './patterns/index.css';
+@import './ai/index.css';
+@import './domain/index.css';

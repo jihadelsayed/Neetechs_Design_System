@@ -1,0 +1,21 @@
+:root {
+  --nt-radius-none: 0;
+  --nt-radius-xs: 0.125rem;  /* 2px */
+  --nt-radius-sm: 0.25rem;   /* 4px */
+  --nt-radius-md: 0.5rem;    /* 8px */
+  --nt-radius-lg: 0.75rem;   /* 12px */
+  --nt-radius-xl: 1rem;      /* 16px */
+  --nt-radius-2xl: 1.25rem;  /* 20px */
+  --nt-radius-3xl: 1.5rem;   /* 24px */
+  --nt-radius-full: 9999px;
+
+  --nt-radius-control: var(--nt-radius-md);
+  --nt-radius-button: var(--nt-radius-md);
+  --nt-radius-input: var(--nt-radius-md);
+  --nt-radius-card: var(--nt-radius-xl);
+  --nt-radius-panel: var(--nt-radius-xl);
+  --nt-radius-dialog: var(--nt-radius-2xl);
+  --nt-radius-drawer: var(--nt-radius-2xl);
+  --nt-radius-badge: var(--nt-radius-full);
+  --nt-radius-avatar: var(--nt-radius-full);
+}

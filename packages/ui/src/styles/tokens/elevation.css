@@ -1,0 +1,32 @@
+:root {
+  --nt-shadow-none: none;
+
+  --nt-shadow-xs:
+    0 1px 2px rgba(0, 0, 0, 0.18);
+
+  --nt-shadow-sm:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 4px 10px rgba(0, 0, 0, 0.12);
+
+  --nt-shadow-md:
+    0 8px 24px rgba(0, 0, 0, 0.18);
+
+  --nt-shadow-lg:
+    0 16px 40px rgba(0, 0, 0, 0.24);
+
+  --nt-shadow-xl:
+    0 24px 64px rgba(0, 0, 0, 0.32);
+
+  --nt-shadow-overlay:
+    0 28px 80px rgba(0, 0, 0, 0.42);
+
+  --nt-elevation-border-subtle: 1px solid var(--nt-border-subtle);
+  --nt-elevation-border-strong: 1px solid var(--nt-border-strong);
+
+  --nt-shadow-card: var(--nt-shadow-none);
+  --nt-shadow-card-hover: var(--nt-shadow-sm);
+  --nt-shadow-dropdown: var(--nt-shadow-lg);
+  --nt-shadow-dialog: var(--nt-shadow-overlay);
+  --nt-shadow-drawer: var(--nt-shadow-overlay);
+  --nt-shadow-toast: var(--nt-shadow-lg);
+}

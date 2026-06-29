@@ -1,0 +1,152 @@
+.nt-text-display-lg {
+  font: var(--nt-text-display-lg);
+  letter-spacing: var(--nt-letter-spacing-tight);
+}
+
+.nt-text-display-md {
+  font: var(--nt-text-display-md);
+  letter-spacing: var(--nt-letter-spacing-tight);
+}
+
+.nt-text-display-sm {
+  font: var(--nt-text-display-sm);
+  letter-spacing: var(--nt-letter-spacing-tight);
+}
+
+.nt-text-heading-lg {
+  font: var(--nt-text-heading-lg);
+  letter-spacing: var(--nt-letter-spacing-heading);
+}
+
+.nt-text-heading-md {
+  font: var(--nt-text-heading-md);
+  letter-spacing: var(--nt-letter-spacing-heading);
+}
+
+.nt-text-heading-sm {
+  font: var(--nt-text-heading-sm);
+  letter-spacing: var(--nt-letter-spacing-heading);
+}
+
+.nt-text-title-lg {
+  font: var(--nt-text-title-lg);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-text-title-md {
+  font: var(--nt-text-title-md);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-text-title-sm {
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-text-body-lg {
+  font: var(--nt-text-body-lg);
+}
+
+.nt-text-body-md {
+  font: var(--nt-text-body-md);
+}
+
+.nt-text-body-sm {
+  font: var(--nt-text-body-sm);
+}
+
+.nt-text-body-xs {
+  font: var(--nt-text-body-xs);
+}
+
+.nt-text-label-lg {
+  font: var(--nt-text-label-lg);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-text-label-md {
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-text-label-sm {
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-text-caption {
+  font: var(--nt-text-caption);
+}
+
+.nt-text-mono-sm {
+  font: var(--nt-text-mono-sm);
+}
+
+.nt-text-primary {
+  color: var(--nt-text-primary);
+}
+
+.nt-text-secondary {
+  color: var(--nt-text-secondary);
+}
+
+.nt-text-muted {
+  color: var(--nt-text-muted);
+}
+
+.nt-text-subtle {
+  color: var(--nt-text-subtle);
+}
+
+.nt-text-disabled {
+  color: var(--nt-text-disabled);
+}
+
+.nt-text-success {
+  color: var(--nt-success);
+}
+
+.nt-text-warning {
+  color: var(--nt-warning);
+}
+
+.nt-text-danger {
+  color: var(--nt-danger);
+}
+
+.nt-text-info {
+  color: var(--nt-info);
+}
+
+.nt-text-left {
+  text-align: start;
+}
+
+.nt-text-center {
+  text-align: center;
+}
+
+.nt-text-right {
+  text-align: end;
+}
+
+.nt-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-line-clamp-2,
+.nt-line-clamp-3 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.nt-line-clamp-2 {
+  -webkit-line-clamp: 2;
+}
+
+.nt-line-clamp-3 {
+  -webkit-line-clamp: 3;
+}

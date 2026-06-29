@@ -1,0 +1,36 @@
+:root {
+  --nt-duration-instant: 0ms;
+  --nt-duration-fast: 120ms;
+  --nt-duration-normal: 180ms;
+  --nt-duration-slow: 260ms;
+  --nt-duration-slower: 420ms;
+
+  --nt-ease-linear: linear;
+  --nt-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --nt-ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --nt-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --nt-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --nt-transition-colors:
+    background-color var(--nt-duration-fast) var(--nt-ease-standard),
+    border-color var(--nt-duration-fast) var(--nt-ease-standard),
+    color var(--nt-duration-fast) var(--nt-ease-standard),
+    box-shadow var(--nt-duration-fast) var(--nt-ease-standard);
+
+  --nt-transition-transform:
+    transform var(--nt-duration-normal) var(--nt-ease-standard);
+
+  --nt-transition-opacity:
+    opacity var(--nt-duration-normal) var(--nt-ease-standard);
+
+  --nt-transition-overlay:
+    opacity var(--nt-duration-normal) var(--nt-ease-standard),
+    transform var(--nt-duration-normal) var(--nt-ease-standard);
+
+  --nt-motion-button: var(--nt-transition-colors), var(--nt-transition-transform);
+  --nt-motion-card: var(--nt-transition-colors), var(--nt-transition-transform);
+  --nt-motion-dialog: var(--nt-transition-overlay);
+  --nt-motion-drawer: var(--nt-transition-overlay);
+  --nt-motion-menu: var(--nt-transition-overlay);
+  --nt-motion-toast: var(--nt-transition-overlay);
+}

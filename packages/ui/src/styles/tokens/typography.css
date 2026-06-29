@@ -1,0 +1,84 @@
+:root {
+  --nt-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --nt-font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --nt-font-weight-regular: 400;
+  --nt-font-weight-medium: 500;
+  --nt-font-weight-semibold: 600;
+  --nt-font-weight-bold: 700;
+
+  --nt-font-size-display-lg: 3.5rem;
+  --nt-font-size-display-md: 3rem;
+  --nt-font-size-display-sm: 2.5rem;
+
+  --nt-font-size-heading-lg: 2rem;
+  --nt-font-size-heading-md: 1.75rem;
+  --nt-font-size-heading-sm: 1.5rem;
+
+  --nt-font-size-title-lg: 1.25rem;
+  --nt-font-size-title-md: 1.125rem;
+  --nt-font-size-title-sm: 1rem;
+
+  --nt-font-size-body-lg: 1rem;
+  --nt-font-size-body-md: 0.9375rem;
+  --nt-font-size-body-sm: 0.875rem;
+  --nt-font-size-body-xs: 0.8125rem;
+
+  --nt-font-size-label-lg: 0.875rem;
+  --nt-font-size-label-md: 0.8125rem;
+  --nt-font-size-label-sm: 0.75rem;
+
+  --nt-font-size-caption: 0.75rem;
+  --nt-font-size-micro: 0.6875rem;
+
+  --nt-line-height-display-lg: 1.05;
+  --nt-line-height-display-md: 1.08;
+  --nt-line-height-display-sm: 1.1;
+
+  --nt-line-height-heading-lg: 1.15;
+  --nt-line-height-heading-md: 1.2;
+  --nt-line-height-heading-sm: 1.25;
+
+  --nt-line-height-title-lg: 1.3;
+  --nt-line-height-title-md: 1.35;
+  --nt-line-height-title-sm: 1.4;
+
+  --nt-line-height-body-lg: 1.6;
+  --nt-line-height-body-md: 1.55;
+  --nt-line-height-body-sm: 1.5;
+  --nt-line-height-body-xs: 1.45;
+
+  --nt-line-height-label: 1.25;
+  --nt-line-height-caption: 1.35;
+
+  --nt-letter-spacing-tight: -0.03em;
+  --nt-letter-spacing-heading: -0.02em;
+  --nt-letter-spacing-title: -0.01em;
+  --nt-letter-spacing-normal: 0;
+  --nt-letter-spacing-label: 0.01em;
+  --nt-letter-spacing-wide: 0.04em;
+
+  --nt-text-display-lg: var(--nt-font-weight-bold) var(--nt-font-size-display-lg) / var(--nt-line-height-display-lg) var(--nt-font-sans);
+  --nt-text-display-md: var(--nt-font-weight-bold) var(--nt-font-size-display-md) / var(--nt-line-height-display-md) var(--nt-font-sans);
+  --nt-text-display-sm: var(--nt-font-weight-bold) var(--nt-font-size-display-sm) / var(--nt-line-height-display-sm) var(--nt-font-sans);
+
+  --nt-text-heading-lg: var(--nt-font-weight-semibold) var(--nt-font-size-heading-lg) / var(--nt-line-height-heading-lg) var(--nt-font-sans);
+  --nt-text-heading-md: var(--nt-font-weight-semibold) var(--nt-font-size-heading-md) / var(--nt-line-height-heading-md) var(--nt-font-sans);
+  --nt-text-heading-sm: var(--nt-font-weight-semibold) var(--nt-font-size-heading-sm) / var(--nt-line-height-heading-sm) var(--nt-font-sans);
+
+  --nt-text-title-lg: var(--nt-font-weight-semibold) var(--nt-font-size-title-lg) / var(--nt-line-height-title-lg) var(--nt-font-sans);
+  --nt-text-title-md: var(--nt-font-weight-semibold) var(--nt-font-size-title-md) / var(--nt-line-height-title-md) var(--nt-font-sans);
+  --nt-text-title-sm: var(--nt-font-weight-semibold) var(--nt-font-size-title-sm) / var(--nt-line-height-title-sm) var(--nt-font-sans);
+
+  --nt-text-body-lg: var(--nt-font-weight-regular) var(--nt-font-size-body-lg) / var(--nt-line-height-body-lg) var(--nt-font-sans);
+  --nt-text-body-md: var(--nt-font-weight-regular) var(--nt-font-size-body-md) / var(--nt-line-height-body-md) var(--nt-font-sans);
+  --nt-text-body-sm: var(--nt-font-weight-regular) var(--nt-font-size-body-sm) / var(--nt-line-height-body-sm) var(--nt-font-sans);
+  --nt-text-body-xs: var(--nt-font-weight-regular) var(--nt-font-size-body-xs) / var(--nt-line-height-body-xs) var(--nt-font-sans);
+
+  --nt-text-label-lg: var(--nt-font-weight-medium) var(--nt-font-size-label-lg) / var(--nt-line-height-label) var(--nt-font-sans);
+  --nt-text-label-md: var(--nt-font-weight-medium) var(--nt-font-size-label-md) / var(--nt-line-height-label) var(--nt-font-sans);
+  --nt-text-label-sm: var(--nt-font-weight-medium) var(--nt-font-size-label-sm) / var(--nt-line-height-label) var(--nt-font-sans);
+
+  --nt-text-caption: var(--nt-font-weight-regular) var(--nt-font-size-caption) / var(--nt-line-height-caption) var(--nt-font-sans);
+  --nt-text-mono-sm: var(--nt-font-weight-regular) var(--nt-font-size-body-sm) / var(--nt-line-height-body-sm) var(--nt-font-mono);
+}

@@ -1,0 +1,86 @@
+.nt-textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 7rem;
+  padding: var(--nt-space-3);
+  border: 1px solid var(--nt-control-border);
+  border-radius: var(--nt-radius-input);
+  background: var(--nt-control-bg);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-body-sm);
+  resize: vertical;
+  appearance: none;
+  outline: none;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-textarea::placeholder {
+  color: var(--nt-text-subtle);
+}
+
+.nt-textarea:hover {
+  background: var(--nt-control-bg-hover);
+  border-color: var(--nt-control-border-hover);
+}
+
+.nt-textarea:focus,
+.nt-textarea:focus-visible {
+  border-color: var(--nt-control-border-focus);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
+}
+
+.nt-textarea:disabled,
+.nt-textarea[aria-disabled='true'],
+.nt-textarea--disabled {
+  background: var(--nt-disabled-bg);
+  border-color: var(--nt-disabled-border);
+  color: var(--nt-disabled-text);
+  cursor: not-allowed;
+  resize: none;
+}
+
+.nt-textarea[readonly],
+.nt-textarea--readonly {
+  background: var(--nt-bg-surface-muted);
+  border-color: var(--nt-border-subtle);
+  color: var(--nt-text-secondary);
+}
+
+.nt-textarea[aria-invalid='true'],
+.nt-textarea--error {
+  border-color: var(--nt-danger-border);
+  box-shadow: 0 0 0 3px var(--nt-danger-bg);
+}
+
+.nt-textarea--sm {
+  min-height: 5rem;
+  padding: var(--nt-space-2-5);
+  font: var(--nt-text-body-xs);
+}
+
+.nt-textarea--md {
+  min-height: 7rem;
+  padding: var(--nt-space-3);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-textarea--lg {
+  min-height: 10rem;
+  padding: var(--nt-space-4);
+  font: var(--nt-text-body-md);
+}
+
+.nt-textarea--no-resize {
+  resize: none;
+}
+
+.nt-textarea--auto {
+  min-height: var(--nt-control-height-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-textarea {
+    transition: none !important;
+  }
+}
