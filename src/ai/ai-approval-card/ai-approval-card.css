@@ -4,11 +4,11 @@
   gap: var(--nt-space-4);
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--nt-border-interactive);
-  border-radius: var(--nt-radius-xl);
+  border: 1px solid var(--nt-ai-border);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-ai-approval-card__header {
@@ -18,7 +18,7 @@
   gap: var(--nt-space-3);
   padding: var(--nt-space-4);
   border-bottom: 1px solid var(--nt-border-subtle);
-  background: var(--nt-accent-subtle);
+  background: var(--nt-ai-bg-subtle);
 }
 
 .nt-ai-approval-card__icon {
@@ -27,10 +27,10 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--nt-accent-border);
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-accent-bg);
-  color: var(--nt-accent-text);
+  border: 1px solid var(--nt-ai-border);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-ai-bg-subtle);
+  color: var(--nt-ai-fg);
 }
 
 .nt-ai-approval-card__header-main {
@@ -41,7 +41,7 @@
 }
 
 .nt-ai-approval-card__eyebrow {
-  color: var(--nt-accent-text);
+  color: var(--nt-ai-fg);
   font: var(--nt-text-label-xs);
   letter-spacing: var(--nt-letter-spacing-label);
   text-transform: uppercase;
@@ -68,7 +68,7 @@
   min-height: 1.5rem;
   padding: 0 var(--nt-space-2);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-bg-surface);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-xs);
@@ -136,8 +136,8 @@
   min-width: 0;
   padding: var(--nt-space-3);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-ai-approval-card__change-icon {
@@ -146,7 +146,7 @@
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: var(--nt-bg-surface);
   color: var(--nt-text-muted);
 }
@@ -185,8 +185,8 @@
   min-width: 0;
   padding: var(--nt-space-3);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-ai-approval-card__diff-label {
@@ -200,7 +200,7 @@
   margin: 0;
   overflow: auto;
   color: var(--nt-text-primary);
-  font: var(--nt-text-code-sm);
+  font: var(--nt-text-mono-sm);
   white-space: pre-wrap;
 }
 

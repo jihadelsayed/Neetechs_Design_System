@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" data-nt-theme="light" data-nt-accent="orange" data-nt-density="comfortable" data-nt-contrast="normal" data-nt-motion="full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neetechs accessibility contract gallery</title>
+    <link rel="stylesheet" href="/src/index.css">
+    <style>
+      body { padding: 2rem; }
+      main { display: grid; gap: 2rem; }
+      .gallery-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+      .gallery-section { display: grid; gap: 1rem; }
+      .gallery-grid [role='row'] { display: grid; grid-template-columns: repeat(2, minmax(8rem, 1fr)); }
+      .gallery-grid [role='gridcell'], .gallery-grid [role='columnheader'] { padding: .75rem; border: 1px solid var(--nt-border-default); }
+      .gallery-calendar [role='row'] { display: grid; grid-template-columns: repeat(7, 2.75rem); }
+      .gallery-calendar button { min-width: 2.75rem; min-height: 2.75rem; }
+    </style>
+  </head>
+  <body>
+    <header><h1>Accessibility contract gallery</h1></header>
+    <main id="main-content">
+      <section class="gallery-section" aria-labelledby="controls-heading">
+        <h2 id="controls-heading">Controls and forms</h2>
+        <div class="gallery-row">
+          <button class="nt-button nt-button--primary">Save changes</button>
+          <button class="nt-button nt-button--secondary">Cancel</button>
+          <button class="nt-button nt-button--danger">Delete</button>
+          <button class="nt-icon-button" aria-label="Open settings">⚙</button>
+          <a href="#feedback-heading">Skip to feedback</a>
+        </div>
+
+        <form id="example-form" novalidate>
+          <div class="nt-field">
+            <label class="nt-field__label" id="email-label">Email <span aria-hidden="true">*</span></label>
+            <input class="nt-input" id="email" type="email" value="bad" required>
+            <p class="nt-field__help" id="email-help">Use your work address.</p>
+            <p class="nt-field__error" id="email-error">Enter a valid email address.</p>
+          </div>
+          <label class="nt-field">
+            <span class="nt-field__label">Notes</span>
+            <textarea class="nt-textarea">Readable content</textarea>
+          </label>
+          <label class="nt-field">
+            <span class="nt-field__label">Country</span>
+            <select class="nt-select"><option>Sweden</option><option>Germany</option></select>
+          </label>
+          <label class="nt-field">
+            <span class="nt-field__label">Attachment</span>
+            <input class="nt-input" type="file">
+          </label>
+          <fieldset>
+            <legend>Notifications</legend>
+            <label class="nt-checkbox"><input class="nt-checkbox__input" type="checkbox"><span class="nt-checkbox__box" aria-hidden="true"></span><span>Email updates</span></label>
+            <label class="nt-radio"><input class="nt-radio__input" type="radio" name="frequency"><span class="nt-radio__control" aria-hidden="true"></span><span>Daily</span></label>
+            <label class="nt-switch"><input class="nt-switch__input" type="checkbox"><span class="nt-switch__track" aria-hidden="true"><span class="nt-switch__thumb"></span></span><span>Automatic</span></label>
+          </fieldset>
+          <div id="error-summary" class="nt-alert nt-alert--danger" hidden>
+            <h3>Check the form</h3><a href="#email">Email needs attention</a>
+          </div>
+          <button class="nt-button nt-button--primary" type="submit">Submit profile</button>
+        </form>
+      </section>
+
+      <section class="nt-tabs gallery-section" id="tabs" aria-labelledby="tabs-heading">
+        <h2 id="tabs-heading">Tabs</h2>
+        <div class="nt-tabs__list">
+          <button class="nt-tabs__trigger" aria-selected="true">Overview</button>
+          <button class="nt-tabs__trigger">Activity</button>
+          <button class="nt-tabs__trigger" disabled>Unavailable</button>
+        </div>
+        <section class="nt-tabs__panel"><h3>Overview</h3><p>Overview content.</p></section>
+        <section class="nt-tabs__panel"><h3>Activity</h3><p>Activity content.</p></section>
+        <section class="nt-tabs__panel"><h3>Unavailable</h3></section>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="menu-heading">
+        <h2 id="menu-heading">Menu</h2>
+        <button id="menu-trigger" class="nt-button nt-button--secondary">Account menu</button>
+        <div id="menu" class="nt-dropdown" hidden>
+          <button class="nt-dropdown__item">Profile</button>
+          <button class="nt-dropdown__item" aria-disabled="true">Billing unavailable</button>
+          <button class="nt-dropdown__item">Settings</button>
+        </div>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="grid-heading">
+        <h2 id="grid-heading">Interactive data grid</h2>
+        <p id="grid-help">Use arrow keys to move between cells.</p>
+        <div id="grid-live" class="nt-sr-only" role="status" aria-live="polite"></div>
+        <div id="data-grid" class="nt-data-grid gallery-grid" aria-describedby="grid-help">
+          <div role="row"><div role="columnheader" tabindex="0">Company</div><div role="columnheader" aria-sort="none">Balance</div></div>
+          <div role="row"><div role="gridcell">Sydfix</div><div role="gridcell">1,250 SEK</div></div>
+          <div role="row"><div role="gridcell">Neetechs</div><div role="gridcell">900 SEK</div></div>
+        </div>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="calendar-heading">
+        <h2 id="calendar-heading">Calendar</h2>
+        <p id="calendar-live" class="nt-sr-only" role="status" aria-live="polite"></p>
+        <div id="calendar" class="nt-calendar-month-grid gallery-calendar" aria-label="July 2026">
+          <div role="row">
+            <button data-nt-calendar-date="2026-07-01" aria-label="Wednesday 1 July 2026">1</button>
+            <button data-nt-calendar-date="2026-07-02" aria-label="Thursday 2 July 2026">2</button>
+            <button data-nt-calendar-date="2026-07-03" aria-label="Friday 3 July 2026">3</button>
+            <button data-nt-calendar-date="2026-07-04" aria-label="Saturday 4 July 2026">4</button>
+            <button data-nt-calendar-date="2026-07-05" aria-label="Sunday 5 July 2026">5</button>
+            <button data-nt-calendar-date="2026-07-06" aria-current="date" aria-label="Monday 6 July 2026, today">6</button>
+            <button data-nt-calendar-date="2026-07-07" aria-label="Tuesday 7 July 2026">7</button>
+          </div>
+          <div role="row">
+            <button data-nt-calendar-date="2026-07-08" aria-label="Wednesday 8 July 2026, Team sync 09:00 to 09:30">8</button>
+            <button data-nt-calendar-date="2026-07-09" aria-label="Thursday 9 July 2026">9</button>
+            <button data-nt-calendar-date="2026-07-10" aria-label="Friday 10 July 2026">10</button>
+            <button data-nt-calendar-date="2026-07-11" aria-label="Saturday 11 July 2026">11</button>
+            <button data-nt-calendar-date="2026-07-12" aria-label="Sunday 12 July 2026">12</button>
+            <button data-nt-calendar-date="2026-07-13" aria-label="Monday 13 July 2026">13</button>
+            <button data-nt-calendar-date="2026-07-14" aria-label="Tuesday 14 July 2026">14</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="nt-ai-approval-card gallery-section" aria-labelledby="ai-title" aria-describedby="ai-description ai-impact">
+        <header class="nt-ai-approval-card__header">
+          <div><span aria-hidden="true">✦</span><p>Neenee approval</p><h2 id="ai-title">Create a calendar event</h2></div>
+          <span class="nt-ai-approval-card__status nt-ai-approval-card__status--pending" role="status">Awaiting approval</span>
+        </header>
+        <div class="nt-ai-approval-card__body">
+          <p id="ai-description">Neenee will create “Customer review” tomorrow from 10:00 to 10:30.</p>
+          <p id="ai-impact">This changes your shared company calendar and can be undone by deleting the event.</p>
+        </div>
+        <footer class="nt-ai-approval-card__footer">
+          <button class="nt-button nt-button--secondary">Reject proposal</button>
+          <button class="nt-button nt-button--primary" aria-describedby="ai-impact">Approve and create event</button>
+        </footer>
+      </section>
+
+      <section id="feedback-heading" class="gallery-section" aria-labelledby="feedback-title">
+        <h2 id="feedback-title">Feedback and loading</h2>
+        <div id="toast" class="nt-toast">Profile saved.</div>
+        <div id="loading" class="nt-loading-state" role="status" aria-live="polite" aria-busy="true">
+          <span class="nt-skeleton" aria-hidden="true"></span><span>Loading invoices…</span>
+        </div>
+        <section class="nt-error-state" aria-labelledby="error-title"><h3 id="error-title">Could not load invoices</h3><p>Check your connection and try again.</p><button class="nt-button nt-button--secondary">Try again</button></section>
+      </section>
+
+      <button id="dialog-trigger" class="nt-button nt-button--secondary">Open confirmation</button>
+      <div id="dialog-backdrop" class="nt-dialog-backdrop" hidden>
+        <section id="dialog" class="nt-dialog" hidden>
+          <header class="nt-dialog__header"><h2 id="dialog-title">Confirm account change</h2></header>
+          <div class="nt-dialog__body"><p id="dialog-description">Review this reversible change before continuing.</p><button id="drawer-trigger" class="nt-button nt-button--secondary">Review details</button></div>
+          <footer class="nt-dialog__footer"><button id="dialog-cancel" class="nt-button nt-button--secondary">Cancel</button><button class="nt-button nt-button--danger">Confirm change</button></footer>
+          <div id="drawer-backdrop" class="nt-drawer-backdrop" hidden>
+            <aside id="drawer" class="nt-drawer" hidden>
+              <header class="nt-drawer__header"><h3 id="drawer-title">Change details</h3></header>
+              <div class="nt-drawer__body"><p id="drawer-description">No billing data will be changed.</p></div>
+              <footer class="nt-drawer__footer"><button id="drawer-close" class="nt-button nt-button--secondary">Close details</button></footer>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module">
+      import {
+        ntConfigureToastSemantics,
+        ntConnectField,
+        ntCreateCalendarGrid,
+        ntCreateDataGrid,
+        ntCreateDialog,
+        ntCreateDrawer,
+        ntCreateDropdown,
+        ntCreateTabs,
+        ntFocusErrorSummary,
+      } from '/dist/index.js';
+
+      const controllers = {};
+      controllers.tabs = ntCreateTabs({ root: document.querySelector('#tabs') });
+      controllers.menu = ntCreateDropdown({ trigger: document.querySelector('#menu-trigger'), content: document.querySelector('#menu') });
+      controllers.grid = ntCreateDataGrid({ root: document.querySelector('#data-grid'), liveRegion: document.querySelector('#grid-live'), selection: 'cell' });
+      controllers.calendar = ntCreateCalendarGrid({ root: document.querySelector('#calendar'), liveRegion: document.querySelector('#calendar-live') });
+      controllers.dialog = ntCreateDialog({
+        trigger: document.querySelector('#dialog-trigger'), dialog: document.querySelector('#dialog'), backdrop: document.querySelector('#dialog-backdrop'),
+        title: document.querySelector('#dialog-title'), description: document.querySelector('#dialog-description'), initialFocus: document.querySelector('#dialog-cancel'),
+      });
+      controllers.drawer = ntCreateDrawer({
+        trigger: document.querySelector('#drawer-trigger'), drawer: document.querySelector('#drawer'), backdrop: document.querySelector('#drawer-backdrop'),
+        title: document.querySelector('#drawer-title'), description: document.querySelector('#drawer-description'), initialFocus: document.querySelector('#drawer-close'),
+      });
+      document.querySelector('#drawer-close').addEventListener('click', () => controllers.drawer.close());
+      document.querySelector('#dialog-cancel').addEventListener('click', () => controllers.dialog.close());
+      ntConfigureToastSemantics(document.querySelector('#toast'));
+      ntConnectField({
+        control: document.querySelector('#email'), label: document.querySelector('#email-label'), description: document.querySelector('#email-help'),
+        error: document.querySelector('#email-error'), required: true, invalid: true,
+      });
+      document.querySelector('#example-form').addEventListener('submit', event => {
+        event.preventDefault();
+        const summary = document.querySelector('#error-summary');
+        summary.hidden = false;
+        ntFocusErrorSummary(summary);
+      });
+      window.galleryControllers = controllers;
+      window.galleryReady = true;
+    </script>
+  </body>
+</html>

@@ -27,6 +27,8 @@ export interface NtDropdownOptions {
   closeOnOutsideClick?: boolean;
   closeOnSelect?: boolean;
   loopFocus?: boolean;
+  pattern?: 'menu' | 'listbox';
+  typeahead?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
   onSelect?: (item: HTMLElement, event: Event) => void;
@@ -62,6 +64,8 @@ export function ntCreateDropdown(
     closeOnOutsideClick = true,
     closeOnSelect = true,
     loopFocus = true,
+    pattern = 'menu',
+    typeahead = true,
     onOpen,
     onClose,
     onSelect,
@@ -69,6 +73,8 @@ export function ntCreateDropdown(
 
   let isOpen = false;
   let rovingFocus: NtRovingFocusController | null = null;
+  let typeaheadBuffer = '';
+  let typeaheadTimer = 0;
 
   const overlayOptions: NtCreateOverlayOptions = {
     closeOnEscape,
@@ -83,13 +89,14 @@ export function ntCreateDropdown(
   const overlay: NtOverlayController = ntCreateOverlay(content, overlayOptions);
 
   function syncAttributes(): void {
-    trigger.setAttribute('aria-haspopup', 'menu');
+    trigger.setAttribute('aria-haspopup', pattern);
     trigger.setAttribute('aria-expanded', String(isOpen));
     ntSetAriaControls(trigger, content, 'nt-dropdown');
 
     content.dataset.state = isOpen ? 'open' : 'closed';
     content.dataset.side = side;
     content.dataset.align = align;
+    content.setAttribute('role', pattern);
 
     if (isOpen) {
       content.removeAttribute('hidden');
@@ -102,6 +109,12 @@ export function ntCreateDropdown(
   function ensureRovingFocus(): void {
     if (rovingFocus) {
       return;
+    }
+
+    for (const item of content.querySelectorAll<HTMLElement>(itemSelector)) {
+      if (!item.hasAttribute('role')) {
+        item.setAttribute('role', pattern === 'menu' ? 'menuitem' : 'option');
+      }
     }
 
     rovingFocus = ntCreateRovingFocus({
@@ -174,16 +187,7 @@ export function ntCreateDropdown(
       return;
     }
 
-    if (ntIsActivationKey(event)) {
-      event.preventDefault();
-      toggle();
-
-      if (!isOpen) {
-        return;
-      }
-
-      queueMicrotask(focusFirstItem);
-    }
+    // Enter/Space remain native button behavior and are handled by click.
   };
 
   const handleContentClick = (event: MouseEvent) => {
@@ -222,6 +226,37 @@ export function ntCreateDropdown(
       return;
     }
 
+    if (
+      typeahead &&
+      event.key.length === 1 &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey
+    ) {
+      typeaheadBuffer += event.key.toLocaleLowerCase();
+      const ownerWindow = content.ownerDocument.defaultView;
+      if (ownerWindow) {
+        ownerWindow.clearTimeout(typeaheadTimer);
+        typeaheadTimer = ownerWindow.setTimeout(() => {
+          typeaheadBuffer = '';
+        }, 500);
+      }
+      const items = Array.from(content.querySelectorAll<HTMLElement>(itemSelector)).filter(
+        (item) =>
+          !item.hasAttribute('disabled') &&
+          item.getAttribute('aria-disabled') !== 'true' &&
+          item.dataset.disabled !== 'true',
+      );
+      const match = items.find((item) =>
+        (item.textContent ?? '').trim().toLocaleLowerCase().startsWith(typeaheadBuffer),
+      );
+      if (match) {
+        event.preventDefault();
+        match.focus({ preventScroll: true });
+      }
+      return;
+    }
+
     if (!ntIsActivationKey(event)) {
       return;
     }
@@ -235,6 +270,15 @@ export function ntCreateDropdown(
     const item = target.closest<HTMLElement>(itemSelector);
 
     if (!item || !content.contains(item)) {
+      return;
+    }
+
+    if (
+      item.hasAttribute('disabled') ||
+      item.getAttribute('aria-disabled') === 'true' ||
+      item.dataset.disabled === 'true'
+    ) {
+      event.preventDefault();
       return;
     }
 
@@ -275,6 +319,7 @@ export function ntCreateDropdown(
       content.removeEventListener('click', handleContentClick);
       content.removeEventListener('keydown', handleContentKeyDown);
       rovingFocus?.destroy();
+      content.ownerDocument.defaultView?.clearTimeout(typeaheadTimer);
       overlay.destroy();
     },
   };

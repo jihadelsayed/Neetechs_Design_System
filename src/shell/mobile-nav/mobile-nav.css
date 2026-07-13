@@ -1,4 +1,4 @@
-.nt-mobile-nav {
+﻿.nt-mobile-nav {
   display: flex;
   flex-direction: column;
   width: min(20rem, 100vw);
@@ -7,7 +7,7 @@
   background: var(--nt-bg-sidebar);
   border-inline-end: 1px solid var(--nt-border-subtle);
   color: var(--nt-text-secondary);
-  box-shadow: var(--nt-shadow-drawer);
+  box-shadow: var(--nt-elevation-drawer);
 }
 
 .nt-mobile-nav__header {
@@ -34,7 +34,7 @@
   width: var(--nt-control-height-md);
   height: var(--nt-control-height-md);
   flex: 0 0 auto;
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: var(--nt-accent-subtle);
   color: var(--nt-accent);
 }
@@ -69,8 +69,8 @@
 }
 
 .nt-mobile-nav__close:focus-visible {
-  outline: 2px solid var(--nt-focus-ring);
-  outline-offset: 2px;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
 }
 
 .nt-mobile-nav__body {
@@ -83,7 +83,7 @@
 .nt-mobile-nav__section {
   display: flex;
   flex-direction: column;
-  gap: var(--nt-space-1);
+  gap: var(--nt-density-navigation-gap);
   margin-block-end: var(--nt-space-4);
 }
 
@@ -103,10 +103,10 @@
   display: flex;
   align-items: center;
   gap: var(--nt-space-3);
-  min-height: var(--nt-control-height-md);
-  padding-inline: var(--nt-space-3);
+  min-height: var(--nt-density-navigation-item-height);
+  padding-inline: var(--nt-density-control-padding-inline);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   color: var(--nt-text-secondary);
   font: var(--nt-text-label-md);
   text-decoration: none;
@@ -120,15 +120,15 @@
 }
 
 .nt-mobile-nav__item:focus-visible {
-  outline: 2px solid var(--nt-focus-ring);
-  outline-offset: 2px;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
 }
 
 .nt-mobile-nav__item[aria-current='page'],
 .nt-mobile-nav__item--active {
-  background: var(--nt-accent-subtle);
-  border-color: var(--nt-border-interactive);
-  color: var(--nt-accent-hover);
+  background: var(--nt-selection-bg);
+  border-color: var(--nt-selection-border);
+  color: var(--nt-selection-fg);
 }
 
 .nt-mobile-nav__item--disabled {
@@ -167,5 +167,5 @@
   position: fixed;
   inset: 0;
   z-index: calc(var(--nt-z-drawer) - 1);
-  background: var(--nt-bg-overlay);
+  background: var(--nt-bg-backdrop);
 }

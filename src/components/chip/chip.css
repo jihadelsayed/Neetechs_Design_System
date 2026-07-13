@@ -1,4 +1,4 @@
-.nt-chip {
+﻿.nt-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -7,8 +7,8 @@
   min-height: 2rem;
   padding: 0 var(--nt-space-2-5);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-primary);
   font: var(--nt-text-label-sm);
   letter-spacing: var(--nt-letter-spacing-label);
@@ -43,7 +43,7 @@
   height: 1.25rem;
   margin-inline-start: calc(var(--nt-space-1) * -1);
   overflow: hidden;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
   font: var(--nt-text-label-xs);
@@ -66,7 +66,7 @@
   height: 1.25rem;
   margin-inline-end: calc(var(--nt-space-1) * -1);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: transparent;
   color: var(--nt-text-muted);
   cursor: pointer;
@@ -79,7 +79,8 @@
 }
 
 .nt-chip__remove:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -100,7 +101,8 @@
 }
 
 .nt-chip--interactive:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -108,21 +110,21 @@
 .nt-chip--selected,
 .nt-chip[aria-selected='true'],
 .nt-chip[data-state='selected'] {
-  border-color: var(--nt-accent);
-  background: var(--nt-accent-bg);
-  color: var(--nt-accent-text);
+  border-color: var(--nt-selection-indicator);
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
 }
 
 .nt-chip--selected .nt-chip__icon,
 .nt-chip[aria-selected='true'] .nt-chip__icon,
 .nt-chip[data-state='selected'] .nt-chip__icon {
-  color: var(--nt-accent-text);
+  color: var(--nt-selection-fg);
 }
 
 .nt-chip--primary {
-  border-color: var(--nt-accent);
-  background: var(--nt-accent);
-  color: var(--nt-accent-contrast);
+  border-color: var(--nt-selection-indicator);
+  background: var(--nt-selection-indicator);
+  color: var(--nt-text-on-accent);
 }
 
 .nt-chip--primary .nt-chip__icon,
@@ -179,9 +181,9 @@
 
 .nt-chip--disabled,
 .nt-chip[aria-disabled='true'] {
-  border-color: var(--nt-disabled-border);
-  background: var(--nt-disabled-bg);
-  color: var(--nt-disabled-text);
+  border-color: var(--nt-border-disabled);
+  background: var(--nt-bg-surface-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -190,7 +192,7 @@
 .nt-chip--disabled .nt-chip__remove,
 .nt-chip[aria-disabled='true'] .nt-chip__icon,
 .nt-chip[aria-disabled='true'] .nt-chip__remove {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
 }
 
 .nt-chip--sm {
@@ -232,11 +234,11 @@
 }
 
 .nt-chip--square {
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
 }
 
 .nt-chip--rounded {
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
 }
 
 .nt-chip--block {

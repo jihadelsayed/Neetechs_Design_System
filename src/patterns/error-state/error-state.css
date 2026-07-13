@@ -1,4 +1,4 @@
-.nt-error-state {
+﻿.nt-error-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   min-height: 18rem;
   padding: var(--nt-space-8) var(--nt-space-6);
   border: 1px solid var(--nt-danger-border);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-danger-bg);
   color: var(--nt-text-primary);
   text-align: center;
@@ -22,7 +22,7 @@
   width: 4rem;
   height: 4rem;
   border: 1px solid var(--nt-danger-border);
-  border-radius: var(--nt-radius-2xl);
+  border-radius: var(--nt-radius-dialog);
   background: var(--nt-bg-surface);
   color: var(--nt-danger-text);
 }
@@ -69,7 +69,7 @@
   max-width: 100%;
   padding: var(--nt-space-1) var(--nt-space-2);
   border: 1px solid var(--nt-danger-border);
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: var(--nt-bg-surface);
   color: var(--nt-danger-text);
   font: var(--nt-text-label-xs);
@@ -83,7 +83,7 @@
   margin-block-start: var(--nt-space-2);
   padding: var(--nt-space-4);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: var(--nt-bg-surface);
   color: var(--nt-text-muted);
   font: var(--nt-text-body-sm);
@@ -101,7 +101,7 @@
   margin: 0;
   overflow: auto;
   color: var(--nt-text-muted);
-  font: var(--nt-text-code-sm);
+  font: var(--nt-text-mono-sm);
   white-space: pre-wrap;
 }
 
@@ -136,8 +136,9 @@
 }
 
 .nt-error-state__link:focus-visible {
-  outline: none;
-  border-radius: var(--nt-radius-sm);
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+  border-radius: var(--nt-radius-indicator);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
 
@@ -153,7 +154,7 @@
 
 .nt-error-state--muted {
   border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-error-state--compact {
@@ -165,7 +166,7 @@
 .nt-error-state--compact .nt-error-state__icon {
   width: 3rem;
   height: 3rem;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-error-state--compact .nt-error-state__icon svg {
@@ -207,7 +208,7 @@
 .nt-error-state--inline .nt-error-state__icon {
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-error-state--inline .nt-error-state__icon svg {
@@ -236,7 +237,7 @@
 
 .nt-error-state--offline {
   border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-error-state--offline .nt-error-state__icon,

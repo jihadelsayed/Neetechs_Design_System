@@ -1,4 +1,4 @@
-.nt-avatar {
+﻿.nt-avatar {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -8,8 +8,8 @@
   height: 2.25rem;
   overflow: hidden;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-primary);
   font: var(--nt-text-label-md);
   letter-spacing: var(--nt-letter-spacing-label);
@@ -31,7 +31,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-primary);
   text-transform: uppercase;
 }
@@ -52,8 +52,8 @@
   width: 0.625rem;
   height: 0.625rem;
   border: 2px solid var(--nt-bg-surface);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-avatar__status--online {
@@ -124,11 +124,11 @@
 }
 
 .nt-avatar--square {
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
 }
 
 .nt-avatar--rounded {
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-avatar--brand {
@@ -138,7 +138,7 @@
 }
 
 .nt-avatar--muted {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
 }
 
@@ -156,12 +156,13 @@
 
 .nt-avatar--interactive:hover {
   border-color: var(--nt-border-strong);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-control);
   transform: translateY(-1px);
 }
 
 .nt-avatar--interactive:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -196,8 +197,8 @@
   height: 2.25rem;
   padding-inline: var(--nt-space-2);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-sm);
   line-height: 1;

@@ -1,0 +1,40 @@
+[data-nt-motion='reduced'] {
+  --nt-duration-fast: 0.01ms;
+  --nt-duration-normal: 0.01ms;
+  --nt-duration-slow: 0.01ms;
+  --nt-duration-slower: 0.01ms;
+  --nt-transition-transform: none;
+  --nt-transition-overlay: opacity 0.01ms linear;
+  --nt-motion-card: var(--nt-transition-colors);
+  --nt-motion-dialog: var(--nt-transition-overlay);
+  --nt-motion-drawer: var(--nt-transition-overlay);
+  --nt-motion-menu: var(--nt-transition-overlay);
+  --nt-motion-toast: var(--nt-transition-overlay);
+}
+
+[data-nt-motion='reduced'] :where(.nt-card--interactive, .nt-button):active,
+[data-nt-motion='reduced'] :where(.nt-card--interactive, .nt-button):hover {
+  transform: none;
+}
+
+[data-nt-motion='reduced'] :where(
+  .nt-animate-slide-up,
+  .nt-animate-slide-down,
+  .nt-animate-scale-in,
+  .nt-animate-drawer-in-right,
+  .nt-animate-drawer-in-left,
+  .nt-animate-ai-pulse
+) {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-nt-motion='full']) {
+    --nt-duration-fast: 0.01ms;
+    --nt-duration-normal: 0.01ms;
+    --nt-duration-slow: 0.01ms;
+    --nt-duration-slower: 0.01ms;
+    --nt-transition-transform: none;
+    --nt-transition-overlay: opacity 0.01ms linear;
+  }
+}

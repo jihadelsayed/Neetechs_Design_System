@@ -1,10 +1,10 @@
-.nt-select {
+﻿.nt-select {
   display: inline-flex;
   align-items: center;
   width: 100%;
   height: var(--nt-control-height-md);
   min-width: 0;
-  padding-inline: var(--nt-space-3) var(--nt-space-8);
+  padding-inline: var(--nt-density-control-padding-inline) var(--nt-space-8);
   border: 1px solid var(--nt-control-border);
   border-radius: var(--nt-radius-input);
   background:
@@ -15,7 +15,7 @@
   font: var(--nt-text-body-sm);
   cursor: pointer;
   appearance: none;
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid transparent;
   transition: var(--nt-transition-colors);
 }
 
@@ -36,9 +36,9 @@
 .nt-select:disabled,
 .nt-select[aria-disabled='true'],
 .nt-select--disabled {
-  background-color: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background-color: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
 }
 
@@ -56,7 +56,7 @@
 
 .nt-select--md {
   height: var(--nt-control-height-md);
-  padding-inline: var(--nt-space-3) var(--nt-space-8);
+  padding-inline: var(--nt-density-control-padding-inline) var(--nt-space-8);
   font: var(--nt-text-body-sm);
 }
 
@@ -74,7 +74,7 @@
 .nt-select-group {
   display: flex;
   flex-direction: column;
-  gap: var(--nt-space-1-5);
+  gap: var(--nt-density-form-gap);
   min-width: 0;
 }
 

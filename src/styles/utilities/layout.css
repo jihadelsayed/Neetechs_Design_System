@@ -103,7 +103,7 @@
 
 .nt-surface--raised {
   background: var(--nt-bg-surface-raised);
-  box-shadow: var(--nt-shadow-card);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-divider {

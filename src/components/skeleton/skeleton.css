@@ -3,7 +3,7 @@
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: var(--nt-bg-surface-muted);
   color: transparent;
   user-select: none;
@@ -20,37 +20,37 @@
 .nt-skeleton--text {
   width: 100%;
   height: 1em;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--title {
   width: 60%;
   height: 1.25rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--caption {
   width: 45%;
   height: 0.75rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--avatar {
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--avatar-sm {
   width: 1.875rem;
   height: 1.875rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--avatar-lg {
   width: 3rem;
   height: 3rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--button {
@@ -74,21 +74,21 @@
 .nt-skeleton--media {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-skeleton--circle {
   aspect-ratio: 1;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-skeleton--square {
   aspect-ratio: 1;
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
 }
 
 .nt-skeleton--rounded {
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-skeleton--block {
@@ -185,7 +185,7 @@
   border: 1px solid var(--nt-border-subtle);
   border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-skeleton-card__header {
@@ -218,7 +218,7 @@
   min-width: 0;
   padding: var(--nt-space-4);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
 }
 

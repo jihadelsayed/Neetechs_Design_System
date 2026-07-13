@@ -3,6 +3,8 @@
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   gap: var(--nt-space-2);
+  min-block-size: var(--nt-target-size-default);
+  padding-block: var(--nt-space-1);
   color: var(--nt-text-primary);
   cursor: pointer;
   user-select: none;
@@ -27,9 +29,9 @@
   height: var(--nt-icon-size-sm);
   margin-block-start: var(--nt-space-0-5);
   border: 1px solid var(--nt-control-border);
-  border-radius: var(--nt-radius-sm);
+  border-radius: var(--nt-radius-indicator);
   background: var(--nt-control-bg);
-  color: var(--nt-accent-contrast);
+  color: var(--nt-text-on-accent);
   transition: var(--nt-transition-colors);
 }
 
@@ -46,7 +48,7 @@
 .nt-checkbox__box::before {
   width: 0.55em;
   height: 2px;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: currentColor;
   transform: scaleX(0.4);
 }
@@ -90,8 +92,8 @@
 
 .nt-checkbox__input:checked + .nt-checkbox__box,
 .nt-checkbox__input:indeterminate + .nt-checkbox__box {
-  background: var(--nt-accent);
-  border-color: var(--nt-accent);
+  background: var(--nt-selection-indicator);
+  border-color: var(--nt-selection-indicator);
 }
 
 .nt-checkbox__input:checked + .nt-checkbox__box::after {
@@ -112,21 +114,21 @@
 
 .nt-checkbox__input:disabled + .nt-checkbox__box,
 .nt-checkbox--disabled .nt-checkbox__box {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
 }
 
 .nt-checkbox__input:disabled ~ .nt-checkbox__body,
 .nt-checkbox--disabled .nt-checkbox__body {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
 }
 
 .nt-checkbox__input:disabled ~ .nt-checkbox__body .nt-checkbox__label,
 .nt-checkbox--disabled .nt-checkbox__label,
 .nt-checkbox__input:disabled ~ .nt-checkbox__body .nt-checkbox__description,
 .nt-checkbox--disabled .nt-checkbox__description {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
 }
 
 .nt-checkbox:has(.nt-checkbox__input:disabled),

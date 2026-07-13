@@ -18,4 +18,9 @@
   --nt-radius-drawer: var(--nt-radius-2xl);
   --nt-radius-badge: var(--nt-radius-full);
   --nt-radius-avatar: var(--nt-radius-full);
+  --nt-radius-indicator: var(--nt-radius-sm);
+  --nt-radius-item: var(--nt-radius-lg);
+  --nt-radius-popover: var(--nt-radius-xl);
+  --nt-radius-toast: var(--nt-radius-xl);
+  --nt-radius-pill: var(--nt-radius-full);
 }

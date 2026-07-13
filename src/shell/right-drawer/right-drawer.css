@@ -1,4 +1,4 @@
-.nt-right-drawer {
+﻿.nt-right-drawer {
   display: flex;
   flex-direction: column;
   width: min(28rem, 100vw);
@@ -7,7 +7,7 @@
   background: var(--nt-bg-surface-raised);
   border-inline-start: 1px solid var(--nt-border-subtle);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-drawer);
+  box-shadow: var(--nt-elevation-drawer);
 }
 
 .nt-right-drawer__header {
@@ -66,8 +66,8 @@
 }
 
 .nt-right-drawer__close:focus-visible {
-  outline: 2px solid var(--nt-focus-ring);
-  outline-offset: 2px;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
 }
 
 .nt-right-drawer__body {

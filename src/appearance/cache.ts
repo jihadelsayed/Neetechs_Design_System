@@ -1,5 +1,12 @@
-import { normalizeThemePreference } from './preference.js';
-import type { ThemePreference } from './types.js';
+import {
+  appearanceFromTheme,
+  normalizeAppearancePreference,
+  normalizeThemePreference,
+} from './preference.js';
+import type { NtAppearancePreference, ThemePreference } from './types.js';
+
+/** Complete appearance cache. This remains a startup optimization, never account truth. */
+export const NT_APPEARANCE_CACHE_KEY = 'nt_appearance_preference';
 
 /**
  * Canonical local-storage cache key. The cache is a bootstrap fallback
@@ -81,6 +88,75 @@ export function writeThemeCache(
 
   try {
     storage.setItem(NT_THEME_CACHE_KEY, preference);
+  } catch {
+    /* Cache is best-effort only. */
+  }
+}
+
+export function readAppearanceCache(
+  storage: ThemeStorage | null = getDefaultThemeStorage(),
+): NtAppearancePreference | null {
+  if (!storage) {
+    return null;
+  }
+
+  try {
+    const raw = storage.getItem(NT_APPEARANCE_CACHE_KEY);
+
+    if (raw !== null) {
+      try {
+        const preference = normalizeAppearancePreference(JSON.parse(raw));
+
+        if (preference !== null) {
+          return preference;
+        }
+      } catch {
+        /* Removed below. */
+      }
+
+      storage.removeItem(NT_APPEARANCE_CACHE_KEY);
+    }
+
+    const legacyTheme = readThemeCache(storage);
+    return legacyTheme === null ? null : appearanceFromTheme(legacyTheme);
+  } catch {
+    return null;
+  }
+}
+
+export function writeAppearanceCache(
+  preference: NtAppearancePreference,
+  storage: ThemeStorage | null = getDefaultThemeStorage(),
+): void {
+  if (!storage) {
+    return;
+  }
+
+  const normalized = normalizeAppearancePreference(preference);
+
+  if (normalized === null) {
+    return;
+  }
+
+  try {
+    storage.setItem(NT_APPEARANCE_CACHE_KEY, JSON.stringify(normalized));
+    // Keep the frozen theme-only key synchronized for older applications.
+    storage.setItem(NT_THEME_CACHE_KEY, normalized.theme);
+  } catch {
+    /* Cache is best-effort only. */
+  }
+}
+
+export function clearAppearanceCache(
+  storage: ThemeStorage | null = getDefaultThemeStorage(),
+): void {
+  if (!storage) {
+    return;
+  }
+
+  try {
+    storage.removeItem(NT_APPEARANCE_CACHE_KEY);
+    storage.removeItem(NT_THEME_CACHE_KEY);
   } catch {
     /* Cache is best-effort only. */
   }

@@ -81,30 +81,32 @@ Specific CSS entry points:
 
 ## Theme setup
 
-For the shared appearance system (backend preference, `nt_theme` bootstrap
-cookie, `system` mode, anti-flash bootstrap), use `@neetechs/ui/appearance`
-— see [docs/theming.md](./docs/theming.md).
+For the shared SSR-safe appearance system, use `@neetechs/ui/appearance` and
+see [docs/appearance-and-theming.md](./docs/appearance-and-theming.md).
 
 ```ts
-import { bootstrapNeetechsTheme } from '@neetechs/ui/appearance';
+import { bootstrapNeetechsAppearance, createAppearanceController } from '@neetechs/ui/appearance';
 
-bootstrapNeetechsTheme(); // before framework rendering
+bootstrapNeetechsAppearance(); // before framework rendering
+const appearance = createAppearanceController();
+appearance.initialize();
 ```
 
-Add theme attributes to `html`, `body`, or your app root.
+The controller applies the public contract to the root `html` element.
 
 ```html
-<html data-nt-theme="dark" data-nt-accent="orange" data-nt-density="comfortable">
+<html data-nt-theme="dark" data-nt-theme-preference="system"
+      data-nt-accent="orange" data-nt-density="comfortable"
+      data-nt-contrast="normal" data-nt-motion="full">
   ...
 </html>
 ```
 
-Supported themes:
+Supported preferences are `system`, `light`, and `dark`; resolved themes are:
 
 ```txt
 dark
 light
-high-contrast
 ```
 
 Supported accents:
@@ -133,10 +135,10 @@ For a full Neetechs app, import the full stylesheet once at the app root:
 import '@neetechs/ui/styles.css';
 ```
 
-Then set the root attributes:
+Then initialize appearance before rendering. Do not create a competing body-level theme:
 
 ```html
-<body data-nt-theme="dark" data-nt-accent="orange" data-nt-density="comfortable">
+<body>
   <div class="nt-app-shell">
     ...
   </div>

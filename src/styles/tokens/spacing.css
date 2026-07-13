@@ -23,11 +23,11 @@
   --nt-space-28: 7rem;      /* 112px */
   --nt-space-32: 8rem;      /* 128px */
 
-  --nt-control-height-xs: 1.75rem;
-  --nt-control-height-sm: 2rem;
-  --nt-control-height-md: 2.5rem;
-  --nt-control-height-lg: 3rem;
-  --nt-control-height-xl: 3.5rem;
+  --nt-control-height-xs: var(--nt-density-control-height-xs);
+  --nt-control-height-sm: var(--nt-density-control-height-sm);
+  --nt-control-height-md: var(--nt-density-control-height-md);
+  --nt-control-height-lg: var(--nt-density-control-height-lg);
+  --nt-control-height-xl: var(--nt-density-control-height-xl);
 
   --nt-icon-size-xs: 0.75rem;
   --nt-icon-size-sm: 1rem;
@@ -47,4 +47,10 @@
   --nt-grid-gap-sm: var(--nt-space-3);
   --nt-grid-gap-md: var(--nt-space-4);
   --nt-grid-gap-lg: var(--nt-space-6);
+
+  --nt-focus-ring-width: 0.125rem;
+  --nt-focus-ring-offset: 0.125rem;
+  --nt-target-size-primary: 2.75rem;
+  --nt-target-size-default: 2.5rem;
+  --nt-target-size-compact: 2rem;
 }

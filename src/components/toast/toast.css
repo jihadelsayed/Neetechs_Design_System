@@ -1,4 +1,4 @@
-.nt-toast-viewport {
+﻿.nt-toast-viewport {
   position: fixed;
   right: var(--nt-space-4);
   bottom: var(--nt-space-4);
@@ -46,6 +46,8 @@
 }
 
 .nt-toast {
+  --nt-toast-swipe-x: 0;
+
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -54,10 +56,10 @@
   width: 100%;
   padding: var(--nt-space-4);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-bg-surface);
+  border-radius: var(--nt-radius-toast);
+  background: var(--nt-bg-surface-overlay);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-xl);
+  box-shadow: var(--nt-elevation-toast);
   pointer-events: auto;
 }
 
@@ -106,7 +108,7 @@
   height: var(--nt-control-height-sm);
   margin: calc(var(--nt-space-1) * -1);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-muted);
   cursor: pointer;
@@ -120,7 +122,8 @@
 }
 
 .nt-toast__close:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -132,8 +135,8 @@
   left: var(--nt-space-3);
   height: 2px;
   overflow: hidden;
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-toast__progress-bar {
@@ -153,7 +156,7 @@
 }
 
 .nt-toast[data-swipe='move'] {
-  transform: translateX(var(--nt-toast-swipe-x, 0));
+  transform: translateX(var(--nt-toast-swipe-x));
 }
 
 .nt-toast[data-swipe='cancel'] {
@@ -202,11 +205,11 @@
 }
 
 .nt-toast--info {
-  border-color: var(--nt-accent-border);
+  border-color: var(--nt-info-border);
 }
 
 .nt-toast--info .nt-toast__icon {
-  color: var(--nt-accent-text);
+  color: var(--nt-info);
 }
 
 .nt-toast--loading .nt-toast__icon {
@@ -225,7 +228,7 @@
 .nt-toast--inline {
   position: static;
   width: 100%;
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 @keyframes nt-toast-in {
@@ -255,7 +258,7 @@
 @keyframes nt-toast-swipe-out {
   from {
     opacity: 1;
-    transform: translateX(var(--nt-toast-swipe-x, 0));
+    transform: translateX(var(--nt-toast-swipe-x));
   }
 
   to {

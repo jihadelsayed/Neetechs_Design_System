@@ -1,4 +1,4 @@
-.nt-empty-state {
+﻿.nt-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   min-height: 18rem;
   padding: var(--nt-space-8) var(--nt-space-6);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
   text-align: center;
@@ -22,8 +22,8 @@
   width: 4rem;
   height: 4rem;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-2xl);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-dialog);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
 }
 
@@ -88,20 +88,21 @@
 }
 
 .nt-empty-state__link {
-  color: var(--nt-accent-text);
+  color: var(--nt-text-link);
   font: var(--nt-text-label-sm);
   letter-spacing: var(--nt-letter-spacing-label);
   text-decoration: none;
 }
 
 .nt-empty-state__link:hover {
-  color: var(--nt-accent-hover);
+  color: var(--nt-text-link-hover);
   text-decoration: underline;
 }
 
 .nt-empty-state__link:focus-visible {
-  outline: none;
-  border-radius: var(--nt-radius-sm);
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+  border-radius: var(--nt-radius-indicator);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
 
@@ -111,7 +112,7 @@
 }
 
 .nt-empty-state--muted {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-empty-state--flat {
@@ -127,7 +128,7 @@
 .nt-empty-state--compact .nt-empty-state__icon {
   width: 3rem;
   height: 3rem;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-empty-state--compact .nt-empty-state__icon svg {
@@ -169,7 +170,7 @@
 .nt-empty-state--inline .nt-empty-state__icon {
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-empty-state--inline .nt-empty-state__icon svg {
@@ -187,8 +188,8 @@
 }
 
 .nt-empty-state--accent .nt-empty-state__icon {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
   color: var(--nt-accent-text);
 }
 

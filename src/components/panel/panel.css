@@ -1,4 +1,4 @@
-.nt-panel {
+﻿.nt-panel {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -7,7 +7,7 @@
   border-radius: var(--nt-radius-panel);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-panel__header {
@@ -16,7 +16,7 @@
   justify-content: space-between;
   gap: var(--nt-space-4);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-panel-padding);
   border-bottom: 1px solid var(--nt-border-subtle);
   background: var(--nt-bg-surface);
 }
@@ -62,7 +62,7 @@
   flex-direction: column;
   gap: var(--nt-space-4);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-panel-padding);
 }
 
 .nt-panel__footer {
@@ -71,7 +71,7 @@
   justify-content: space-between;
   gap: var(--nt-space-3);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-panel-padding);
   border-top: 1px solid var(--nt-border-subtle);
   background: var(--nt-bg-surface);
 }
@@ -146,14 +146,15 @@
 .nt-panel--interactive:hover {
   border-color: var(--nt-border-strong);
   background: var(--nt-bg-surface-hover);
-  box-shadow: var(--nt-shadow-md);
+  box-shadow: var(--nt-elevation-card-hover);
   transform: translateY(-1px);
 }
 
 .nt-panel--interactive:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
-  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-md);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-card-hover);
 }
 
 .nt-panel--flat {
@@ -161,7 +162,7 @@
 }
 
 .nt-panel--raised {
-  box-shadow: var(--nt-shadow-lg);
+  box-shadow: var(--nt-elevation-raised);
 }
 
 .nt-panel--ghost {
@@ -176,7 +177,7 @@
 
 .nt-panel--elevated {
   background: var(--nt-bg-surface-raised);
-  box-shadow: var(--nt-shadow-lg);
+  box-shadow: var(--nt-elevation-raised);
 }
 
 .nt-panel--accent {

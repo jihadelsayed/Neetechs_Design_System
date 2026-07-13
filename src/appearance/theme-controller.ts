@@ -1,159 +1,155 @@
 import {
   getDefaultThemeStorage,
-  readThemeCache,
-  writeThemeCache,
+  readAppearanceCache,
+  writeAppearanceCache,
   type ThemeStorage,
 } from './cache.js';
-import { readThemeCookie } from './cookie.js';
-import { normalizeThemePreference, resolveTheme } from './preference.js';
+import { readAppearanceCookie } from './cookie.js';
+import {
+  NT_DEFAULT_APPEARANCE_PREFERENCE,
+  normalizeAppearancePreference,
+  normalizeThemePreference,
+  resolveTheme,
+} from './preference.js';
 import type {
+  NtAppearancePreference,
+  NtResolvedAppearance,
+  NtResolvedAppearanceState,
   ResolvedTheme,
   ResolvedThemeState,
   ThemePreference,
   ThemeSource,
 } from './types.js';
 
-/** Canonical rendering attribute consumed by the theme CSS. */
 export const NT_THEME_ATTRIBUTE = 'data-nt-theme';
-
-/** Informational attribute exposing the stored preference. */
 export const NT_THEME_PREFERENCE_ATTRIBUTE = 'data-nt-theme-preference';
+export const NT_ACCENT_ATTRIBUTE = 'data-nt-accent';
+export const NT_DENSITY_ATTRIBUTE = 'data-nt-density';
+export const NT_CONTRAST_ATTRIBUTE = 'data-nt-contrast';
+export const NT_MOTION_ATTRIBUTE = 'data-nt-motion';
 
-const PREFERS_DARK_QUERY = '(prefers-color-scheme: dark)';
-
-/**
- * Fallback resolved theme when the system preference cannot be detected
- * (SSR, no matchMedia). Matches the package `:root` default token set.
- */
 export const NT_THEME_DEFAULT_RESOLVED: ResolvedTheme = 'dark';
+
+export const NT_APPEARANCE_MEDIA_QUERIES = Object.freeze({
+  dark: '(prefers-color-scheme: dark)',
+  reducedMotion: '(prefers-reduced-motion: reduce)',
+  highContrast: '(prefers-contrast: more)',
+  forcedColors: '(forced-colors: active)',
+});
 
 export type MatchMediaRef = (query: string) => MediaQueryList;
 
 export interface ThemeEnvironmentOptions {
-  /** Explicit document (or `null` to force SSR behavior). Defaults to the global `document` when one exists. */
   documentRef?: Document | null;
-  /** Explicit matchMedia (or `null` to disable system detection). Defaults to `window.matchMedia` when available. */
   matchMediaRef?: MatchMediaRef | null;
-  /** Explicit storage (or `null` to disable the cache). Defaults to `window.localStorage` when accessible. */
   storage?: ThemeStorage | null;
-  /** Explicit cookie string for SSR (e.g. the request `Cookie` header). Defaults to `document.cookie`. */
   cookieString?: string;
-  /** Set to false to skip reading and writing the local cache. Default true. */
   useCache?: boolean;
-  /** Resolved theme used when the system preference is unknown. Default `'dark'`. */
   fallbackResolved?: ResolvedTheme;
+  /** Backend/server-resolved value. When supplied it outranks cookie and cache. */
+  serverPreference?: NtAppearancePreference | null;
 }
 
+export type AppearanceControllerOptions = ThemeEnvironmentOptions;
 export type ThemeControllerOptions = ThemeEnvironmentOptions;
-
+export type BootstrapAppearanceOptions = ThemeEnvironmentOptions;
 export type BootstrapThemeOptions = ThemeEnvironmentOptions;
 
 export interface SetPreferenceOptions {
-  /** Where the preference came from. Default `'backend'`. */
   source?: ThemeSource;
-  /** Set to false to skip updating the local cache. Default true. */
   updateCache?: boolean;
 }
 
+export type AppearanceChangeListener = (state: NtResolvedAppearanceState) => void;
 export type ThemeChangeListener = (state: ResolvedThemeState) => void;
 
+export interface AppearanceController {
+  getPreference(): NtAppearancePreference;
+  getResolvedAppearance(): NtResolvedAppearanceState;
+  initialize(): NtResolvedAppearanceState;
+  setPreference(
+    preference: NtAppearancePreference,
+    options?: SetPreferenceOptions,
+  ): NtResolvedAppearanceState;
+  applyResolvedPreference(
+    preference: NtAppearancePreference,
+    options?: SetPreferenceOptions,
+  ): NtResolvedAppearanceState;
+  subscribe(listener: AppearanceChangeListener): () => void;
+  destroy(): void;
+}
+
+/** @deprecated Use AppearanceController/createAppearanceController for new integrations. */
 export interface ThemeController {
-  /** Current state without side effects. */
   getState(): ResolvedThemeState;
-  /**
-   * Reads bootstrap sources (cookie, then cache, then system), applies the
-   * theme to the document and attaches the system-theme listener. Calling
-   * it again while initialized is a no-op returning the current state.
-   */
   initialize(): ResolvedThemeState;
-  /**
-   * Applies a preference, typically the backend account setting after it
-   * loads. Overrides whatever bootstrap source is active. Invalid values
-   * are ignored.
-   */
   setPreference(
     preference: ThemePreference,
     options?: SetPreferenceOptions,
   ): ResolvedThemeState;
-  /** Notifies on every applied state change. Returns an unsubscribe function. */
   subscribe(listener: ThemeChangeListener): () => void;
-  /** Removes listeners and subscribers. The controller can be initialized again. */
   destroy(): void;
 }
 
-/**
- * Applies the resolved theme to the document root:
- *
- *   <html data-nt-theme="dark" data-nt-theme-preference="system">
- *
- * The document root is the canonical target — applications must not set
- * theme attributes on `body` or app roots independently.
- */
 export function applyThemeToDocument(
   documentRef: Document,
   state: ResolvedThemeState,
 ): void {
   const root = documentRef?.documentElement;
 
-  if (!root) {
-    return;
-  }
+  if (!root) return;
 
   root.setAttribute(NT_THEME_ATTRIBUTE, state.resolved);
   root.setAttribute(NT_THEME_PREFERENCE_ATTRIBUTE, state.preference);
 }
 
-interface ThemeEnvironment {
+export function applyAppearanceToDocument(
+  documentRef: Document,
+  state: NtResolvedAppearanceState,
+): void {
+  const root = documentRef?.documentElement;
+
+  if (!root) return;
+
+  root.setAttribute(NT_THEME_ATTRIBUTE, state.resolved.theme);
+  root.setAttribute(NT_THEME_PREFERENCE_ATTRIBUTE, state.preference.theme);
+  root.setAttribute(NT_ACCENT_ATTRIBUTE, state.resolved.accent);
+  root.setAttribute(NT_DENSITY_ATTRIBUTE, state.resolved.density);
+  root.setAttribute(NT_CONTRAST_ATTRIBUTE, state.resolved.contrast);
+  root.setAttribute(NT_MOTION_ATTRIBUTE, state.resolved.motion);
+}
+
+interface AppearanceEnvironment {
   getDocument(): Document | null;
   getMatchMedia(): MatchMediaRef | null;
   getStorage(): ThemeStorage | null;
-  readCookie(): ThemePreference | null;
+  readCookie(): NtAppearancePreference | null;
   useCache: boolean;
   fallbackResolved: ResolvedTheme;
+  serverPreference: NtAppearancePreference | null;
 }
 
-function createEnvironment(options: ThemeEnvironmentOptions): ThemeEnvironment {
+function createEnvironment(options: ThemeEnvironmentOptions): AppearanceEnvironment {
   const getDocument = (): Document | null => {
-    if (options.documentRef !== undefined) {
-      return options.documentRef;
-    }
-
+    if (options.documentRef !== undefined) return options.documentRef;
     return typeof document === 'undefined' ? null : document;
   };
 
   const getMatchMedia = (): MatchMediaRef | null => {
-    if (options.matchMediaRef !== undefined) {
-      return options.matchMediaRef;
-    }
-
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      return null;
-    }
-
+    if (options.matchMediaRef !== undefined) return options.matchMediaRef;
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return null;
     return window.matchMedia.bind(window);
   };
 
-  const getStorage = (): ThemeStorage | null => {
-    if (options.storage !== undefined) {
-      return options.storage;
-    }
+  const getStorage = (): ThemeStorage | null =>
+    options.storage !== undefined ? options.storage : getDefaultThemeStorage();
 
-    return getDefaultThemeStorage();
-  };
-
-  const readCookie = (): ThemePreference | null => {
-    if (options.cookieString !== undefined) {
-      return readThemeCookie(options.cookieString);
-    }
-
+  const readCookie = (): NtAppearancePreference | null => {
+    if (options.cookieString !== undefined) return readAppearanceCookie(options.cookieString);
     const doc = getDocument();
-
-    if (!doc) {
-      return null;
-    }
-
+    if (!doc) return null;
     try {
-      return readThemeCookie(doc.cookie);
+      return readAppearanceCookie(doc.cookie);
     } catch {
       return null;
     }
@@ -166,218 +162,210 @@ function createEnvironment(options: ThemeEnvironmentOptions): ThemeEnvironment {
     readCookie,
     useCache: options.useCache !== false,
     fallbackResolved: options.fallbackResolved ?? NT_THEME_DEFAULT_RESOLVED,
+    serverPreference: normalizeAppearancePreference(options.serverPreference),
   };
 }
 
-function readSystemDark(environment: ThemeEnvironment): boolean | null {
+function mediaMatches(environment: AppearanceEnvironment, query: string): boolean | null {
   const matchMedia = environment.getMatchMedia();
-
-  if (!matchMedia) {
-    return null;
-  }
-
+  if (!matchMedia) return null;
   try {
-    return matchMedia(PREFERS_DARK_QUERY).matches;
+    return matchMedia(query).matches;
   } catch {
     return null;
   }
 }
 
 function computeState(
-  environment: ThemeEnvironment,
-  preference: ThemePreference,
+  environment: AppearanceEnvironment,
+  preference: NtAppearancePreference,
   source: ThemeSource,
-): ResolvedThemeState {
-  if (preference !== 'system') {
-    return { preference, resolved: preference, source };
-  }
+): NtResolvedAppearanceState {
+  const systemDark = mediaMatches(environment, NT_APPEARANCE_MEDIA_QUERIES.dark);
+  const forcedColors = mediaMatches(environment, NT_APPEARANCE_MEDIA_QUERIES.forcedColors) === true;
+  const systemContrast = mediaMatches(environment, NT_APPEARANCE_MEDIA_QUERIES.highContrast) === true;
+  const systemReducedMotion = mediaMatches(environment, NT_APPEARANCE_MEDIA_QUERIES.reducedMotion) === true;
+  const theme =
+    preference.theme === 'system'
+      ? resolveTheme('system', systemDark ?? environment.fallbackResolved === 'dark')
+      : preference.theme;
+  const highContrast =
+    forcedColors ||
+    preference.highContrast === true ||
+    (preference.highContrast !== false && systemContrast);
+  const reduceMotion =
+    preference.reduceMotion === true ||
+    (preference.reduceMotion !== false && systemReducedMotion);
 
-  const systemDark = readSystemDark(environment);
-
-  if (systemDark === null) {
-    return {
-      preference,
-      resolved: environment.fallbackResolved,
-      source: source === 'system' ? 'default' : source,
-    };
-  }
-
-  return { preference, resolved: resolveTheme('system', systemDark), source };
+  return {
+    preference: { ...preference },
+    resolved: {
+      theme,
+      accent: preference.accent,
+      density: preference.density,
+      contrast: highContrast ? 'high' : 'normal',
+      motion: reduceMotion ? 'reduced' : 'full',
+      forcedColors,
+    },
+    source:
+      preference.theme === 'system' && systemDark === null && source === 'system'
+        ? 'default'
+        : source,
+  };
 }
 
-function resolveBootstrapState(environment: ThemeEnvironment): ResolvedThemeState {
-  const cookiePreference = environment.readCookie();
-
-  if (cookiePreference !== null) {
-    return computeState(environment, cookiePreference, 'cookie');
+function resolveBootstrapState(environment: AppearanceEnvironment): NtResolvedAppearanceState {
+  if (environment.serverPreference) {
+    return computeState(environment, environment.serverPreference, 'backend');
   }
+
+  const cookiePreference = environment.readCookie();
+  if (cookiePreference) return computeState(environment, cookiePreference, 'cookie');
 
   if (environment.useCache) {
-    const cachedPreference = readThemeCache(environment.getStorage());
-
-    if (cachedPreference !== null) {
-      return computeState(environment, cachedPreference, 'cache');
-    }
+    const cached = readAppearanceCache(environment.getStorage());
+    if (cached) return computeState(environment, cached, 'cache');
   }
 
-  return computeState(environment, 'system', 'system');
+  return computeState(environment, { ...NT_DEFAULT_APPEARANCE_PREFERENCE }, 'system');
 }
 
-/**
- * Minimal early bootstrap, safe to run before framework rendering (from
- * `main.ts`, `main.tsx`, an inline script or an Angular initializer).
- * Reads the `nt_theme` cookie, then the local cache, then the system
- * preference; applies `data-nt-theme` to the document root and returns
- * the resolved state. No network requests, no listeners, SSR-safe no-op
- * on the DOM when no document exists.
- */
-export function bootstrapNeetechsTheme(
-  options: BootstrapThemeOptions = {},
-): ResolvedThemeState {
+export function bootstrapNeetechsAppearance(
+  options: BootstrapAppearanceOptions = {},
+): NtResolvedAppearanceState {
   const environment = createEnvironment(options);
   const state = resolveBootstrapState(environment);
   const doc = environment.getDocument();
-
-  if (doc) {
-    applyThemeToDocument(doc, state);
-  }
-
+  if (doc) applyAppearanceToDocument(doc, state);
   return state;
 }
 
-/**
- * Creates the single per-application theme controller. Framework-neutral:
- * no browser globals are touched until `initialize`, `setPreference` or
- * `getState` run, and every global can be injected for SSR and tests.
- */
-export function createThemeController(
-  options: ThemeControllerOptions = {},
-): ThemeController {
-  const environment = createEnvironment(options);
-  const listeners = new Set<ThemeChangeListener>();
+/** Legacy theme-only bootstrap; it also applies accent, density, contrast and motion defaults. */
+export function bootstrapNeetechsTheme(
+  options: BootstrapThemeOptions = {},
+): ResolvedThemeState {
+  return toThemeState(bootstrapNeetechsAppearance(options));
+}
 
-  let state: ResolvedThemeState = {
-    preference: 'system',
-    resolved: environment.fallbackResolved,
-    source: 'default',
+function toThemeState(state: NtResolvedAppearanceState): ResolvedThemeState {
+  return {
+    preference: state.preference.theme,
+    resolved: state.resolved.theme,
+    source: state.source,
   };
+}
+
+export function createAppearanceController(
+  options: AppearanceControllerOptions = {},
+): AppearanceController {
+  const environment = createEnvironment(options);
+  const listeners = new Set<AppearanceChangeListener>();
+  const detachMediaListeners: Array<() => void> = [];
   let initialized = false;
-  let detachSystemListener: (() => void) | null = null;
+  let state = computeState(
+    environment,
+    { ...NT_DEFAULT_APPEARANCE_PREFERENCE },
+    'default',
+  );
 
-  function commit(next: ResolvedThemeState): ResolvedThemeState {
+  function commit(next: NtResolvedAppearanceState): NtResolvedAppearanceState {
     state = next;
-
     const doc = environment.getDocument();
-
-    if (doc) {
-      applyThemeToDocument(doc, state);
-    }
-
-    for (const listener of [...listeners]) {
-      listener(state);
-    }
-
+    if (doc) applyAppearanceToDocument(doc, state);
+    for (const listener of [...listeners]) listener(state);
     return state;
   }
 
-  function handleSystemChange(event: MediaQueryListEvent): void {
-    if (state.preference !== 'system') {
-      return;
-    }
-
-    const resolved: ResolvedTheme = event.matches ? 'dark' : 'light';
-
-    if (resolved === state.resolved) {
-      return;
-    }
-
-    // The stored preference stays `system`; only the resolved theme moves.
-    commit({ ...state, resolved });
+  function handleMediaChange(): void {
+    const next = computeState(environment, state.preference, state.source);
+    if (JSON.stringify(next.resolved) !== JSON.stringify(state.resolved)) commit(next);
   }
 
-  function attachSystemListener(): void {
-    if (detachSystemListener) {
-      return;
-    }
-
+  function attachMediaListeners(): void {
+    if (detachMediaListeners.length > 0) return;
     const matchMedia = environment.getMatchMedia();
+    if (!matchMedia) return;
 
-    if (!matchMedia) {
-      return;
+    for (const query of Object.values(NT_APPEARANCE_MEDIA_QUERIES)) {
+      let mediaQueryList: MediaQueryList;
+      try {
+        mediaQueryList = matchMedia(query);
+      } catch {
+        continue;
+      }
+
+      if (typeof mediaQueryList.addEventListener === 'function') {
+        mediaQueryList.addEventListener('change', handleMediaChange);
+        detachMediaListeners.push(() =>
+          mediaQueryList.removeEventListener('change', handleMediaChange),
+        );
+      } else if (typeof mediaQueryList.addListener === 'function') {
+        mediaQueryList.addListener(handleMediaChange);
+        detachMediaListeners.push(() => mediaQueryList.removeListener(handleMediaChange));
+      }
+    }
+  }
+
+  function applyPreference(
+    preference: NtAppearancePreference,
+    setOptions: SetPreferenceOptions = {},
+  ): NtResolvedAppearanceState {
+    const normalized = normalizeAppearancePreference(preference);
+    if (!normalized) return state;
+
+    if (environment.useCache && setOptions.updateCache !== false) {
+      writeAppearanceCache(normalized, environment.getStorage());
     }
 
-    let mediaQueryList: MediaQueryList;
-
-    try {
-      mediaQueryList = matchMedia(PREFERS_DARK_QUERY);
-    } catch {
-      return;
-    }
-
-    if (typeof mediaQueryList.addEventListener === 'function') {
-      mediaQueryList.addEventListener('change', handleSystemChange);
-      detachSystemListener = () => {
-        mediaQueryList.removeEventListener('change', handleSystemChange);
-      };
-    } else if (typeof mediaQueryList.addListener === 'function') {
-      // Fallback for engines without MediaQueryList EventTarget support.
-      mediaQueryList.addListener(handleSystemChange);
-      detachSystemListener = () => {
-        mediaQueryList.removeListener(handleSystemChange);
-      };
-    }
+    attachMediaListeners();
+    return commit(computeState(environment, normalized, setOptions.source ?? 'backend'));
   }
 
   return {
-    getState(): ResolvedThemeState {
-      return state;
-    },
-
-    initialize(): ResolvedThemeState {
-      if (initialized) {
-        return state;
-      }
-
+    getPreference: () => ({ ...state.preference }),
+    getResolvedAppearance: () => state,
+    initialize(): NtResolvedAppearanceState {
+      if (initialized) return state;
       initialized = true;
-      attachSystemListener();
-
+      attachMediaListeners();
       return commit(resolveBootstrapState(environment));
     },
-
-    setPreference(
-      preference: ThemePreference,
-      setOptions: SetPreferenceOptions = {},
-    ): ResolvedThemeState {
-      const normalized = normalizeThemePreference(preference);
-
-      if (normalized === null) {
-        return state;
-      }
-
-      if (environment.useCache && setOptions.updateCache !== false) {
-        writeThemeCache(normalized, environment.getStorage());
-      }
-
-      attachSystemListener();
-
-      return commit(
-        computeState(environment, normalized, setOptions.source ?? 'backend'),
-      );
-    },
-
-    subscribe(listener: ThemeChangeListener): () => void {
+    setPreference: applyPreference,
+    applyResolvedPreference: applyPreference,
+    subscribe(listener: AppearanceChangeListener): () => void {
       listeners.add(listener);
-
-      return () => {
-        listeners.delete(listener);
-      };
+      return () => listeners.delete(listener);
     },
-
     destroy(): void {
-      detachSystemListener?.();
-      detachSystemListener = null;
+      for (const detach of detachMediaListeners.splice(0)) detach();
       listeners.clear();
       initialized = false;
     },
+  };
+}
+
+/** @deprecated New applications should create one AppearanceController. */
+export function createThemeController(
+  options: ThemeControllerOptions = {},
+): ThemeController {
+  const controller = createAppearanceController(options);
+
+  return {
+    getState: () => toThemeState(controller.getResolvedAppearance()),
+    initialize: () => toThemeState(controller.initialize()),
+    setPreference(preference, setOptions = {}) {
+      const theme = normalizeThemePreference(preference);
+      if (!theme) return toThemeState(controller.getResolvedAppearance());
+      return toThemeState(
+        controller.setPreference(
+          { ...controller.getPreference(), theme },
+          setOptions,
+        ),
+      );
+    },
+    subscribe(listener) {
+      return controller.subscribe((next) => listener(toThemeState(next)));
+    },
+    destroy: () => controller.destroy(),
   };
 }

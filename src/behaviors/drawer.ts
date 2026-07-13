@@ -9,13 +9,21 @@ import {
   type NtCreateOverlayOptions,
   type NtOverlayController,
 } from './overlay.js';
-import { ntSetAriaControls, ntSetAriaLabelledBy } from './ids.js';
+import {
+  ntSetAriaControls,
+  ntSetAriaDescribedBy,
+  ntSetAriaLabelledBy,
+} from './ids.js';
 
 export interface NtDrawerOptions {
   trigger?: HTMLElement | null;
   drawer: HTMLElement;
   backdrop?: HTMLElement | null;
   title?: HTMLElement | null;
+  description?: HTMLElement | null;
+  /** Modal drawers trap focus; nonmodal drawers behave as a region/navigation landmark. */
+  modal?: boolean;
+  role?: 'dialog' | 'region' | 'navigation';
   side?: NtSide;
   initialOpen?: boolean;
   closeOnEscape?: boolean;
@@ -44,11 +52,14 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     drawer,
     backdrop = null,
     title = null,
+    description = null,
+    modal = true,
+    role = modal ? 'dialog' : 'region',
     side = 'right',
     initialOpen = false,
     closeOnEscape = true,
     closeOnOutsideClick = true,
-    lockScroll = true,
+    lockScroll = modal,
     restoreFocus = true,
     initialFocus = null,
     onOpen,
@@ -62,6 +73,8 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     closeOnOutsideClick,
     lockScroll,
     outsideElements: trigger ? [trigger] : [],
+    inertBackground: modal,
+    inertExcludeElements: [backdrop],
     onClose: () => {
       close();
     },
@@ -77,8 +90,9 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
   });
 
   function syncAttributes(): void {
-    drawer.setAttribute('role', 'dialog');
-    drawer.setAttribute('aria-modal', 'true');
+    drawer.setAttribute('role', role);
+    if (modal) drawer.setAttribute('aria-modal', 'true');
+    else drawer.removeAttribute('aria-modal');
     drawer.dataset.state = isOpen ? 'open' : 'closed';
     drawer.dataset.side = side;
 
@@ -99,6 +113,10 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
       ntSetAriaLabelledBy(drawer, title, 'nt-drawer-title');
     }
 
+    if (description) {
+      ntSetAriaDescribedBy(drawer, description, 'nt-drawer-description');
+    }
+
     if (isOpen) {
       drawer.removeAttribute('hidden');
       backdrop?.removeAttribute('hidden');
@@ -117,7 +135,7 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     isOpen = true;
     syncAttributes();
     overlay.activate();
-    focusTrap.activate();
+    if (modal) focusTrap.activate();
     onOpen?.();
   }
 
@@ -127,7 +145,7 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     }
 
     isOpen = false;
-    focusTrap.deactivate();
+    if (modal) focusTrap.deactivate();
     overlay.deactivate();
     syncAttributes();
     onClose?.();

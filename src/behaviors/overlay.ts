@@ -13,6 +13,10 @@ export interface NtOverlayController extends NtDisposable {
 export interface NtCreateOverlayOptions extends NtOverlayOptions {
   onClose?: (reason: NtOverlayCloseReason, event: Event) => void;
   outsideElements?: Array<HTMLElement | null | undefined>;
+  /** Modal overlays isolate background content with `inert`. Defaults to `lockScroll`. */
+  inertBackground?: boolean;
+  /** Portaled backdrop or other elements that must remain outside the inert background. */
+  inertExcludeElements?: Array<HTMLElement | null | undefined>;
 }
 
 interface NtScrollLockState {
@@ -22,6 +26,97 @@ interface NtScrollLockState {
 }
 
 const scrollLockStates = new WeakMap<Document, NtScrollLockState>();
+const overlayStacks = new WeakMap<Document, symbol[]>();
+
+interface NtInertState {
+  count: number;
+  inert: boolean;
+  ariaHidden: string | null;
+}
+
+const inertStates = new WeakMap<HTMLElement, NtInertState>();
+
+function ntPushOverlay(doc: Document, token: symbol): void {
+  const stack = overlayStacks.get(doc) ?? [];
+  stack.push(token);
+  overlayStacks.set(doc, stack);
+}
+
+function ntRemoveOverlay(doc: Document, token: symbol): void {
+  const stack = overlayStacks.get(doc);
+  if (!stack) return;
+  const index = stack.lastIndexOf(token);
+  if (index >= 0) stack.splice(index, 1);
+  if (stack.length === 0) overlayStacks.delete(doc);
+}
+
+function ntIsTopOverlay(doc: Document, token: symbol): boolean {
+  return overlayStacks.get(doc)?.at(-1) === token;
+}
+
+function ntLockInert(element: HTMLElement): void {
+  const state = inertStates.get(element);
+  if (state) {
+    state.count += 1;
+    return;
+  }
+
+  inertStates.set(element, {
+    count: 1,
+    inert: element.inert,
+    ariaHidden: element.getAttribute('aria-hidden'),
+  });
+  element.inert = true;
+  element.setAttribute('aria-hidden', 'true');
+}
+
+function ntUnlockInert(element: HTMLElement): void {
+  const state = inertStates.get(element);
+  if (!state) return;
+  state.count -= 1;
+  if (state.count > 0) return;
+  element.inert = state.inert;
+  if (state.ariaHidden === null) element.removeAttribute('aria-hidden');
+  else element.setAttribute('aria-hidden', state.ariaHidden);
+  inertStates.delete(element);
+}
+
+/** Isolates every sibling branch outside a modal, including nested app roots. */
+export function ntInertBackground(
+  modal: HTMLElement,
+  excludeElements: Array<HTMLElement | null | undefined> = [],
+): NtDisposable {
+  const body = modal.ownerDocument.body;
+  const protectedElements = [modal, ...excludeElements].filter(
+    (element): element is HTMLElement => Boolean(element?.isConnected),
+  );
+  const locked = new Set<HTMLElement>();
+  let branch: HTMLElement | null = modal;
+
+  while (branch && branch !== body) {
+    const parent: HTMLElement | null = branch.parentElement;
+    if (!parent) break;
+
+    for (const sibling of Array.from(parent.children)) {
+      if (!(sibling instanceof HTMLElement)) continue;
+      const containsProtected = protectedElements.some(
+        (element) => sibling === element || sibling.contains(element),
+      );
+      if (!containsProtected && !locked.has(sibling)) {
+        ntLockInert(sibling);
+        locked.add(sibling);
+      }
+    }
+    branch = parent;
+  }
+
+  return {
+    destroy() {
+      for (const element of locked) ntUnlockInert(element);
+      locked.clear();
+    },
+  };
+}
 
 export function ntIsBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -144,12 +239,15 @@ export function ntCreateOverlay(
     closeOnOutsideClick = true,
     lockScroll = true,
     outsideElements = [],
+    inertBackground = lockScroll,
+    inertExcludeElements = [],
     onClose,
   } = options;
 
   const ownerDocument = element.ownerDocument;
   const disposables: NtDisposable[] = [];
   let active = false;
+  const stackToken = Symbol('nt-overlay');
 
   function destroyDisposables(): void {
     while (disposables.length > 0) {
@@ -163,7 +261,12 @@ export function ntCreateOverlay(
   }
 
   function handleKeyDown(event: KeyboardEvent): void {
-    if (!active || event.key !== NT_KEYS.escape || !closeOnEscape) {
+    if (
+      !active ||
+      !ntIsTopOverlay(ownerDocument, stackToken) ||
+      event.key !== NT_KEYS.escape ||
+      !closeOnEscape
+    ) {
       return;
     }
 
@@ -178,9 +281,14 @@ export function ntCreateOverlay(
 
     active = true;
     element.dataset.state = 'open';
+    ntPushOverlay(ownerDocument, stackToken);
 
     if (lockScroll) {
       disposables.push(ntLockScroll(ownerDocument));
+    }
+
+    if (inertBackground) {
+      disposables.push(ntInertBackground(element, inertExcludeElements));
     }
 
     if (closeOnEscape) {
@@ -197,7 +305,11 @@ export function ntCreateOverlay(
       disposables.push(
         ntOnOutsidePointerDown(
           [element, ...outsideElements],
-          (event) => requestClose('outside', event),
+          (event) => {
+            if (ntIsTopOverlay(ownerDocument, stackToken)) {
+              requestClose('outside', event);
+            }
+          },
           ownerDocument,
         ),
       );
@@ -211,6 +323,7 @@ export function ntCreateOverlay(
 
     active = false;
     element.dataset.state = 'closed';
+    ntRemoveOverlay(ownerDocument, stackToken);
     destroyDisposables();
   }
 

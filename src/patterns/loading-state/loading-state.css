@@ -9,7 +9,7 @@
   min-height: 18rem;
   padding: var(--nt-space-8) var(--nt-space-6);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
   text-align: center;
@@ -29,7 +29,7 @@
   height: 2rem;
   border: 2px solid var(--nt-border-subtle);
   border-top-color: currentColor;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   content: '';
   animation: nt-loading-state-spin var(--nt-duration-slower) linear infinite;
 }
@@ -41,8 +41,8 @@
   width: 4rem;
   height: 4rem;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-2xl);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-dialog);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-accent);
 }
 
@@ -110,7 +110,7 @@
 }
 
 .nt-loading-state--muted {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-loading-state--flat {
@@ -136,7 +136,7 @@
 .nt-loading-state--compact .nt-loading-state__icon {
   width: 3rem;
   height: 3rem;
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
 }
 
 .nt-loading-state--compact .nt-loading-state__icon svg {
@@ -198,11 +198,11 @@
 .nt-loading-state--overlay {
   position: absolute;
   inset: 0;
-  z-index: var(--nt-z-overlay);
+  z-index: var(--nt-z-raised);
   min-height: 0;
   border: 0;
   border-radius: inherit;
-  background: var(--nt-bg-overlay-subtle);
+  background: var(--nt-bg-backdrop);
   backdrop-filter: blur(6px);
 }
 

@@ -49,7 +49,7 @@
   position: fixed;
   inset: 0;
   z-index: calc(var(--nt-z-drawer) - 1);
-  background: var(--nt-bg-overlay);
+  background: var(--nt-bg-backdrop);
 }
 
 @media (max-width: 64rem) {

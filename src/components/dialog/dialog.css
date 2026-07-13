@@ -1,11 +1,11 @@
-.nt-dialog-backdrop {
+﻿.nt-dialog-backdrop {
   position: fixed;
   inset: 0;
   z-index: var(--nt-z-modal);
   display: grid;
   place-items: center;
   padding: var(--nt-space-4);
-  background: var(--nt-bg-overlay);
+  background: var(--nt-bg-backdrop);
   backdrop-filter: blur(12px);
 }
 
@@ -17,19 +17,21 @@
   max-height: min(42rem, calc(100dvh - var(--nt-space-8)));
   overflow: hidden;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-2xl);
-  background: var(--nt-bg-surface);
+  border-radius: var(--nt-radius-dialog);
+  background: var(--nt-bg-surface-overlay);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-2xl);
+  box-shadow: var(--nt-elevation-dialog);
 }
 
 .nt-dialog:focus {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
 }
 
 .nt-dialog:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-2xl);
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-dialog);
 }
 
 .nt-dialog__header {
@@ -76,7 +78,7 @@
   width: var(--nt-control-height-sm);
   height: var(--nt-control-height-sm);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-muted);
   cursor: pointer;
@@ -90,7 +92,8 @@
 }
 
 .nt-dialog__close:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -242,7 +245,7 @@
   .nt-dialog {
     width: 100%;
     max-height: calc(100dvh - var(--nt-space-4));
-    border-radius: var(--nt-radius-2xl) var(--nt-radius-2xl) var(--nt-radius-lg) var(--nt-radius-lg);
+    border-radius: var(--nt-radius-dialog) var(--nt-radius-dialog) var(--nt-radius-item) var(--nt-radius-item);
   }
 
   .nt-dialog__header,

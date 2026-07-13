@@ -78,6 +78,7 @@
   --nt-text-label-lg: var(--nt-font-weight-medium) var(--nt-font-size-label-lg) / var(--nt-line-height-label) var(--nt-font-sans);
   --nt-text-label-md: var(--nt-font-weight-medium) var(--nt-font-size-label-md) / var(--nt-line-height-label) var(--nt-font-sans);
   --nt-text-label-sm: var(--nt-font-weight-medium) var(--nt-font-size-label-sm) / var(--nt-line-height-label) var(--nt-font-sans);
+  --nt-text-label-xs: var(--nt-font-weight-medium) var(--nt-font-size-micro) / var(--nt-line-height-label) var(--nt-font-sans);
 
   --nt-text-caption: var(--nt-font-weight-regular) var(--nt-font-size-caption) / var(--nt-line-height-caption) var(--nt-font-sans);
   --nt-text-mono-sm: var(--nt-font-weight-regular) var(--nt-font-size-body-sm) / var(--nt-line-height-body-sm) var(--nt-font-mono);

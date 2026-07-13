@@ -1,11 +1,11 @@
-.nt-button {
+﻿.nt-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--nt-space-2);
   min-width: max-content;
   height: var(--nt-control-height-md);
-  padding-inline: var(--nt-space-4);
+  padding-inline: var(--nt-density-control-padding-inline);
   border: 1px solid transparent;
   border-radius: var(--nt-radius-button);
   background: transparent;
@@ -21,8 +21,8 @@
 }
 
 .nt-button:focus-visible {
-  outline: 2px solid var(--nt-focus-ring);
-  outline-offset: 2px;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
 }
 
 .nt-button:not(:disabled):active {
@@ -33,9 +33,9 @@
 .nt-button[aria-disabled='true'],
 .nt-button--disabled,
 .nt-button--loading {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
   transform: none;
@@ -51,7 +51,7 @@
 
 .nt-button--md {
   height: var(--nt-control-height-md);
-  padding-inline: var(--nt-space-4);
+  padding-inline: var(--nt-density-control-padding-inline);
   font: var(--nt-text-label-md);
 }
 
@@ -68,66 +68,66 @@
 /* Variants */
 
 .nt-button--primary {
-  background: var(--nt-accent);
-  border-color: var(--nt-accent);
-  color: var(--nt-accent-contrast);
+  background: var(--nt-action-primary-bg);
+  border-color: var(--nt-action-primary-border);
+  color: var(--nt-action-primary-fg);
 }
 
 .nt-button--primary:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):hover {
-  background: var(--nt-accent-hover);
-  border-color: var(--nt-accent-hover);
+  background: var(--nt-action-primary-hover);
+  border-color: var(--nt-action-primary-hover);
 }
 
 .nt-button--primary:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):active {
-  background: var(--nt-accent-active);
-  border-color: var(--nt-accent-active);
+  background: var(--nt-action-primary-pressed);
+  border-color: var(--nt-action-primary-pressed);
 }
 
 .nt-button--secondary {
-  background: var(--nt-control-bg);
-  border-color: var(--nt-control-border);
-  color: var(--nt-text-primary);
+  background: var(--nt-action-secondary-bg);
+  border-color: var(--nt-action-secondary-border);
+  color: var(--nt-action-secondary-fg);
 }
 
 .nt-button--secondary:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):hover {
-  background: var(--nt-control-bg-hover);
+  background: var(--nt-action-secondary-hover);
   border-color: var(--nt-control-border-hover);
 }
 
 .nt-button--ghost {
-  background: transparent;
-  border-color: transparent;
-  color: var(--nt-text-secondary);
+  background: var(--nt-action-neutral-bg);
+  border-color: var(--nt-action-neutral-border);
+  color: var(--nt-action-neutral-fg);
 }
 
 .nt-button--ghost:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):hover {
-  background: var(--nt-bg-surface-hover);
+  background: var(--nt-action-neutral-hover);
   color: var(--nt-text-primary);
 }
 
 .nt-button--danger {
-  background: var(--nt-danger-bg);
-  border-color: var(--nt-danger-border);
-  color: var(--nt-danger-text);
+  background: var(--nt-action-danger-bg);
+  border-color: var(--nt-action-danger-border);
+  color: var(--nt-action-danger-fg);
 }
 
 .nt-button--danger:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):hover {
-  background: var(--nt-danger);
-  border-color: var(--nt-danger);
-  color: var(--nt-bg-app);
+  background: var(--nt-action-danger-hover);
+  border-color: var(--nt-action-danger-hover);
+  color: var(--nt-text-on-danger);
 }
 
 .nt-button--ai {
-  background: var(--nt-ai-bg);
+  background: var(--nt-ai-bg-subtle);
   border-color: var(--nt-ai-border);
-  color: var(--nt-ai-accent);
-  box-shadow: 0 0 0 1px var(--nt-ai-glow);
+  color: var(--nt-ai-fg);
+  box-shadow: 0 0 0 1px var(--nt-ai-processing);
 }
 
 .nt-button--ai:not(:disabled):not(.nt-button--disabled):not(.nt-button--loading):hover {
-  background: var(--nt-ai-bg-raised);
-  border-color: var(--nt-ai-accent);
-  color: var(--nt-ai-accent-hover);
+  background: var(--nt-ai-generated-surface);
+  border-color: var(--nt-ai-action);
+  color: var(--nt-ai-action-hover);
 }
 
 /* Internals */
@@ -154,7 +154,7 @@
   height: 1em;
   border: 2px solid currentColor;
   border-top-color: transparent;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   animation: nt-spinner 720ms linear infinite;
 }
 

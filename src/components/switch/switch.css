@@ -3,6 +3,8 @@
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: var(--nt-space-2);
+  min-block-size: var(--nt-target-size-default);
+  padding-block: var(--nt-space-1);
   color: var(--nt-text-primary);
   cursor: pointer;
   user-select: none;
@@ -26,7 +28,7 @@
   height: 1.25rem;
   padding: var(--nt-space-0-5);
   border: 1px solid var(--nt-control-border);
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-control-bg);
   transition: var(--nt-transition-colors);
 }
@@ -35,9 +37,9 @@
   display: block;
   width: 0.875rem;
   height: 0.875rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-text-muted);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-control);
   transform: translateX(0);
   transition:
     background-color var(--nt-duration-fast) var(--nt-ease-standard),
@@ -73,12 +75,12 @@
 }
 
 .nt-switch__input:checked + .nt-switch__track {
-  background: var(--nt-accent);
-  border-color: var(--nt-accent);
+  background: var(--nt-selection-indicator);
+  border-color: var(--nt-selection-indicator);
 }
 
 .nt-switch__input:checked + .nt-switch__track .nt-switch__thumb {
-  background: var(--nt-accent-contrast);
+  background: var(--nt-text-on-accent);
   transform: translateX(1rem);
 }
 
@@ -90,20 +92,20 @@
 
 .nt-switch__input:disabled + .nt-switch__track,
 .nt-switch--disabled .nt-switch__track {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
 }
 
 .nt-switch__input:disabled + .nt-switch__track .nt-switch__thumb,
 .nt-switch--disabled .nt-switch__thumb {
-  background: var(--nt-disabled-text);
+  background: var(--nt-text-disabled);
 }
 
 .nt-switch__input:disabled ~ .nt-switch__body .nt-switch__label,
 .nt-switch--disabled .nt-switch__label,
 .nt-switch__input:disabled ~ .nt-switch__body .nt-switch__description,
 .nt-switch--disabled .nt-switch__description {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
 }
 
 .nt-switch:has(.nt-switch__input:disabled),

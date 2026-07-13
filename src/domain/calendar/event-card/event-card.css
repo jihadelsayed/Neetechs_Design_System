@@ -1,14 +1,14 @@
-.nt-calendar-event-card {
+﻿.nt-calendar-event-card {
   display: flex;
   flex-direction: column;
   gap: var(--nt-space-3);
   min-width: 0;
   padding: var(--nt-space-3);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-xs);
+  box-shadow: var(--nt-elevation-inline);
 }
 
 .nt-calendar-event-card--interactive {
@@ -23,14 +23,15 @@
 .nt-calendar-event-card--interactive:hover {
   border-color: var(--nt-border-strong);
   background: var(--nt-bg-surface-hover);
-  box-shadow: var(--nt-shadow-md);
+  box-shadow: var(--nt-elevation-card-hover);
   transform: translateY(-1px);
 }
 
 .nt-calendar-event-card--interactive:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
-  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-md);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-card-hover);
 }
 
 .nt-calendar-event-card__header {
@@ -45,7 +46,7 @@
   width: 0.5rem;
   height: 100%;
   min-height: 2rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-accent);
 }
 
@@ -79,8 +80,8 @@
   min-height: 1.375rem;
   padding: 0 var(--nt-space-2);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-xs);
   white-space: nowrap;
@@ -139,8 +140,8 @@
   height: 1.375rem;
   overflow: hidden;
   border: 1px solid var(--nt-bg-surface);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-xs);
   text-transform: uppercase;
@@ -180,7 +181,7 @@
   width: var(--nt-control-height-sm);
   height: var(--nt-control-height-sm);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-muted);
   cursor: pointer;
@@ -194,14 +195,15 @@
 }
 
 .nt-calendar-event-card__action:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
 
 .nt-calendar-event-card--busy {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
 }
 
 .nt-calendar-event-card--busy .nt-calendar-event-card__marker {
@@ -247,7 +249,7 @@
 
 .nt-calendar-event-card--private {
   border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-calendar-event-card--private .nt-calendar-event-card__marker {
@@ -283,7 +285,7 @@
 }
 
 .nt-calendar-event-card--muted {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-calendar-event-card-list {

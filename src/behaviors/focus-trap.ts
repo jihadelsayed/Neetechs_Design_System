@@ -33,6 +33,26 @@ export interface NtFocusTrapController extends NtDisposable {
   focusLast(): void;
 }
 
+const focusTrapStacks = new WeakMap<Document, symbol[]>();
+
+function pushFocusTrap(doc: Document, token: symbol): void {
+  const stack = focusTrapStacks.get(doc) ?? [];
+  stack.push(token);
+  focusTrapStacks.set(doc, stack);
+}
+
+function removeFocusTrap(doc: Document, token: symbol): void {
+  const stack = focusTrapStacks.get(doc);
+  if (!stack) return;
+  const index = stack.lastIndexOf(token);
+  if (index >= 0) stack.splice(index, 1);
+  if (stack.length === 0) focusTrapStacks.delete(doc);
+}
+
+function isTopFocusTrap(doc: Document, token: symbol): boolean {
+  return focusTrapStacks.get(doc)?.at(-1) === token;
+}
+
 export function ntIsFocusable(element: HTMLElement): boolean {
   if (element.hasAttribute('disabled')) {
     return false;
@@ -46,7 +66,11 @@ export function ntIsFocusable(element: HTMLElement): boolean {
     return false;
   }
 
-  const style = window.getComputedStyle(element);
+  if (element.closest('[inert], [aria-hidden="true"]')) return false;
+
+  const ownerWindow = element.ownerDocument.defaultView;
+  if (!ownerWindow) return false;
+  const style = ownerWindow.getComputedStyle(element);
 
   if (style.display === 'none' || style.visibility === 'hidden') {
     return false;
@@ -116,8 +140,14 @@ export function ntCreateFocusTrap(
   } = options;
 
   const ownerDocument = root.ownerDocument;
+  const stackToken = Symbol('nt-focus-trap');
   let active = false;
   let previousActiveElement: HTMLElement | null = null;
+  let activationGeneration = 0;
+
+  if (!root.hasAttribute('tabindex')) {
+    root.tabIndex = -1;
+  }
 
   function getFallbackFocus(): HTMLElement {
     return ntResolveFocusTarget(fallbackFocus) ?? root;
@@ -150,7 +180,7 @@ export function ntCreateFocusTrap(
   }
 
   function handleKeyDown(event: KeyboardEvent): void {
-    if (!active) {
+    if (!active || !isTopFocusTrap(ownerDocument, stackToken)) {
       return;
     }
 
@@ -194,7 +224,7 @@ export function ntCreateFocusTrap(
   }
 
   function handleFocusIn(event: FocusEvent): void {
-    if (!active) {
+    if (!active || !isTopFocusTrap(ownerDocument, stackToken)) {
       return;
     }
 
@@ -213,6 +243,9 @@ export function ntCreateFocusTrap(
     }
 
     active = true;
+    activationGeneration += 1;
+    const generation = activationGeneration;
+    pushFocusTrap(ownerDocument, stackToken);
 
     const activeElement = ownerDocument.activeElement;
 
@@ -222,7 +255,15 @@ export function ntCreateFocusTrap(
     ownerDocument.addEventListener('keydown', handleKeyDown);
     ownerDocument.addEventListener('focusin', handleFocusIn);
 
-    queueMicrotask(focusInitial);
+    queueMicrotask(() => {
+      if (
+        active &&
+        generation === activationGeneration &&
+        isTopFocusTrap(ownerDocument, stackToken)
+      ) {
+        focusInitial();
+      }
+    });
   }
 
   function deactivate(): void {
@@ -231,11 +272,13 @@ export function ntCreateFocusTrap(
     }
 
     active = false;
+    activationGeneration += 1;
+    removeFocusTrap(ownerDocument, stackToken);
 
     ownerDocument.removeEventListener('keydown', handleKeyDown);
     ownerDocument.removeEventListener('focusin', handleFocusIn);
 
-    if (restoreFocus) {
+    if (restoreFocus && previousActiveElement?.isConnected) {
       ntFocusElement(previousActiveElement, { preventScroll });
     }
 

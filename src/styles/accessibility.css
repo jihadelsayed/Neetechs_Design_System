@@ -1,0 +1,107 @@
+/* Native elements and explicit composite-widget roles receive one focus contract. */
+a[href]:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[role='button']:focus-visible,
+[role='link']:focus-visible,
+[role='menuitem']:focus-visible,
+[role='menuitemcheckbox']:focus-visible,
+[role='menuitemradio']:focus-visible,
+[role='option']:focus-visible,
+[role='tab']:focus-visible,
+[role='gridcell']:focus-visible,
+[role='columnheader']:focus-visible,
+[role='rowheader']:focus-visible,
+[role='switch']:focus-visible,
+[role='checkbox']:focus-visible,
+[role='radio']:focus-visible,
+[data-nt-focusable]:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+:where(.nt-button--danger, .nt-icon-button--danger, [aria-invalid='true']):focus-visible {
+  outline-color: var(--nt-focus-ring-danger);
+}
+
+:where([aria-disabled='true'], [data-disabled='true']) {
+  cursor: not-allowed;
+}
+
+:where([aria-busy='true']) {
+  cursor: progress;
+}
+
+:where([hidden]) {
+  display: none !important;
+}
+
+/* Primary actions and icon-only controls expose a real hit area. */
+:where(.nt-button--primary:not(.nt-button--sm), .nt-ai-action-button:not(.nt-ai-action-button--sm)) {
+  min-block-size: var(--nt-target-size-primary);
+}
+
+:where(.nt-icon-button:not(.nt-icon-button--sm), .nt-dialog__close, .nt-modal__close, .nt-drawer__close) {
+  min-width: var(--nt-target-size-primary);
+  min-height: var(--nt-target-size-primary);
+}
+
+:where(
+  .nt-tabs__trigger,
+  .nt-menu__item,
+  .nt-dropdown__item,
+  .nt-pagination__button,
+  .nt-sidebar__item,
+  .nt-mobile-nav__item
+) {
+  min-block-size: var(--nt-target-size-default);
+}
+
+.nt-pagination__button {
+  min-inline-size: var(--nt-target-size-default);
+}
+
+@media (forced-colors: active) {
+  a[href] {
+    color: LinkText;
+  }
+
+  :where(
+    button,
+    input,
+    select,
+    textarea,
+    [role='button'],
+    [role='menuitem'],
+    [role='option'],
+    [role='tab'],
+    [role='gridcell']
+  ) {
+    border-color: ButtonText;
+  }
+
+  :where(
+    [aria-selected='true'],
+    [aria-current='page'],
+    [aria-checked='true'],
+    [data-state='active']
+  ) {
+    outline: var(--nt-focus-ring-width) solid Highlight;
+    outline-offset: calc(var(--nt-focus-ring-offset) * -1);
+  }
+
+  :where(svg, .nt-icon, [class$='__icon']) {
+    color: currentColor;
+    fill: currentColor;
+    stroke: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(html:focus-within) {
+    scroll-behavior: auto;
+  }
+}

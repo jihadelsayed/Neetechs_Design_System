@@ -1,4 +1,4 @@
-.nt-split-button {
+﻿.nt-split-button {
   display: inline-flex;
   align-items: stretch;
   width: fit-content;
@@ -19,9 +19,9 @@
   justify-content: center;
   gap: var(--nt-space-2);
   min-height: var(--nt-control-height-md);
-  border: 1px solid var(--nt-control-border);
-  background: var(--nt-control-bg);
-  color: var(--nt-text-primary);
+  border: 1px solid var(--nt-action-secondary-border);
+  background: var(--nt-action-secondary-bg);
+  color: var(--nt-action-secondary-fg);
   font: var(--nt-text-label-sm);
   letter-spacing: var(--nt-letter-spacing-label);
   text-decoration: none;
@@ -50,14 +50,15 @@
 .nt-split-button__main:hover,
 .nt-split-button__toggle:hover {
   border-color: var(--nt-control-border-hover);
-  background: var(--nt-control-bg-hover);
+  background: var(--nt-action-secondary-hover);
   color: var(--nt-text-primary);
 }
 
 .nt-split-button__main:focus-visible,
 .nt-split-button__toggle:focus-visible {
   z-index: 1;
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -68,9 +69,9 @@
 .nt-split-button__toggle[aria-disabled='true'],
 .nt-split-button--disabled .nt-split-button__main,
 .nt-split-button--disabled .nt-split-button__toggle {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -103,26 +104,26 @@
 
 .nt-split-button--primary .nt-split-button__main,
 .nt-split-button--primary .nt-split-button__toggle {
-  border-color: var(--nt-accent);
-  background: var(--nt-accent);
-  color: var(--nt-accent-contrast);
+  border-color: var(--nt-action-primary-border);
+  background: var(--nt-action-primary-bg);
+  color: var(--nt-action-primary-fg);
 }
 
 .nt-split-button--primary .nt-split-button__main:hover,
 .nt-split-button--primary .nt-split-button__toggle:hover {
-  border-color: var(--nt-accent-hover);
-  background: var(--nt-accent-hover);
+  border-color: var(--nt-action-primary-hover);
+  background: var(--nt-action-primary-hover);
 }
 
 .nt-split-button--primary .nt-split-button__toggle {
-  border-left-color: var(--nt-accent-border);
+  border-left-color: var(--nt-selection-border);
 }
 
 .nt-split-button--danger .nt-split-button__main,
 .nt-split-button--danger .nt-split-button__toggle {
-  border-color: var(--nt-danger-border);
-  background: var(--nt-danger-bg);
-  color: var(--nt-danger-text);
+  border-color: var(--nt-action-danger-border);
+  background: var(--nt-action-danger-bg);
+  color: var(--nt-action-danger-fg);
 }
 
 .nt-split-button--danger .nt-split-button__main:hover,
@@ -132,20 +133,20 @@
 
 .nt-split-button--ghost .nt-split-button__main,
 .nt-split-button--ghost .nt-split-button__toggle {
-  border-color: transparent;
-  background: transparent;
+  border-color: var(--nt-action-neutral-border);
+  background: var(--nt-action-neutral-bg);
 }
 
 .nt-split-button--ghost .nt-split-button__main:hover,
 .nt-split-button--ghost .nt-split-button__toggle:hover {
   border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-surface-hover);
+  background: var(--nt-action-neutral-hover);
 }
 
 .nt-split-button--soft .nt-split-button__main,
 .nt-split-button--soft .nt-split-button__toggle {
   border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-split-button--sm .nt-split-button__main,
@@ -190,10 +191,10 @@
   overflow: auto;
   padding: var(--nt-space-1);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-bg-surface);
+  border-radius: var(--nt-radius-popover);
+  background: var(--nt-bg-surface-overlay);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-xl);
+  box-shadow: var(--nt-elevation-popover);
   transform-origin: top right;
 }
 
@@ -212,7 +213,7 @@
   min-height: var(--nt-control-height-sm);
   padding: var(--nt-space-2) var(--nt-space-2-5);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-primary);
   font: var(--nt-text-body-sm);
@@ -228,7 +229,8 @@
 }
 
 .nt-split-button__item:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }

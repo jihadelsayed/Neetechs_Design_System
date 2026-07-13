@@ -5,3 +5,8 @@ export * from './overlay.js';
 export * from './dialog.js';
 export * from './drawer.js';
 export * from './dropdown.js';
+export * from './tabs.js';
+export * from './announcer.js';
+export * from './forms.js';
+export * from './data-grid.js';
+export * from './calendar.js';

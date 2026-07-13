@@ -23,10 +23,4 @@
   --nt-elevation-border-subtle: 1px solid var(--nt-border-subtle);
   --nt-elevation-border-strong: 1px solid var(--nt-border-strong);
 
-  --nt-shadow-card: var(--nt-shadow-none);
-  --nt-shadow-card-hover: var(--nt-shadow-sm);
-  --nt-shadow-dropdown: var(--nt-shadow-lg);
-  --nt-shadow-dialog: var(--nt-shadow-overlay);
-  --nt-shadow-drawer: var(--nt-shadow-overlay);
-  --nt-shadow-toast: var(--nt-shadow-lg);
 }

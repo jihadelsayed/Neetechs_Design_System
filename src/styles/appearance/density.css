@@ -1,0 +1,61 @@
+/* Comfortable is the frozen pre-density visual baseline. */
+:root,
+[data-nt-density='comfortable'] {
+  --nt-density-control-height-xs: 1.75rem;
+  --nt-density-control-height-sm: 2rem;
+  --nt-density-control-height-md: 2.5rem;
+  --nt-density-control-height-lg: 3rem;
+  --nt-density-control-height-xl: 3.5rem;
+  --nt-density-control-padding-inline: var(--nt-space-3);
+  --nt-density-textarea-height-sm: 5rem;
+  --nt-density-textarea-height-md: 7rem;
+  --nt-density-textarea-height-lg: 10rem;
+  --nt-density-row-height: 2.5rem;
+  --nt-density-card-padding: var(--nt-space-5);
+  --nt-density-panel-padding: var(--nt-space-5);
+  --nt-density-navigation-gap: var(--nt-space-1);
+  --nt-density-navigation-item-height: 2.5rem;
+  --nt-density-form-gap: var(--nt-space-1-5);
+  --nt-density-toolbar-padding: var(--nt-space-4);
+  --nt-density-list-row-height: 2.5rem;
+}
+
+[data-nt-density='compact'] {
+  --nt-density-control-height-xs: 1.5rem;
+  --nt-density-control-height-sm: 2rem;
+  --nt-density-control-height-md: 2.5rem;
+  --nt-density-control-height-lg: 2.75rem;
+  --nt-density-control-height-xl: 3.25rem;
+  --nt-density-control-padding-inline: var(--nt-space-2-5);
+  --nt-density-textarea-height-sm: 4.5rem;
+  --nt-density-textarea-height-md: 6rem;
+  --nt-density-textarea-height-lg: 8rem;
+  --nt-density-row-height: 2.5rem;
+  --nt-density-card-padding: var(--nt-space-4);
+  --nt-density-panel-padding: var(--nt-space-4);
+  --nt-density-navigation-gap: var(--nt-space-0-5);
+  --nt-density-navigation-item-height: 2.5rem;
+  --nt-density-form-gap: var(--nt-space-1);
+  --nt-density-toolbar-padding: var(--nt-space-3);
+  --nt-density-list-row-height: 2.5rem;
+}
+
+[data-nt-density='spacious'] {
+  --nt-density-control-height-xs: 2rem;
+  --nt-density-control-height-sm: 2.25rem;
+  --nt-density-control-height-md: 2.75rem;
+  --nt-density-control-height-lg: 3.25rem;
+  --nt-density-control-height-xl: 3.75rem;
+  --nt-density-control-padding-inline: var(--nt-space-4);
+  --nt-density-textarea-height-sm: 6rem;
+  --nt-density-textarea-height-md: 8rem;
+  --nt-density-textarea-height-lg: 12rem;
+  --nt-density-row-height: 2.75rem;
+  --nt-density-card-padding: var(--nt-space-6);
+  --nt-density-panel-padding: var(--nt-space-6);
+  --nt-density-navigation-gap: var(--nt-space-1-5);
+  --nt-density-navigation-item-height: 2.75rem;
+  --nt-density-form-gap: var(--nt-space-2);
+  --nt-density-toolbar-padding: var(--nt-space-5);
+  --nt-density-list-row-height: 2.75rem;
+}

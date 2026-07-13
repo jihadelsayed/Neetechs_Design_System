@@ -9,13 +9,18 @@ import {
   type NtCreateOverlayOptions,
   type NtOverlayController,
 } from './overlay.js';
-import { ntSetAriaControls, ntSetAriaLabelledBy } from './ids.js';
+import {
+  ntSetAriaControls,
+  ntSetAriaDescribedBy,
+  ntSetAriaLabelledBy,
+} from './ids.js';
 
 export interface NtDialogOptions {
   trigger?: HTMLElement | null;
   dialog: HTMLElement;
   backdrop?: HTMLElement | null;
   title?: HTMLElement | null;
+  description?: HTMLElement | null;
   initialOpen?: boolean;
   closeOnEscape?: boolean;
   closeOnOutsideClick?: boolean;
@@ -42,6 +47,7 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     dialog,
     backdrop = null,
     title = null,
+    description = null,
     initialOpen = false,
     closeOnEscape = true,
     closeOnOutsideClick = true,
@@ -59,6 +65,8 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     closeOnOutsideClick,
     lockScroll,
     outsideElements: trigger ? [trigger] : [],
+    inertBackground: true,
+    inertExcludeElements: [backdrop],
     onClose: () => {
       close();
     },
@@ -89,6 +97,10 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
 
     if (title) {
       ntSetAriaLabelledBy(dialog, title, 'nt-dialog-title');
+    }
+
+    if (description) {
+      ntSetAriaDescribedBy(dialog, description, 'nt-dialog-description');
     }
 
     if (isOpen) {

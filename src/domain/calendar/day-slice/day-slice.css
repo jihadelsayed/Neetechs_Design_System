@@ -5,10 +5,10 @@
   min-width: 0;
   padding: var(--nt-space-5);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-calendar-day-slice__header {
@@ -63,6 +63,7 @@
 }
 
 .nt-calendar-day-slice__clock {
+  --nt-calendar-day-slice-used: 0%;
   --nt-calendar-day-slice-size: 15rem;
 
   position: relative;
@@ -71,13 +72,13 @@
   width: var(--nt-calendar-day-slice-size);
   height: var(--nt-calendar-day-slice-size);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background:
     radial-gradient(circle at center, var(--nt-bg-surface) 0 54%, transparent 55%),
     conic-gradient(
       from -90deg,
-      var(--nt-accent) var(--nt-calendar-day-slice-used, 0%),
-      var(--nt-bg-muted) 0
+      var(--nt-accent) var(--nt-calendar-day-slice-used),
+      var(--nt-bg-surface-muted) 0
     );
   box-shadow: inset 0 0 0 0.75rem var(--nt-bg-surface);
 }
@@ -135,8 +136,8 @@
   min-width: 0;
   padding: var(--nt-space-3);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-calendar-day-slice__legend-dot {
@@ -144,7 +145,7 @@
   flex: 0 0 auto;
   width: 0.625rem;
   height: 0.625rem;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-text-muted);
 }
 
@@ -198,7 +199,7 @@
   min-width: 0;
   padding: var(--nt-space-3);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
 }
@@ -244,8 +245,8 @@
   min-height: 1.375rem;
   padding: 0 var(--nt-space-2);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-full);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-xs);
   white-space: nowrap;
@@ -263,12 +264,12 @@
 }
 
 .nt-calendar-day-slice__slot--busy {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
 }
 
 .nt-calendar-day-slice__slot--busy .nt-calendar-day-slice__slot-status {
-  border-color: var(--nt-accent-border);
+  border-color: var(--nt-border-interactive);
   background: var(--nt-bg-surface);
   color: var(--nt-accent-text);
 }

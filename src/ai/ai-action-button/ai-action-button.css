@@ -1,4 +1,4 @@
-.nt-ai-action-button {
+﻿.nt-ai-action-button {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -7,10 +7,10 @@
   min-height: var(--nt-control-height-md);
   min-width: 0;
   padding: 0 var(--nt-space-4);
-  border: 1px solid var(--nt-accent-border);
+  border: 1px solid var(--nt-ai-action);
   border-radius: var(--nt-radius-button);
-  background: var(--nt-accent);
-  color: var(--nt-accent-contrast);
+  background: var(--nt-ai-action);
+  color: var(--nt-ai-action-fg);
   font: var(--nt-text-label-sm);
   letter-spacing: var(--nt-letter-spacing-label);
   text-decoration: none;
@@ -31,7 +31,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    var(--nt-accent-bg),
+    var(--nt-ai-bg-subtle),
     transparent
   );
   content: '';
@@ -41,10 +41,10 @@
 }
 
 .nt-ai-action-button:hover {
-  border-color: var(--nt-accent-hover);
-  background: var(--nt-accent-hover);
-  color: var(--nt-accent-contrast);
-  box-shadow: var(--nt-shadow-sm);
+  border-color: var(--nt-ai-action-hover);
+  background: var(--nt-ai-action-hover);
+  color: var(--nt-ai-action-fg);
+  box-shadow: var(--nt-elevation-control);
   transform: translateY(-1px);
 }
 
@@ -54,9 +54,10 @@
 }
 
 .nt-ai-action-button:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
-  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-sm);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-control);
 }
 
 .nt-ai-action-button:active {
@@ -66,9 +67,9 @@
 .nt-ai-action-button:disabled,
 .nt-ai-action-button[aria-disabled='true'],
 .nt-ai-action-button--disabled {
-  border-color: var(--nt-disabled-border);
-  background: var(--nt-disabled-bg);
-  color: var(--nt-disabled-text);
+  border-color: var(--nt-border-disabled);
+  background: var(--nt-bg-surface-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
   box-shadow: none;
@@ -90,7 +91,7 @@
 }
 
 .nt-ai-action-button__spark {
-  color: var(--nt-accent-contrast);
+  color: var(--nt-ai-action-fg);
 }
 
 .nt-ai-action-button__label {
@@ -110,7 +111,7 @@
   min-width: 1.25rem;
   height: 1.25rem;
   padding-inline: var(--nt-space-1);
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
   font: var(--nt-text-label-xs);
@@ -133,7 +134,7 @@
   height: 1rem;
   border: 2px solid currentColor;
   border-top-color: transparent;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   content: '';
   animation: nt-ai-action-button-spin var(--nt-duration-slower) linear infinite;
 }
@@ -148,50 +149,50 @@
 }
 
 .nt-ai-action-button--secondary {
-  border-color: var(--nt-border-interactive);
-  background: var(--nt-accent-subtle);
-  color: var(--nt-accent-text);
+  border-color: var(--nt-ai-border);
+  background: var(--nt-ai-bg-subtle);
+  color: var(--nt-ai-fg);
 }
 
 .nt-ai-action-button--secondary:hover {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
-  color: var(--nt-accent-text);
+  border-color: var(--nt-ai-action);
+  background: var(--nt-ai-generated-surface);
+  color: var(--nt-ai-action-hover);
 }
 
 .nt-ai-action-button--ghost {
   border-color: transparent;
   background: transparent;
-  color: var(--nt-accent-text);
+  color: var(--nt-ai-fg);
 }
 
 .nt-ai-action-button--ghost:hover {
   border-color: var(--nt-border-subtle);
   background: var(--nt-bg-surface-hover);
-  color: var(--nt-accent-text);
+  color: var(--nt-ai-fg);
 }
 
 .nt-ai-action-button--soft {
   border-color: transparent;
-  background: var(--nt-accent-subtle);
-  color: var(--nt-accent-text);
+  background: var(--nt-ai-bg-subtle);
+  color: var(--nt-ai-fg);
 }
 
 .nt-ai-action-button--danger {
-  border-color: var(--nt-danger-border);
-  background: var(--nt-danger-bg);
-  color: var(--nt-danger-text);
+  border-color: var(--nt-action-danger-border);
+  background: var(--nt-action-danger-bg);
+  color: var(--nt-action-danger-fg);
 }
 
 .nt-ai-action-button--danger:hover {
   background: var(--nt-danger-bg-hover);
-  color: var(--nt-danger-text);
+  color: var(--nt-action-danger-fg);
 }
 
 .nt-ai-action-button--success {
-  border-color: var(--nt-success-border);
-  background: var(--nt-success-bg);
-  color: var(--nt-success-text);
+  border-color: var(--nt-action-success-border);
+  background: var(--nt-action-success-bg);
+  color: var(--nt-action-success-fg);
 }
 
 .nt-ai-action-button--sm {

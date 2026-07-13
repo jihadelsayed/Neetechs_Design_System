@@ -1,13 +1,13 @@
-.nt-card {
+﻿.nt-card {
   position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-card--interactive {
@@ -22,14 +22,15 @@
 .nt-card--interactive:hover {
   border-color: var(--nt-border-strong);
   background: var(--nt-bg-surface-hover);
-  box-shadow: var(--nt-shadow-md);
+  box-shadow: var(--nt-elevation-card-hover);
   transform: translateY(-1px);
 }
 
 .nt-card--interactive:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
-  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-shadow-md);
+  box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-card-hover);
 }
 
 .nt-card--flat {
@@ -37,7 +38,7 @@
 }
 
 .nt-card--raised {
-  box-shadow: var(--nt-shadow-lg);
+  box-shadow: var(--nt-elevation-raised);
 }
 
 .nt-card--ghost {
@@ -47,7 +48,7 @@
 }
 
 .nt-card--muted {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-card--danger {
@@ -71,7 +72,7 @@
   justify-content: space-between;
   gap: var(--nt-space-4);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-card-padding);
   border-bottom: 1px solid var(--nt-border-subtle);
 }
 
@@ -115,7 +116,7 @@
   flex-direction: column;
   gap: var(--nt-space-4);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-card-padding);
 }
 
 .nt-card__footer {
@@ -124,7 +125,7 @@
   justify-content: space-between;
   gap: var(--nt-space-3);
   min-width: 0;
-  padding: var(--nt-space-5);
+  padding: var(--nt-density-card-padding);
   border-top: 1px solid var(--nt-border-subtle);
 }
 
@@ -135,7 +136,7 @@
   overflow: hidden;
   border-start-start-radius: inherit;
   border-start-end-radius: inherit;
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-card__media > img,

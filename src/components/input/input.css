@@ -1,7 +1,7 @@
-.nt-field {
+﻿.nt-field {
   display: flex;
   flex-direction: column;
-  gap: var(--nt-space-1-5);
+  gap: var(--nt-density-form-gap);
   min-width: 0;
 }
 
@@ -33,14 +33,14 @@
   width: 100%;
   height: var(--nt-control-height-md);
   min-width: 0;
-  padding-inline: var(--nt-space-3);
+  padding-inline: var(--nt-density-control-padding-inline);
   border: 1px solid var(--nt-control-border);
   border-radius: var(--nt-radius-input);
   background: var(--nt-control-bg);
   color: var(--nt-text-primary);
   font: var(--nt-text-body-sm);
   appearance: none;
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid transparent;
   transition: var(--nt-transition-colors);
 }
 
@@ -62,15 +62,15 @@
 .nt-input:disabled,
 .nt-input[aria-disabled='true'],
 .nt-input--disabled {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
 }
 
 .nt-input[readonly],
 .nt-input--readonly {
-  background: var(--nt-bg-surface-muted);
+  background: var(--nt-bg-surface-sunken);
   border-color: var(--nt-border-subtle);
   color: var(--nt-text-secondary);
 }
@@ -89,7 +89,7 @@
 
 .nt-input--md {
   height: var(--nt-control-height-md);
-  padding-inline: var(--nt-space-3);
+  padding-inline: var(--nt-density-control-padding-inline);
   font: var(--nt-text-body-sm);
 }
 

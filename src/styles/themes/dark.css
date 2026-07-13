@@ -14,22 +14,31 @@
   --nt-bg-surface-raised: #111a2e;
   --nt-bg-surface-hover: #172033;
   --nt-bg-surface-active: #1e293b;
-  --nt-bg-overlay: rgba(2, 6, 23, 0.72);
+  --nt-bg-backdrop: rgba(2, 6, 23, 0.72);
   --nt-bg-inverse: var(--nt-color-gray-50);
+  --nt-bg-surface-subtle: var(--nt-bg-surface-hover);
+  --nt-bg-surface-overlay: var(--nt-bg-surface);
+  --nt-bg-surface-sunken: var(--nt-bg-surface-muted);
 
   /* Borders */
   --nt-border-subtle: rgba(148, 163, 184, 0.14);
   --nt-border-muted: rgba(148, 163, 184, 0.18);
   --nt-border-strong: rgba(148, 163, 184, 0.28);
   --nt-border-interactive: rgba(249, 115, 22, 0.48);
+  --nt-border-default: var(--nt-border-muted);
+  --nt-border-selected: var(--nt-border-interactive);
 
   /* Text */
   --nt-text-primary: #f8fafc;
   --nt-text-secondary: #cbd5e1;
   --nt-text-muted: #94a3b8;
   --nt-text-subtle: #64748b;
-  --nt-text-disabled: rgba(148, 163, 184, 0.5);
+  --nt-text-disabled: rgba(148, 163, 184, 0.48);
   --nt-text-inverse: #020617;
+  --nt-text-link: var(--nt-accent);
+  --nt-text-link-hover: var(--nt-accent-hover);
+  --nt-text-on-accent: var(--nt-accent-contrast);
+  --nt-text-on-danger: var(--nt-bg-app);
 
   /* Icons */
   --nt-icon-primary: #e2e8f0;
@@ -49,10 +58,16 @@
   /* Focus */
   --nt-focus-ring: rgba(249, 115, 22, 0.72);
   --nt-focus-ring-muted: rgba(249, 115, 22, 0.28);
+  --nt-focus-ring-color: var(--nt-focus-ring);
+  --nt-focus-ring-danger: var(--nt-color-red-300);
+  --nt-focus-ring-inverse: var(--nt-color-black);
 
   /* Selection */
   --nt-selection-bg: rgba(249, 115, 22, 0.32);
-  --nt-selection-text: #fff7ed;
+  --nt-selection-fg: #fff7ed;
+  --nt-selection-bg-hover: var(--nt-accent-muted);
+  --nt-selection-border: var(--nt-border-interactive);
+  --nt-selection-indicator: var(--nt-accent);
 
   /* Scrollbar */
   --nt-scrollbar-size: 0.75rem;
@@ -73,6 +88,7 @@
 
   --nt-danger: var(--nt-color-red-400);
   --nt-danger-bg: rgba(239, 68, 68, 0.12);
+  --nt-danger-bg-hover: rgba(239, 68, 68, 0.18);
   --nt-danger-border: rgba(239, 68, 68, 0.28);
   --nt-danger-text: #fecaca;
 
@@ -87,27 +103,93 @@
   --nt-neutral-text: #cbd5e1;
 
   /* Disabled */
-  --nt-disabled-bg: rgba(148, 163, 184, 0.08);
-  --nt-disabled-border: rgba(148, 163, 184, 0.12);
-  --nt-disabled-text: rgba(148, 163, 184, 0.48);
+  --nt-bg-surface-disabled: rgba(148, 163, 184, 0.08);
+  --nt-border-disabled: rgba(148, 163, 184, 0.12);
 
   /* Controls */
   --nt-control-bg: rgba(15, 23, 42, 0.78);
   --nt-control-bg-hover: rgba(30, 41, 59, 0.82);
   --nt-control-bg-active: rgba(30, 41, 59, 1);
-  --nt-control-border: rgba(148, 163, 184, 0.2);
-  --nt-control-border-hover: rgba(148, 163, 184, 0.34);
+  --nt-control-border: rgba(148, 163, 184, 0.58);
+  --nt-control-border-hover: rgba(148, 163, 184, 0.72);
   --nt-control-border-focus: var(--nt-focus-ring);
 
+  /* Interactive surfaces and actions */
+  --nt-interactive-neutral-bg: transparent;
+  --nt-interactive-neutral-hover: var(--nt-bg-surface-hover);
+  --nt-interactive-neutral-pressed: var(--nt-bg-surface-active);
+  --nt-interactive-neutral-selected: var(--nt-selection-bg);
+
+  --nt-action-primary-bg: var(--nt-accent);
+  --nt-action-primary-hover: var(--nt-accent-hover);
+  --nt-action-primary-pressed: var(--nt-accent-active);
+  --nt-action-primary-subtle: var(--nt-accent-subtle);
+  --nt-action-primary-border: var(--nt-accent);
+  --nt-action-primary-fg: var(--nt-accent-contrast);
+
+  --nt-action-secondary-bg: var(--nt-control-bg);
+  --nt-action-secondary-hover: var(--nt-control-bg-hover);
+  --nt-action-secondary-pressed: var(--nt-control-bg-active);
+  --nt-action-secondary-border: var(--nt-control-border);
+  --nt-action-secondary-fg: var(--nt-text-primary);
+
+  --nt-action-neutral-bg: transparent;
+  --nt-action-neutral-hover: var(--nt-bg-surface-hover);
+  --nt-action-neutral-pressed: var(--nt-bg-surface-active);
+  --nt-action-neutral-border: transparent;
+  --nt-action-neutral-fg: var(--nt-text-secondary);
+
+  --nt-action-danger-bg: var(--nt-danger-bg);
+  --nt-action-danger-hover: var(--nt-danger);
+  --nt-action-danger-pressed: var(--nt-danger);
+  --nt-action-danger-border: var(--nt-danger-border);
+  --nt-action-danger-fg: var(--nt-danger-text);
+
+  --nt-action-success-bg: var(--nt-success-bg);
+  --nt-action-success-hover: var(--nt-success);
+  --nt-action-success-pressed: var(--nt-success);
+  --nt-action-success-border: var(--nt-success-border);
+  --nt-action-success-fg: var(--nt-success-text);
+
+  --nt-action-warning-bg: var(--nt-warning-bg);
+  --nt-action-warning-hover: var(--nt-warning);
+  --nt-action-warning-pressed: var(--nt-warning);
+  --nt-action-warning-border: var(--nt-warning-border);
+  --nt-action-warning-fg: var(--nt-warning-text);
+
   /* AI */
-  --nt-ai-accent: var(--nt-color-purple-400);
-  --nt-ai-accent-hover: var(--nt-color-purple-300);
+  --nt-ai-fg: var(--nt-color-purple-400);
+  --nt-ai-action-hover: var(--nt-color-purple-300);
   --nt-ai-bg: rgba(168, 85, 247, 0.1);
-  --nt-ai-bg-raised: rgba(88, 28, 135, 0.24);
+  --nt-ai-generated-surface: rgba(88, 28, 135, 0.24);
   --nt-ai-border: rgba(192, 132, 252, 0.28);
-  --nt-ai-glow: rgba(168, 85, 247, 0.22);
+  --nt-ai-processing: rgba(168, 85, 247, 0.22);
   --nt-ai-user-bubble: rgba(249, 115, 22, 0.16);
   --nt-ai-assistant-bubble: rgba(168, 85, 247, 0.12);
+  --nt-ai-bg-subtle: var(--nt-ai-bg);
+  --nt-ai-action: var(--nt-ai-fg);
+  --nt-ai-action-fg: var(--nt-color-purple-950);
+
+  /* Financial values */
+  --nt-financial-positive: var(--nt-success);
+  --nt-financial-negative: var(--nt-danger);
+  --nt-financial-neutral: var(--nt-text-secondary);
+
+  /* Semantic elevation */
+  --nt-elevation-none: var(--nt-shadow-none);
+  --nt-elevation-inline: var(--nt-shadow-xs);
+  --nt-elevation-control: var(--nt-shadow-sm);
+  --nt-elevation-card: var(--nt-shadow-sm);
+  --nt-elevation-card-hover: var(--nt-shadow-md);
+  --nt-elevation-raised: var(--nt-shadow-lg);
+  --nt-elevation-popover: var(--nt-shadow-xl);
+  --nt-elevation-dialog: var(--nt-shadow-overlay);
+  --nt-elevation-drawer: var(--nt-shadow-overlay);
+  --nt-elevation-toast: var(--nt-shadow-xl);
+  --nt-elevation-overlay: var(--nt-shadow-overlay);
+
+  /* Component color hook */
+  --nt-progress-stripe-color: rgba(255, 255, 255, 0.18);
 
   /* Status */
   --nt-status-draft: var(--nt-neutral);

@@ -1,0 +1,33 @@
+/*
+ * Deprecated compatibility aliases retained for existing consumers.
+ * Internal source must use the canonical targets directly. Remove only in
+ * the next major version after the migration documented in
+ * docs/design-token-contract.md.
+ */
+:root {
+  --nt-bg-muted: var(--nt-bg-surface-muted);
+  --nt-bg-elevated: var(--nt-bg-surface-raised);
+  --nt-bg-overlay: var(--nt-bg-backdrop);
+  --nt-bg-overlay-subtle: var(--nt-bg-backdrop);
+  --nt-disabled-bg: var(--nt-bg-surface-disabled);
+  --nt-disabled-border: var(--nt-border-disabled);
+  --nt-disabled-text: var(--nt-text-disabled);
+  --nt-ai-accent: var(--nt-ai-fg);
+  --nt-ai-accent-hover: var(--nt-ai-action-hover);
+  --nt-ai-bg-raised: var(--nt-ai-generated-surface);
+  --nt-ai-glow: var(--nt-ai-processing);
+  --nt-accent-bg: var(--nt-accent-subtle);
+  --nt-accent-border: var(--nt-border-interactive);
+  --nt-line-height-relaxed: var(--nt-line-height-body-lg);
+  --nt-line-height-snug: var(--nt-line-height-label);
+  --nt-shadow-2xl: var(--nt-elevation-overlay);
+  --nt-shadow-card: var(--nt-elevation-card);
+  --nt-shadow-card-hover: var(--nt-elevation-card-hover);
+  --nt-shadow-dialog: var(--nt-elevation-dialog);
+  --nt-shadow-drawer: var(--nt-elevation-drawer);
+  --nt-shadow-dropdown: var(--nt-elevation-popover);
+  --nt-shadow-toast: var(--nt-elevation-toast);
+  --nt-selection-text: var(--nt-selection-fg);
+  --nt-text-code-sm: var(--nt-text-mono-sm);
+  --nt-z-overlay: var(--nt-z-raised);
+}

@@ -1,4 +1,7 @@
 .nt-tooltip {
+  --nt-tooltip-x: 0;
+  --nt-tooltip-y: 0;
+
   position: relative;
   display: inline-flex;
   min-width: 0;
@@ -16,12 +19,12 @@
   max-width: min(18rem, calc(100vw - var(--nt-space-4)));
   padding: var(--nt-space-2) var(--nt-space-2-5);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
-  background: var(--nt-bg-elevated);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-overlay);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-lg);
+  box-shadow: var(--nt-elevation-popover);
   font: var(--nt-text-caption);
-  line-height: var(--nt-line-height-snug);
+  line-height: var(--nt-line-height-label);
   text-align: start;
   pointer-events: none;
   overflow-wrap: break-word;
@@ -30,8 +33,8 @@
 
 .nt-tooltip__content[data-position='fixed'] {
   position: fixed;
-  top: var(--nt-tooltip-y, 0);
-  left: var(--nt-tooltip-x, 0);
+  top: var(--nt-tooltip-y);
+  left: var(--nt-tooltip-x);
 }
 
 .nt-tooltip__content[data-side='top'] {
@@ -93,7 +96,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border: 1px solid var(--nt-border-subtle);
-  background: var(--nt-bg-elevated);
+  background: var(--nt-bg-surface-raised);
   transform: rotate(45deg);
 }
 
@@ -145,23 +148,23 @@
 }
 
 .nt-tooltip--muted .nt-tooltip__content {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
 }
 
 .nt-tooltip--muted .nt-tooltip__arrow {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-tooltip--accent .nt-tooltip__content {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
   color: var(--nt-accent-text);
 }
 
 .nt-tooltip--accent .nt-tooltip__arrow {
-  border-color: var(--nt-accent-border);
-  background: var(--nt-accent-bg);
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
 }
 
 .nt-tooltip--danger .nt-tooltip__content {
@@ -200,14 +203,14 @@
 .nt-tooltip--sm .nt-tooltip__content {
   max-width: min(14rem, calc(100vw - var(--nt-space-4)));
   padding: var(--nt-space-1-5) var(--nt-space-2);
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   font: var(--nt-text-caption);
 }
 
 .nt-tooltip--lg .nt-tooltip__content {
   max-width: min(24rem, calc(100vw - var(--nt-space-4)));
   padding: var(--nt-space-3);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   font: var(--nt-text-body-sm);
 }
 

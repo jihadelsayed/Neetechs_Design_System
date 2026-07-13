@@ -1,4 +1,4 @@
-.nt-menu {
+﻿.nt-menu {
   display: flex;
   flex-direction: column;
   gap: var(--nt-space-1);
@@ -28,10 +28,10 @@
   gap: var(--nt-space-2);
   width: 100%;
   min-width: 0;
-  min-height: var(--nt-control-height-sm);
+  min-height: var(--nt-density-list-row-height);
   padding: var(--nt-space-2) var(--nt-space-2-5);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-primary);
   font: var(--nt-text-body-sm);
@@ -48,7 +48,8 @@
 }
 
 .nt-menu__item:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -57,14 +58,14 @@
 .nt-menu__item[aria-selected='true'],
 .nt-menu__item[data-state='active'],
 .nt-menu__item--active {
-  background: var(--nt-accent-bg);
-  color: var(--nt-accent-text);
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
 }
 
 .nt-menu__item[aria-disabled='true'],
 .nt-menu__item:disabled,
 .nt-menu__item--disabled {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -179,7 +180,7 @@
   flex: 0 0 auto;
   width: 1rem;
   height: 1rem;
-  color: var(--nt-accent);
+  color: var(--nt-selection-indicator);
   opacity: 0;
 }
 
@@ -228,21 +229,21 @@
 
 .nt-menu--boxed {
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
+  border-radius: var(--nt-radius-card);
   background: var(--nt-bg-surface);
-  box-shadow: var(--nt-shadow-sm);
+  box-shadow: var(--nt-elevation-card);
 }
 
 .nt-menu--elevated {
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-bg-surface);
-  box-shadow: var(--nt-shadow-xl);
+  border-radius: var(--nt-radius-popover);
+  background: var(--nt-bg-surface-overlay);
+  box-shadow: var(--nt-elevation-popover);
 }
 
 .nt-menu--muted {
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-menu--compact {

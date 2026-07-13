@@ -1,9 +1,9 @@
-.nt-textarea {
+﻿.nt-textarea {
   display: block;
   width: 100%;
   min-width: 0;
-  min-height: 7rem;
-  padding: var(--nt-space-3);
+  min-height: var(--nt-density-textarea-height-md);
+  padding: var(--nt-density-control-padding-inline);
   border: 1px solid var(--nt-control-border);
   border-radius: var(--nt-radius-input);
   background: var(--nt-control-bg);
@@ -11,7 +11,7 @@
   font: var(--nt-text-body-sm);
   resize: vertical;
   appearance: none;
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid transparent;
   transition: var(--nt-transition-colors);
 }
 
@@ -33,16 +33,16 @@
 .nt-textarea:disabled,
 .nt-textarea[aria-disabled='true'],
 .nt-textarea--disabled {
-  background: var(--nt-disabled-bg);
-  border-color: var(--nt-disabled-border);
-  color: var(--nt-disabled-text);
+  background: var(--nt-bg-surface-disabled);
+  border-color: var(--nt-border-disabled);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   resize: none;
 }
 
 .nt-textarea[readonly],
 .nt-textarea--readonly {
-  background: var(--nt-bg-surface-muted);
+  background: var(--nt-bg-surface-sunken);
   border-color: var(--nt-border-subtle);
   color: var(--nt-text-secondary);
 }
@@ -54,19 +54,19 @@
 }
 
 .nt-textarea--sm {
-  min-height: 5rem;
+  min-height: var(--nt-density-textarea-height-sm);
   padding: var(--nt-space-2-5);
   font: var(--nt-text-body-xs);
 }
 
 .nt-textarea--md {
-  min-height: 7rem;
-  padding: var(--nt-space-3);
+  min-height: var(--nt-density-textarea-height-md);
+  padding: var(--nt-density-control-padding-inline);
   font: var(--nt-text-body-sm);
 }
 
 .nt-textarea--lg {
-  min-height: 10rem;
+  min-height: var(--nt-density-textarea-height-lg);
   padding: var(--nt-space-4);
   font: var(--nt-text-body-md);
 }

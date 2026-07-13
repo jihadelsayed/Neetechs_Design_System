@@ -1,4 +1,10 @@
-.nt-search-bar {
+﻿.nt-search-bar {
+  --nt-search-results-bottom: auto;
+  --nt-search-results-left: auto;
+  --nt-search-results-right: auto;
+  --nt-search-results-top: auto;
+  --nt-search-results-width: min(100%, 28rem);
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -52,7 +58,7 @@
   background: transparent;
   color: var(--nt-text-primary);
   font: var(--nt-text-body-sm);
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid transparent;
 }
 
 .nt-search-bar__input::placeholder {
@@ -75,7 +81,7 @@
   width: var(--nt-control-height-sm);
   height: var(--nt-control-height-sm);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-md);
+  border-radius: var(--nt-radius-control);
   background: transparent;
   color: var(--nt-text-muted);
   cursor: pointer;
@@ -91,7 +97,8 @@
 
 .nt-search-bar__action:focus-visible,
 .nt-search-bar__clear:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
@@ -108,8 +115,8 @@
   height: 1.375rem;
   padding-inline: var(--nt-space-1);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-sm);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-indicator);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
   font: var(--nt-text-label-xs);
   line-height: 1;
@@ -150,10 +157,10 @@
   overflow: auto;
   padding: var(--nt-space-1);
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-xl);
-  background: var(--nt-bg-surface);
+  border-radius: var(--nt-radius-popover);
+  background: var(--nt-bg-surface-overlay);
   color: var(--nt-text-primary);
-  box-shadow: var(--nt-shadow-xl);
+  box-shadow: var(--nt-elevation-popover);
   transform-origin: top center;
 }
 
@@ -199,7 +206,7 @@
   min-height: var(--nt-control-height-md);
   padding: var(--nt-space-2);
   border: 1px solid transparent;
-  border-radius: var(--nt-radius-lg);
+  border-radius: var(--nt-radius-item);
   background: transparent;
   color: var(--nt-text-primary);
   text-align: start;
@@ -215,15 +222,21 @@
   color: var(--nt-text-primary);
 }
 
+.nt-search-bar__item[aria-selected='true'] {
+  background: var(--nt-selection-bg-hover);
+  color: var(--nt-selection-fg);
+}
+
 .nt-search-bar__item:focus-visible {
-  outline: none;
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
 
 .nt-search-bar__item[aria-disabled='true'],
 .nt-search-bar__item--disabled {
-  color: var(--nt-disabled-text);
+  color: var(--nt-text-disabled);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -235,8 +248,8 @@
   width: 2rem;
   height: 2rem;
   border: 1px solid var(--nt-border-subtle);
-  border-radius: var(--nt-radius-lg);
-  background: var(--nt-bg-muted);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
   color: var(--nt-text-muted);
 }
 
@@ -317,7 +330,7 @@
   height: 1.25rem;
   border: 2px solid var(--nt-border-subtle);
   border-top-color: currentColor;
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
   content: '';
   animation: nt-search-bar-spin var(--nt-duration-slower) linear infinite;
 }
@@ -343,7 +356,7 @@
 }
 
 .nt-search-bar--rounded .nt-search-bar__control {
-  border-radius: var(--nt-radius-full);
+  border-radius: var(--nt-radius-pill);
 }
 
 .nt-search-bar--ghost .nt-search-bar__control {
@@ -358,7 +371,7 @@
 }
 
 .nt-search-bar--muted .nt-search-bar__control {
-  background: var(--nt-bg-muted);
+  background: var(--nt-bg-surface-muted);
 }
 
 .nt-search-bar--error .nt-search-bar__control {
@@ -379,11 +392,11 @@
 
 .nt-search-bar--detached .nt-search-bar__results {
   position: fixed;
-  top: var(--nt-search-results-top, auto);
-  right: var(--nt-search-results-right, auto);
-  bottom: var(--nt-search-results-bottom, auto);
-  left: var(--nt-search-results-left, auto);
-  width: var(--nt-search-results-width, min(100%, 28rem));
+  top: var(--nt-search-results-top);
+  right: var(--nt-search-results-right);
+  bottom: var(--nt-search-results-bottom);
+  left: var(--nt-search-results-left);
+  width: var(--nt-search-results-width);
 }
 
 @keyframes nt-search-bar-results-in {

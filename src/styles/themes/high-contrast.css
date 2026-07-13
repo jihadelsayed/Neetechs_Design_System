@@ -1,4 +1,4 @@
-[data-nt-theme='high-contrast'] {
+﻿[data-nt-theme='high-contrast'] {
   color-scheme: dark;
 
   /* App backgrounds */
@@ -13,14 +13,19 @@
   --nt-bg-surface-raised: #111111;
   --nt-bg-surface-hover: #1a1a1a;
   --nt-bg-surface-active: #222222;
-  --nt-bg-overlay: rgba(0, 0, 0, 0.82);
+  --nt-bg-backdrop: rgba(0, 0, 0, 0.82);
   --nt-bg-inverse: #ffffff;
+  --nt-bg-surface-subtle: var(--nt-bg-surface-hover);
+  --nt-bg-surface-overlay: var(--nt-bg-surface);
+  --nt-bg-surface-sunken: var(--nt-bg-surface-muted);
 
   /* Borders */
   --nt-border-subtle: rgba(255, 255, 255, 0.32);
   --nt-border-muted: rgba(255, 255, 255, 0.42);
   --nt-border-strong: rgba(255, 255, 255, 0.72);
   --nt-border-interactive: #ffffff;
+  --nt-border-default: var(--nt-border-muted);
+  --nt-border-selected: var(--nt-border-interactive);
 
   /* Text */
   --nt-text-primary: #ffffff;
@@ -29,6 +34,10 @@
   --nt-text-subtle: #a3a3a3;
   --nt-text-disabled: rgba(255, 255, 255, 0.52);
   --nt-text-inverse: #000000;
+  --nt-text-link: var(--nt-accent);
+  --nt-text-link-hover: var(--nt-accent-hover);
+  --nt-text-on-accent: var(--nt-accent-contrast);
+  --nt-text-on-danger: var(--nt-bg-app);
 
   /* Icons */
   --nt-icon-primary: #ffffff;
@@ -48,10 +57,16 @@
   /* Focus */
   --nt-focus-ring: #ffffff;
   --nt-focus-ring-muted: rgba(255, 255, 255, 0.44);
+  --nt-focus-ring-color: var(--nt-focus-ring);
+  --nt-focus-ring-danger: var(--nt-danger);
+  --nt-focus-ring-inverse: var(--nt-color-black);
 
   /* Selection */
   --nt-selection-bg: #ffffff;
-  --nt-selection-text: #000000;
+  --nt-selection-fg: #000000;
+  --nt-selection-bg-hover: var(--nt-accent-muted);
+  --nt-selection-border: var(--nt-border-interactive);
+  --nt-selection-indicator: var(--nt-accent);
 
   /* Scrollbar */
   --nt-scrollbar-size: 0.875rem;
@@ -72,6 +87,7 @@
 
   --nt-danger: #ff8a8a;
   --nt-danger-bg: rgba(255, 138, 138, 0.18);
+  --nt-danger-bg-hover: rgba(255, 138, 138, 0.28);
   --nt-danger-border: rgba(255, 138, 138, 0.72);
   --nt-danger-text: #ffffff;
 
@@ -86,9 +102,8 @@
   --nt-neutral-text: #ffffff;
 
   /* Disabled */
-  --nt-disabled-bg: rgba(255, 255, 255, 0.08);
-  --nt-disabled-border: rgba(255, 255, 255, 0.22);
-  --nt-disabled-text: rgba(255, 255, 255, 0.52);
+  --nt-bg-surface-disabled: rgba(255, 255, 255, 0.08);
+  --nt-border-disabled: rgba(255, 255, 255, 0.22);
 
   /* Controls */
   --nt-control-bg: #050505;
@@ -98,15 +113,82 @@
   --nt-control-border-hover: rgba(255, 255, 255, 0.82);
   --nt-control-border-focus: #ffffff;
 
+  /* Interactive surfaces and actions */
+  --nt-interactive-neutral-bg: transparent;
+  --nt-interactive-neutral-hover: var(--nt-bg-surface-hover);
+  --nt-interactive-neutral-pressed: var(--nt-bg-surface-active);
+  --nt-interactive-neutral-selected: var(--nt-selection-bg);
+
+  --nt-action-primary-bg: var(--nt-accent);
+  --nt-action-primary-hover: var(--nt-accent-hover);
+  --nt-action-primary-pressed: var(--nt-accent-active);
+  --nt-action-primary-subtle: var(--nt-accent-subtle);
+  --nt-action-primary-border: var(--nt-accent);
+  --nt-action-primary-fg: var(--nt-accent-contrast);
+
+  --nt-action-secondary-bg: var(--nt-control-bg);
+  --nt-action-secondary-hover: var(--nt-control-bg-hover);
+  --nt-action-secondary-pressed: var(--nt-control-bg-active);
+  --nt-action-secondary-border: var(--nt-control-border);
+  --nt-action-secondary-fg: var(--nt-text-primary);
+
+  --nt-action-neutral-bg: transparent;
+  --nt-action-neutral-hover: var(--nt-bg-surface-hover);
+  --nt-action-neutral-pressed: var(--nt-bg-surface-active);
+  --nt-action-neutral-border: transparent;
+  --nt-action-neutral-fg: var(--nt-text-secondary);
+
+  --nt-action-danger-bg: var(--nt-danger-bg);
+  --nt-action-danger-hover: var(--nt-danger);
+  --nt-action-danger-pressed: var(--nt-danger);
+  --nt-action-danger-border: var(--nt-danger-border);
+  --nt-action-danger-fg: var(--nt-danger-text);
+
+  --nt-action-success-bg: var(--nt-success-bg);
+  --nt-action-success-hover: var(--nt-success);
+  --nt-action-success-pressed: var(--nt-success);
+  --nt-action-success-border: var(--nt-success-border);
+  --nt-action-success-fg: var(--nt-success-text);
+
+  --nt-action-warning-bg: var(--nt-warning-bg);
+  --nt-action-warning-hover: var(--nt-warning);
+  --nt-action-warning-pressed: var(--nt-warning);
+  --nt-action-warning-border: var(--nt-warning-border);
+  --nt-action-warning-fg: var(--nt-warning-text);
+
   /* AI */
-  --nt-ai-accent: #d8b4fe;
-  --nt-ai-accent-hover: #f3e8ff;
+  --nt-ai-fg: #d8b4fe;
+  --nt-ai-action-hover: #f3e8ff;
   --nt-ai-bg: rgba(216, 180, 254, 0.16);
-  --nt-ai-bg-raised: rgba(216, 180, 254, 0.22);
+  --nt-ai-generated-surface: rgba(216, 180, 254, 0.22);
   --nt-ai-border: rgba(216, 180, 254, 0.72);
-  --nt-ai-glow: rgba(216, 180, 254, 0.28);
+  --nt-ai-processing: rgba(216, 180, 254, 0.28);
   --nt-ai-user-bubble: rgba(255, 184, 107, 0.18);
   --nt-ai-assistant-bubble: rgba(216, 180, 254, 0.18);
+  --nt-ai-bg-subtle: var(--nt-ai-bg);
+  --nt-ai-action: var(--nt-ai-fg);
+  --nt-ai-action-fg: var(--nt-color-black);
+
+  /* Financial values */
+  --nt-financial-positive: var(--nt-success);
+  --nt-financial-negative: var(--nt-danger);
+  --nt-financial-neutral: var(--nt-text-secondary);
+
+  /* Semantic elevation: strong boundaries carry hierarchy in this theme. */
+  --nt-elevation-none: none;
+  --nt-elevation-inline: none;
+  --nt-elevation-control: none;
+  --nt-elevation-card: none;
+  --nt-elevation-card-hover: none;
+  --nt-elevation-raised: none;
+  --nt-elevation-popover: none;
+  --nt-elevation-dialog: none;
+  --nt-elevation-drawer: none;
+  --nt-elevation-toast: none;
+  --nt-elevation-overlay: none;
+
+  /* Component color hook */
+  --nt-progress-stripe-color: rgba(255, 255, 255, 0.18);
 
   /* Status */
   --nt-status-draft: var(--nt-neutral);
@@ -116,4 +198,93 @@
   --nt-status-paid: var(--nt-success);
   --nt-status-overdue: var(--nt-danger);
   --nt-status-failed: var(--nt-danger);
+}
+
+/*
+ * Canonical contrast layer. The legacy high-contrast theme selector above
+ * remains export-compatible, but controllers now resolve light/dark and set
+ * data-nt-contrast independently.
+ */
+[data-nt-contrast='high'] {
+  --nt-border-subtle: var(--nt-border-strong);
+  --nt-border-muted: var(--nt-border-strong);
+  --nt-border-default: var(--nt-border-strong);
+  --nt-border-interactive: var(--nt-text-primary);
+  --nt-border-selected: var(--nt-text-primary);
+  --nt-border-disabled: var(--nt-text-disabled);
+  --nt-control-border: var(--nt-border-strong);
+  --nt-control-border-hover: var(--nt-text-primary);
+  --nt-control-border-focus: var(--nt-text-primary);
+  --nt-focus-ring: var(--nt-text-primary);
+  --nt-focus-ring-muted: var(--nt-border-strong);
+  --nt-selection-border: var(--nt-text-primary);
+  --nt-selection-indicator: var(--nt-text-primary);
+  --nt-elevation-inline: none;
+  --nt-elevation-control: none;
+  --nt-elevation-card: none;
+  --nt-elevation-card-hover: none;
+  --nt-elevation-raised: none;
+  --nt-elevation-popover: none;
+  --nt-elevation-dialog: none;
+  --nt-elevation-drawer: none;
+  --nt-elevation-toast: none;
+  --nt-elevation-overlay: none;
+}
+
+@media (prefers-contrast: more) {
+  :root:not([data-nt-contrast='normal']) {
+    --nt-border-subtle: var(--nt-border-strong);
+    --nt-border-muted: var(--nt-border-strong);
+    --nt-border-default: var(--nt-border-strong);
+    --nt-border-interactive: var(--nt-text-primary);
+    --nt-border-selected: var(--nt-text-primary);
+    --nt-control-border: var(--nt-border-strong);
+    --nt-control-border-hover: var(--nt-text-primary);
+    --nt-control-border-focus: var(--nt-text-primary);
+    --nt-focus-ring: var(--nt-text-primary);
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --nt-bg-app: Canvas;
+    --nt-bg-shell: Canvas;
+    --nt-bg-surface: Canvas;
+    --nt-bg-surface-muted: Canvas;
+    --nt-bg-surface-raised: Canvas;
+    --nt-bg-surface-disabled: Canvas;
+    --nt-text-primary: CanvasText;
+    --nt-text-secondary: CanvasText;
+    --nt-text-muted: CanvasText;
+    --nt-text-disabled: GrayText;
+    --nt-text-link: LinkText;
+    --nt-border-subtle: ButtonText;
+    --nt-border-default: ButtonText;
+    --nt-border-strong: ButtonText;
+    --nt-border-interactive: Highlight;
+    --nt-border-selected: Highlight;
+    --nt-control-bg: Field;
+    --nt-control-border: ButtonText;
+    --nt-control-border-focus: Highlight;
+    --nt-focus-ring: Highlight;
+    --nt-selection-bg: Highlight;
+    --nt-selection-bg-hover: Highlight;
+    --nt-selection-border: Highlight;
+    --nt-selection-fg: HighlightText;
+    --nt-selection-indicator: Highlight;
+    --nt-action-primary-bg: Highlight;
+    --nt-action-primary-hover: Highlight;
+    --nt-action-primary-pressed: Highlight;
+    --nt-action-primary-border: Highlight;
+    --nt-action-primary-fg: HighlightText;
+  }
+
+  :where(.nt-checkbox__box, .nt-radio__control, .nt-switch__track) {
+    border: 1px solid ButtonText;
+  }
+
+  :where(button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: var(--nt-focus-ring-offset);
+  }
 }
