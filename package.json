@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@neetechs/ui",
   "version": "0.0.2",
   "description": "Official framework-agnostic Neetechs UI design system.",
@@ -22,54 +22,43 @@
     "clean": "rimraf dist",
     "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
     "test": "npm run build && node --test \"tests/**/*.test.mjs\"",
-    "pack:local": "npm run build && npm pack"
+    "pack:local": "npm run build && npm pack",
+    "release": "semantic-release"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-
     "./styles": "./src/index.css",
     "./styles.css": "./src/index.css",
-
     "./base.css": "./src/styles/index.css",
     "./tokens.css": "./src/styles/tokens/index.css",
     "./reset.css": "./src/styles/reset.css",
-
     "./themes/dark.css": "./src/styles/themes/dark.css",
     "./themes/light.css": "./src/styles/themes/light.css",
     "./themes/high-contrast.css": "./src/styles/themes/high-contrast.css",
-
     "./utilities/layout.css": "./src/styles/utilities/layout.css",
     "./utilities/text.css": "./src/styles/utilities/text.css",
     "./utilities/visibility.css": "./src/styles/utilities/visibility.css",
-
     "./animations/motion.css": "./src/styles/animations/motion.css",
-
     "./shell.css": "./src/shell/index.css",
     "./shell/*.css": "./src/shell/*/*.css",
-
     "./components.css": "./src/components/index.css",
     "./components/*.css": "./src/components/*/*.css",
-
     "./patterns.css": "./src/patterns/index.css",
     "./patterns/*.css": "./src/patterns/*/*.css",
-
     "./ai.css": "./src/ai/index.css",
     "./ai/*.css": "./src/ai/*/*.css",
-
     "./domain.css": "./src/domain/index.css",
     "./domain/calendar.css": "./src/domain/calendar/index.css",
     "./domain/calendar/*.css": "./src/domain/calendar/*/*.css",
     "./domain/billing.css": "./src/domain/billing/index.css",
     "./domain/companies.css": "./src/domain/companies/index.css",
-
     "./appearance": {
       "types": "./dist/appearance/index.d.ts",
       "import": "./dist/appearance/index.js"
     },
-
     "./behaviors": {
       "types": "./dist/behaviors/index.d.ts",
       "import": "./dist/behaviors/index.js"
@@ -78,14 +67,26 @@
       "types": "./dist/behaviors/*.d.ts",
       "import": "./dist/behaviors/*.js"
     },
-
     "./types": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js"
     }
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.9",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "rimraf": "^6.0.1",
+    "semantic-release": "^25.0.7",
     "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jihadelsayed/Neetechs_Design_System.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
