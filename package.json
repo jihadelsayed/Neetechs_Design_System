@@ -21,6 +21,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "test": "npm run build && node --test \"tests/**/*.test.mjs\"",
     "pack:local": "npm run build && npm pack"
   },
   "exports": {
@@ -63,6 +64,11 @@
     "./domain/calendar/*.css": "./src/domain/calendar/*/*.css",
     "./domain/billing.css": "./src/domain/billing/index.css",
     "./domain/companies.css": "./src/domain/companies/index.css",
+
+    "./appearance": {
+      "types": "./dist/appearance/index.d.ts",
+      "import": "./dist/appearance/index.js"
+    },
 
     "./behaviors": {
       "types": "./dist/behaviors/index.d.ts",

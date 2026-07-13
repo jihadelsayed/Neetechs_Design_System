@@ -81,6 +81,16 @@ Specific CSS entry points:
 
 ## Theme setup
 
+For the shared appearance system (backend preference, `nt_theme` bootstrap
+cookie, `system` mode, anti-flash bootstrap), use `@neetechs/ui/appearance`
+— see [docs/theming.md](./docs/theming.md).
+
+```ts
+import { bootstrapNeetechsTheme } from '@neetechs/ui/appearance';
+
+bootstrapNeetechsTheme(); // before framework rendering
+```
+
 Add theme attributes to `html`, `body`, or your app root.
 
 ```html
