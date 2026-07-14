@@ -29,6 +29,25 @@
   transform: translateY(1px);
 }
 
+.nt-button[data-nt-state='pending'] {
+  cursor: progress;
+  transform: none;
+}
+
+.nt-button[data-nt-state='pending'] .nt-button__spinner {
+  display: inline-flex;
+}
+
+.nt-button[data-nt-state='success'] {
+  border-color: var(--nt-success-border);
+  box-shadow: 0 0 0 1px var(--nt-success-border);
+}
+
+.nt-button[data-nt-state='error'] {
+  border-color: var(--nt-danger-border);
+  box-shadow: 0 0 0 1px var(--nt-danger-border);
+}
+
 .nt-button:disabled,
 .nt-button[aria-disabled='true'],
 .nt-button--disabled,

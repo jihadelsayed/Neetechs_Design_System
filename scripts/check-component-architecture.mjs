@@ -27,6 +27,27 @@ export async function validateComponentArchitecture({ rootDir = defaultRoot } = 
   const read = async (filePath) => readFile(join(rootDir, filePath), 'utf8');
   const packageJson = JSON.parse(await read('package.json'));
 
+  const runtimeDependencies = Object.keys(packageJson.dependencies ?? {});
+  if (runtimeDependencies.length > 0) {
+    addError(
+      errors,
+      'runtime-dependencies',
+      'package.json',
+      `framework-agnostic CSS/behavior package must not publish accidental runtime dependencies: ${runtimeDependencies.join(', ')}`,
+    );
+  }
+
+  const sourceIndex = await read('src/index.ts');
+  const versionMatch = sourceIndex.match(/NEETECHS_UI_VERSION\s*=\s*['"]([^'"]+)['"]/);
+  if (versionMatch?.[1] !== packageJson.version) {
+    addError(
+      errors,
+      'version-mismatch',
+      'src/index.ts',
+      `NEETECHS_UI_VERSION must match package.json version ${packageJson.version}`,
+    );
+  }
+
   for (const [publicPath, canonicalTarget] of Object.entries(compatibilityExports)) {
     if (packageJson.exports?.[publicPath] !== canonicalTarget) {
       addError(
@@ -61,6 +82,14 @@ export async function validateComponentArchitecture({ rootDir = defaultRoot } = 
     if (!drawerCss.includes(selector)) {
       addError(errors, 'missing-css-alias', 'src/components/drawer/drawer.css', selector);
     }
+  }
+  if (/Legacy right-drawer CSS compatibility/.test(drawerCss) || /height:\s*100vh/.test(drawerCss)) {
+    addError(
+      errors,
+      'duplicate-implementation',
+      'src/components/drawer/drawer.css',
+      'right-drawer compatibility must remain selector aliases on canonical drawer CSS, not a standalone block',
+    );
   }
 
   const switcherCss = await read('src/patterns/company-switcher/company-switcher.css');

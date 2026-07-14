@@ -26,7 +26,7 @@ Use the complete contract in [accessibility.md](./accessibility.md).
 - Buttons and links use native elements. Do not duplicate native Enter/Space handlers.
 - Icon-only buttons require a contextual accessible name.
 - Primary and icon-only controls target 44×44px; dense contextual controls remain at least 40×40px.
-- Preserve the visible label while loading, add `aria-busy`, and prevent duplicate activation.
+- Preserve the visible label while loading, add `aria-busy`, and prevent duplicate activation. New async behavior uses `data-nt-state="pending"` through `ntCreateAsyncAction()` rather than treating loading as disabled.
 - Native disabled is preferred. When `aria-disabled` is required, guard click and keyboard behavior explicitly.
 
 ## Composite widgets
@@ -41,7 +41,11 @@ Compatibility selectors and exports are migration-only. Add new behavior and sty
 
 ## Forms
 
-Visible labels are the default. Stable IDs connect help and errors. Placeholder text, color, icons, and tooltips cannot be the sole instruction. Group related choices with fieldset/legend. Focus a named error-summary region after failed submission and link entries to fields.
+Visible labels are the default. Stable IDs connect help and errors. Placeholder text, color, icons, and tooltips cannot be the sole instruction. Group related choices with fieldset/legend. Focus a named error-summary region after failed submission and link entries to fields. Use `ntCreateFormController()` for the shared submission lifecycle when a framework does not already provide an equivalent guard.
+
+## States, feedback, and recovery
+
+Use the layered state model in [states-feedback-and-recovery.md](./states-feedback-and-recovery.md). Native attributes own availability and validation where they exist; `data-nt-state` owns async operation; `data-nt-content-state` owns loading/empty/error/offline/permission/maintenance content states. Existing modifier classes remain compatibility styling hooks, but new behavior should not invent product-specific loading, error, or pending vocabularies.
 
 ## Styling
 

@@ -175,6 +175,25 @@ Do not import random component CSS files all over the app unless you are intenti
 </button>
 ```
 
+Async actions keep their visible name, expose busy state, and prevent accidental duplicate activation without treating pending as native disabled:
+
+```ts
+import { ntCreateAsyncAction } from '@neetechs/ui';
+
+const save = ntCreateAsyncAction({
+  control: document.querySelector<HTMLButtonElement>('#save')!,
+  async run(_event, signal) {
+    await saveChanges({ signal });
+  },
+});
+```
+
+```html
+<button id="save" class="nt-button nt-button--primary">
+  Save changes
+</button>
+```
+
 ## Basic input
 
 ```html
@@ -195,6 +214,30 @@ Invalid input:
   <span id="email-error" class="nt-field__error">Enter a valid email.</span>
 </label>
 ```
+
+For full form submission state, use `ntConnectField`, `ntFocusErrorSummary`, and `ntCreateFormController` from `@neetechs/ui`.
+
+## Feedback and recovery
+
+New content-state work uses the shared pattern:
+
+```html
+<section class="nt-content-state nt-content-state--section"
+         data-nt-content-state="offline"
+         aria-labelledby="offline-title">
+  <h2 id="offline-title" class="nt-content-state__title">Connection lost</h2>
+  <p class="nt-content-state__description">
+    Cached records are still visible. Retry when the connection returns.
+  </p>
+  <div class="nt-content-state__actions">
+    <button class="nt-button nt-button--secondary">Retry</button>
+  </div>
+</section>
+```
+
+`ntCreateToastController` manages toast semantics, dedupe, stack limits, pause-on-hover/focus, and cleanup. Use toasts for brief noncritical feedback, not field validation, permission-denied pages, or irreversible-action confirmation.
+
+See [docs/states-feedback-and-recovery.md](./docs/states-feedback-and-recovery.md) for the canonical state vocabulary, forms, loading, empty/error/offline patterns, confirmations, unsaved changes, AI write-action approval, and recovery rules.
 
 ## Card
 

@@ -212,6 +212,248 @@ test('toast, loading, and AI approval expose meaningful status and action names'
   await expect(page.getByRole('status', { name: '' }).filter({ hasText: 'Awaiting approval' })).toBeVisible();
 });
 
+test('async actions expose pending state, prevent duplicates, and preserve the accessible name', async ({ page }) => {
+  const result = await page.evaluate(async () => {
+    const { ntCreateAsyncAction } = await import('/dist/index.js');
+    const button = document.createElement('button');
+    button.className = 'nt-button nt-button--primary';
+    button.textContent = 'Save changes';
+    document.body.append(button);
+    let activations = 0;
+    let resolveRun;
+    const pending = new Promise((resolve) => {
+      resolveRun = resolve;
+    });
+    const controller = ntCreateAsyncAction({
+      control: button,
+      successResetDelay: 0,
+      run: async () => {
+        activations += 1;
+        await pending;
+      },
+    });
+    button.focus();
+    button.click();
+    button.click();
+    const pendingState = {
+      activations,
+      name: button.textContent,
+      busy: button.getAttribute('aria-busy'),
+      state: button.dataset.ntState,
+      focused: document.activeElement === button,
+      disabled: button.hasAttribute('disabled'),
+    };
+    resolveRun();
+    await Promise.resolve();
+    await Promise.resolve();
+    const finalState = { state: controller.state, busy: button.getAttribute('aria-busy') };
+    controller.destroy();
+    button.remove();
+    return { pendingState, finalState };
+  });
+
+  expect(result.pendingState).toEqual({
+    activations: 1,
+    name: 'Save changes',
+    busy: 'true',
+    state: 'pending',
+    focused: true,
+    disabled: false,
+  });
+  expect(result.finalState).toEqual({ state: 'idle', busy: null });
+});
+
+test('toast controller dedupes, pauses timers, exposes urgency, and cleans up dismissal listeners', async ({ page }) => {
+  const result = await page.evaluate(async () => {
+    const { ntCreateToastController } = await import('/dist/index.js');
+    const viewport = document.createElement('div');
+    viewport.className = 'nt-toast-viewport';
+    document.body.append(viewport);
+    const controller = ntCreateToastController({ viewport, defaultTimeout: 80, maxVisible: 2 });
+
+    const first = document.createElement('section');
+    first.className = 'nt-toast nt-toast--success';
+    first.innerHTML = '<p>Saved once</p><button class="nt-toast__close" aria-label="Dismiss">×</button>';
+    controller.show({ id: 'save', toast: first, tone: 'success' });
+
+    const duplicate = document.createElement('section');
+    duplicate.className = 'nt-toast nt-toast--success';
+    duplicate.innerHTML = '<p>Saved twice</p><button class="nt-toast__close" aria-label="Dismiss">×</button>';
+    controller.show({ id: 'save', toast: duplicate, tone: 'success' });
+    const dedupedCount = viewport.querySelectorAll('.nt-toast').length;
+
+    duplicate.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    const paused = duplicate.isConnected;
+    duplicate.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    const dismissedAfterResume = !duplicate.isConnected;
+
+    const error = document.createElement('section');
+    error.className = 'nt-toast nt-toast--danger';
+    error.innerHTML = '<p>Delete failed</p><button class="nt-toast__close" aria-label="Dismiss">×</button>';
+    controller.show({ id: 'delete-error', toast: error, tone: 'error', critical: true });
+    const urgency = {
+      role: error.getAttribute('role'),
+      live: error.getAttribute('aria-live'),
+      critical: error.dataset.ntCritical,
+    };
+    error.querySelector('button').click();
+    const closedByAction = !error.isConnected;
+    controller.destroy();
+    const cleanedUp = viewport.querySelectorAll('.nt-toast').length === 0;
+    viewport.remove();
+    return { dedupedCount, paused, dismissedAfterResume, urgency, closedByAction, cleanedUp };
+  });
+
+  expect(result).toEqual({
+    dedupedCount: 1,
+    paused: true,
+    dismissedAfterResume: true,
+    urgency: { role: 'alert', live: 'assertive', critical: 'true' },
+    closedByAction: true,
+    cleanedUp: true,
+  });
+});
+
+test('form controller preserves data, focuses summary, and prevents duplicate submission', async ({ page }) => {
+  const result = await page.evaluate(async () => {
+    const { ntCreateFormController } = await import('/dist/index.js');
+    const form = document.createElement('form');
+    form.innerHTML = `
+      <div id="summary" role="region" aria-label="Check the form" hidden>
+        <a href="#company">Company is required</a>
+      </div>
+      <label for="company">Company</label>
+      <input id="company" name="company" required />
+      <button type="submit">Save company</button>
+    `;
+    document.body.append(form);
+    const summary = form.querySelector('#summary');
+    const input = form.querySelector('#company');
+    let submits = 0;
+    let resolveSubmit;
+    const pending = new Promise((resolve) => {
+      resolveSubmit = resolve;
+    });
+    const controller = ntCreateFormController({
+      form,
+      errorSummary: summary,
+      successResetDelay: 0,
+      submit: async () => {
+        submits += 1;
+        await pending;
+      },
+    });
+
+    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
+    const invalidState = {
+      controllerState: controller.state,
+      formState: form.dataset.ntSubmissionState,
+      focusedSummary: document.activeElement === summary,
+      summaryHidden: summary.hasAttribute('hidden'),
+      submits,
+      value: input.value,
+    };
+
+    input.value = 'Neetechs AB';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
+    form.dispatchEvent(new SubmitEvent('submit', { bubbles: true, cancelable: true }));
+    const pendingState = {
+      submits,
+      formBusy: form.getAttribute('aria-busy'),
+      buttonBusy: form.querySelector('button').getAttribute('aria-busy'),
+      buttonState: form.querySelector('button').dataset.ntState,
+      dirty: input.dataset.ntDirty,
+      value: input.value,
+    };
+
+    resolveSubmit();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const finalState = {
+      controllerState: controller.state,
+      formBusy: form.getAttribute('aria-busy'),
+      value: input.value,
+    };
+    controller.destroy();
+    form.remove();
+    return { invalidState, pendingState, finalState };
+  });
+
+  expect(result.invalidState).toEqual({
+    controllerState: 'failure',
+    formState: 'failure',
+    focusedSummary: true,
+    summaryHidden: false,
+    submits: 0,
+    value: '',
+  });
+  expect(result.pendingState).toEqual({
+    submits: 1,
+    formBusy: 'true',
+    buttonBusy: 'true',
+    buttonState: 'pending',
+    dirty: 'true',
+    value: 'Neetechs AB',
+  });
+  expect(result.finalState).toEqual({
+    controllerState: 'editing',
+    formBusy: null,
+    value: 'Neetechs AB',
+  });
+});
+
+test('content-state variants expose compact recoverable states without color-only meaning', async ({ page }) => {
+  const result = await page.evaluate(() => {
+    const states = ['empty', 'error', 'offline', 'maintenance', 'success'];
+    const samples = states.map((state) => {
+      const section = document.createElement('section');
+      section.className = 'nt-content-state nt-content-state--inline';
+      section.dataset.ntContentState = state;
+      section.setAttribute('aria-labelledby', `${state}-title`);
+      section.innerHTML = `
+        <span class="nt-content-state__icon" aria-hidden="true">!</span>
+        <div class="nt-content-state__body">
+          <h2 id="${state}-title" class="nt-content-state__title">${state}</h2>
+          <p class="nt-content-state__description">Recovery guidance for ${state}.</p>
+          <div class="nt-content-state__actions">
+            <button class="nt-button nt-button--secondary">Retry ${state}</button>
+          </div>
+        </div>
+      `;
+      document.body.append(section);
+      const style = getComputedStyle(section);
+      const iconStyle = getComputedStyle(section.querySelector('.nt-content-state__icon'));
+      const record = {
+        state,
+        display: style.display,
+        borderColor: style.borderColor,
+        iconColor: iconStyle.color,
+        hasHeading: Boolean(section.querySelector('.nt-content-state__title')?.textContent),
+        hasAction: Boolean(section.querySelector('button')?.textContent),
+      };
+      section.remove();
+      return record;
+    });
+    return {
+      samples,
+      distinctErrorSuccess:
+        samples.find((sample) => sample.state === 'error')?.borderColor !==
+        samples.find((sample) => sample.state === 'success')?.borderColor,
+    };
+  });
+
+  expect(result.samples).toHaveLength(5);
+  for (const sample of result.samples) {
+    expect(sample.display).toBe('flex');
+    expect(sample.hasHeading).toBe(true);
+    expect(sample.hasAction).toBe(true);
+    expect(sample.iconColor).not.toBe('');
+  }
+  expect(result.distinctErrorSuccess).toBe(true);
+});
+
 test('reduced motion and forced colors retain a usable focus boundary', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const cardTransition = await page.locator('.nt-ai-approval-card').evaluate((element) => getComputedStyle(element).transitionDuration);

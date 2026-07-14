@@ -1,5 +1,29 @@
 # Appearance migration
 
+## States, feedback, and recovery (Prompt 8)
+
+No public state class was removed. Adopt the canonical state contract incrementally:
+
+```html
+<!-- Before: still styled for compatibility, but modifier-only state is not behavior -->
+<button class="nt-button nt-button--primary nt-button--loading">Save changes</button>
+
+<!-- After: native name stays visible; behavior owns pending state -->
+<button class="nt-button nt-button--primary" data-nt-state="pending" aria-busy="true">
+  Save changes
+</button>
+```
+
+Use `ntCreateAsyncAction()` for owned action controls that need duplicate-activation prevention, `aria-busy`, success/error transition, cancellation only when a real `AbortSignal` exists, and listener cleanup. Do not set native `disabled` merely because a request is pending.
+
+Use `ntCreateFormController()` with `ntConnectField()` and `ntFocusErrorSummary()` for forms that need touched/dirty tracking, duplicate-submit prevention, error-summary focus, and failure that preserves entered data. Applications still own validation rules, server errors, routing, and persistence.
+
+Use `.nt-content-state` plus `data-nt-content-state` for new loading, empty, error, offline, unauthenticated, forbidden, not-found, maintenance, and success regions. Existing `.nt-empty-state`, `.nt-error-state`, and `.nt-loading-state` remain compatible public patterns.
+
+Use `ntCreateToastController()` only for brief noncritical feedback or recoverable errors that can be safely dismissed. Critical blocking failures belong in inline state, an alert/banner, a form summary, or a confirmation/result dialog, not only a disappearing toast.
+
+See [states-feedback-and-recovery.md](./states-feedback-and-recovery.md) for the state dimensions, feedback-channel matrix, confirmation levels, AI write-action states, unsaved-change patterns, and recovery rules.
+
 ## Component consolidation (Prompt 7)
 
 No public import path was removed. Migrate deprecated aliases without changing product behavior:

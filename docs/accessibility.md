@@ -25,6 +25,8 @@ Labels describe the control, while `aria-describedby` connects helper, constrain
 
 Prompt 7 consolidation note: modal CSS and `ntCreateModal` now delegate to the canonical dialog implementation; the right-drawer path/classes delegate to canonical logical drawer CSS; company/workspace switchers share one visual source and the menu-popover behavior. These compatibility names do not define separate accessibility contracts. The table export is now a styled native-table contract and remains intentionally separate from the interactive data grid. See [component-architecture.md](./component-architecture.md).
 
+Prompt 8 state note: operation state now uses native semantics plus `data-nt-state` where needed; content-region state uses `data-nt-content-state`; legacy `--loading`, `--error`, and `--success` modifiers are styling compatibility hooks. See [states-feedback-and-recovery.md](./states-feedback-and-recovery.md).
+
 The inventory covers all 59 shipped UI/domain CSS modules. “Gallery” means the representative Playwright/axe contract gallery; “manual” identifies an application-level check still required.
 
 | Component and source | Semantic/name contract | Keyboard and focus | State/feedback contract | Target, modes, coverage and residual risk |
@@ -57,7 +59,7 @@ The inventory covers all 59 shipped UI/domain CSS modules. “Gallery” means t
 | Table — `src/components/table/table.css` | Native table/caption/scope headers; no grid role for display-only data | Standard AT table navigation | Sort buttons inside headers and announce state | Overflow response deferred; markup manual |
 | Tabs — `src/components/tabs/tabs.css`, `src/behaviors/tabs.ts` | tablist/tab/tabpanel with generated controls/labelledby IDs | Orientation arrows, Home/End, one tab stop; automatic/manual declared | selected/disabled/hidden panel synchronized | 40px; focus/forced selection; browser tested |
 | Textarea — `src/components/textarea/textarea.css` | Visible label and descriptions | Native editing | readonly readable/focusable; disabled/invalid distinct | 40px; contrast/focus/axe |
-| Toast — `src/components/toast/toast.css`, `src/behaviors/announcer.ts` | Routine status; urgent error alert; named close | No automatic focus; close keyboard accessible; timed toast pauses hover/focus | Critical content persists; status wording explicit | Gallery semantics; timer policy consumer-owned |
+| Toast — `src/components/toast/toast.css`, `src/behaviors/announcer.ts` | Routine status; urgent error alert; named close | No automatic focus; close keyboard accessible; timed toast pauses hover/focus | Critical content persists; status wording explicit | Gallery semantics; `ntCreateToastController` covers timers, dedupe, stack limit, pause, and cleanup |
 | Tooltip — `src/components/tooltip/tooltip.css` | Tooltip role/stable describedby; never sole essential content | Opens focus/hover; Escape dismissal when behavior exists; no interactive children | Hidden tooltip not exposed | Reduced motion/forced text; lifecycle consumer-owned |
 | AI action button — `src/ai/ai-action-button/ai-action-button.css` | Named native button; name states action, not only “AI” | Native activation | Busy preserves name, blocks repeat, exposes status | 44px; independent AI contrast; reduced motion |
 | AI approval card — `src/ai/ai-approval-card/ai-approval-card.css` | Heading names card; description states intent, target, consequence, reversibility | Native reject/approve; safe action first | Pending/status polite; confirmation/success/failure explicit | Gallery/axe/actions; product copy/workflow manual |
@@ -75,9 +77,10 @@ The inventory covers all 59 shipped UI/domain CSS modules. “Gallery” means t
 | Calendar week grid — `src/domain/calendar/week-grid/week-grid.css`, calendar behavior | Named grid/time-grid and full event names | Declared grid or event Tab model | current/selected not color-only | Focus/forced; complex navigation manual |
 | Command palette — `src/patterns/command-palette/command-palette.css` | Modal dialog with labelled combobox/listbox | Input arrows/Home/End/Enter/Escape; modal trap/restore | Loading/empty readable; active descendant when input retains focus | Complete combobox controller is a known limitation |
 | Company switcher — `src/patterns/company-switcher/company-switcher.css` | Disclosure + menu/listbox chosen by command vs value | Shared dropdown keyboard | Selected company/unavailable explicit | 40px/shared browser behavior; content manual |
-| Empty state — `src/patterns/empty-state/empty-state.css` | Heading/description/native recovery; no alert | Native action | Static absence is not urgent | Target/focus/contrast; manual content |
-| Error state — `src/patterns/error-state/error-state.css` | Heading/recovery/action; alert only dynamically urgent | Native action | Reason/recovery not icon/color only | Gallery/axe/focus |
-| Loading state — `src/patterns/loading-state/loading-state.css` | Named status; affected region busy; skeleton hidden | Do not move/strand focus | Announce start/end or milestones only | Gallery/reduced motion |
+| Content state — `src/patterns/content-state/content-state.css` | Heading/description/native recovery; urgency chosen by context | Native action; no automatic focus unless recovering from failed submission | `data-nt-content-state` differentiates loading, empty, error, offline, permission, not-found, maintenance, success | Target/focus/contrast/RTL; manual content |
+| Empty state — `src/patterns/empty-state/empty-state.css` | Legacy pattern over content-state guidance; heading/description/native recovery; no alert | Native action | Static absence is not urgent | Compatible; prefer `.nt-content-state` for new work |
+| Error state — `src/patterns/error-state/error-state.css` | Legacy pattern over content-state guidance; heading/recovery/action; alert only dynamically urgent | Native action | Reason/recovery not icon/color only | Compatible; prefer `.nt-content-state` for new work |
+| Loading state — `src/patterns/loading-state/loading-state.css` | Legacy pattern over content-state guidance; named status; affected region busy; skeleton hidden | Do not move/strand focus | Announce start/end or milestones only | Compatible; prefer `.nt-content-state` for new work |
 | Notification center — `src/patterns/notification-center/notification-center.css` | Named region/list; item heading/time/read state | Native actions; optional menu shared | Unread text/ARIA plus color; updates polite | Focus/forced color; update behavior manual |
 | Profile menu — `src/patterns/profile-menu/profile-menu.css` | Trigger + command menu | Shared dropdown menu | Disabled/current account explicit | Shared browser menu; names manual |
 | Search bar — `src/patterns/search-bar/search-bar.css` | Search landmark/form, labelled input, named clear/submit | Native editing/submission; Escape clear only if declared | Loading/results count polite; clear updates value | Focus/targets; results combobox not provided |
@@ -129,11 +132,11 @@ An error summary is a named region with heading and links to invalid fields. Rev
 - Toasts never take focus automatically. Timed toasts pause while hovered/focused; critical content persists elsewhere.
 - Skeleton geometry is hidden from AT; a readable sibling communicates loading.
 
-Use `ntCreateAnnouncer()` for application messages and destroy it at teardown. `ntConfigureToastSemantics()` selects polite or assertive semantics intentionally.
+Use `ntCreateAnnouncer()` for application messages and destroy it at teardown. `ntConfigureToastSemantics()` selects polite or assertive semantics intentionally. Use `ntCreateToastController()` when the package-owned DOM controls toast timers, dedupe, stack limits, pause-on-hover/focus, and cleanup.
 
 ## 8. Disabled, read-only, selected, and loading
 
-Disabled means unavailable/noninteractive; prefer native disabled. `aria-disabled=true` does not block events, so behavior must guard activation. Read-only means readable but not editable and must not look identical to disabled. Selected uses the owning pattern's selected/checked/pressed/current state and a boundary that survives forced colors. Focus remains distinct. Loading preserves the name, exposes busy, prevents repeat activation, and keeps focus stable.
+Disabled means unavailable/noninteractive; prefer native disabled. `aria-disabled=true` does not block events, so behavior must guard activation. Read-only means readable but not editable and must not look identical to disabled. Selected uses the owning pattern's selected/checked/pressed/current state and a boundary that survives forced colors. Focus remains distinct. Loading/pending is not disabled: it preserves the name, exposes busy, prevents repeat activation, and keeps focus stable. `ntCreateAsyncAction()` implements that contract for action controls.
 
 ## 9. Contrast and focus tokens
 
@@ -209,6 +212,6 @@ Browser tests use Chromium, Playwright and `@axe-core/playwright`. Automation do
 - No complete combobox/command-palette controller is shipped; use a conforming implementation or native select.
 - Data-grid editing/resizing/virtualization remain application-specific; shared behavior covers navigation/selection/sort.
 - Calendar drag/resize/collision/time-grid navigation require host keyboard alternatives.
-- Tooltip lifecycle and toast timeout pause are documented but lack shared controllers.
-- Responsive reflow, RTL/logical properties, localization formatting and duplicate consolidation are later stages.
+- Tooltip lifecycle remains consumer-owned; toast timeout pause has a shared controller.
+- Responsive reflow and product copy are later stages; state recovery still requires application-owned backend/router behavior.
 - Axe and semantic checks cover representative contracts, not every consumer content/color/image combination.

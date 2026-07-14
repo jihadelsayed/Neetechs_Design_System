@@ -108,6 +108,8 @@ Wrap prose, labels, errors, dialog titles, and essential actions. Truncate secon
 
 Pass complete translated labels, descriptions, announcements, and confirmations. Do not concatenate sentence fragments. Calendar range and data-grid sort behavior accept complete application-provided announcements.
 
+State and recovery messages follow the same rule. Content-state headings, empty explanations, retry labels, permission errors, maintenance notices, toast text, form errors, and AI confirmation copy are application-provided complete strings. The design system exposes state attributes and layout; it does not provide English fallback strings or assemble sentences. Use `dir="auto"` or bidi utilities for user-generated names inside recovery messages, and keep technical identifiers such as invoice IDs, API routes, and provider names isolated with `.nt-technical-value` where appropriate.
+
 ## Keyboard behavior in RTL
 
 `ntGetInlineArrowKeys(element)` maps visual inline movement. Horizontal tabs, interactive grids, and calendar grids use it. Vertical menus keep Up/Down; Home/End retain component meaning. Native inputs are untouched. Never globally swap ArrowLeft/ArrowRight.
@@ -118,11 +120,12 @@ Pass complete translated labels, descriptions, announcements, and confirmations.
 npm run check:tokens
 npm run check:a11y
 npm run check:rtl
+npm run check:states
 npm test
 npm run test:browser
 ```
 
-Tests cover explicit-locale formatting, validator failures, nested direction, RTL tabs/grid/calendar keys, logical drawer/shell/sidebar/header/toast edges, selective icon mirroring, bidi utilities, Arabic typography, AI messages and approval, 320px localized content, 200% text size, axe/focus/overlay behavior, and a rendered RTL review image.
+Tests cover explicit-locale formatting, validator failures, nested direction, RTL tabs/grid/calendar keys, logical drawer/shell/sidebar/header/toast edges, state-contract source validation, selective icon mirroring, bidi utilities, Arabic typography, AI messages and approval, 320px localized content, 200% text size, axe/focus/overlay behavior, and a rendered RTL review image.
 
 ## Manual QA checklist
 
@@ -133,6 +136,7 @@ Tests cover explicit-locale formatting, validator failures, nested direction, RT
 - Inspect mixed names, email, URLs, code, invoice IDs, IBAN, amounts, dates, and time zones with a native Arabic screen reader.
 - Verify each previous/next icon's meaning instead of mirroring automatically.
 - Confirm critical translated content is not available only through truncation or a tooltip.
+- Confirm empty, error, offline, permission, maintenance, unsaved-change, and AI approval copy remains understandable in Swedish and Arabic without sentence-fragment concatenation.
 
 ## Known limitations
 

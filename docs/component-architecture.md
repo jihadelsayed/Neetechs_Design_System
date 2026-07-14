@@ -30,7 +30,7 @@ Tokens
 | Table / data grid | D: keep separate | `table.css` styles native read-only tables. `data-grid.css` plus `ntCreateDataGrid` is opt-in two-dimensional interaction. | The formerly empty table export is now implemented. Neither API is deprecated. Do not add `role=grid` to ordinary tables. |
 | Badge / chip / tag / status | D with shared tokens | Badge is informational metadata/status. Chip may be interactive/removable/selected. “Pill” is a shape modifier, not a component. No standalone tag or status-indicator export exists. | Badge and chip remain. New aliases that differ only by radius are forbidden. Status must include text/icon meaning, not color alone. |
 | Tabs / segmented control / navigation | D: keep separate | Tabs switch panels; segmented control chooses a value or command; sidebar/mobile nav perform navigation. | Visual selection tokens are shared, but semantics and keyboard contracts remain separate. |
-| Empty / error / loading states | D pending Prompt 8 | Different urgency, announcement, and recovery contracts | Visual repetition is recorded, but feedback/state architecture is intentionally deferred to Prompt 8. |
+| Empty / error / loading states | B: shared content-state primitive, distinct legacy patterns | `src/patterns/content-state/content-state.css` defines the canonical content-state architecture for loading, empty, error, offline, permission, not-found, maintenance, and success presentations. | Existing `empty-state`, `error-state`, and `loading-state` classes remain compatible public patterns. New work should compose `.nt-content-state` rather than creating another one-off state surface. |
 
 No application source was available in this repository. External-usage evidence is therefore limited to public exports, README examples, docs, tests, and the previously published package shape. Lack of an in-repo reference is not proof that a public API is unused.
 
@@ -60,6 +60,18 @@ Use `.nt-table` with native `table`, `caption`, `thead`, `th[scope]`, `tbody`, a
 
 Use data grid only when the product requires row/cell selection, two-dimensional keyboard navigation, editing, resize, reorder, or comparable grid interaction. The grid controller does not turn arbitrary markup into a fully editable spreadsheet; applications own editing and virtualization policies.
 
+## State and recovery ownership
+
+Prompt 8 adds a layered state model on top of this component architecture. State is not a new component layer; it cuts across components and patterns:
+
+- Native attributes own native semantics first: `disabled`, `readonly`, `aria-selected`, `aria-expanded`, `aria-current`, `aria-invalid`, and `aria-busy`.
+- `data-nt-state` owns operation state where there is no native equivalent: `idle`, `pending`, `success`, `error`, and `canceled`.
+- `data-nt-content-state` owns content-region state: `loading`, `refreshing`, `empty`, `partial`, `stale`, `error`, `offline`, `unauthenticated`, `forbidden`, `not-found`, `maintenance`, and `success`.
+- Legacy modifier classes such as `--loading`, `--error`, and `--success` are compatibility styling hooks, not the source of behavior truth.
+- `ntCreateAsyncAction`, `ntCreateFormController`, and `ntCreateToastController` are small framework-agnostic behavior primitives. They standardize duplicate prevention, busy exposure, validation summary focus, toast timing, and cleanup without becoming application state management.
+
+See [states-feedback-and-recovery.md](./states-feedback-and-recovery.md) for state dimensions, precedence, feedback channel selection, confirmations, unsaved-change contracts, and recovery rules.
+
 ## Compatibility matrix
 
 | Public contract | Status | Canonical replacement |
@@ -75,6 +87,8 @@ Use data grid only when the product requires row/cell selection, two-dimensional
 | `ntCreateDropdown` | Supported compatibility name over canonical controller | `ntCreateMenu` for command menus or `ntCreateMenuPopover` for explicit menu/listbox use |
 | `createDialog`, `createDrawer` | Supported unprefixed import compatibility | Neetechs-prefixed `ntCreateDialog`, `ntCreateDrawer` remain repository convention |
 | `@neetechs/ui/components/table.css` | Supported and now functional | No replacement; use data grid only for genuine grid interaction |
+| `.nt-empty-state`, `.nt-error-state`, `.nt-loading-state` | Supported legacy content-state patterns | `.nt-content-state` with `data-nt-content-state` |
+| Modifier-only loading/error/success state | Compatible styling hook only | Native/ARIA state plus `data-nt-state` or `data-nt-content-state` |
 
 No public export was removed. The three retired source files are intentionally absent; exact package-export entries route their former public paths to canonical files.
 
@@ -94,10 +108,13 @@ The package is `0.x`, so SemVer permits breaking minor releases, but Neetechs ap
 
 `npm run check:architecture` verifies exact compatibility export routing, absence of the three retired copied CSS files, legacy selectors in canonical CSS, thin runtime adapters, and the nonempty table contract. It deliberately does not count ordinary repeated declarations as bugs; identical declarations can express legitimate independent semantics.
 
+`npm run check:states` verifies the canonical state helper, content-state CSS import, button async selectors, toast/form behavior helpers, known state names, and state documentation anchors.
+
 Run:
 
 ```bash
 npm run check:architecture
+npm run check:states
 npm test
 npm run test:browser
 npm run build
@@ -110,5 +127,5 @@ Packed-tarball consumer verification must resolve the canonical and deprecated r
 
 - Card/panel and product/domain cards repeat structural header/body/footer CSS. Their semantics differ, and deeper visual extraction is deferred until actual composition markup can be tested.
 - Menu, dropdown, profile menu, and command palette retain pattern-specific CSS because popup geometry and rich content differ; behavioral listeners are canonical.
-- Empty/error/loading patterns remain separate pending Prompt 8’s state and feedback architecture.
+- Empty/error/loading legacy patterns remain for compatibility; new content-state variants should avoid rebuilding separate CSS unless they add a distinct product pattern.
 - Calendar/data-grid physical layout mathematics and mobile adaptations remain deferred to Prompt 9.
