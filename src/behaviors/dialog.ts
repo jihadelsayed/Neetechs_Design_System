@@ -21,6 +21,9 @@ export interface NtDialogOptions {
   backdrop?: HTMLElement | null;
   title?: HTMLElement | null;
   description?: HTMLElement | null;
+  /** Modal dialogs trap focus and make the background inert. Defaults to true. */
+  modal?: boolean;
+  role?: 'dialog' | 'alertdialog';
   initialOpen?: boolean;
   closeOnEscape?: boolean;
   closeOnOutsideClick?: boolean;
@@ -48,10 +51,12 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     backdrop = null,
     title = null,
     description = null,
+    modal = true,
+    role = 'dialog',
     initialOpen = false,
     closeOnEscape = true,
     closeOnOutsideClick = true,
-    lockScroll = true,
+    lockScroll = modal,
     restoreFocus = true,
     initialFocus = null,
     onOpen,
@@ -65,7 +70,7 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     closeOnOutsideClick,
     lockScroll,
     outsideElements: trigger ? [trigger] : [],
-    inertBackground: true,
+    inertBackground: modal,
     inertExcludeElements: [backdrop],
     onClose: () => {
       close();
@@ -82,8 +87,9 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
   });
 
   function syncAttributes(): void {
-    dialog.setAttribute('role', 'dialog');
-    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('role', role);
+    if (modal) dialog.setAttribute('aria-modal', 'true');
+    else dialog.removeAttribute('aria-modal');
     dialog.dataset.state = isOpen ? 'open' : 'closed';
 
     if (backdrop) {
@@ -121,7 +127,7 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     isOpen = true;
     syncAttributes();
     overlay.activate();
-    focusTrap.activate();
+    if (modal) focusTrap.activate();
     onOpen?.();
   }
 
@@ -131,8 +137,8 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     }
 
     isOpen = false;
-    focusTrap.deactivate();
     overlay.deactivate();
+    if (modal) focusTrap.deactivate();
     syncAttributes();
     onClose?.();
   }
@@ -178,3 +184,20 @@ export function ntCreateDialog(options: NtDialogOptions): NtDialogController {
     },
   };
 }
+
+/** @deprecated Modal is a mode of `NtDialogOptions`; use `NtDialogOptions`. */
+export type NtModalOptions = NtDialogOptions;
+
+/** @deprecated Modal is a mode of `NtDialogController`; use `NtDialogController`. */
+export type NtModalController = NtDialogController;
+
+/** @deprecated Use `ntCreateDialog({ ...options, modal: true })`. */
+export function ntCreateModal(options: NtModalOptions): NtModalController {
+  return ntCreateDialog({ ...options, modal: true });
+}
+
+/** Unprefixed compatibility export; canonical Neetechs code uses `ntCreateDialog`. */
+export const createDialog = ntCreateDialog;
+
+/** @deprecated Use `ntCreateDialog` or `createDialog` with `modal: true`. */
+export const createModal = ntCreateModal;

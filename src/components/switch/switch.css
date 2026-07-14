@@ -84,6 +84,10 @@
   transform: translateX(1rem);
 }
 
+.nt-switch:dir(rtl) .nt-switch__input:checked + .nt-switch__track .nt-switch__thumb {
+  transform: translateX(-1rem);
+}
+
 .nt-switch__input[aria-invalid='true'] + .nt-switch__track,
 .nt-switch--error .nt-switch__track {
   border-color: var(--nt-danger-border);
@@ -131,6 +135,10 @@
   transform: translateX(0.875rem);
 }
 
+.nt-switch--sm:dir(rtl) .nt-switch__input:checked + .nt-switch__track .nt-switch__thumb {
+  transform: translateX(-0.875rem);
+}
+
 .nt-switch--sm .nt-switch__label {
   font: var(--nt-text-label-sm);
 }
@@ -156,6 +164,10 @@
 
 .nt-switch--lg .nt-switch__input:checked + .nt-switch__track .nt-switch__thumb {
   transform: translateX(1.25rem);
+}
+
+.nt-switch--lg:dir(rtl) .nt-switch__input:checked + .nt-switch__track .nt-switch__thumb {
+  transform: translateX(-1.25rem);
 }
 
 .nt-switch--lg .nt-switch__label {

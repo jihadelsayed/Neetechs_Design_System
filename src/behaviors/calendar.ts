@@ -1,5 +1,6 @@
 import type { NtDisposable } from '../types/index.js';
 import { NT_KEYS } from './keyboard.js';
+import { ntGetInlineArrowKeys } from './direction.js';
 
 export interface NtCalendarGridOptions {
   root: HTMLElement;
@@ -49,9 +50,10 @@ export function ntCreateCalendarGrid(options: NtCalendarGridOptions): NtCalendar
     const items = dates();
     const index = date ? items.indexOf(date) : -1;
     if (index < 0) return;
+    const inlineKeys = ntGetInlineArrowKeys(root);
     let next: number | null = null;
-    if (event.key === NT_KEYS.arrowRight) next = index + 1;
-    else if (event.key === NT_KEYS.arrowLeft) next = index - 1;
+    if (event.key === inlineKeys.next) next = index + 1;
+    else if (event.key === inlineKeys.previous) next = index - 1;
     else if (event.key === NT_KEYS.arrowDown) next = index + columns;
     else if (event.key === NT_KEYS.arrowUp) next = index - columns;
     else if (event.key === NT_KEYS.home) next = index - (index % columns);

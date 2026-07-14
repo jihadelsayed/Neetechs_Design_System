@@ -119,6 +119,10 @@ The historical visual-consistency findings above are now partially repaired. Dar
 
 ## 8. Accessibility baseline
 
+> Prompt 5 remediation (2026-07-13): the historical findings below remain the frozen baseline. The package now has semantic contrast/focus/target checks, forced-colors and reduced-motion coverage, nested overlay/focus management, additive tabs/grid/calendar/forms/announcer helpers, a 59-module accessibility inventory in `docs/accessibility.md`, 76 unit checks, and 10 passing Chromium keyboard/axe contracts. Formal certification, manual screen-reader interoperability, advanced combobox/grid/calendar behavior, responsive reflow, RTL, and localization remain unresolved.
+
+> Prompt 6 remediation (2026-07-13): the frozen RTL findings below are now addressed by native inherited direction, logical CSS migrations, reviewed physical-coordinate exceptions, Arabic typography hooks, bidi utilities, explicit-locale `Intl` helpers, direction-aware keyboard behavior, `check:rtl`, and representative Chromium LTR/RTL/zoom tests. Full responsive calendar/data-grid redesign, application font loading/translations, and native Arabic screen-reader QA remain unresolved.
+
 Implemented evidence: most interactive CSS modules use `:focus-visible` with a focus token; form styles recognize native disabled and `aria-invalid`; dialog/drawer create focus traps, restore focus by default, close on Escape/outside by default, lock scroll, set dialog roles/labels when title is passed; dropdown provides keyboard activation, up/down/home/end roving focus, Escape and outside closing. `src/behaviors/focus-trap.ts` excludes disabled/`aria-disabled` elements.
 
 Limits: CSS alone supplies no roles, labels, required indicators, error `aria-describedby` association, read-only semantics, live regions, toast announcements, loading announcements, dialog title requirement, or target-size validation. Modal, tooltip, toast, menu, tabs, segmented control, command palette, search bar, notification center, switchers, data grid, and calendar have no dedicated behavior/controller. `aria-*` attributes are frequently styling selectors and are consumer obligations. No contrast calculations, accessibility tests, screen-reader tests, or browser keyboard tests exist; do **not** claim WCAG compliance.
@@ -136,6 +140,8 @@ No `[dir]`, `:dir()`, or `direction` selector was found. There are many physical
 There is no locale, date, number, currency, financial, Swedish-expansion, Arabic, bidi, or mixed-direction formatting API. Billing/calendar markup only displays consumer-provided strings; it supplies no `Intl` behavior. Long text is handled selectively by truncation/overflow CSS, not a localization contract.
 
 ## 11. Duplicate and overlapping components
+
+> Prompt 7 remediation (2026-07-14): modal now delegates to canonical dialog CSS/behavior, workspace switcher uses shared entity-switcher CSS, and the legacy right-drawer path/classes are owned by canonical drawer CSS. Exact package exports preserve all three old paths. Card/panel, table/data-grid, and badge/chip remain intentionally separate because their semantics differ. The empty table stylesheet is now a functional native-table contract. See `docs/component-architecture.md`.
 
 | Likely group | Evidence / freeze classification |
 | --- | --- |
@@ -164,7 +170,7 @@ The CI workflow runs install/test/build/package dry-run then semantic release. T
 ## 14. Documented features that do not work
 
 1. README’s `data-nt-accent` and `data-nt-density` setup has no implementation.
-2. The exported `table.css` and its inclusion in `components.css` yield no table CSS (zero-byte file).
+2. ~~The exported `table.css` and its inclusion in `components.css` yielded no table CSS.~~ Prompt 7 implemented a native read-only table contract while preserving the path; interactive data-grid behavior remains separate.
 3. README direct paths to `node_modules/@neetechs/ui/src/index.css` bypass `exports` and are unsuitable for export-enforcing tooling.
 4. The public runtime version (`0.0.1`) disagrees with package version (`0.0.2`).
 5. Documentation describes generic theme setup including high contrast, but stored appearance values and controller resolution do not support high contrast.
@@ -188,7 +194,7 @@ Subject to behavior-preserving tests: TypeScript private closure layout; generat
 
 Preserve temporarily: all 89 paths in section 3; all `.nt-*` selectors and current modifiers; `data-nt-theme`, `data-nt-theme-preference`, `data-state`, `data-side`, `data-align`, `data-disabled`; CSS custom properties used as consumer inputs; appearance exports/options/types; `nt_theme`, `nt_theme_preference`, and four legacy cache keys; and all behavior factory/controller methods and DOM effects.
 
-Classify for eventual non-preservation/deprecation: the empty table implementation (retain import shim first); direct `src/index.css` documentation path; undocumented generated IDs; the advertised but nonfunctional accent/density contract unless implemented deliberately; missing-token aliases only after consumers receive defined semantic replacements; and duplicate components only after a compatibility alias/migration window.
+Historical Prompt 1 classification was: the empty table implementation, direct `src/index.css` documentation path, undocumented generated IDs, nonfunctional accent/density, missing-token aliases, and duplicate components. Prompts 2-7 have implemented the token/appearance/table contracts and placed duplicates behind tested compatibility layers; removal still requires the documented migration window.
 
 ## 18. Recommended migration order
 

@@ -76,7 +76,7 @@
 .nt-calendar-day-timeline__time-column {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--nt-border-subtle);
+  border-inline-end: 1px solid var(--nt-border-subtle);
   background: var(--nt-bg-surface-muted);
 }
 
@@ -107,8 +107,7 @@
 
 .nt-calendar-day-timeline__now {
   position: absolute;
-  right: 0;
-  left: 0;
+  inset-inline: 0;
   top: var(--nt-calendar-now-offset);
   z-index: 2;
   height: 1px;
@@ -119,7 +118,7 @@
 .nt-calendar-day-timeline__now::before {
   position: absolute;
   top: 50%;
-  left: calc(var(--nt-space-1) * -1);
+  inset-inline-start: calc(var(--nt-space-1) * -1);
   width: 0.5rem;
   height: 0.5rem;
   border-radius: var(--nt-radius-pill);
@@ -131,8 +130,7 @@
 .nt-calendar-day-timeline__event {
   position: absolute;
   top: var(--nt-calendar-event-top);
-  right: var(--nt-space-3);
-  left: var(--nt-space-3);
+  inset-inline: var(--nt-space-3);
   z-index: 1;
   display: flex;
   flex-direction: column;

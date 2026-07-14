@@ -67,14 +67,14 @@
 
 .nt-tooltip__content[data-align='start'][data-side='top'],
 .nt-tooltip__content[data-align='start'][data-side='bottom'] {
-  left: 0;
+  inset-inline-start: 0;
   transform: none;
 }
 
 .nt-tooltip__content[data-align='end'][data-side='top'],
 .nt-tooltip__content[data-align='end'][data-side='bottom'] {
-  right: 0;
-  left: auto;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
   transform: none;
 }
 

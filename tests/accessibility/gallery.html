@@ -14,6 +14,9 @@
       .gallery-grid [role='gridcell'], .gallery-grid [role='columnheader'] { padding: .75rem; border: 1px solid var(--nt-border-default); }
       .gallery-calendar [role='row'] { display: grid; grid-template-columns: repeat(7, 2.75rem); }
       .gallery-calendar button { min-width: 2.75rem; min-height: 2.75rem; }
+      .gallery-shell { min-height: 20rem; height: 20rem; }
+      .gallery-shell .nt-app-shell__sidebar { height: 20rem; }
+      .gallery-shell .nt-app-shell__main { min-height: 20rem; grid-template-rows: var(--nt-header-height) 1fr; }
     </style>
   </head>
   <body>
@@ -38,7 +41,7 @@
           </div>
           <label class="nt-field">
             <span class="nt-field__label">Notes</span>
-            <textarea class="nt-textarea">Readable content</textarea>
+            <textarea class="nt-textarea" readonly>Readable content</textarea>
           </label>
           <label class="nt-field">
             <span class="nt-field__label">Country</span>
@@ -54,8 +57,8 @@
             <label class="nt-radio"><input class="nt-radio__input" type="radio" name="frequency"><span class="nt-radio__control" aria-hidden="true"></span><span>Daily</span></label>
             <label class="nt-switch"><input class="nt-switch__input" type="checkbox"><span class="nt-switch__track" aria-hidden="true"><span class="nt-switch__thumb"></span></span><span>Automatic</span></label>
           </fieldset>
-          <div id="error-summary" class="nt-alert nt-alert--danger" hidden>
-            <h3>Check the form</h3><a href="#email">Email needs attention</a>
+          <div id="error-summary" class="nt-alert nt-alert--danger" role="region" aria-labelledby="error-summary-title" hidden>
+            <h3 id="error-summary-title">Check the form</h3><a href="#email">Email needs attention</a>
           </div>
           <button class="nt-button nt-button--primary" type="submit">Submit profile</button>
         </form>
@@ -140,7 +143,47 @@
         <div id="loading" class="nt-loading-state" role="status" aria-live="polite" aria-busy="true">
           <span class="nt-skeleton" aria-hidden="true"></span><span>Loading invoices…</span>
         </div>
+        <button class="nt-button nt-button--primary nt-button--loading" type="button" aria-busy="true" disabled>Save changes</button>
         <section class="nt-error-state" aria-labelledby="error-title"><h3 id="error-title">Could not load invoices</h3><p>Check your connection and try again.</p><button class="nt-button nt-button--secondary">Try again</button></section>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="localization-heading">
+        <h2 id="localization-heading">Localization and bidirectional content</h2>
+        <p id="mixed-user-text" class="nt-bidi-auto" dir="auto">مرحبا من Neetechs — support@neetechs.com</p>
+        <code id="technical-value" class="nt-technical-value" dir="ltr">POST /api/v1/neenee/attachments/</code>
+        <p id="numeric-value" class="nt-numeric-value" dir="ltr">−1٬234.50 EUR</p>
+        <span id="directional-icon" class="nt-icon--directional" aria-hidden="true">→</span>
+        <button id="long-label" class="nt-button nt-button--secondary nt-button--wrap">Hantera organisationsövergripande behörighetsinställningar</button>
+        <div id="ai-conversation" class="nt-ai-conversation-panel">
+          <div class="nt-ai-conversation-panel__body">
+            <article class="nt-ai-conversation-panel__message nt-ai-conversation-panel__message--assistant">
+              <span class="nt-ai-conversation-panel__avatar" aria-hidden="true">N</span>
+              <div class="nt-ai-conversation-panel__message-main"><div class="nt-ai-conversation-panel__bubble nt-bidi-auto" dir="auto">يمكنني مراجعة invoice-2026-07.pdf دون تغيير البيانات.</div></div>
+            </article>
+            <article class="nt-ai-conversation-panel__message nt-ai-conversation-panel__message--user">
+              <span class="nt-ai-conversation-panel__avatar" aria-hidden="true">U</span>
+              <div class="nt-ai-conversation-panel__message-main"><div class="nt-ai-conversation-panel__bubble nt-bidi-auto" dir="auto">Review POST /api/v1/invoices first.</div></div>
+            </article>
+          </div>
+        </div>
+        <div id="shell-fixture" class="nt-app-shell gallery-shell">
+          <aside class="nt-app-shell__sidebar nt-sidebar" aria-label="Workspace navigation">
+            <div class="nt-sidebar__brand"><span class="nt-sidebar__logo" aria-hidden="true">N</span><span class="nt-sidebar__brand-text">Neetechs</span></div>
+            <nav class="nt-sidebar__nav"><a class="nt-sidebar__item" aria-current="page" href="#main-content">Invoices</a></nav>
+          </aside>
+          <div class="nt-app-shell__main">
+            <header class="nt-app-shell__header nt-header"><div class="nt-header__left">Leading</div><div class="nt-header__right">Trailing</div></header>
+            <div class="nt-app-shell__content">Localized shell content</div>
+          </div>
+        </div>
+        <nav id="pagination-fixture" class="nt-pagination" aria-label="Pages">
+          <span class="nt-pagination__summary">1–20</span>
+          <ul class="nt-pagination__list">
+            <li class="nt-pagination__item"><button class="nt-pagination__button" aria-label="Previous page"><span class="nt-pagination__icon nt-icon--directional" aria-hidden="true">←</span></button></li>
+            <li class="nt-pagination__item"><button class="nt-pagination__button" aria-current="page">1</button></li>
+            <li class="nt-pagination__item"><button class="nt-pagination__button" aria-label="Next page"><span class="nt-pagination__icon nt-icon--directional" aria-hidden="true">→</span></button></li>
+          </ul>
+        </nav>
       </section>
 
       <button id="dialog-trigger" class="nt-button nt-button--secondary">Open confirmation</button>
@@ -158,6 +201,15 @@
           </div>
         </section>
       </div>
+
+      <button id="modal-trigger" class="nt-button nt-button--secondary">Open legacy modal</button>
+      <div id="modal-backdrop" class="nt-modal-backdrop" hidden>
+        <section id="modal" class="nt-modal" hidden>
+          <header class="nt-modal__header"><h2 id="modal-title">Legacy modal compatibility</h2></header>
+          <div class="nt-modal__body"><p>The deprecated contract delegates to dialog behavior.</p></div>
+          <footer class="nt-modal__footer"><button id="modal-close" class="nt-button nt-button--secondary">Close legacy modal</button></footer>
+        </section>
+      </div>
     </main>
 
     <script type="module">
@@ -169,6 +221,7 @@
         ntCreateDialog,
         ntCreateDrawer,
         ntCreateDropdown,
+        ntCreateModal,
         ntCreateTabs,
         ntFocusErrorSummary,
       } from '/dist/index.js';
@@ -184,10 +237,15 @@
       });
       controllers.drawer = ntCreateDrawer({
         trigger: document.querySelector('#drawer-trigger'), drawer: document.querySelector('#drawer'), backdrop: document.querySelector('#drawer-backdrop'),
-        title: document.querySelector('#drawer-title'), description: document.querySelector('#drawer-description'), initialFocus: document.querySelector('#drawer-close'),
+        title: document.querySelector('#drawer-title'), description: document.querySelector('#drawer-description'), placement: 'inline-end', initialFocus: document.querySelector('#drawer-close'),
+      });
+      controllers.modal = ntCreateModal({
+        trigger: document.querySelector('#modal-trigger'), dialog: document.querySelector('#modal'), backdrop: document.querySelector('#modal-backdrop'),
+        title: document.querySelector('#modal-title'), initialFocus: document.querySelector('#modal-close'),
       });
       document.querySelector('#drawer-close').addEventListener('click', () => controllers.drawer.close());
       document.querySelector('#dialog-cancel').addEventListener('click', () => controllers.dialog.close());
+      document.querySelector('#modal-close').addEventListener('click', () => controllers.modal.close());
       ntConfigureToastSemantics(document.querySelector('#toast'));
       ntConnectField({
         control: document.querySelector('#email'), label: document.querySelector('#email-label'), description: document.querySelector('#email-help'),

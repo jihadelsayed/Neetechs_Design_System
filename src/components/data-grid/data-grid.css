@@ -209,7 +209,7 @@
 .nt-data-grid__resize-handle {
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   width: 0.5rem;
   height: 100%;
   cursor: col-resize;
@@ -224,7 +224,7 @@
 .nt-data-grid__resize-handle::after {
   position: absolute;
   top: 25%;
-  right: 0;
+  inset-inline-end: 0;
   width: 1px;
   height: 50%;
   background: var(--nt-border-subtle);
@@ -352,7 +352,7 @@
 .nt-data-grid--sticky-first-column .nt-data-grid__table th:first-child,
 .nt-data-grid--sticky-first-column .nt-data-grid__table td:first-child {
   position: sticky;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 1;
 }
 

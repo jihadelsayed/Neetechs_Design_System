@@ -53,7 +53,7 @@
 .nt-alert__close {
   position: absolute;
   top: var(--nt-space-3);
-  right: var(--nt-space-3);
+  inset-inline-end: var(--nt-space-3);
   display: inline-flex;
   align-items: center;
   justify-content: center;

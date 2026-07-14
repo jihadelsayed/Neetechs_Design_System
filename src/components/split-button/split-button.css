@@ -39,8 +39,9 @@
 .nt-split-button__toggle {
   width: var(--nt-control-height-md);
   padding: 0;
-  border-left: 0;
-  border-radius: 0 var(--nt-radius-button) var(--nt-radius-button) 0;
+  border-inline-start: 0;
+  border-start-end-radius: var(--nt-radius-button);
+  border-end-end-radius: var(--nt-radius-button);
 }
 
 .nt-split-button--block .nt-split-button__main {
@@ -180,7 +181,7 @@
 .nt-split-button__menu {
   position: absolute;
   top: calc(100% + var(--nt-space-2));
-  right: 0;
+  inset-inline-end: 0;
   z-index: var(--nt-z-dropdown);
   display: flex;
   flex-direction: column;
@@ -284,4 +285,8 @@
     transition: none !important;
     animation: none !important;
   }
+}
+
+.nt-split-button__menu:dir(rtl) {
+  transform-origin: top left;
 }

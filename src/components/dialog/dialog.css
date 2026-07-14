@@ -1,4 +1,5 @@
-﻿.nt-dialog-backdrop {
+/* Canonical dialog CSS. The nt-modal selectors are deprecated compatibility aliases. */
+:is(.nt-dialog-backdrop, .nt-modal-backdrop) {
   position: fixed;
   inset: 0;
   z-index: var(--nt-z-modal);
@@ -9,12 +10,12 @@
   backdrop-filter: blur(12px);
 }
 
-.nt-dialog {
+:is(.nt-dialog, .nt-modal) {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: min(100%, 34rem);
-  max-height: min(42rem, calc(100dvh - var(--nt-space-8)));
+  width: min(100%, 40rem);
+  max-height: min(44rem, calc(100dvh - var(--nt-space-8)));
   overflow: hidden;
   border: 1px solid var(--nt-border-subtle);
   border-radius: var(--nt-radius-dialog);
@@ -23,54 +24,55 @@
   box-shadow: var(--nt-elevation-dialog);
 }
 
-.nt-dialog:focus {
+:is(.nt-dialog, .nt-modal):focus {
   outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
   outline-offset: var(--nt-focus-ring-offset);
 }
 
-.nt-dialog:focus-visible {
+:is(.nt-dialog, .nt-modal):focus-visible {
   outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
   outline-offset: var(--nt-focus-ring-offset);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted), var(--nt-elevation-dialog);
 }
 
-.nt-dialog__header {
+:is(.nt-dialog__header, .nt-modal__header) {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--nt-space-4);
   padding: var(--nt-space-5);
   border-bottom: 1px solid var(--nt-border-subtle);
+  background: var(--nt-bg-surface);
 }
 
-.nt-dialog__header-main {
+:is(.nt-dialog__header-main, .nt-modal__header-main) {
   display: flex;
   flex-direction: column;
   gap: var(--nt-space-1);
   min-width: 0;
 }
 
-.nt-dialog__eyebrow {
+:is(.nt-dialog__eyebrow, .nt-modal__eyebrow) {
   color: var(--nt-text-muted);
   font: var(--nt-text-label-sm);
   letter-spacing: var(--nt-letter-spacing-label);
   text-transform: uppercase;
 }
 
-.nt-dialog__title {
+:is(.nt-dialog__title, .nt-modal__title) {
   margin: 0;
   color: var(--nt-text-primary);
   font: var(--nt-text-title-md);
   letter-spacing: var(--nt-letter-spacing-title);
 }
 
-.nt-dialog__description {
+:is(.nt-dialog__description, .nt-modal__description) {
   margin: 0;
   color: var(--nt-text-muted);
   font: var(--nt-text-body-sm);
 }
 
-.nt-dialog__close {
+:is(.nt-dialog__close, .nt-modal__close) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -85,20 +87,20 @@
   transition: var(--nt-transition-colors);
 }
 
-.nt-dialog__close:hover {
+:is(.nt-dialog__close, .nt-modal__close):hover {
   border-color: var(--nt-border-subtle);
   background: var(--nt-bg-surface-hover);
   color: var(--nt-text-primary);
 }
 
-.nt-dialog__close:focus-visible {
+:is(.nt-dialog__close, .nt-modal__close):focus-visible {
   outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
   outline-offset: var(--nt-focus-ring-offset);
   border-color: var(--nt-control-border-focus);
   box-shadow: 0 0 0 3px var(--nt-focus-ring-muted);
 }
 
-.nt-dialog__body {
+:is(.nt-dialog__body, .nt-modal__body) {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -108,7 +110,7 @@
   padding: var(--nt-space-5);
 }
 
-.nt-dialog__footer {
+:is(.nt-dialog__footer, .nt-modal__footer) {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -118,79 +120,131 @@
   background: var(--nt-bg-surface);
 }
 
-.nt-dialog__footer--split {
+:is(.nt-dialog__footer--split, .nt-modal__footer--split) {
   justify-content: space-between;
 }
 
-.nt-dialog__footer-main,
-.nt-dialog__footer-actions {
+:is(.nt-dialog__footer-main, .nt-modal__footer-main),
+:is(.nt-dialog__footer-actions, .nt-modal__footer-actions) {
   display: inline-flex;
   align-items: center;
   gap: var(--nt-space-2);
   min-width: 0;
 }
 
-.nt-dialog--sm {
-  width: min(100%, 26rem);
+:is(.nt-dialog__section, .nt-modal__section) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
 }
 
-.nt-dialog--md {
-  width: min(100%, 34rem);
+:is(.nt-dialog__section-title, .nt-modal__section-title) {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
 }
 
-.nt-dialog--lg {
-  width: min(100%, 48rem);
+:is(.nt-dialog__section-description, .nt-modal__section-description) {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
 }
 
-.nt-dialog--xl {
-  width: min(100%, 64rem);
+:is(.nt-dialog__divider, .nt-modal__divider) {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--nt-border-subtle);
 }
 
-.nt-dialog--fullscreen {
+:is(.nt-dialog--sm, .nt-modal--sm) {
+  width: min(100%, 28rem);
+}
+
+:is(.nt-dialog--md, .nt-modal--md) {
+  width: min(100%, 40rem);
+}
+
+:is(.nt-dialog--lg, .nt-modal--lg) {
+  width: min(100%, 56rem);
+}
+
+:is(.nt-dialog--xl, .nt-modal--xl) {
+  width: min(100%, 72rem);
+}
+
+:is(.nt-dialog--fullscreen, .nt-modal--fullscreen) {
   width: calc(100dvw - var(--nt-space-6));
   height: calc(100dvh - var(--nt-space-6));
   max-height: none;
 }
 
-.nt-dialog--danger {
+:is(.nt-dialog--compact, .nt-modal--compact) :is(.nt-dialog__header, .nt-modal__header),
+:is(.nt-dialog--compact, .nt-modal--compact) :is(.nt-dialog__body, .nt-modal__body),
+:is(.nt-dialog--compact, .nt-modal--compact) :is(.nt-dialog__footer, .nt-modal__footer) {
+  padding: var(--nt-space-4);
+}
+
+:is(.nt-dialog--spacious, .nt-modal--spacious) :is(.nt-dialog__header, .nt-modal__header),
+:is(.nt-dialog--spacious, .nt-modal--spacious) :is(.nt-dialog__body, .nt-modal__body),
+:is(.nt-dialog--spacious, .nt-modal--spacious) :is(.nt-dialog__footer, .nt-modal__footer) {
+  padding: var(--nt-space-6);
+}
+
+:is(.nt-dialog--danger, .nt-modal--danger) {
   border-color: var(--nt-danger-border);
 }
 
-.nt-dialog--danger .nt-dialog__eyebrow {
+:is(.nt-dialog--danger, .nt-modal--danger) :is(.nt-dialog__eyebrow, .nt-modal__eyebrow) {
   color: var(--nt-danger-text);
 }
 
-.nt-dialog--success {
+:is(.nt-dialog--success, .nt-modal--success) {
   border-color: var(--nt-success-border);
 }
 
-.nt-dialog--success .nt-dialog__eyebrow {
+:is(.nt-dialog--success, .nt-modal--success) :is(.nt-dialog__eyebrow, .nt-modal__eyebrow) {
   color: var(--nt-success-text);
 }
 
-.nt-dialog--warning {
+:is(.nt-dialog--warning, .nt-modal--warning) {
   border-color: var(--nt-warning-border);
 }
 
-.nt-dialog--warning .nt-dialog__eyebrow {
+:is(.nt-dialog--warning, .nt-modal--warning) :is(.nt-dialog__eyebrow, .nt-modal__eyebrow) {
   color: var(--nt-warning-text);
 }
 
-.nt-dialog-backdrop[data-state='open'] {
+:is(.nt-dialog-backdrop, .nt-modal-backdrop)[data-state='open'] {
   animation: nt-dialog-backdrop-in var(--nt-duration-normal) var(--nt-ease-standard);
 }
 
-.nt-dialog-backdrop[data-state='closed'] {
+:is(.nt-dialog-backdrop, .nt-modal-backdrop)[data-state='closed'] {
   animation: nt-dialog-backdrop-out var(--nt-duration-fast) var(--nt-ease-standard);
 }
 
-.nt-dialog[data-state='open'] {
+:is(.nt-dialog, .nt-modal)[data-state='open'] {
   animation: nt-dialog-in var(--nt-duration-normal) var(--nt-ease-standard);
 }
 
-.nt-dialog[data-state='closed'] {
+:is(.nt-dialog, .nt-modal)[data-state='closed'] {
   animation: nt-dialog-out var(--nt-duration-fast) var(--nt-ease-standard);
 }
+
+
+/* Dialog keeps its established narrower sizing while modal classes remain compatible. */
+.nt-dialog {
+  width: min(100%, 34rem);
+  max-height: min(42rem, calc(100dvh - var(--nt-space-8)));
+}
+
+.nt-dialog--sm { width: min(100%, 26rem); }
+.nt-dialog--md { width: min(100%, 34rem); }
+.nt-dialog--lg { width: min(100%, 48rem); }
+.nt-dialog--xl { width: min(100%, 64rem); }
 
 @keyframes nt-dialog-backdrop-in {
   from {
@@ -215,7 +269,7 @@
 @keyframes nt-dialog-in {
   from {
     opacity: 0;
-    transform: translateY(0.75rem) scale(0.98);
+    transform: translateY(var(--nt-space-3)) scale(0.98);
   }
 
   to {
@@ -232,47 +286,49 @@
 
   to {
     opacity: 0;
-    transform: translateY(0.5rem) scale(0.98);
+    transform: translateY(var(--nt-space-2)) scale(0.98);
   }
 }
 
 @media (max-width: 640px) {
-  .nt-dialog-backdrop {
+  :is(.nt-dialog-backdrop, .nt-modal-backdrop) {
     align-items: end;
     padding: var(--nt-space-2);
   }
 
-  .nt-dialog {
+  :is(.nt-dialog, .nt-modal) {
     width: 100%;
     max-height: calc(100dvh - var(--nt-space-4));
     border-radius: var(--nt-radius-dialog) var(--nt-radius-dialog) var(--nt-radius-item) var(--nt-radius-item);
   }
 
-  .nt-dialog__header,
-  .nt-dialog__body,
-  .nt-dialog__footer {
+  :is(.nt-dialog__header, .nt-modal__header),
+  :is(.nt-dialog__body, .nt-modal__body),
+  :is(.nt-dialog__footer, .nt-modal__footer) {
     padding: var(--nt-space-4);
   }
 
-  .nt-dialog__footer {
+  :is(.nt-dialog__footer, .nt-modal__footer) {
     flex-direction: column-reverse;
     align-items: stretch;
   }
 
-  .nt-dialog__footer-main,
-  .nt-dialog__footer-actions {
+  :is(.nt-dialog__footer-main, .nt-modal__footer-main),
+  :is(.nt-dialog__footer-actions, .nt-modal__footer-actions) {
     width: 100%;
     justify-content: stretch;
   }
 
-  .nt-dialog__footer-actions > * {
+  :is(.nt-dialog__footer-actions, .nt-modal__footer-actions) > * {
     flex: 1 1 auto;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nt-dialog-backdrop,
-  .nt-dialog {
+  :is(.nt-dialog-backdrop, .nt-modal-backdrop),
+  :is(.nt-dialog, .nt-modal),
+  :is(.nt-dialog__close, .nt-modal__close) {
+    transition: none !important;
     animation: none !important;
   }
 }

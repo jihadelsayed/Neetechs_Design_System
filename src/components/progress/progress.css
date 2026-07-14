@@ -54,6 +54,10 @@
     background-color var(--nt-duration-fast) var(--nt-ease-standard);
 }
 
+.nt-progress__bar:dir(rtl) {
+  transform-origin: right center;
+}
+
 .nt-progress__description {
   margin: 0;
   color: var(--nt-text-muted);
@@ -235,11 +239,11 @@
 
 @keyframes nt-progress-indeterminate {
   0% {
-    left: -45%;
+    inset-inline-start: -45%;
   }
 
   100% {
-    left: 105%;
+    inset-inline-start: 105%;
   }
 }
 

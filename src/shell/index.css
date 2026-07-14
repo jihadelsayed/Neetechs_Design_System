@@ -2,5 +2,5 @@
 @import './sidebar/sidebar.css';
 @import './header/header.css';
 @import './content-frame/content-frame.css';
-@import './right-drawer/right-drawer.css';
+@import '../components/drawer/drawer.css';
 @import './mobile-nav/mobile-nav.css';

@@ -4,7 +4,8 @@
   justify-content: center;
   width: var(--nt-control-height-md);
   height: var(--nt-control-height-md);
-  min-width: var(--nt-control-height-md);
+  min-width: var(--nt-target-size-primary);
+  min-height: var(--nt-target-size-primary);
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--nt-radius-button);
@@ -44,19 +45,22 @@
 .nt-icon-button--sm {
   width: var(--nt-control-height-sm);
   height: var(--nt-control-height-sm);
-  min-width: var(--nt-control-height-sm);
+  min-width: var(--nt-target-size-compact);
+  min-height: var(--nt-target-size-compact);
 }
 
 .nt-icon-button--md {
   width: var(--nt-control-height-md);
   height: var(--nt-control-height-md);
-  min-width: var(--nt-control-height-md);
+  min-width: var(--nt-target-size-primary);
+  min-height: var(--nt-target-size-primary);
 }
 
 .nt-icon-button--lg {
   width: var(--nt-control-height-lg);
   height: var(--nt-control-height-lg);
-  min-width: var(--nt-control-height-lg);
+  min-width: var(--nt-target-size-primary);
+  min-height: var(--nt-target-size-primary);
 }
 
 /* Variants */

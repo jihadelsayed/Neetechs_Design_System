@@ -247,7 +247,9 @@ test('every accent has distinct semantic action and selection mappings while AI 
       assert.match(accent, new RegExp(`\\[data-nt-theme='${theme}'\\]\\[data-nt-accent='${name}'\\]`));
     }
   }
-  assert.match(accent, /--nt-action-primary-bg:\s*var\(--nt-accent\)/);
+  assert.equal([...accent.matchAll(/--nt-action-primary-bg:\s*var\(--nt-color-[^)]+\)/g)].length, 8);
+  const genericAccentBridge = accent.match(/\[data-nt-accent\]\s*\{([\s\S]*?)\}/)[1];
+  assert.doesNotMatch(genericAccentBridge, /--nt-action-primary-bg:/);
   assert.match(accent, /--nt-selection-indicator:\s*var\(--nt-accent\)/);
   assert.doesNotMatch(accent, /--nt-(?:status|ai|financial)-/);
 });
@@ -258,10 +260,10 @@ test('density roles produce measurable control, card and navigation differences'
   const value = (content, token) => content.match(new RegExp(`--${token}:\\s*([^;]+);`))[1].trim();
   const compact = block('compact');
   const spacious = block('spacious');
-  assert.equal(value(compact, 'nt-density-control-height-md'), '2.25rem');
+  assert.equal(value(compact, 'nt-density-control-height-md'), '2.5rem');
   assert.equal(value(spacious, 'nt-density-control-height-md'), '2.75rem');
   assert.notEqual(value(compact, 'nt-density-card-padding'), value(spacious, 'nt-density-card-padding'));
-  assert.equal(value(compact, 'nt-density-navigation-item-height'), '2.25rem');
+  assert.equal(value(compact, 'nt-density-navigation-item-height'), '2.5rem');
   assert.equal(value(spacious, 'nt-density-navigation-item-height'), '2.75rem');
 });
 

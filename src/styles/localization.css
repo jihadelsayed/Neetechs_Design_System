@@ -1,0 +1,56 @@
+/* Direction follows the nearest native dir attribute. Applications own lang/dir. */
+:lang(ar) {
+  --nt-letter-spacing-tight: 0;
+  --nt-letter-spacing-heading: 0;
+  --nt-letter-spacing-title: 0;
+  --nt-letter-spacing-label: 0;
+  --nt-letter-spacing-wide: 0;
+  --nt-line-height-label: 1.5;
+  --nt-line-height-caption: 1.5;
+}
+
+:lang(ar) :is(.nt-text-display-lg, .nt-text-display-md, .nt-text-display-sm,
+  .nt-text-heading-lg, .nt-text-heading-md, .nt-text-heading-sm,
+  .nt-text-title-lg, .nt-text-title-md, .nt-text-title-sm,
+  .nt-text-label-lg, .nt-text-label-md, .nt-text-label-sm,
+  [class*='__eyebrow'], [class*='__label']) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Individual scale composes with existing transform animations and rotations. */
+.nt-icon--directional {
+  scale: 1 1;
+}
+
+.nt-icon--directional:dir(rtl) {
+  scale: -1 1;
+}
+
+.nt-bidi-auto {
+  unicode-bidi: plaintext;
+}
+
+.nt-bidi-isolate {
+  unicode-bidi: isolate;
+}
+
+.nt-text-ltr,
+.nt-technical-value,
+.nt-numeric-value {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.nt-text-rtl {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.nt-technical-value {
+  overflow-wrap: anywhere;
+}
+
+.nt-numeric-value {
+  font-variant-numeric: tabular-nums;
+}

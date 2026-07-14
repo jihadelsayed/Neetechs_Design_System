@@ -44,11 +44,26 @@ jobs:
       - name: Validate design tokens
         run: npm run check:tokens
 
+      - name: Validate accessibility contract
+        run: npm run check:a11y
+
+      - name: Validate RTL source contract
+        run: npm run check:rtl
+
+      - name: Validate component architecture
+        run: npm run check:architecture
+
       - name: Build design system
         run: npm run build
 
       - name: Run tests
         run: npm run test:unit
+
+      - name: Install accessibility browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser accessibility tests
+        run: npx playwright test
 
       - name: Verify package contents
         run: npm pack --dry-run

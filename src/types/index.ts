@@ -34,6 +34,7 @@ export type NtPlacement =
   | 'left-end';
 
 export type NtSide = 'top' | 'right' | 'bottom' | 'left';
+export type NtLogicalSide = 'inline-start' | 'inline-end';
 
 export type NtAlign = 'start' | 'center' | 'end';
 

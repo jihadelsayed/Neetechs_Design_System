@@ -1,4 +1,6 @@
-import type { NtDisposable, NtSide } from '../types/index.js';
+import type { NtDisposable, NtLogicalSide, NtSide } from '../types/index.js';
+
+export type NtDrawerSide = NtSide | NtLogicalSide;
 import {
   ntCreateFocusTrap,
   type NtFocusTrapController,
@@ -24,7 +26,10 @@ export interface NtDrawerOptions {
   /** Modal drawers trap focus; nonmodal drawers behave as a region/navigation landmark. */
   modal?: boolean;
   role?: 'dialog' | 'region' | 'navigation';
-  side?: NtSide;
+  /** Canonical logical/physical placement. Prefer inline-start or inline-end. */
+  placement?: NtDrawerSide;
+  /** @deprecated Use `placement`. Retained for existing consumers. */
+  side?: NtDrawerSide;
   initialOpen?: boolean;
   closeOnEscape?: boolean;
   closeOnOutsideClick?: boolean;
@@ -39,7 +44,9 @@ export interface NtDrawerController extends NtDisposable {
   readonly drawer: HTMLElement;
   readonly trigger: HTMLElement | null;
   readonly backdrop: HTMLElement | null;
-  readonly side: NtSide;
+  readonly placement: NtDrawerSide;
+  /** @deprecated Use `placement`. */
+  readonly side: NtDrawerSide;
   readonly isOpen: boolean;
   open(): void;
   close(): void;
@@ -55,7 +62,8 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     description = null,
     modal = true,
     role = modal ? 'dialog' : 'region',
-    side = 'right',
+    placement,
+    side,
     initialOpen = false,
     closeOnEscape = true,
     closeOnOutsideClick = true,
@@ -65,6 +73,8 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     onOpen,
     onClose,
   } = options;
+
+  const resolvedPlacement = placement ?? side ?? 'inline-end';
 
   let isOpen = false;
 
@@ -94,10 +104,11 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     if (modal) drawer.setAttribute('aria-modal', 'true');
     else drawer.removeAttribute('aria-modal');
     drawer.dataset.state = isOpen ? 'open' : 'closed';
-    drawer.dataset.side = side;
+    drawer.dataset.side = resolvedPlacement;
+    drawer.dataset.placement = resolvedPlacement;
 
-    if (!drawer.classList.contains(`nt-drawer--${side}`)) {
-      drawer.classList.add(`nt-drawer--${side}`);
+    if (!drawer.classList.contains(`nt-drawer--${resolvedPlacement}`)) {
+      drawer.classList.add(`nt-drawer--${resolvedPlacement}`);
     }
 
     if (backdrop) {
@@ -145,8 +156,8 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     }
 
     isOpen = false;
-    if (modal) focusTrap.deactivate();
     overlay.deactivate();
+    if (modal) focusTrap.deactivate();
     syncAttributes();
     onClose?.();
   }
@@ -176,7 +187,8 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     drawer,
     trigger,
     backdrop,
-    side,
+    placement: resolvedPlacement,
+    side: resolvedPlacement,
 
     get isOpen() {
       return isOpen;
@@ -193,3 +205,6 @@ export function ntCreateDrawer(options: NtDrawerOptions): NtDrawerController {
     },
   };
 }
+
+/** Unprefixed compatibility export; canonical Neetechs code uses `ntCreateDrawer`. */
+export const createDrawer = ntCreateDrawer;

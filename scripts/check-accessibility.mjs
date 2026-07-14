@@ -34,6 +34,17 @@ async function walkCss(directory) {
   return files;
 }
 
+async function walkHtml(directory) {
+  const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
+  const files = [];
+  for (const entry of entries) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...(await walkHtml(path)));
+    else if (extname(entry.name) === '.html') files.push(path);
+  }
+  return files;
+}
+
 function declarations(css) {
   const map = new Map();
   for (const match of css.matchAll(/(--nt-[\w-]+)\s*:\s*([^;{}]+);/g)) {
@@ -115,7 +126,7 @@ function lineAt(source, index) {
   return source.slice(0, index).split(/\r?\n/).length;
 }
 
-async function validateSource(rootDir) {
+export async function validateAccessibilitySource(rootDir) {
   const errors = [];
   for (const file of await walkCss(join(rootDir, 'src'))) {
     const source = await readFile(file, 'utf8');
@@ -126,6 +137,73 @@ async function validateSource(rootDir) {
         line: lineAt(source, match.index),
         detail: match[0],
       });
+    }
+
+    const rawMotion = [...source.matchAll(/(?:animation|transition)(?:-duration)?\s*:[^;]*(\d*\.?\d+)(ms|s)[^;]*;/gi)]
+      .filter((match) => {
+        const milliseconds = Number(match[1]) * (match[2].toLowerCase() === 's' ? 1000 : 1);
+        return milliseconds >= 200;
+      });
+    if (rawMotion.length > 0 && !/@media\s*\(prefers-reduced-motion:\s*reduce\)/.test(source)) {
+      for (const match of rawMotion) {
+        errors.push({
+          type: 'unhandled-long-motion',
+          file: relative(rootDir, file).replaceAll('\\', '/'),
+          line: lineAt(source, match.index),
+          detail: match[0],
+        });
+      }
+    }
+  }
+  return errors;
+}
+
+export async function validateAccessibilityExamples(rootDir) {
+  const errors = [];
+  for (const file of await walkHtml(join(rootDir, 'tests', 'accessibility'))) {
+    const source = await readFile(file, 'utf8');
+    const filePath = relative(rootDir, file).replaceAll('\\', '/');
+    const ids = new Map();
+    for (const match of source.matchAll(/\bid\s*=\s*["']([^"']+)["']/gi)) {
+      const occurrences = ids.get(match[1]) ?? [];
+      occurrences.push(lineAt(source, match.index));
+      ids.set(match[1], occurrences);
+    }
+    for (const [id, lines] of ids) {
+      if (lines.length > 1) {
+        errors.push({ type: 'duplicate-example-id', file: filePath, line: lines[1], detail: id });
+      }
+    }
+
+    for (const match of source.matchAll(/\baria-(?:labelledby|describedby|controls|owns|activedescendant)\s*=\s*["']([^"']+)["']/gi)) {
+      for (const reference of match[1].trim().split(/\s+/)) {
+        if (reference && !ids.has(reference)) {
+          errors.push({
+            type: 'undefined-aria-reference',
+            file: filePath,
+            line: lineAt(source, match.index),
+            detail: reference,
+          });
+        }
+      }
+    }
+
+    for (const match of source.matchAll(/<img\b[^>]*>/gi)) {
+      if (!/\balt\s*=\s*["'][^"']*["']/i.test(match[0])) {
+        errors.push({ type: 'image-without-alt-strategy', file: filePath, line: lineAt(source, match.index), detail: match[0] });
+      }
+    }
+
+    for (const match of source.matchAll(/<(div|span)\b[^>]*(?:\bonclick\s*=|\bonkeydown\s*=|\brole\s*=\s*["']button["'])[^>]*>/gi)) {
+      errors.push({ type: 'nonsemantic-interactive-example', file: filePath, line: lineAt(source, match.index), detail: match[0] });
+    }
+
+    for (const match of source.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
+      const attributes = match[1];
+      const text = match[2].replace(/<[^>]+>/g, '').replace(/&\w+;/g, '').trim();
+      if (!text && !/\baria-(?:label|labelledby)\s*=/i.test(attributes)) {
+        errors.push({ type: 'unnamed-icon-button-example', file: filePath, line: lineAt(source, match.index), detail: match[0].slice(0, 120) });
+      }
     }
   }
   return errors;
@@ -143,7 +221,10 @@ export async function validateAccessibility({ rootDir = repositoryRoot } = {}) {
 
   const primitiveValues = declarations(primitiveCss);
   const results = [];
-  const errors = await validateSource(rootDir);
+  const errors = [
+    ...(await validateAccessibilitySource(rootDir)),
+    ...(await validateAccessibilityExamples(rootDir)),
+  ];
 
   for (const theme of THEMES) {
     const themeCss = theme === 'light' ? lightCss : darkCss;

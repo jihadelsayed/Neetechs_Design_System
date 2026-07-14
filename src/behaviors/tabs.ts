@@ -23,7 +23,7 @@ export function ntCreateTabs(options: NtTabsOptions): NtTabsController {
   const {
     root,
     tabList: providedTabList,
-    tabSelector = '[role="tab"],.nt-tabs__tab',
+    tabSelector = '[role="tab"],.nt-tabs__tab,.nt-tabs__trigger',
     panelSelector = '[role="tabpanel"],.nt-tabs__panel',
     orientation = 'horizontal',
     activation = 'automatic',

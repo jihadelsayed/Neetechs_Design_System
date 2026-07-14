@@ -64,6 +64,15 @@ summary:focus-visible,
   min-inline-size: var(--nt-target-size-default);
 }
 
+/* Calendar behavior hooks remain readable and operable before a product adds layout chrome. */
+[data-nt-calendar-date] {
+  min-inline-size: var(--nt-target-size-primary);
+  min-block-size: var(--nt-target-size-primary);
+  border: 1px solid var(--nt-border-default);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+}
+
 @media (forced-colors: active) {
   a[href] {
     color: LinkText;

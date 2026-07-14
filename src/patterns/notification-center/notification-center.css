@@ -216,7 +216,7 @@
 .nt-notification-center__item--unread::before {
   position: absolute;
   top: var(--nt-space-4);
-  left: var(--nt-space-2);
+  inset-inline-start: var(--nt-space-2);
   width: 0.375rem;
   height: 0.375rem;
   border-radius: var(--nt-radius-pill);

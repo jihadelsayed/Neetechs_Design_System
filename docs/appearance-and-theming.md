@@ -87,7 +87,7 @@ Local component size variants still describe the use case. Global density change
 
 `data-nt-contrast="high"` strengthens boundaries and removes shadow-dependent hierarchy for either light or dark. `prefers-contrast: more` supplies system behavior. Forced-colors mode maps semantic roles to system colors; no `forced-color-adjust: none` exception exists.
 
-`data-nt-motion="reduced"` shortens semantic durations, removes decorative transforms/travel, and disables decorative AI/slide animations. Essential state and progress feedback remain visible. `prefers-reduced-motion` supplies system behavior unless a manual boolean preference is applied. Detailed component contrast/focus remediation remains scheduled for Prompt 5.
+`data-nt-motion="reduced"` shortens semantic durations, removes decorative transforms/travel, and disables decorative AI/slide animations. Essential state and progress feedback remain visible. `prefers-reduced-motion` supplies system behavior unless a manual boolean preference is applied. Component focus, forced-colors, target-size, and semantic contrast contracts are documented in [accessibility.md](./accessibility.md).
 
 ## Cookie and cross-subdomain configuration
 

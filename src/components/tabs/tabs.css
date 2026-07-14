@@ -35,9 +35,9 @@
 
 .nt-tabs__trigger::after {
   position: absolute;
-  right: var(--nt-space-2);
+  inset-inline-end: var(--nt-space-2);
   bottom: -1px;
-  left: var(--nt-space-2);
+  inset-inline-start: var(--nt-space-2);
   height: 2px;
   border-radius: var(--nt-radius-pill);
   background: var(--nt-selection-indicator);
@@ -197,20 +197,21 @@
   flex-direction: column;
   align-items: stretch;
   min-width: 12rem;
-  border-right: 1px solid var(--nt-border-subtle);
+  border-inline-end: 1px solid var(--nt-border-subtle);
   border-bottom: 0;
 }
 
 .nt-tabs--vertical .nt-tabs__trigger {
   justify-content: flex-start;
-  border-radius: var(--nt-radius-control) 0 0 var(--nt-radius-control);
+  border-start-start-radius: var(--nt-radius-control);
+  border-end-start-radius: var(--nt-radius-control);
 }
 
 .nt-tabs--vertical .nt-tabs__trigger::after {
   top: var(--nt-space-2);
-  right: -1px;
+  inset-inline-end: -1px;
   bottom: var(--nt-space-2);
-  left: auto;
+  inset-inline-start: auto;
   width: 2px;
   height: auto;
   transform: scaleY(0.6);
@@ -258,7 +259,7 @@
     flex-direction: row;
     min-width: 0;
     overflow-x: auto;
-    border-right: 0;
+    border-inline-end: 0;
     border-bottom: 1px solid var(--nt-border-subtle);
   }
 
@@ -269,9 +270,9 @@
 
   .nt-tabs--vertical .nt-tabs__trigger::after {
     top: auto;
-    right: var(--nt-space-2);
+    inset-inline-end: var(--nt-space-2);
     bottom: -1px;
-    left: var(--nt-space-2);
+    inset-inline-start: var(--nt-space-2);
     width: auto;
     height: 2px;
     transform: scaleX(0.6);

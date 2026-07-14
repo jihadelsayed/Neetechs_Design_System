@@ -50,7 +50,7 @@ const DEFAULT_ITEM_SELECTOR = [
   '.nt-menu__item',
 ].join(',');
 
-export function ntCreateDropdown(
+export function ntCreateMenuPopover(
   options: NtDropdownOptions,
 ): NtDropdownController {
   const {
@@ -323,4 +323,22 @@ export function ntCreateDropdown(
       overlay.destroy();
     },
   };
+}
+
+/**
+ * Compatibility name for the canonical menu/popover controller.
+ * The public dropdown pattern remains supported.
+ */
+export function ntCreateDropdown(
+  options: NtDropdownOptions,
+): NtDropdownController {
+  return ntCreateMenuPopover(options);
+}
+
+export type NtMenuOptions = Omit<NtDropdownOptions, 'pattern'>;
+export type NtMenuController = NtDropdownController;
+
+/** Creates the canonical application-menu behavior over the shared popover foundation. */
+export function ntCreateMenu(options: NtMenuOptions): NtMenuController {
+  return ntCreateMenuPopover({ ...options, pattern: 'menu' });
 }

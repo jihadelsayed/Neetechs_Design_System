@@ -3,6 +3,7 @@ import type {
   NtRovingFocusController,
   NtRovingFocusOptions,
 } from '../types/index.js';
+import { ntGetInlineArrowKeys } from './direction.js';
 
 export const NT_KEYS = {
   arrowDown: 'ArrowDown',
@@ -229,6 +230,7 @@ export function ntCreateRovingFocus(
     const isHorizontal =
       orientation === 'horizontal' || orientation === 'both';
     const isVertical = orientation === 'vertical' || orientation === 'both';
+    const inlineKeys = ntGetInlineArrowKeys(root);
 
     if (event.key === NT_KEYS.home) {
       event.preventDefault();
@@ -244,7 +246,7 @@ export function ntCreateRovingFocus(
 
     if (
       (isVertical && event.key === NT_KEYS.arrowDown) ||
-      (isHorizontal && event.key === NT_KEYS.arrowRight)
+      (isHorizontal && event.key === inlineKeys.next)
     ) {
       event.preventDefault();
       focusNext();
@@ -253,7 +255,7 @@ export function ntCreateRovingFocus(
 
     if (
       (isVertical && event.key === NT_KEYS.arrowUp) ||
-      (isHorizontal && event.key === NT_KEYS.arrowLeft)
+      (isHorizontal && event.key === inlineKeys.previous)
     ) {
       event.preventDefault();
       focusPrevious();

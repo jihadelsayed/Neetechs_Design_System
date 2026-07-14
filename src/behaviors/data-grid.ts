@@ -1,5 +1,6 @@
 import type { NtDisposable } from '../types/index.js';
 import { NT_KEYS, ntIsActivationKey } from './keyboard.js';
+import { ntGetInlineArrowKeys } from './direction.js';
 
 export type NtGridSortDirection = 'ascending' | 'descending' | 'none';
 
@@ -61,15 +62,28 @@ export function ntCreateDataGrid(options: NtDataGridOptions): NtDataGridControll
     return [row, row >= 0 ? rows[row]?.indexOf(cell) ?? -1 : -1];
   }
 
+  function selectCell(cell: HTMLElement): void {
+    if (selection === 'none' || !enabled(cell)) return;
+    const selected = selection === 'row' ? cell.closest<HTMLElement>(rowSelector) : cell;
+    if (!selected) return;
+    const selector = selection === 'row' ? rowSelector : cellSelector;
+    for (const candidate of root.querySelectorAll<HTMLElement>(selector)) {
+      if (candidate.hasAttribute('aria-selected')) candidate.setAttribute('aria-selected', 'false');
+    }
+    selected.setAttribute('aria-selected', 'true');
+    onSelectionChange?.(selected);
+  }
+
   const handleKeyDown = (event: KeyboardEvent) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
     const cell = target.closest<HTMLElement>(cellSelector);
     if (!cell || !root.contains(cell)) return;
     const [row, column] = coordinates(cell);
+    const inlineKeys = ntGetInlineArrowKeys(root);
     let next: [number, number] | null = null;
-    if (event.key === NT_KEYS.arrowRight) next = [row, column + 1];
-    else if (event.key === NT_KEYS.arrowLeft) next = [row, column - 1];
+    if (event.key === inlineKeys.next) next = [row, column + 1];
+    else if (event.key === inlineKeys.previous) next = [row, column - 1];
     else if (event.key === NT_KEYS.arrowDown) next = [row + 1, column];
     else if (event.key === NT_KEYS.arrowUp) next = [row - 1, column];
     else if (event.key === NT_KEYS.home) next = event.ctrlKey ? [0, 0] : [row, 0];
@@ -79,6 +93,7 @@ export function ntCreateDataGrid(options: NtDataGridOptions): NtDataGridControll
       next = [targetRow, (rows[targetRow]?.length ?? 1) - 1];
     } else if (event.target === cell && ntIsActivationKey(event)) {
       event.preventDefault();
+      selectCell(cell);
       onActivate?.(cell, event);
     }
     if (next) {
@@ -88,15 +103,11 @@ export function ntCreateDataGrid(options: NtDataGridOptions): NtDataGridControll
   };
 
   const handleClick = (event: MouseEvent) => {
-    if (selection === 'none') return;
     const target = event.target;
     if (!(target instanceof Element)) return;
     const cell = target.closest<HTMLElement>(cellSelector);
     if (!cell || !root.contains(cell)) return;
-    const selected = selection === 'row' ? cell.closest<HTMLElement>(rowSelector) : cell;
-    if (!selected || selected.getAttribute('aria-disabled') === 'true') return;
-    selected.setAttribute('aria-selected', 'true');
-    onSelectionChange?.(selected);
+    selectCell(cell);
   };
 
   root.addEventListener('keydown', handleKeyDown);

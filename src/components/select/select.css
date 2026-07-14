@@ -101,3 +101,17 @@
     transition: none !important;
   }
 }
+
+.nt-select:dir(rtl) {
+  background:
+    linear-gradient(-45deg, transparent 50%, currentColor 50%) left 1rem center / 0.35rem 0.35rem no-repeat,
+    linear-gradient(-135deg, currentColor 50%, transparent 50%) left 0.75rem center / 0.35rem 0.35rem no-repeat,
+    var(--nt-control-bg);
+}
+
+.nt-select:dir(rtl):hover {
+  background:
+    linear-gradient(-45deg, transparent 50%, currentColor 50%) left 1rem center / 0.35rem 0.35rem no-repeat,
+    linear-gradient(-135deg, currentColor 50%, transparent 50%) left 0.75rem center / 0.35rem 0.35rem no-repeat,
+    var(--nt-control-bg-hover);
+}

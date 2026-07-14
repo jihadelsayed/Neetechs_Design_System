@@ -148,7 +148,7 @@
 .nt-search-bar__results {
   position: absolute;
   top: calc(100% + var(--nt-space-2));
-  left: 0;
+  inset-inline-start: 0;
   z-index: var(--nt-z-dropdown);
   display: flex;
   flex-direction: column;

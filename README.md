@@ -2,6 +2,18 @@
 
 Official framework-agnostic Neetechs UI design system.
 
+## Localization and RTL
+
+Use native document metadata; components inherit nested direction changes:
+
+```html
+<html lang="ar" dir="rtl">
+  <code dir="ltr" class="nt-technical-value">POST /api/v1/invoices</code>
+</html>
+```
+
+Use `.nt-icon--directional` only for arrows whose inline meaning should mirror. Explicit-locale number/date helpers are exported from `@neetechs/ui/localization`. Applications provide translations, locale/time-zone selection, and approved font loading. See [the RTL and localization contract](./docs/localization-and-rtl.md).
+
 `@neetechs/ui` is pure CSS + pure TypeScript helpers. It does not depend on Angular, React, Next.js, Bootstrap, Tailwind, or Angular Material.
 
 Use it in:
@@ -177,9 +189,10 @@ Invalid input:
 
 ```html
 <label class="nt-field nt-field--error">
-  <span class="nt-field__label">Email</span>
-  <input class="nt-input" aria-invalid="true" placeholder="you@example.com" />
-  <span class="nt-field__error">Enter a valid email.</span>
+  <span class="nt-field__label" id="email-label">Email</span>
+  <input id="email" class="nt-input" aria-labelledby="email-label"
+         aria-describedby="email-error" aria-invalid="true" />
+  <span id="email-error" class="nt-field__error">Enter a valid email.</span>
 </label>
 ```
 
@@ -307,7 +320,7 @@ Invalid input:
 ```html
 <form class="nt-ai-prompt-input">
   <div class="nt-ai-prompt-input__header">
-    <div class="nt-ai-prompt-input__title">
+    <div class="nt-ai-prompt-input__title" id="ai-prompt-label">
       <span class="nt-ai-prompt-input__title-icon">✦</span>
       Ask AI
     </div>
@@ -318,6 +331,7 @@ Invalid input:
   <div class="nt-ai-prompt-input__body">
     <textarea
       class="nt-ai-prompt-input__textarea"
+      aria-labelledby="ai-prompt-label"
       placeholder="Ask AI to plan your day..."
     ></textarea>
   </div>
@@ -461,10 +475,25 @@ Invalid input:
 
 ```ts
 import {
+  ntCreateCalendarGrid,
+  ntCreateDataGrid,
   ntCreateDialog,
   ntCreateDrawer,
   ntCreateDropdown,
+  ntCreateMenu,
+  ntCreateTabs,
 } from '@neetechs/ui/behaviors';
+```
+
+## Accessibility
+
+The package targets WCAG 2.2 AA as an engineering baseline, not a certification. Native HTML remains required: CSS classes do not add roles, names, labels, or keyboard behavior. Shared helpers cover tabs, menus, modal focus management, data-grid navigation, calendar-grid navigation, form relationships, and announcements.
+
+See [docs/accessibility.md](./docs/accessibility.md) for component contracts and manual checks. Repository verification includes:
+
+```bash
+npm run check:a11y
+npm run test:browser
 ```
 
 Dropdown example:
@@ -517,9 +546,21 @@ if (drawer) {
     trigger,
     drawer,
     backdrop,
-    side: 'right',
+    placement: 'inline-end',
   });
 }
+```
+
+## Canonical components and compatibility
+
+Modal is a mode of the canonical dialog controller. `ntCreateModal`, `.nt-modal*`, and `@neetechs/ui/components/modal.css` remain deprecated compatibility contracts; new code uses `ntCreateDialog({ modal: true })` and dialog classes. Drawers use logical `placement`; the old right-drawer CSS path/classes remain mapped to the canonical drawer source. Company and workspace switchers retain distinct product class names while sharing one visual/menu foundation.
+
+Native read-only tables use `@neetechs/ui/components/table.css`. Use data grid only for genuinely interactive two-dimensional data. See [docs/component-architecture.md](./docs/component-architecture.md) for the complete decision and deprecation matrix.
+
+Architecture verification:
+
+```bash
+npm run check:architecture
 ```
 
 ## Package exports

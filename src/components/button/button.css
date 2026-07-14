@@ -65,6 +65,15 @@
   width: 100%;
 }
 
+.nt-button--wrap {
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  min-height: var(--nt-control-height-md);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 /* Variants */
 
 .nt-button--primary {

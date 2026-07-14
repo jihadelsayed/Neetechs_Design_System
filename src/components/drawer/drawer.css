@@ -1,4 +1,4 @@
-﻿.nt-drawer-backdrop {
+.nt-drawer-backdrop {
   position: fixed;
   inset: 0;
   z-index: var(--nt-z-drawer);
@@ -47,19 +47,47 @@
   border-radius: 0 var(--nt-radius-drawer) var(--nt-radius-drawer) 0;
 }
 
+.nt-drawer--inline-end {
+  --nt-drawer-inline-closed: 100%;
+
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: min(100%, 28rem);
+  border-inline-end: 0;
+  border-start-start-radius: var(--nt-radius-drawer);
+  border-end-start-radius: var(--nt-radius-drawer);
+}
+
+.nt-drawer--inline-start {
+  --nt-drawer-inline-closed: -100%;
+
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: min(100%, 28rem);
+  border-inline-start: 0;
+  border-start-end-radius: var(--nt-radius-drawer);
+  border-end-end-radius: var(--nt-radius-drawer);
+}
+
+.nt-drawer--inline-end:dir(rtl) {
+  --nt-drawer-inline-closed: -100%;
+}
+
+.nt-drawer--inline-start:dir(rtl) {
+  --nt-drawer-inline-closed: 100%;
+}
+
 .nt-drawer--top {
   top: 0;
-  right: 0;
-  left: 0;
+  inset-inline: 0;
   max-height: min(80dvh, 36rem);
   border-top: 0;
   border-radius: 0 0 var(--nt-radius-drawer) var(--nt-radius-drawer);
 }
 
 .nt-drawer--bottom {
-  right: 0;
+  inset-inline: 0;
   bottom: 0;
-  left: 0;
   max-height: min(80dvh, 36rem);
   border-bottom: 0;
   border-radius: var(--nt-radius-drawer) var(--nt-radius-drawer) 0 0;
@@ -183,22 +211,30 @@
 }
 
 .nt-drawer--sm.nt-drawer--left,
-.nt-drawer--sm.nt-drawer--right {
+.nt-drawer--sm.nt-drawer--right,
+.nt-drawer--sm.nt-drawer--inline-start,
+.nt-drawer--sm.nt-drawer--inline-end {
   width: min(100%, 22rem);
 }
 
 .nt-drawer--md.nt-drawer--left,
-.nt-drawer--md.nt-drawer--right {
+.nt-drawer--md.nt-drawer--right,
+.nt-drawer--md.nt-drawer--inline-start,
+.nt-drawer--md.nt-drawer--inline-end {
   width: min(100%, 28rem);
 }
 
 .nt-drawer--lg.nt-drawer--left,
-.nt-drawer--lg.nt-drawer--right {
+.nt-drawer--lg.nt-drawer--right,
+.nt-drawer--lg.nt-drawer--inline-start,
+.nt-drawer--lg.nt-drawer--inline-end {
   width: min(100%, 40rem);
 }
 
 .nt-drawer--xl.nt-drawer--left,
-.nt-drawer--xl.nt-drawer--right {
+.nt-drawer--xl.nt-drawer--right,
+.nt-drawer--xl.nt-drawer--inline-start,
+.nt-drawer--xl.nt-drawer--inline-end {
   width: min(100%, 56rem);
 }
 
@@ -244,6 +280,16 @@
 
 .nt-drawer[data-state='closed'].nt-drawer--left {
   animation: nt-drawer-left-out var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-drawer[data-state='open'].nt-drawer--inline-start,
+.nt-drawer[data-state='open'].nt-drawer--inline-end {
+  animation: nt-drawer-inline-in var(--nt-duration-normal) var(--nt-ease-standard);
+}
+
+.nt-drawer[data-state='closed'].nt-drawer--inline-start,
+.nt-drawer[data-state='closed'].nt-drawer--inline-end {
+  animation: nt-drawer-inline-out var(--nt-duration-fast) var(--nt-ease-standard);
 }
 
 .nt-drawer[data-state='open'].nt-drawer--top {
@@ -322,6 +368,26 @@
   }
 }
 
+@keyframes nt-drawer-inline-in {
+  from {
+    transform: translateX(var(--nt-drawer-inline-closed));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nt-drawer-inline-out {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(var(--nt-drawer-inline-closed));
+  }
+}
+
 @keyframes nt-drawer-top-in {
   from {
     transform: translateY(-100%);
@@ -364,7 +430,9 @@
 
 @media (max-width: 640px) {
   .nt-drawer--left,
-  .nt-drawer--right {
+  .nt-drawer--right,
+  .nt-drawer--inline-start,
+  .nt-drawer--inline-end {
     width: 100%;
     border-radius: 0;
   }
@@ -402,5 +470,116 @@
   .nt-drawer__close {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+
+/* Legacy right-drawer CSS compatibility. New markup uses nt-drawer + nt-drawer--inline-end. */
+.nt-right-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(28rem, 100vw);
+  height: 100vh;
+  min-width: 0;
+  background: var(--nt-bg-surface-raised);
+  border-inline-start: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-elevation-drawer);
+}
+
+.nt-right-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-height: var(--nt-header-height);
+  padding-inline: var(--nt-space-5);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-right-drawer__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+}
+
+.nt-right-drawer__title {
+  margin: 0;
+  overflow: hidden;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-right-drawer__description {
+  overflow: hidden;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-right-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-control-height-md);
+  height: var(--nt-control-height-md);
+  flex: 0 0 auto;
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-control);
+  background: transparent;
+  color: var(--nt-icon-secondary);
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-right-drawer__close:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-icon-primary);
+}
+
+.nt-right-drawer__close:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-right-drawer__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--nt-space-5);
+  overflow-y: auto;
+}
+
+.nt-right-drawer__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-4) var(--nt-space-5);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-right-drawer--wide {
+  width: min(40rem, 100vw);
+}
+
+.nt-right-drawer--narrow {
+  width: min(22rem, 100vw);
+}
+
+@media (max-width: 48rem) {
+  .nt-right-drawer {
+    width: 100vw;
+  }
+
+  .nt-right-drawer__header,
+  .nt-right-drawer__body,
+  .nt-right-drawer__footer {
+    padding-inline: var(--nt-space-4);
   }
 }

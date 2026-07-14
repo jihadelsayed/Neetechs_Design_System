@@ -1,4 +1,5 @@
 export * from './ids.js';
+export * from './direction.js';
 export * from './keyboard.js';
 export * from './focus-trap.js';
 export * from './overlay.js';

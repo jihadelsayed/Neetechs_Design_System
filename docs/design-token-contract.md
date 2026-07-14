@@ -77,7 +77,7 @@ The platform contract contains 93 semantic color roles plus 11 semantic elevatio
 | --- | --- | --- |
 | Surfaces (10) | `--nt-bg-app`, `--nt-bg-surface`, `--nt-bg-surface-subtle`, `--nt-bg-surface-muted`, `--nt-bg-surface-raised`, `--nt-bg-surface-overlay`, `--nt-bg-surface-sunken`, `--nt-bg-inverse`, `--nt-bg-surface-disabled`, `--nt-bg-backdrop` | Choose by structural level, not by whichever gray currently matches. |
 | Text (10) | `--nt-text-primary`, `--nt-text-secondary`, `--nt-text-muted`, `--nt-text-subtle`, `--nt-text-disabled`, `--nt-text-inverse`, `--nt-text-link`, `--nt-text-link-hover`, `--nt-text-on-accent`, `--nt-text-on-danger` | Link and on-color roles must not be substituted with palette/accent foregrounds. |
-| Borders (6) | `--nt-border-subtle`, `--nt-border-default`, `--nt-border-strong`, `--nt-border-interactive`, `--nt-border-selected`, `--nt-border-disabled` | Selected and disabled boundaries have explicit roles. `interactive` remains the focus/accent boundary hook pending the accessibility pass. |
+| Borders (6) | `--nt-border-subtle`, `--nt-border-default`, `--nt-border-strong`, `--nt-border-interactive`, `--nt-border-selected`, `--nt-border-disabled` | Selected and disabled boundaries have explicit roles. Focus uses the dedicated accessibility roles below. |
 | Neutral interaction (4) | `--nt-interactive-neutral-bg`, `--nt-interactive-neutral-hover`, `--nt-interactive-neutral-pressed`, `--nt-interactive-neutral-selected` | Use for non-action interactive surfaces such as rows and navigation hover. |
 | Actions (31) | `--nt-action-{primary,secondary,neutral,danger,success,warning}-{bg,hover,pressed,border,fg}` plus `--nt-action-primary-subtle` | The action's consequence chooses the family; screen context does not. |
 | Status (16) | `--nt-{info,success,warning,danger}`, plus `-bg`, `-border`, and `-text` for each status | The un-suffixed role is the indicator/foreground; every status also owns a background, border, and readable text role. |
@@ -114,7 +114,7 @@ Components must not select raw radius scales. A control uses the control/button/
 - Primary product actions use `--nt-action-primary-*`. Secondary outlined/filled controls use secondary. Ghost or low-emphasis controls use neutral. Destructive, success, and warning consequences use their corresponding action family.
 - An action uses `--nt-ai-action*` only when the action itself invokes AI. Save, cancel, approve, and delete retain their normal consequence roles even on an AI screen.
 - Active navigation, selected cards, checked options, selected rows, and active tabs use selection roles. A product accent may remain a small selection indicator through `--nt-selection-indicator`.
-- Forms use control surfaces/borders. Disabled controls use disabled surface/border/text roles. Read-only controls use sunken or muted surfaces and secondary text; their final differentiation is deferred to the accessibility prompt.
+- Forms use control surfaces/borders. Disabled controls use disabled surface/border/text roles. Read-only controls use sunken or muted surfaces and secondary text while remaining readable, selectable, and focusable where useful.
 - Cards and panels use base/raised surfaces. Status surfaces use status roles only when status is the content's primary meaning. AI-generated artifacts may use `--nt-ai-generated-surface`.
 - Table/data-grid hover uses neutral interaction. Selection uses selection roles. Financial cells use financial roles and status cells use status roles.
 - Calendar user/category colors and data visualization colors are data, not platform action colors. They require a narrowly documented exception or consumer input instead of a hardcoded component literal.
@@ -246,6 +246,14 @@ Do not declare a token only in one theme, create circular aliases, self-referenc
 
 Do not add a token solely to silence validation, create a generic alias for unrelated contexts, or place a deprecated alias outside the compatibility file.
 
+## Accessibility focus and target roles
+
+Focus styling uses `--nt-focus-ring-width`, `--nt-focus-ring-offset`, `--nt-focus-ring-color`, `--nt-focus-ring-danger`, and `--nt-focus-ring-inverse`. The legacy `--nt-focus-ring` remains the accent-aware color hook used to derive the canonical color. Components use `:focus-visible`; unsafe outline removal is prohibited.
+
+Interactive sizing uses `--nt-target-size-primary` (44px) for primary/icon-only touch controls and `--nt-target-size-default`/`--nt-target-size-compact` (40px) for justified dense context. Density may alter visible control geometry but must not shrink the interactive target beneath these roles.
+
+Semantic foreground/background and boundary contrast is validated with `npm run check:a11y` across both themes and all accents. See [accessibility.md](./accessibility.md) for the complete behavioral contract.
+
 ## Validation
 
 Run:
@@ -256,7 +264,7 @@ npm run check:tokens
 
 `scripts/check-design-tokens.mjs` scans production CSS under `src` and excludes generated/dependency directories. It fails for undefined references (including nested fallbacks), undeclared alias targets, circular/self aliases, invalid or empty declarations, accidental duplicate declarations in one block, deprecated internal usage, and invalid/missing compatibility aliases. Errors include file paths, line numbers, and token names.
 
-The release workflow validates tokens before building, testing, packaging, or publishing.
+The release workflow validates tokens and accessibility before building, browser testing, packaging, or publishing.
 
 ## Known remaining migration work
 
@@ -265,7 +273,7 @@ The release workflow validates tokens before building, testing, packaging, or pu
 - No production token exists only in generated `dist`; a normal build mirrors corrected source. Documentation-only `--nt-example-*` names in this guide are explicitly illustrative and are excluded from validation.
 - Raw literal dimensions and timing values remain for later scale/visual-consistency work. Production component CSS now contains zero hardcoded hex/RGB/HSL/named colors; the three progress-stripe RGBA calls moved behind `--nt-progress-stripe-color`.
 - The primitive token set contains defined-but-unused values. They remain public customization surface until consumer usage is assessed.
-- Accent, density, contrast, forced-colors, and reduced-motion layers are implemented in the global appearance architecture. Final per-component contrast and focus remediation remains deferred to Prompt 5.
+- Accent, density, contrast, forced-colors, reduced-motion, semantic contrast, focus, and minimum-target foundations are implemented and enforced. Manual application-level screen-reader and visual review remain required.
 - RTL, responsive behavior, and visual regression still require later prompts and browser verification.
 - AI actions now use the AI action family, selected/current states use selection roles, and high-contrast semantic elevation resolves to `none`. Those intentional semantic corrections require screenshot review in a real browser.
 - Compatibility aliases require downstream consumer telemetry before next-major removal.
