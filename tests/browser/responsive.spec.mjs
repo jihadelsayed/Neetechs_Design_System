@@ -25,13 +25,81 @@ test('mobile shell hides the sidebar, shows the trigger, and keeps no stale offs
   expect(columns.trim().split(' ').length).toBe(1);
 });
 
+/**
+ * Collects every visible element whose bounding box extends beyond the
+ * document viewport and is not inside an intentional scroll/clip region,
+ * with the geometry needed to identify the offender from a CI log.
+ */
+async function collectOverflowDiagnostics(page) {
+  return page.evaluate(() => {
+    const docWidth = document.documentElement.clientWidth;
+    const isContained = (element) => {
+      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        const overflowX = getComputedStyle(parent).overflowX;
+        if (['hidden', 'auto', 'scroll', 'clip'].includes(overflowX)) return true;
+      }
+      return false;
+    };
+    const offenders = [];
+    for (const element of document.querySelectorAll('body *')) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width === 0 || isContained(element)) continue;
+      if (rect.right > docWidth + 1 || rect.left < -1) {
+        const style = getComputedStyle(element);
+        const parent = element.parentElement;
+        offenders.push({
+          tag: element.tagName,
+          id: element.id || null,
+          className: (element.className || '').toString(),
+          left: Math.round(rect.left * 100) / 100,
+          right: Math.round(rect.right * 100) / 100,
+          width: Math.round(rect.width * 100) / 100,
+          minWidth: style.minWidth,
+          maxWidth: style.maxWidth,
+          overflow: style.overflow,
+          parent: parent
+            ? `${parent.tagName}#${parent.id || ''}.${(parent.className || '').toString().slice(0, 60)}`
+            : null,
+        });
+      }
+    }
+    return {
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: docWidth,
+      offenders,
+    };
+  });
+}
+
 test('no page-level horizontal scrolling at narrow phone width', async ({ page }) => {
   await open(page, { width: 320, height: 700 });
-  const overflow = await page.evaluate(() => ({
-    scrollWidth: document.documentElement.scrollWidth,
-    clientWidth: document.documentElement.clientWidth,
-  }));
-  expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
+  const report = await collectOverflowDiagnostics(page);
+  expect(
+    report.scrollWidth,
+    `document overflows horizontally; offenders:\n${JSON.stringify(report.offenders, null, 2)}`,
+  ).toBeLessThanOrEqual(report.clientWidth + 1);
+
+  // Regression guards for previously found offenders.
+  // 1. The create-form error summary once rendered its title in the alert's
+  //    intrinsic icon column (missing .nt-alert__body), forcing a ~341px
+  //    document on Linux font metrics.
+  const summary = page.locator('#form-error-summary');
+  const summaryBox = await summary.boundingBox();
+  expect(summaryBox, '#form-error-summary must render').toBeTruthy();
+  expect(summaryBox.x + summaryBox.width).toBeLessThanOrEqual(320 + 1);
+  expect(
+    await summary.evaluate((element) => element.querySelector('.nt-alert__body') !== null),
+    '#form-error-summary must place text inside .nt-alert__body',
+  ).toBe(true);
+
+  // 2. AI approval-card actions were clipped by the card's overflow at
+  //    narrow widths instead of wrapping; every action must stay reachable.
+  for (const name of ['Ask Neenee to revise', 'Reject proposal', 'Approve change']) {
+    const action = page.getByRole('button', { name });
+    await expect(action).toBeVisible();
+    const box = await action.boundingBox();
+    expect(box.x + box.width, `"${name}" extends past the viewport`).toBeLessThanOrEqual(320 + 1);
+  }
 });
 
 test('table priority columns hide as the container narrows', async ({ page }) => {
@@ -127,16 +195,36 @@ test.describe('reduced motion', () => {
 });
 
 test.describe('visual regression', () => {
+  // Geometry is asserted by the behavioral tests above; snapshots guard
+  // composition. The tolerance absorbs cross-platform font rasterization
+  // (Windows vs Linux Chromium) only — the same narrow contract as the
+  // existing rtl-shell.png snapshot (threshold 0.3), with a tighter pixel
+  // budget. Do not raise it without inspecting expected/actual/diff images.
+  const rasterizationTolerance = {
+    animations: 'disabled',
+    threshold: 0.3,
+    maxDiffPixelRatio: 0.04,
+  };
+
   test('shell adapts between desktop and mobile', async ({ page }) => {
     await open(page, { width: 1280 });
-    await expect(page.locator('#fixture-app-shell')).toHaveScreenshot('patterns-shell-desktop.png');
+    await expect(page.locator('#fixture-app-shell')).toHaveScreenshot(
+      'patterns-shell-desktop.png',
+      rasterizationTolerance,
+    );
 
     await page.setViewportSize({ width: 375, height: 700 });
-    await expect(page.locator('#fixture-app-shell')).toHaveScreenshot('patterns-shell-mobile.png');
+    await expect(page.locator('#fixture-app-shell')).toHaveScreenshot(
+      'patterns-shell-mobile.png',
+      rasterizationTolerance,
+    );
   });
 
   test('agenda renders stably in a narrow container', async ({ page }) => {
     await open(page, { width: 1280 });
-    await expect(page.locator('.nt-calendar-agenda')).toHaveScreenshot('patterns-agenda-narrow.png');
+    await expect(page.locator('.nt-calendar-agenda')).toHaveScreenshot(
+      'patterns-agenda-narrow.png',
+      rasterizationTolerance,
+    );
   });
 });

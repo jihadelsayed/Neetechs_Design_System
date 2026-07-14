@@ -131,7 +131,9 @@ for (const { lang, dir } of [
       labelVisible: document.querySelector('#long-label').getBoundingClientRect().bottom > 0,
     }));
     expect(metrics.sectionScrollWidth).toBeLessThanOrEqual(metrics.sectionWidth + 1);
-    expect(metrics.labelWidth).toBeLessThanOrEqual(metrics.sectionWidth);
+    // clientWidth is integer-rounded while getBoundingClientRect is fractional;
+    // allow 1 CSS pixel of browser subpixel rounding, nothing more.
+    expect(metrics.labelWidth).toBeLessThanOrEqual(metrics.sectionWidth + 1);
     expect(metrics.labelVisible).toBe(true);
   });
 }

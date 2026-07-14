@@ -313,6 +313,9 @@
 
   .nt-ai-approval-card__actions {
     justify-content: stretch;
+    /* Actions wrap onto new lines so no button is clipped by the card at
+     * narrow widths; hover is not required to reach any of them. */
+    flex-wrap: wrap;
   }
 
   .nt-ai-approval-card__actions > * {

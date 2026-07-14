@@ -43,13 +43,14 @@
             <div class="nt-shell-main nt-app-shell__main">
               <header class="nt-header nt-app-shell__header">
                 <div class="nt-header__left">
-                  <button class="nt-header__mobile-trigger nt-header__action" type="button" aria-label="Open navigation" id="fixture-mobile-trigger">☰</button>
+                  <!-- Monochrome text glyphs, not color emoji: keeps cross-platform snapshots stable. -->
+                  <button class="nt-header__mobile-trigger nt-header__action" type="button" aria-label="Open navigation" id="fixture-mobile-trigger">≡</button>
                   <div class="nt-header__title-group">
                     <p class="nt-header__title">Company Center</p>
                   </div>
                 </div>
                 <div class="nt-header__right">
-                  <button class="nt-header__action" type="button" aria-label="Open notifications">🔔</button>
+                  <button class="nt-header__action" type="button" aria-label="Open notifications">●</button>
                 </div>
               </header>
               <main class="nt-app-shell__content nt-content-frame" aria-label="Shell demo content">
@@ -157,8 +158,10 @@
         <h2 id="form-heading">Create form</h2>
         <form class="nt-form" aria-labelledby="form-heading">
           <div class="nt-alert nt-alert--danger" role="alert" id="form-error-summary">
-            <p class="nt-alert__title">The invoice cannot be created yet</p>
-            <p class="nt-alert__description">Enter an invoice number and choose a customer.</p>
+            <div class="nt-alert__body">
+              <p class="nt-alert__title">The invoice cannot be created yet</p>
+              <p class="nt-alert__description">Enter an invoice number and choose a customer.</p>
+            </div>
           </div>
           <fieldset class="nt-form__section">
             <legend class="nt-form__section-title">Invoice details</legend>

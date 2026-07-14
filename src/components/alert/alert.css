@@ -1,7 +1,9 @@
 ﻿.nt-alert {
   position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  /* minmax(0, auto) keeps the icon column intrinsic while letting misplaced
+   * text content shrink and wrap instead of forcing page overflow. */
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
   align-items: start;
   gap: var(--nt-space-3);
   width: 100%;
