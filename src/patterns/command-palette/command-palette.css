@@ -411,7 +411,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-command-palette-backdrop {
     place-items: stretch;
     padding: var(--nt-space-2);

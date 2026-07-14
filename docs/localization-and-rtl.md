@@ -142,6 +142,6 @@ Tests cover explicit-locale formatting, validator failures, nested direction, RT
 
 - Applications must load fonts, translate content, and choose/persist locale, time zone, and currency.
 - Tooltip/calendar collision and event layout retain reviewed physical coordinate math.
-- Full calendar/data-grid narrow-layout redesign is deferred.
+- Responsive modes stay direction-aware: adaptive layouts use logical properties, sticky table columns follow `inset-inline-start`, master-detail panes and drawers follow logical placement, and long Swedish/Arabic content wraps via `overflow-wrap: anywhere` in titles and record values. Safe-area utilities are intentionally physical (device cutouts do not mirror with text direction). See [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md).
 - Complex browser bidi rendering and native Arabic screen-reader speech require product-level manual QA.
 - Automated checks prevent regressions but do not prove localization quality.

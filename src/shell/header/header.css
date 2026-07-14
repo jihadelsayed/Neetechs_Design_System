@@ -37,10 +37,6 @@
   gap: var(--nt-space-2);
 }
 
-.nt-header__mobile-trigger {
-  display: none;
-}
-
 .nt-header__title-group {
   display: flex;
   flex-direction: column;
@@ -150,6 +146,12 @@
   background: var(--nt-selection-bg);
   border-color: var(--nt-selection-border);
   color: var(--nt-selection-fg);
+}
+
+/* Declared after .nt-header__action so the combination
+ * "nt-header__mobile-trigger nt-header__action" stays hidden on desktop. */
+.nt-header__mobile-trigger {
+  display: none;
 }
 
 @media (max-width: 64rem) {

@@ -429,7 +429,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-search-bar--inline {
     width: 100%;
     min-width: 0;

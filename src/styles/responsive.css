@@ -1,0 +1,101 @@
+/*
+ * Responsive and adaptive foundations.
+ * See docs/responsive-and-adaptive-design.md for the full contract.
+ *
+ * Reusable components respond to the width of the region that contains them,
+ * not to the viewport. A region opts in by becoming a query container.
+ */
+
+/* Query-container primitive. Apply to page content areas, dialog and drawer
+ * bodies, dashboard columns, and split panes so nested components can adapt.
+ * Establishes inline-size containment: the element must not size itself from
+ * its children's inline size. */
+.nt-region {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.nt-region--named {
+  container-name: nt-region;
+}
+
+/* Full-height surfaces: dynamic viewport height with a 100vh fallback so
+ * mobile browser chrome never hides fixed actions. Plain 100vh alone is
+ * rejected by `npm run check:responsive`. */
+.nt-fill-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.nt-fill-viewport--fixed {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Safe-area utilities for edge-anchored surfaces (drawers, sheets, composers,
+ * full-screen dialogs). Safe-area insets are physically anchored device
+ * cutouts, so the inline utility intentionally uses physical padding. */
+.nt-safe-area-block-end {
+  padding-bottom: env(safe-area-inset-bottom, 0rem);
+}
+
+.nt-safe-area-block-start {
+  padding-top: env(safe-area-inset-top, 0rem);
+}
+
+.nt-safe-area-inline {
+  padding-left: env(safe-area-inset-left, 0rem);
+  padding-right: env(safe-area-inset-right, 0rem);
+}
+
+/* Inline scroll region for wide content (tables, code, technical values).
+ * Give the element tabindex="0" and an accessible name (aria-label or
+ * aria-labelledby) when it can actually scroll. */
+.nt-scroll-inline {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.nt-scroll-inline:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Hover-revealed secondary actions. On fine pointers the action fades until
+ * the scope is hovered or focused; on touch and keyboard it is always
+ * visible, so hover is never the only path to an action. */
+.nt-hover-reveal {
+  opacity: 1;
+  transition: opacity var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nt-hover-reveal-scope:not(:hover, :focus-within) .nt-hover-reveal {
+    opacity: 0;
+  }
+}
+
+/* Coarse pointers get full-size touch targets even for compact controls.
+ * Compact density must not create unsafe touch targets. */
+@media (pointer: coarse) {
+  :where(.nt-button--sm, .nt-icon-button--sm, .nt-chip--interactive, .nt-table__sort, .nt-data-grid__sort) {
+    min-block-size: var(--nt-target-size-default);
+  }
+
+  :where(.nt-icon-button--sm) {
+    min-inline-size: var(--nt-target-size-default);
+  }
+
+  /* Pointer-precision affordances that are meaningless on touch. */
+  .nt-data-grid__resize-handle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-hover-reveal {
+    transition: none !important;
+  }
+}

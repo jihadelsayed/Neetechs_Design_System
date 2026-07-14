@@ -192,7 +192,7 @@
   justify-content: center;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-alert {
     gap: var(--nt-space-2);
     padding: var(--nt-space-3);

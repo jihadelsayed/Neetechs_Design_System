@@ -188,7 +188,7 @@
   max-width: 100%;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-breadcrumb__link,
   .nt-breadcrumb__current {
     max-width: 10rem;

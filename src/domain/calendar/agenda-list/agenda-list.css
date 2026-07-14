@@ -1,0 +1,224 @@
+/*
+ * Calendar agenda list — the canonical phone presentation of calendar data.
+ * Month and week grids remain desktop/tablet views; on phones applications
+ * render the agenda (or day timeline) instead of a horizontally scrolled
+ * desktop grid. Grouping, locale formatting, and data remain application
+ * responsibilities; keyboard navigation uses ntCreateCalendarGrid semantics
+ * on the event list where two-dimensional navigation is not needed.
+ */
+.nt-calendar-agenda {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  container-type: inline-size;
+}
+
+.nt-calendar-agenda__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-4);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-calendar-agenda__header-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+}
+
+.nt-calendar-agenda__eyebrow {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-calendar-agenda__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  overflow-wrap: anywhere;
+}
+
+/* Compact date navigator: previous / today / next plus a date picker trigger. */
+.nt-calendar-agenda__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  flex: 0 0 auto;
+}
+
+.nt-calendar-agenda__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.nt-calendar-agenda__day {
+  display: flex;
+  flex-direction: column;
+}
+
+.nt-calendar-agenda__day-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--nt-z-sticky);
+  display: flex;
+  align-items: baseline;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-2) var(--nt-space-4);
+  background: var(--nt-bg-surface-muted);
+  border-block-end: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+/* Today is marked by text and an indicator, never color alone. */
+.nt-calendar-agenda__day--today .nt-calendar-agenda__day-header {
+  color: var(--nt-accent);
+  font-weight: var(--nt-font-weight-semibold);
+}
+
+.nt-calendar-agenda__today-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--nt-space-1-5);
+  border: 1px solid var(--nt-border-interactive);
+  border-radius: var(--nt-radius-pill);
+  color: var(--nt-accent);
+  font: var(--nt-text-caption);
+}
+
+.nt-calendar-agenda__event {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  width: 100%;
+  min-height: var(--nt-target-size-primary);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border: 0;
+  border-block-end: 1px solid var(--nt-border-subtle);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-body-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-calendar-agenda__event:hover {
+  background: var(--nt-bg-surface-hover);
+}
+
+.nt-calendar-agenda__event:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: calc(var(--nt-focus-ring-offset) * -1);
+}
+
+.nt-calendar-agenda__event--selected,
+.nt-calendar-agenda__event[aria-current='true'] {
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+  box-shadow: inset var(--nt-focus-ring-width) 0 0 var(--nt-selection-indicator);
+}
+
+.nt-calendar-agenda__event-time {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  flex: 0 0 auto;
+  min-width: 4.5rem;
+  color: var(--nt-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-calendar-agenda__event-duration {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-calendar-agenda__event-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.nt-calendar-agenda__event-title {
+  margin: 0;
+  color: inherit;
+  font: var(--nt-text-label-md);
+  overflow-wrap: anywhere;
+}
+
+.nt-calendar-agenda__event-meta {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  overflow-wrap: anywhere;
+}
+
+/* Categories pair a dot with a visible text label, never color alone. */
+.nt-calendar-agenda__event-category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1-5);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-calendar-agenda__event-dot {
+  width: var(--nt-space-2);
+  height: var(--nt-space-2);
+  flex: 0 0 auto;
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-accent);
+}
+
+.nt-calendar-agenda__event--all-day .nt-calendar-agenda__event-time {
+  min-width: 4.5rem;
+  font-variant-numeric: normal;
+}
+
+.nt-calendar-agenda__empty {
+  padding: var(--nt-space-6) var(--nt-space-4);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  text-align: center;
+}
+
+.nt-calendar-agenda__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+/* Wider containers give events a roomier two-column rhythm. */
+@container (min-width: 40rem) {
+  .nt-calendar-agenda__event {
+    padding-block: var(--nt-space-4);
+  }
+
+  .nt-calendar-agenda__event-time {
+    min-width: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-calendar-agenda__event {
+    transition: none !important;
+  }
+}

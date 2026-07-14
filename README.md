@@ -2,6 +2,22 @@
 
 Official framework-agnostic Neetechs UI design system.
 
+## Responsive and adaptive behavior
+
+Reusable components respond to their *container*, not the viewport: the shell content area, dialog and drawer bodies, tables, data grids, and forms are query containers, and `.nt-region` makes any dashboard column or split pane one. Viewport media queries are reserved for shell-level layout and use a documented rem scale (30/40/48/64/80rem — mirrored by `NT_VIEWPORTS` in `@neetechs/ui/behaviors`). Mobile contracts include the `.nt-mobile-nav` drawer shell mode, table priority columns and row details, data-grid constrained/record modes, the `.nt-calendar-agenda` phone calendar, dvh-safe full-height utilities (`.nt-fill-viewport`), safe-area padding, and coarse-pointer touch targets. See [docs/responsive-and-adaptive-design.md](./docs/responsive-and-adaptive-design.md).
+
+```bash
+npm run check:responsive
+```
+
+## Page patterns and content standards
+
+Shared page anatomy (`.nt-page-header`, `.nt-page-toolbar`, `.nt-page-section`, `.nt-page-footer-actions`), responsive forms (`.nt-form`), settings layouts, master-detail, and multi-step workflow patterns are documented in [docs/page-patterns-and-workflows.md](./docs/page-patterns-and-workflows.md). Terminology, action-label, validation, empty-state, confirmation, and AI-copy rules live in [docs/content-and-terminology.md](./docs/content-and-terminology.md) and are enforced for repository-owned fixtures by:
+
+```bash
+npm run check:content
+```
+
 ## Localization and RTL
 
 Use native document metadata; components inherit nested direction changes:

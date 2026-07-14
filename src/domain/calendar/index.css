@@ -1,4 +1,5 @@
-﻿@import './day-slice/day-slice.css';
+﻿@import './agenda-list/agenda-list.css';
+@import './day-slice/day-slice.css';
 @import './day-timeline/day-timeline.css';
 @import './event-card/event-card.css';
 @import './month-grid/month-grid.css';

@@ -259,7 +259,7 @@
   min-width: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-panel__header,
   .nt-panel__footer,
   .nt-panel__section-header {

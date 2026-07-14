@@ -24,4 +24,5 @@
 
 @import './animations/motion.css';
 @import './accessibility.css';
+@import './responsive.css';
 @import './localization.css';

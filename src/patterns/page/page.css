@@ -1,0 +1,219 @@
+/*
+ * Page anatomy primitives (docs/page-patterns-and-workflows.md).
+ * Standalone blocks compose inside any page wrapper (.nt-page, .nt-container,
+ * .nt-content-frame). One <h1> identifies the page; regions are optional and
+ * carry no business semantics. All blocks are intrinsic: they reflow from the
+ * available container width established by the shell, a drawer, or a dialog.
+ */
+
+/* Page header: identity, status, and actions. The title group keeps at least
+ * a readable line before actions wrap below it. */
+.nt-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-page-header__main {
+  display: flex;
+  flex: 1 1 20rem;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-page-header__eyebrow {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-page-header__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-lg);
+  letter-spacing: var(--nt-letter-spacing-title);
+  overflow-wrap: anywhere;
+}
+
+.nt-page-header__description {
+  max-width: 52rem;
+  margin: 0;
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-md);
+  overflow-wrap: anywhere;
+}
+
+/* Record identity metadata: status badge, reference, timestamps. */
+.nt-page-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2) var(--nt-space-3);
+  min-width: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+/* Action group: exactly one primary action; low-frequency actions move into
+ * an overflow menu rather than stacking as equal buttons. */
+.nt-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+/* Page toolbar: search, filters, sort, and view controls under the header. */
+.nt-page-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-page-toolbar__start {
+  display: flex;
+  flex: 1 1 16rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-page-toolbar__end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  margin-inline-start: auto;
+}
+
+/* Applied-filter summary keeps filter state discoverable on all widths. */
+.nt-page-toolbar__applied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  width: 100%;
+  min-width: 0;
+}
+
+/* Page body: vertical rhythm for sections; optional supporting aside. */
+.nt-page-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-6);
+  min-width: 0;
+}
+
+.nt-page-body--with-aside {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  align-items: start;
+  gap: var(--nt-space-6);
+}
+
+.nt-page-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+@container (max-width: 64rem) {
+  .nt-page-body--with-aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 64rem) {
+  .nt-page-body--with-aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Page section: one heading level below the page title. */
+.nt-page-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-page-section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-page-section__main {
+  display: flex;
+  flex: 1 1 16rem;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-page-section__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  overflow-wrap: anywhere;
+}
+
+.nt-page-section__description {
+  max-width: 52rem;
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.nt-page-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  flex: 0 0 auto;
+}
+
+/* Page footer actions: the safe action stays separated from destructive
+ * actions placed in the start slot. */
+.nt-page-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding-block-start: var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-page-footer-actions__start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  margin-inline-end: auto;
+}
+
+.nt-page-footer-actions--sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--nt-z-sticky);
+  background: var(--nt-bg-app);
+  padding-block-end: max(var(--nt-space-4), env(safe-area-inset-bottom, 0rem));
+}

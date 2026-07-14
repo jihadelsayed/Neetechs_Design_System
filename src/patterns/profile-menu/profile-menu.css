@@ -284,7 +284,7 @@
   min-width: 22rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-profile-menu {
     width: calc(100vw - var(--nt-space-6));
     min-width: 0;

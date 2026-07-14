@@ -443,7 +443,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 48rem) {
   .nt-calendar-week-grid__header,
   .nt-calendar-week-grid__footer {
     flex-direction: column;
@@ -461,7 +461,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .nt-calendar-week-grid__grid {
     min-width: 50rem;
   }

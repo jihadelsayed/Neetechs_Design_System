@@ -1,0 +1,156 @@
+Remaining design-system work
+Prompt 9 — Responsive and mobile architecture
+Container queries
+Mobile navigation drawer
+Responsive forms and toolbars
+Mobile dialogs and drawers
+Responsive tables
+Data-grid mobile record mode
+Real Calendar mobile view
+Mobile Neenee composer
+Touch, safe-area and mobile-keyboard support
+200% zoom testing
+Prompt 10 — Page patterns and UX language
+List pages
+Detail pages
+Create/edit forms
+Settings layouts
+Dashboards
+Search results
+Approval queues
+Onboarding
+Multi-step workflows
+Upload workflows
+Billing workflows
+AI-provider connection
+AI write-action flow
+Terminology and button-label rules
+Error, empty, warning and success copy
+Prompt 11 — Quality gates
+Complete component gallery
+Playwright visual regression
+axe accessibility tests
+Stylelint
+CSS syntax checks
+Undefined-token validation
+RTL validation
+Responsive validation
+Package-content validation
+Temporary consumer installation
+Package-size checks
+CI release gates
+Prompt 12 — Independent final audit
+
+Use a different model from the implementation model.
+
+Audit:
+
+Unfinished work
+Fake or undocumented features
+Duplicate components
+Broken compatibility aliases
+Accessibility regressions
+RTL regressions
+Responsive regressions
+Package exports
+Public API stability
+Dead CSS and TypeScript
+Documentation accuracy
+
+Only fix confirmed problems. Do not let the reviewer rewrite the whole package again.
+
+Real-application validation
+Prompt 13 — MyAccount or Companies
+
+Start with one relatively controlled application.
+
+Validate:
+
+Shared appearance
+Forms
+Settings
+Navigation
+Permissions
+Empty/error states
+Responsive layouts
+Arabic and Swedish
+Removal of local duplicate CSS
+Prompt 14 — Billing
+
+This is the strongest test for enterprise density.
+
+Validate:
+
+Tables and data grids
+Financial values
+Forms
+Modals
+Purchase invoices
+Assets and inventory
+Toasts and errors
+Destructive accounting actions
+Mobile record views
+Compact density
+Prompt 15 — Calendar
+
+Validate:
+
+Month, week and day views
+Agenda mode
+Mobile Calendar
+Event dialogs
+Keyboard navigation
+RTL date direction
+Overlapping events
+Touch interaction
+Long event names
+Time-zone and locale formatting
+Prompt 16 — Neetechs AI
+
+Validate:
+
+Chat layout
+Neenee message design
+Mobile composer
+Attachments
+Audio, image and camera controls
+Tool-call details
+AI approvals
+Generated artifacts
+Provider capabilities
+Loading and partial failure
+Conversational simplicity
+Removal of unnecessary nested cards
+Final release checklist
+
+Do not release 1.0.0 until all of these pass:
+
+[ ] Clean npm ci
+[ ] TypeScript build
+[ ] Unit tests
+[ ] Token validation
+[ ] RTL validation
+[ ] Responsive validation
+[ ] Accessibility tests
+[ ] Playwright browser tests
+[ ] Visual regression review
+[ ] npm pack --dry-run
+[ ] Temporary consumer installation
+[ ] Light, dark and high contrast
+[ ] All accents
+[ ] All densities
+[ ] English, Swedish and Arabic
+[ ] Mobile, tablet and desktop
+[ ] 200% zoom
+[ ] Reduced motion
+[ ] MyAccount or Companies migration
+[ ] Billing migration
+[ ] Calendar migration
+[ ] Neetechs AI migration
+[ ] Migration guide
+[ ] Changelog
+[ ] No undocumented breaking changes
+
+Stay on a 0.x version until the package survives all four real applications. The remaining order is:
+
+9 → 10 → 11 → 12 → 13 → 14 → 15 → 16

@@ -203,7 +203,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-content-state {
     min-height: 14rem;
     padding: var(--nt-space-6) var(--nt-space-4);

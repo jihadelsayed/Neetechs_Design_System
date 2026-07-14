@@ -233,7 +233,7 @@
   min-width: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-empty-state {
     min-height: 14rem;
     padding: var(--nt-space-6) var(--nt-space-4);

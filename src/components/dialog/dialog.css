@@ -108,6 +108,10 @@
   min-width: 0;
   overflow: auto;
   padding: var(--nt-space-5);
+  /* Dialog content is a query container: nested components adapt to the
+   * dialog width, not the viewport. */
+  container-type: inline-size;
+  container-name: nt-region;
 }
 
 :is(.nt-dialog__footer, .nt-modal__footer) {
@@ -290,7 +294,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   :is(.nt-dialog-backdrop, .nt-modal-backdrop) {
     align-items: end;
     padding: var(--nt-space-2);
@@ -311,6 +315,7 @@
   :is(.nt-dialog__footer, .nt-modal__footer) {
     flex-direction: column-reverse;
     align-items: stretch;
+    padding-bottom: max(var(--nt-space-4), env(safe-area-inset-bottom, 0rem));
   }
 
   :is(.nt-dialog__footer-main, .nt-modal__footer-main),

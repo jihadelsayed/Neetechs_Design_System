@@ -1,0 +1,103 @@
+/*
+ * Master-detail layout (docs/page-patterns-and-workflows.md).
+ * Wide regions show the record list and the selected record side by side.
+ * Narrow regions become a single pane: the application sets
+ * data-nt-pane="list" or data-nt-pane="detail" when it changes selection,
+ * and the back control returns to the list. Only one pane is in the
+ * accessibility tree at a time in single-pane mode.
+ */
+.nt-master-detail {
+  display: grid;
+  grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-bg-surface);
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.nt-master-detail__list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  border-inline-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-master-detail__detail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--nt-space-5);
+}
+
+/* Empty selection keeps the region meaningful instead of blank. */
+.nt-master-detail__empty {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-6);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  text-align: center;
+}
+
+/* Back to the list; only rendered/visible in single-pane detail mode. */
+.nt-master-detail__back {
+  display: none;
+}
+
+@container (max-width: 48rem) {
+  .nt-master-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nt-master-detail__list {
+    border-inline-end: 0;
+  }
+
+  .nt-master-detail[data-nt-pane='list'] .nt-master-detail__detail {
+    display: none;
+  }
+
+  .nt-master-detail[data-nt-pane='detail'] .nt-master-detail__list {
+    display: none;
+  }
+
+  .nt-master-detail[data-nt-pane='detail'] .nt-master-detail__back {
+    display: inline-flex;
+  }
+}
+
+/* Viewport fallback for pages that render the layout outside a query
+ * container. */
+@media (max-width: 48rem) {
+  .nt-master-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nt-master-detail__list {
+    border-inline-end: 0;
+  }
+
+  .nt-master-detail[data-nt-pane='list'] .nt-master-detail__detail {
+    display: none;
+  }
+
+  .nt-master-detail[data-nt-pane='detail'] .nt-master-detail__list {
+    display: none;
+  }
+
+  .nt-master-detail[data-nt-pane='detail'] .nt-master-detail__back {
+    display: inline-flex;
+  }
+}

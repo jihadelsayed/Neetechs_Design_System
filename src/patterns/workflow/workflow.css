@@ -1,0 +1,168 @@
+/*
+ * Multi-step workflow shell and step indicator
+ * (docs/page-patterns-and-workflows.md).
+ * Markup contract: an <ol> of steps; the current step carries
+ * aria-current="step"; completed steps mark state in text (the marker glyph
+ * is aria-hidden). Validation timing, drafts, and navigation policy belong
+ * to the application.
+ */
+.nt-workflow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-6);
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.nt-step-indicator {
+  display: flex;
+  gap: var(--nt-space-2);
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  list-style: none;
+}
+
+.nt-step-indicator__step {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  padding-block: var(--nt-space-2);
+  border-block-start: 2px solid var(--nt-border-subtle);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-step-indicator__step--completed {
+  border-block-start-color: var(--nt-selection-indicator);
+  color: var(--nt-text-secondary);
+}
+
+.nt-step-indicator__step--current,
+.nt-step-indicator__step[aria-current='step'] {
+  border-block-start-color: var(--nt-accent);
+  color: var(--nt-text-primary);
+  font-weight: var(--nt-font-weight-semibold);
+}
+
+.nt-step-indicator__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-space-6);
+  height: var(--nt-space-6);
+  flex: 0 0 auto;
+  border: 1px solid var(--nt-border-default);
+  border-radius: var(--nt-radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-step-indicator__step--completed .nt-step-indicator__marker {
+  border-color: var(--nt-selection-border);
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+}
+
+.nt-step-indicator__step--current .nt-step-indicator__marker,
+.nt-step-indicator__step[aria-current='step'] .nt-step-indicator__marker {
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
+  color: var(--nt-accent);
+}
+
+.nt-step-indicator__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-step-indicator__optional {
+  color: var(--nt-text-subtle);
+  font: var(--nt-text-caption);
+}
+
+/* Narrow regions: markers stay for orientation; non-current labels hide and
+ * the visible "Step X of Y" progress text carries the context. */
+.nt-workflow__progress {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+@container (max-width: 40rem) {
+  .nt-step-indicator__step:not(.nt-step-indicator__step--current, [aria-current='step'])
+    .nt-step-indicator__label,
+  .nt-step-indicator__step:not(.nt-step-indicator__step--current, [aria-current='step'])
+    .nt-step-indicator__optional {
+    display: none;
+  }
+
+  .nt-step-indicator__step {
+    flex: 0 1 auto;
+  }
+
+  .nt-step-indicator__step--current,
+  .nt-step-indicator__step[aria-current='step'] {
+    flex: 1 1 auto;
+  }
+}
+
+/* Final review summary before submission. */
+.nt-workflow__review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding: var(--nt-space-4);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-bg-surface-muted);
+}
+
+.nt-workflow__review-title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-workflow__consequence {
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-sm);
+}
+
+/* Workflow footer: back and save-and-exit at the start, the step's
+ * continuing action at the end. */
+.nt-workflow__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding-block-start: var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-workflow__footer-start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  margin-inline-end: auto;
+}
+
+@container (max-width: 30rem) {
+  .nt-workflow__footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .nt-workflow__footer-start {
+    margin-inline-end: 0;
+  }
+}

@@ -1,0 +1,106 @@
+/*
+ * Responsive form layout (docs/page-patterns-and-workflows.md).
+ * DOM order is the reading and keyboard order: rows collapse to one column
+ * from the form's own width without reordering fields. Field internals
+ * (labels, hints, errors) come from the existing .nt-field contract.
+ */
+.nt-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-6);
+  min-width: 0;
+  container-type: inline-size;
+}
+
+/* Sections group related fields; works as <fieldset> or <section>. */
+.nt-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.nt-form__section-title {
+  margin: 0;
+  padding: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-form__section-description {
+  max-width: 52rem;
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+/* Rows: single column by default; opt into two or three columns only when
+ * fields are genuinely parallel. Never more than three. */
+.nt-form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--nt-space-4) var(--nt-grid-gap-md);
+  min-width: 0;
+}
+
+.nt-form__row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nt-form__row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* A field spanning a full multi-column row (e.g. a long address line). */
+.nt-form__row .nt-form__span {
+  grid-column: 1 / -1;
+}
+
+@container (max-width: 40rem) {
+  .nt-form__row--2,
+  .nt-form__row--3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Form actions: safe action last in reading order, destructive actions
+ * separated in the start slot. Buttons keep their natural width; they only
+ * stretch when the container is genuinely narrow. */
+.nt-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding-block-start: var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-form__actions--flush {
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+.nt-form__actions-start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  margin-inline-end: auto;
+}
+
+@container (max-width: 30rem) {
+  .nt-form__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .nt-form__actions-start {
+    margin-inline-end: 0;
+  }
+}

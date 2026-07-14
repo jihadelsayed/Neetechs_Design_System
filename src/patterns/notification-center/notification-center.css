@@ -413,7 +413,7 @@
   width: min(100%, 34rem);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-notification-center {
     width: calc(100vw - var(--nt-space-6));
     max-height: calc(100dvh - var(--nt-space-6));

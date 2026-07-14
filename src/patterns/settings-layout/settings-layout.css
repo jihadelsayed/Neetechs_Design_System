@@ -1,0 +1,150 @@
+/*
+ * Settings layout (docs/page-patterns-and-workflows.md).
+ * Section navigation beside settings content on wide regions; the navigation
+ * becomes a horizontally scrollable row when the region narrows. Grouping is
+ * by user intent; permanent account-wide settings route to MyAccount instead
+ * of being recreated inside tools.
+ */
+.nt-settings-layout {
+  display: grid;
+  grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--nt-space-8);
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.nt-settings-layout__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-settings-layout__nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-height: var(--nt-density-navigation-item-height);
+  padding-inline: var(--nt-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-control);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-label-md);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-settings-layout__nav-item:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-text-primary);
+}
+
+.nt-settings-layout__nav-item:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-settings-layout__nav-item[aria-current='page'],
+.nt-settings-layout__nav-item--active {
+  background: var(--nt-selection-bg);
+  border-color: var(--nt-selection-border);
+  color: var(--nt-selection-fg);
+}
+
+.nt-settings-layout__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-8);
+  min-width: 0;
+}
+
+@container (max-width: 48rem) {
+  .nt-settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--nt-space-5);
+  }
+
+  .nt-settings-layout__nav {
+    flex-direction: row;
+    gap: var(--nt-space-2);
+    overflow-x: auto;
+    padding-block-end: var(--nt-space-1);
+  }
+
+  .nt-settings-layout__nav-item {
+    flex: 0 0 auto;
+  }
+}
+
+/* Viewport fallback for pages rendered outside a query container. */
+@media (max-width: 48rem) {
+  .nt-settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--nt-space-5);
+  }
+
+  .nt-settings-layout__nav {
+    flex-direction: row;
+    gap: var(--nt-space-2);
+    overflow-x: auto;
+    padding-block-end: var(--nt-space-1);
+  }
+
+  .nt-settings-layout__nav-item {
+    flex: 0 0 auto;
+  }
+}
+
+/* One settings section: heading, explanation, controls, optional footer. */
+.nt-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-settings-section__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-settings-section__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-settings-section__description {
+  max-width: 52rem;
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}
+
+/* Dangerous settings are visually fenced and never mixed into routine
+ * groups. */
+.nt-settings-section--danger {
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-4);
+  border: 1px solid var(--nt-danger-border);
+  border-radius: var(--nt-radius-card);
+}
+
+.nt-settings-section--danger .nt-settings-section__title {
+  color: var(--nt-danger-text);
+}
+
+/* Pointer to the surface that owns a setting (e.g. MyAccount). */
+.nt-settings-section__managed-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+}

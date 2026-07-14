@@ -1,3 +1,8 @@
+@import './page/page.css';
+@import './form-layout/form-layout.css';
+@import './settings-layout/settings-layout.css';
+@import './master-detail/master-detail.css';
+@import './workflow/workflow.css';
 @import './profile-menu/profile-menu.css';
 @import './company-switcher/company-switcher.css';
 @import './content-state/content-state.css';

@@ -479,7 +479,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-billing-document__header,
   .nt-billing-document__footer,
   .nt-billing-document__section-header {

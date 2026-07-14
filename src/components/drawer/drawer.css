@@ -167,6 +167,10 @@
   min-width: 0;
   overflow: auto;
   padding: var(--nt-space-5);
+  /* Drawer content is a query container: nested components adapt to the
+   * drawer width, not the viewport. */
+  container-type: inline-size;
+  container-name: nt-region;
 }
 
 :is(.nt-drawer__footer, .nt-right-drawer__footer) {
@@ -431,7 +435,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-drawer--left,
   .nt-drawer--right,
   .nt-drawer--inline-start,
@@ -455,6 +459,7 @@
   :is(.nt-drawer__footer, .nt-right-drawer__footer) {
     flex-direction: column-reverse;
     align-items: stretch;
+    padding-bottom: max(var(--nt-space-4), env(safe-area-inset-bottom, 0rem));
   }
 
   .nt-drawer__footer-main,

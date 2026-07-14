@@ -135,6 +135,76 @@
   text-align: center;
 }
 
+/*
+ * Responsive strategies — choose one per table
+ * (docs/responsive-and-adaptive-design.md):
+ *   1. Horizontal overflow: the default .nt-table-container scroll. When the
+ *      table can scroll, give the container tabindex="0" and an accessible
+ *      name so keyboard users can reach it.
+ *   2. Priority columns: mark genuinely secondary columns; they hide as the
+ *      *container* narrows. Hidden values must remain reachable, e.g. via
+ *      row details or the record's detail page.
+ *   3. Row details: move secondary values into an expandable details row.
+ */
+.nt-table-container {
+  container-type: inline-size;
+}
+
+.nt-table-container:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Priority columns: tertiary hides first, then secondary. */
+@container (max-width: 40rem) {
+  .nt-table th.nt-table__cell--tertiary,
+  .nt-table td.nt-table__cell--tertiary {
+    display: none;
+  }
+}
+
+@container (max-width: 30rem) {
+  .nt-table th.nt-table__cell--secondary,
+  .nt-table td.nt-table__cell--secondary {
+    display: none;
+  }
+}
+
+/* Expandable row details host secondary values at narrow widths. */
+.nt-table__details-row td {
+  height: auto;
+  background: var(--nt-bg-surface-muted);
+}
+
+.nt-table__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  padding-block: var(--nt-space-2);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-table__details-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nt-space-2);
+  margin: 0;
+}
+
+.nt-table__details-term {
+  min-width: 8rem;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-table__details-value {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 @media (forced-colors: active) {
   .nt-table-container,
   .nt-table th,

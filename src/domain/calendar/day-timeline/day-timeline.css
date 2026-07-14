@@ -66,11 +66,13 @@
   background: var(--nt-bg-surface);
 }
 
+/* The day timeline is a phone-capable view: the grid is intrinsic (time
+ * column + flexible event lane) and never forces horizontal scrolling. */
 .nt-calendar-day-timeline__grid {
   position: relative;
   display: grid;
   grid-template-columns: 4.5rem minmax(0, 1fr);
-  min-width: 42rem;
+  min-width: 0;
 }
 
 .nt-calendar-day-timeline__time-column {
@@ -302,7 +304,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-calendar-day-timeline__header,
   .nt-calendar-day-timeline__footer {
     flex-direction: column;
@@ -315,7 +317,6 @@
   }
 
   .nt-calendar-day-timeline__grid {
-    min-width: 36rem;
     grid-template-columns: 3.75rem minmax(0, 1fr);
   }
 }

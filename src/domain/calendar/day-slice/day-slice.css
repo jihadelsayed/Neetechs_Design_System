@@ -343,7 +343,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 48rem) {
   .nt-calendar-day-slice__header,
   .nt-calendar-day-slice__footer {
     flex-direction: column;
@@ -364,7 +364,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .nt-calendar-day-slice {
     padding: var(--nt-space-4);
   }

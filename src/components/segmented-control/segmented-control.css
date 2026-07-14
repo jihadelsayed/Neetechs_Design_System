@@ -180,7 +180,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-segmented-control--responsive {
     display: flex;
     width: 100%;

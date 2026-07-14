@@ -203,4 +203,4 @@ npm pack --dry-run
 
 ## Known Limitations
 
-The design system cannot implement router-specific unsaved-change guards, backend retries, permission decisions, request idempotency, upload transport, or permanent AI confirmation policy. Native screen-reader testing remains required. Responsive redesign is deferred to Prompt 9. Product terminology and final copy standards are deferred to Prompt 10.
+The design system cannot implement router-specific unsaved-change guards, backend retries, permission decisions, request idempotency, upload transport, or permanent AI confirmation policy. Native screen-reader testing remains required. Responsive behavior for every state surface follows [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md); empty-state categories, confirmation structure, and message copy follow [content-and-terminology.md](./content-and-terminology.md) and the page-level placements in [page-patterns-and-workflows.md](./page-patterns-and-workflows.md).

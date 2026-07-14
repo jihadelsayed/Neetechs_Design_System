@@ -3,6 +3,7 @@
   flex-direction: column;
   width: min(20rem, 100vw);
   height: 100vh;
+  height: 100dvh;
   min-width: 0;
   background: var(--nt-bg-sidebar);
   border-inline-end: 1px solid var(--nt-border-subtle);
@@ -160,6 +161,7 @@
 
 .nt-mobile-nav__footer {
   padding: var(--nt-space-3);
+  padding-bottom: max(var(--nt-space-3), env(safe-area-inset-bottom, 0rem));
   border-block-start: 1px solid var(--nt-border-subtle);
 }
 

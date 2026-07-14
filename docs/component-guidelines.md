@@ -51,6 +51,14 @@ Use the layered state model in [states-feedback-and-recovery.md](./states-feedba
 
 Use semantic foreground/background/border/focus tokens. Never remove outlines. Selection must survive forced colors and differ from focus. Long/decorative motion needs a reduced-motion alternative. Avoid clipping focus rings with overflow; use an inset ring only where geometry requires it.
 
+## Responsive behavior
+
+Every component declares its adaptive category (intrinsic, reflowing, adaptive, alternative view) and meets the acceptance checklist in [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md): container-driven adaptation (viewport queries only at shell level, rem values from the documented scale), no fixed heights around translated text, `100vh` always paired with `100dvh`, no hover-only actions, safe coarse-pointer targets, and DOM order equal to visual order in every mode.
+
+## Page composition and content
+
+Page-level structure uses the patterns in [page-patterns-and-workflows.md](./page-patterns-and-workflows.md) (one `<h1>`, one primary action per group, destructive separation). Labels and messages in examples and fixtures follow [content-and-terminology.md](./content-and-terminology.md) and are validated by `npm run check:content`.
+
 ## Tests required for a new interactive component
 
 Add a representative fixture and test accessible name/role/state, Tab order, pattern keys, focus visibility/restoration, disabled activation, forced colors, reduced motion, and axe. Add required semantic contrast pairs to the checker when introducing a reusable role. Manual screen-reader testing remains part of release review.

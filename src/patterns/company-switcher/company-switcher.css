@@ -366,7 +366,7 @@
 .nt-workspace-switcher__status-dot--paused { background: var(--nt-warning); }
 .nt-workspace-switcher__status-dot--archived { background: var(--nt-text-muted); }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   :is(.nt-company-switcher, .nt-workspace-switcher) {
     width: calc(100vw - var(--nt-space-6));
     min-width: 0;

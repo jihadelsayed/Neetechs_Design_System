@@ -3,6 +3,7 @@
   grid-template-columns: var(--nt-sidebar-width) minmax(0, 1fr);
   min-width: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--nt-bg-app);
   color: var(--nt-text-primary);
 }
@@ -17,6 +18,7 @@
   z-index: var(--nt-z-sidebar);
   min-width: 0;
   height: 100vh;
+  height: 100dvh;
 }
 
 .nt-app-shell__main {
@@ -24,6 +26,7 @@
   grid-template-rows: var(--nt-header-height) minmax(0, 1fr);
   min-width: 0;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .nt-app-shell__header {
@@ -36,6 +39,10 @@
 .nt-app-shell__content {
   min-width: 0;
   min-height: 0;
+  /* The main content area is the default query container for adaptive
+   * components rendered inside it. */
+  container-type: inline-size;
+  container-name: nt-region;
 }
 
 .nt-app-shell__drawer {

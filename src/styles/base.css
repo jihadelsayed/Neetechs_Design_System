@@ -54,6 +54,7 @@ html {
 .nt-app {
   min-width: 320px;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--nt-bg-app);
   color: var(--nt-text-primary);
 }

@@ -8,6 +8,7 @@
   background: var(--nt-bg-surface);
   color: var(--nt-text-primary);
   box-shadow: var(--nt-elevation-card);
+  container-type: inline-size;
 }
 
 .nt-ai-conversation-panel__header {
@@ -346,9 +347,18 @@
   box-shadow: none;
 }
 
+/* Fullscreen conversation: the panel fills its wrapper; the wrapper owns the
+ * viewport height via .nt-fill-viewport--fixed (dvh with vh fallback) so the
+ * composer stays visible when the mobile keyboard opens. */
 .nt-ai-conversation-panel--fullscreen {
   height: 100%;
   min-height: 0;
+  border-radius: 0;
+  border-inline: 0;
+}
+
+.nt-ai-conversation-panel--fullscreen .nt-ai-conversation-panel__footer {
+  padding-bottom: max(var(--nt-space-4), env(safe-area-inset-bottom, 0rem));
 }
 
 @keyframes nt-ai-conversation-panel-typing {
@@ -365,7 +375,40 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
+  .nt-ai-conversation-panel__header,
+  .nt-ai-conversation-panel__footer-meta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nt-ai-conversation-panel__actions {
+    justify-content: flex-start;
+  }
+
+  .nt-ai-conversation-panel__message,
+  .nt-ai-conversation-panel__message--user {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nt-ai-conversation-panel__avatar {
+    display: none;
+  }
+
+  .nt-ai-conversation-panel__message-main,
+  .nt-ai-conversation-panel__message--user .nt-ai-conversation-panel__message-main {
+    grid-column: 1;
+    align-items: stretch;
+  }
+
+  .nt-ai-conversation-panel__bubble {
+    max-width: 100%;
+  }
+}
+
+/* The same compaction applies when the panel itself is narrow (split panes,
+ * side panels, drawers) regardless of viewport size. */
+@container (max-width: 40rem) {
   .nt-ai-conversation-panel__header,
   .nt-ai-conversation-panel__footer-meta {
     flex-direction: column;

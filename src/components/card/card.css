@@ -198,7 +198,7 @@
   min-width: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-card__header,
   .nt-card__footer {
     flex-direction: column;

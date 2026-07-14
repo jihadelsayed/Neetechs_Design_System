@@ -1,11 +1,33 @@
+/*
+ * Responsive scale contract.
+ *
+ * Native media and container queries cannot read custom properties, so these
+ * tokens are the *documentation and JS contract* for the scale — the literal
+ * rem values below are the only widths production queries may use. The list
+ * is enforced by `npm run check:responsive` and mirrored by
+ * `NT_VIEWPORTS` in `@neetechs/ui/behaviors`.
+ *
+ * Viewport ranges (content-driven, never device-brand):
+ *   small phone   <  30rem (480px)
+ *   large phone   30–40rem (480–640px)
+ *   tablet        40–48rem (640–768px)
+ *   small desktop 48–64rem (768–1024px)
+ *   desktop       64–80rem (1024–1280px)
+ *   wide desktop  >= 80rem (1280px)
+ *
+ * Reusable components respond to their *container* (see
+ * `src/styles/responsive.css`); only app-shell-level layout may use
+ * viewport queries.
+ */
 :root {
-  --nt-breakpoint-xs: 0;
-  --nt-breakpoint-sm: 40rem;   /* 640px */
-  --nt-breakpoint-md: 48rem;   /* 768px */
-  --nt-breakpoint-lg: 64rem;   /* 1024px */
-  --nt-breakpoint-xl: 80rem;   /* 1280px */
-  --nt-breakpoint-2xl: 96rem;  /* 1536px */
+  --nt-breakpoint-xs: 30rem;   /* 480px  — small phone upper bound */
+  --nt-breakpoint-sm: 40rem;   /* 640px  — large phone upper bound */
+  --nt-breakpoint-md: 48rem;   /* 768px  — tablet upper bound */
+  --nt-breakpoint-lg: 64rem;   /* 1024px — shell collapses sidebar below this */
+  --nt-breakpoint-xl: 80rem;   /* 1280px — wide desktop lower bound */
+  --nt-breakpoint-2xl: 96rem;  /* 1536px — maximum content rationale */
 
+  /* Reading/content max-width scale consumed by .nt-container and content-frame. */
   --nt-container-xs: 100%;
   --nt-container-sm: 40rem;
   --nt-container-md: 48rem;

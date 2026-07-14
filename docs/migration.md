@@ -1,5 +1,44 @@
 # Appearance migration
 
+## Page patterns, workflows, and content (Prompt 10)
+
+No public class was removed. New structural patterns are additive: `.nt-page-header`, `.nt-page-toolbar`, `.nt-page-body`, `.nt-page-section`, `.nt-page-footer-actions`, `.nt-form` (+ rows/sections/actions), `.nt-settings-layout`, `.nt-settings-section`, `.nt-master-detail`, `.nt-workflow`, `.nt-step-indicator`.
+
+```html
+<!-- Before: ad-hoc page heading and mixed action row -->
+<div class="nt-cluster nt-cluster--between">
+  <h1>Invoices</h1>
+  <div><button class="nt-button nt-button--primary">New</button></div>
+</div>
+
+<!-- After: page anatomy with specific labels and action hierarchy -->
+<header class="nt-page-header">
+  <div class="nt-page-header__main">
+    <h1 class="nt-page-header__title">Invoices</h1>
+  </div>
+  <div class="nt-page-header__actions">
+    <button class="nt-button nt-button--secondary">Export invoices</button>
+    <button class="nt-button nt-button--primary">Create invoice</button>
+  </div>
+</header>
+```
+
+Multi-column form markup migrates from `.nt-grid--2` to `.nt-form__row--2` inside `.nt-form` so columns respond to the form's own width. Generic labels (`Submit`, `OK`, `Are you sure?`) in owned fixtures are rejected by `npm run check:content`; see [content-and-terminology.md](./content-and-terminology.md) for replacements. See [page-patterns-and-workflows.md](./page-patterns-and-workflows.md) for list/detail/settings/master-detail/workflow composition.
+
+## Responsive and adaptive architecture (Prompt 9)
+
+No public class was removed; behavior changes are listed here.
+
+- **Breakpoints**: hardcoded px queries were normalized to the documented rem scale (`640px → 40rem`, `760px → 48rem`, `480px → 30rem`). At default font size these are identical; with browser text scaling, layouts now shift consistently. `--nt-breakpoint-xs` changed from `0` to `30rem` (small-phone bound).
+- **Container queries**: shell content, dialog/drawer bodies, tables, data grids, forms, and the AI panel are query containers. Add `.nt-region` to dashboard columns and split panes so nested components adapt; markup without containers keeps the viewport fallbacks.
+- **Sidebar → adaptive shell**: below `64rem` the sidebar column is removed and navigation must render through `.nt-mobile-nav` + `ntCreateDrawer` (same data, drawer semantics). The header's `.nt-header__mobile-trigger` rule now wins over `.nt-header__action` regardless of class order.
+- **Tables**: opt into priority columns (`.nt-table__cell--secondary/--tertiary`) and row details (`.nt-table__details*`); scrollable `.nt-table-container` should get `tabindex="0"` + an accessible name.
+- **Data grid**: new `--constrained` mode (automatic below a 48rem container) and `.nt-data-grid__record-list` mobile record mode — render list *or* table, never both. Resize handles disappear on coarse pointers.
+- **Calendar**: `.nt-calendar-agenda` (new) is the phone view; the day timeline no longer forces 36–42rem min-width. Month/week grids stay desktop views inside scrollers.
+- **Viewport height**: any `100vh` sizing now pairs with `100dvh`; use `.nt-fill-viewport(--fixed)` and the safe-area utilities for full-height and edge-anchored surfaces (AI composer, sticky footers).
+- **Hover**: move hover-revealed row/card actions to the `.nt-hover-reveal-scope` / `.nt-hover-reveal` contract so they stay visible on touch.
+- Validation: `npm run check:responsive` rejects px/undocumented media breakpoints, plain `100vh`, and undocumented `min-width ≥ 30rem`. See [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md).
+
 ## States, feedback, and recovery (Prompt 8)
 
 No public state class was removed. Adopt the canonical state contract incrementally:

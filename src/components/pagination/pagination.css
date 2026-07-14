@@ -213,7 +213,7 @@
   font: var(--nt-text-label-md);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-pagination {
     flex-direction: column;
     align-items: stretch;

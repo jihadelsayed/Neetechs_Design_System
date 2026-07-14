@@ -360,6 +360,131 @@
   z-index: calc(var(--nt-z-sticky) + 1);
 }
 
+/*
+ * Responsive grid modes (docs/responsive-and-adaptive-design.md):
+ *   Desktop grid  — the default interactive table above.
+ *   Constrained   — priority columns hide, resize handles disappear, record
+ *                   identity stays sticky. Applies automatically from the
+ *                   grid's own container width, or opt in with --constrained.
+ *   Mobile record — applications render .nt-data-grid__record-list *instead
+ *                   of* the table (never both at once) when the interactive
+ *                   grid cannot work safely on a phone.
+ */
+.nt-data-grid {
+  container-type: inline-size;
+}
+
+@container (max-width: 48rem) {
+  .nt-data-grid__cell--tertiary,
+  .nt-data-grid__table th.nt-data-grid__cell--tertiary {
+    display: none;
+  }
+
+  .nt-data-grid__resize-handle {
+    display: none;
+  }
+}
+
+@container (max-width: 40rem) {
+  .nt-data-grid__cell--secondary,
+  .nt-data-grid__table th.nt-data-grid__cell--secondary {
+    display: none;
+  }
+}
+
+.nt-data-grid--constrained .nt-data-grid__cell--tertiary,
+.nt-data-grid--constrained .nt-data-grid__table th.nt-data-grid__cell--tertiary,
+.nt-data-grid--constrained .nt-data-grid__resize-handle {
+  display: none;
+}
+
+.nt-data-grid--constrained .nt-data-grid__table {
+  min-width: 0;
+}
+
+/* Mobile record mode: one accessible record list replacing the table. */
+.nt-data-grid__record-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nt-data-grid__record {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-4);
+  border-block-end: 1px solid var(--nt-border-subtle);
+  background: var(--nt-bg-surface);
+}
+
+.nt-data-grid__record:last-child {
+  border-block-end: 0;
+}
+
+.nt-data-grid__record--selected {
+  background: var(--nt-selection-bg);
+  box-shadow: inset var(--nt-focus-ring-width) 0 0 var(--nt-selection-indicator);
+}
+
+.nt-data-grid__record-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+}
+
+.nt-data-grid__record-title {
+  min-width: 0;
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  overflow-wrap: anywhere;
+}
+
+.nt-data-grid__record-status {
+  flex: 0 0 auto;
+}
+
+.nt-data-grid__record-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  margin: 0;
+}
+
+.nt-data-grid__record-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nt-space-2);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-data-grid__record-term {
+  min-width: 7rem;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-data-grid__record-value {
+  min-width: 0;
+  margin: 0;
+  color: var(--nt-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.nt-data-grid__record-value--numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-data-grid__record-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+}
+
 .nt-data-grid--flat {
   box-shadow: none;
 }
@@ -370,7 +495,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-data-grid__toolbar,
   .nt-data-grid__footer {
     flex-direction: column;

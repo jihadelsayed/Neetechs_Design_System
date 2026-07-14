@@ -213,5 +213,6 @@ Browser tests use Chromium, Playwright and `@axe-core/playwright`. Automation do
 - Data-grid editing/resizing/virtualization remain application-specific; shared behavior covers navigation/selection/sort.
 - Calendar drag/resize/collision/time-grid navigation require host keyboard alternatives.
 - Tooltip lifecycle remains consumer-owned; toast timeout pause has a shared controller.
-- Responsive reflow and product copy are later stages; state recovery still requires application-owned backend/router behavior.
+- Responsive adaptation preserves accessibility invariants: content hidden by adaptive modes uses `display: none` (never focusable-but-invisible), table/record-list alternatives render one at a time, scrollable table regions carry `tabindex="0"` and an accessible name, coarse pointers expand compact controls to the documented target sizes, and hover-revealed actions stay visible on touch and keyboard (`.nt-hover-reveal` contract). See [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md).
+- State recovery still requires application-owned backend/router behavior; final product copy follows [content-and-terminology.md](./content-and-terminology.md).
 - Axe and semantic checks cover representative contracts, not every consumer content/color/image combination.

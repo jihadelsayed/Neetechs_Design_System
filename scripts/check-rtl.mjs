@@ -21,6 +21,7 @@ export const RTL_ALLOWLIST = [
   ['src/components/toast/toast.css', ['physical-property', 'physical-origin', 'translate-x'], 'Named left/right placements remain physical; default placement, progress, and swipe exit are direction-aware.'],
   ['src/components/tooltip/tooltip.css', ['physical-property', 'physical-origin', 'translate-x'], 'Tooltip side placement and arrow geometry are coordinate-based; align=start/end uses logical insets.'],
   ['src/patterns/search-bar/search-bar.css', ['physical-property'], 'Detached results accept public physical viewport coordinates.'],
+  ['src/styles/responsive.css', ['physical-property'], 'Safe-area insets are physically anchored device cutouts; both inline sides are padded symmetrically.'],
   ['src/ai/ai-action-button/ai-action-button.css', ['translate-x'], 'Decorative shine traverses both physical directions and carries no meaning.'],
   ['src/components/skeleton/skeleton.css', ['translate-x'], 'Decorative shimmer traverses both physical directions and carries no meaning.'],
   ['src/styles/animations/motion.css', ['translate-x'], 'Public slide-in-left/right animations intentionally describe physical motion.'],

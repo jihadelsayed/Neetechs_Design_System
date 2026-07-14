@@ -226,7 +226,7 @@
   min-width: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-ai-tool-call__header {
     grid-template-columns: auto minmax(0, 1fr);
   }

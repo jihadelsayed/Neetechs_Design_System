@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en" data-nt-theme="light" data-nt-accent="orange" data-nt-density="comfortable" data-nt-contrast="normal" data-nt-motion="full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neetechs page pattern fixtures</title>
+    <link rel="stylesheet" href="/src/index.css">
+    <style>
+      body { padding: 1.5rem; background: var(--nt-bg-app); }
+      main { display: grid; gap: 3rem; }
+      .fixture { display: grid; gap: 1rem; min-width: 0; }
+      .fixture-shell { height: 24rem; min-height: 24rem; }
+      .fixture-shell .nt-app-shell { min-height: 24rem; }
+      .fixture-shell .nt-app-shell__sidebar { height: 24rem; }
+      .fixture-shell .nt-app-shell__main { min-height: 24rem; grid-template-rows: var(--nt-header-height) 1fr; }
+      .fixture-narrow { max-width: 22rem; }
+    </style>
+  </head>
+  <body>
+    <header><h1>Page pattern fixtures</h1></header>
+    <main id="main-content">
+
+      <section class="fixture" aria-labelledby="shell-heading">
+        <h2 id="shell-heading">App shell</h2>
+        <div class="fixture-shell">
+          <div class="nt-app-shell" id="fixture-app-shell">
+            <aside class="nt-app-shell__sidebar" aria-label="Primary navigation">
+              <nav class="nt-sidebar" aria-label="Workspace">
+                <div class="nt-sidebar__brand">
+                  <span class="nt-sidebar__logo" aria-hidden="true">N</span>
+                  <span class="nt-sidebar__brand-text">Neetechs</span>
+                </div>
+                <div class="nt-sidebar__nav">
+                  <a class="nt-sidebar__item" href="#shell-heading" aria-current="page">
+                    <span class="nt-sidebar__item-label">Dashboard</span>
+                  </a>
+                  <a class="nt-sidebar__item" href="#shell-heading">
+                    <span class="nt-sidebar__item-label">Invoices</span>
+                  </a>
+                </div>
+              </nav>
+            </aside>
+            <div class="nt-shell-main nt-app-shell__main">
+              <header class="nt-header nt-app-shell__header">
+                <div class="nt-header__left">
+                  <button class="nt-header__mobile-trigger nt-header__action" type="button" aria-label="Open navigation" id="fixture-mobile-trigger">☰</button>
+                  <div class="nt-header__title-group">
+                    <p class="nt-header__title">Company Center</p>
+                  </div>
+                </div>
+                <div class="nt-header__right">
+                  <button class="nt-header__action" type="button" aria-label="Open notifications">🔔</button>
+                </div>
+              </header>
+              <main class="nt-app-shell__content nt-content-frame" aria-label="Shell demo content">
+                <p>Shell content region. This region is a query container.</p>
+              </main>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="list-heading">
+        <h2 id="list-heading">List page</h2>
+        <header class="nt-page-header">
+          <div class="nt-page-header__main">
+            <p class="nt-page-header__eyebrow">Billing</p>
+            <h3 class="nt-page-header__title">Invoices</h3>
+            <p class="nt-page-header__description">Sales invoices for the active company.</p>
+          </div>
+          <div class="nt-page-header__actions">
+            <button class="nt-button nt-button--secondary" type="button">Export invoices</button>
+            <button class="nt-button nt-button--primary" type="button">Create invoice</button>
+          </div>
+        </header>
+        <div class="nt-page-toolbar">
+          <div class="nt-page-toolbar__start">
+            <label class="nt-field">
+              <span class="nt-field__label">Search invoices</span>
+              <input class="nt-input" type="search" placeholder="Invoice number or customer">
+            </label>
+          </div>
+          <div class="nt-page-toolbar__end">
+            <button class="nt-button nt-button--secondary" type="button">Filter invoices</button>
+            <button class="nt-button nt-button--ghost" type="button">Clear all filters</button>
+          </div>
+          <div class="nt-page-toolbar__applied" aria-label="Applied filters">
+            <span class="nt-chip">Status: overdue</span>
+          </div>
+        </div>
+        <div class="nt-table-container nt-region" tabindex="0" role="region" aria-label="Invoice list">
+          <table class="nt-table">
+            <caption>Overdue invoices, most recent first</caption>
+            <thead>
+              <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Customer</th>
+                <th scope="col" class="nt-table__cell--secondary">Issued</th>
+                <th scope="col" class="nt-table__cell--tertiary">Reference</th>
+                <th scope="col" class="nt-table__cell--numeric">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>INV-1042</td>
+                <td>Sydfix AB</td>
+                <td class="nt-table__cell--secondary">2026-06-02</td>
+                <td class="nt-table__cell--tertiary">PO-2291</td>
+                <td class="nt-table__cell--numeric">12 500 SEK</td>
+              </tr>
+              <tr>
+                <td>INV-1041</td>
+                <td>Långtidsbeställningskund med mycket långt namn AB</td>
+                <td class="nt-table__cell--secondary">2026-05-28</td>
+                <td class="nt-table__cell--tertiary">PO-2287</td>
+                <td class="nt-table__cell--numeric">4 200 SEK</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="nt-pagination" aria-label="Invoice pages">
+          <button class="nt-pagination__button" type="button">Previous</button>
+          <button class="nt-pagination__button" type="button" aria-current="page">1</button>
+          <button class="nt-pagination__button" type="button">2</button>
+          <button class="nt-pagination__button" type="button">Next</button>
+        </nav>
+      </section>
+
+      <section class="fixture" aria-labelledby="detail-heading">
+        <h2 id="detail-heading">Detail page</h2>
+        <header class="nt-page-header">
+          <div class="nt-page-header__main">
+            <p class="nt-page-header__eyebrow">Invoice</p>
+            <h3 class="nt-page-header__title">INV-1042 — Sydfix AB</h3>
+            <div class="nt-page-header__meta">
+              <span class="nt-badge nt-badge--warning">Overdue</span>
+              <span>Due 2026-06-16</span>
+              <span>12 500 SEK</span>
+            </div>
+          </div>
+          <div class="nt-page-header__actions">
+            <button class="nt-button nt-button--secondary" type="button">Download PDF</button>
+            <button class="nt-button nt-button--primary" type="button">Record payment</button>
+            <button class="nt-button nt-button--ghost" type="button" aria-haspopup="menu">More actions</button>
+          </div>
+        </header>
+        <footer class="nt-page-footer-actions">
+          <div class="nt-page-footer-actions__start">
+            <button class="nt-button nt-button--danger" type="button">Void invoice</button>
+          </div>
+          <button class="nt-button nt-button--secondary" type="button">Duplicate invoice</button>
+          <button class="nt-button nt-button--primary" type="button">Save changes</button>
+        </footer>
+      </section>
+
+      <section class="fixture" aria-labelledby="form-heading">
+        <h2 id="form-heading">Create form</h2>
+        <form class="nt-form" aria-labelledby="form-heading">
+          <div class="nt-alert nt-alert--danger" role="alert" id="form-error-summary">
+            <p class="nt-alert__title">The invoice cannot be created yet</p>
+            <p class="nt-alert__description">Enter an invoice number and choose a customer.</p>
+          </div>
+          <fieldset class="nt-form__section">
+            <legend class="nt-form__section-title">Invoice details</legend>
+            <p class="nt-form__section-description">The number series follows the company's accounting settings.</p>
+            <div class="nt-form__row nt-form__row--2">
+              <label class="nt-field">
+                <span class="nt-field__label">Invoice number</span>
+                <input class="nt-input" aria-describedby="form-error-summary" aria-invalid="true">
+                <span class="nt-field__error">Enter an invoice number.</span>
+              </label>
+              <label class="nt-field">
+                <span class="nt-field__label">Due date</span>
+                <input class="nt-input" type="date">
+                <span class="nt-field__hint">The due date must be on or after the invoice date.</span>
+              </label>
+              <label class="nt-field nt-form__span">
+                <span class="nt-field__label">Internal note</span>
+                <textarea class="nt-textarea" rows="2"></textarea>
+              </label>
+            </div>
+          </fieldset>
+          <div class="nt-form__actions">
+            <div class="nt-form__actions-start">
+              <button class="nt-button nt-button--ghost" type="button">Discard draft</button>
+            </div>
+            <button class="nt-button nt-button--secondary" type="button">Save draft</button>
+            <button class="nt-button nt-button--primary" type="submit">Create invoice</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="fixture" aria-labelledby="settings-heading">
+        <h2 id="settings-heading">Settings page</h2>
+        <div class="nt-settings-layout">
+          <nav class="nt-settings-layout__nav" aria-label="Settings sections">
+            <a class="nt-settings-layout__nav-item" href="#settings-heading" aria-current="page">Appearance</a>
+            <a class="nt-settings-layout__nav-item" href="#settings-heading">AI connections</a>
+            <a class="nt-settings-layout__nav-item" href="#settings-heading">Danger zone</a>
+          </nav>
+          <div class="nt-settings-layout__content">
+            <section class="nt-settings-section" aria-labelledby="settings-appearance-title">
+              <header class="nt-settings-section__header">
+                <h3 class="nt-settings-section__title" id="settings-appearance-title">Appearance</h3>
+                <p class="nt-settings-section__description">Theme changes apply immediately across this workspace.</p>
+              </header>
+              <p class="nt-settings-section__managed-note">
+                Language and time zone are managed in
+                <a href="#settings-heading">MyAccount preferences</a>.
+              </p>
+            </section>
+            <section class="nt-settings-section nt-settings-section--danger" aria-labelledby="settings-danger-title">
+              <header class="nt-settings-section__header">
+                <h3 class="nt-settings-section__title" id="settings-danger-title">Delete company</h3>
+                <p class="nt-settings-section__description">Deleting removes invoices, members, and settings permanently. This action cannot be undone.</p>
+              </header>
+              <div>
+                <button class="nt-button nt-button--danger" type="button">Delete company</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="master-detail-heading">
+        <h2 id="master-detail-heading">Master-detail</h2>
+        <div class="nt-master-detail" data-nt-pane="detail" id="fixture-master-detail">
+          <div class="nt-master-detail__list" aria-label="Support tickets">
+            <button class="nt-menu__item" type="button" aria-current="true">Printer offline — Sydfix</button>
+            <button class="nt-menu__item" type="button">Onboarding question — Nordbygg</button>
+          </div>
+          <div class="nt-master-detail__detail" aria-label="Selected ticket">
+            <button class="nt-master-detail__back nt-button nt-button--ghost" type="button">Back to tickets</button>
+            <h3>Printer offline — Sydfix</h3>
+            <p>Reported 2026-07-12. The workshop label printer no longer responds after a firmware update.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="workflow-heading">
+        <h2 id="workflow-heading">Multi-step workflow</h2>
+        <div class="nt-workflow">
+          <p class="nt-workflow__progress">Step 2 of 3</p>
+          <ol class="nt-step-indicator">
+            <li class="nt-step-indicator__step nt-step-indicator__step--completed">
+              <span class="nt-step-indicator__marker" aria-hidden="true">✓</span>
+              <span class="nt-step-indicator__label">Choose provider <span class="nt-sr-only">(completed)</span></span>
+            </li>
+            <li class="nt-step-indicator__step" aria-current="step">
+              <span class="nt-step-indicator__marker" aria-hidden="true">2</span>
+              <span class="nt-step-indicator__label">Enter credentials</span>
+            </li>
+            <li class="nt-step-indicator__step">
+              <span class="nt-step-indicator__marker" aria-hidden="true">3</span>
+              <span class="nt-step-indicator__label">Test and save <span class="nt-step-indicator__optional">(optional)</span></span>
+            </li>
+          </ol>
+          <div class="nt-workflow__review">
+            <h3 class="nt-workflow__review-title">Review before connecting</h3>
+            <p class="nt-workflow__consequence">The API key is stored by the Neetechs backend and used for chat and transcription until you disconnect it.</p>
+          </div>
+          <div class="nt-workflow__footer">
+            <div class="nt-workflow__footer-start">
+              <button class="nt-button nt-button--ghost" type="button">Back to provider choice</button>
+              <button class="nt-button nt-button--ghost" type="button">Save and finish later</button>
+            </div>
+            <button class="nt-button nt-button--primary" type="button">Test connection</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="approval-heading">
+        <h2 id="approval-heading">AI approval queue</h2>
+        <section class="nt-ai-approval-card" aria-labelledby="approval-card-title">
+          <header class="nt-ai-approval-card__header">
+            <span class="nt-ai-approval-card__icon" aria-hidden="true">✦</span>
+            <div class="nt-ai-approval-card__header-main">
+              <span class="nt-ai-approval-card__eyebrow">Neenee proposes</span>
+              <h3 class="nt-ai-approval-card__title" id="approval-card-title">Move Friday's supplier meeting</h3>
+              <p class="nt-ai-approval-card__description">Target: your work calendar. Reschedules one event; no attendees are notified until you approve.</p>
+            </div>
+            <span class="nt-ai-approval-card__status nt-ai-approval-card__status--pending">Pending approval</span>
+          </header>
+          <div class="nt-ai-approval-card__body">
+            <div class="nt-ai-approval-card__diff">
+              <div class="nt-ai-approval-card__diff-block nt-ai-approval-card__diff-block--before">
+                <span class="nt-ai-approval-card__diff-label">Current</span>
+                <span class="nt-ai-approval-card__diff-value">Friday 10:00–11:00</span>
+              </div>
+              <div class="nt-ai-approval-card__diff-block nt-ai-approval-card__diff-block--after">
+                <span class="nt-ai-approval-card__diff-label">Proposed</span>
+                <span class="nt-ai-approval-card__diff-value">Friday 14:00–15:00</span>
+              </div>
+            </div>
+          </div>
+          <footer class="nt-ai-approval-card__footer">
+            <span class="nt-ai-approval-card__footer-text">Approval sends the calendar update to attendees.</span>
+            <div class="nt-ai-approval-card__actions">
+              <button class="nt-button nt-button--ghost" type="button">Ask Neenee to revise</button>
+              <button class="nt-button nt-button--secondary" type="button">Reject proposal</button>
+              <button class="nt-button nt-button--primary" type="button">Approve change</button>
+            </div>
+          </footer>
+        </section>
+      </section>
+
+      <section class="fixture" aria-labelledby="upload-heading">
+        <h2 id="upload-heading">Upload workflow</h2>
+        <ul class="nt-stack nt-stack--sm" aria-label="Upload queue">
+          <li class="nt-cluster nt-cluster--between">
+            <span>kvitto-juni.pdf — Uploaded, scanning for viruses</span>
+            <button class="nt-button nt-button--ghost" type="button">Cancel upload</button>
+          </li>
+          <li class="nt-cluster nt-cluster--between">
+            <span>leverantörsfaktura-très-long-nom-de-fichier.pdf — Rejected: the file exceeds the 10 MB limit</span>
+            <button class="nt-button nt-button--secondary" type="button">Choose a smaller file</button>
+          </li>
+          <li class="nt-cluster nt-cluster--between">
+            <span>foto-arbetsorder.jpg — Upload failed: connection lost</span>
+            <button class="nt-button nt-button--secondary" type="button">Retry upload</button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="fixture" aria-labelledby="recovery-heading">
+        <h2 id="recovery-heading">Session recovery</h2>
+        <section class="nt-content-state nt-content-state--section" data-nt-content-state="unauthenticated" aria-labelledby="recovery-title">
+          <h3 id="recovery-title" class="nt-content-state__title">Your session ended</h3>
+          <p class="nt-content-state__description">Your unsaved invoice draft is kept on this device. Sign in again to continue where you left off.</p>
+          <div class="nt-content-state__actions">
+            <button class="nt-button nt-button--primary" type="button">Sign in again</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="fixture" aria-labelledby="agenda-heading">
+        <h2 id="agenda-heading">Calendar agenda (mobile view)</h2>
+        <div class="fixture-narrow nt-region">
+          <section class="nt-calendar-agenda" aria-labelledby="agenda-title">
+            <header class="nt-calendar-agenda__header">
+              <div class="nt-calendar-agenda__header-main">
+                <span class="nt-calendar-agenda__eyebrow">Calendar</span>
+                <h3 class="nt-calendar-agenda__title" id="agenda-title">Week 29</h3>
+              </div>
+              <div class="nt-calendar-agenda__nav">
+                <button class="nt-icon-button" type="button" aria-label="Previous week">‹</button>
+                <button class="nt-button nt-button--secondary nt-button--sm" type="button">Today</button>
+                <button class="nt-icon-button" type="button" aria-label="Next week">›</button>
+              </div>
+            </header>
+            <div class="nt-calendar-agenda__body">
+              <div class="nt-calendar-agenda__day nt-calendar-agenda__day--today">
+                <h4 class="nt-calendar-agenda__day-header">
+                  Monday 2026-07-14
+                  <span class="nt-calendar-agenda__today-indicator">Today</span>
+                </h4>
+                <button class="nt-calendar-agenda__event" type="button">
+                  <span class="nt-calendar-agenda__event-time">
+                    09:00
+                    <span class="nt-calendar-agenda__event-duration">1 h</span>
+                  </span>
+                  <span class="nt-calendar-agenda__event-main">
+                    <span class="nt-calendar-agenda__event-title">Team sync</span>
+                    <span class="nt-calendar-agenda__event-category">
+                      <span class="nt-calendar-agenda__event-dot" aria-hidden="true"></span>
+                      Work
+                    </span>
+                  </span>
+                </button>
+                <button class="nt-calendar-agenda__event nt-calendar-agenda__event--all-day" type="button">
+                  <span class="nt-calendar-agenda__event-time">All day</span>
+                  <span class="nt-calendar-agenda__event-main">
+                    <span class="nt-calendar-agenda__event-title">Semesterplanering — långsiktig genomgång</span>
+                  </span>
+                </button>
+              </div>
+              <div class="nt-calendar-agenda__day">
+                <h4 class="nt-calendar-agenda__day-header">Tuesday 2026-07-15</h4>
+                <p class="nt-calendar-agenda__empty">No events scheduled.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="record-list-heading">
+        <h2 id="record-list-heading">Data grid — mobile record mode</h2>
+        <div class="fixture-narrow">
+          <div class="nt-data-grid">
+            <div class="nt-data-grid__record-list" aria-label="Invoices">
+              <article class="nt-data-grid__record nt-data-grid__record--selected">
+                <div class="nt-data-grid__record-header">
+                  <h3 class="nt-data-grid__record-title">INV-1042 — Sydfix AB</h3>
+                  <span class="nt-data-grid__record-status nt-badge nt-badge--warning">Overdue</span>
+                </div>
+                <dl class="nt-data-grid__record-fields">
+                  <div class="nt-data-grid__record-field">
+                    <dt class="nt-data-grid__record-term">Amount</dt>
+                    <dd class="nt-data-grid__record-value nt-data-grid__record-value--numeric">12 500 SEK</dd>
+                  </div>
+                  <div class="nt-data-grid__record-field">
+                    <dt class="nt-data-grid__record-term">Due</dt>
+                    <dd class="nt-data-grid__record-value">2026-06-16</dd>
+                  </div>
+                </dl>
+                <div class="nt-data-grid__record-actions">
+                  <button class="nt-button nt-button--secondary nt-button--sm" type="button">Send reminder</button>
+                  <button class="nt-button nt-button--primary nt-button--sm" type="button">Record payment</button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="rtl-heading">
+        <h2 id="rtl-heading">Arabic RTL page header</h2>
+        <div dir="rtl" lang="ar">
+          <header class="nt-page-header">
+            <div class="nt-page-header__main">
+              <p class="nt-page-header__eyebrow">الفوترة</p>
+              <h3 class="nt-page-header__title">الفواتير</h3>
+              <p class="nt-page-header__description">فواتير المبيعات للشركة النشطة، مرتبة حسب تاريخ الاستحقاق.</p>
+            </div>
+            <div class="nt-page-header__actions">
+              <button class="nt-button nt-button--secondary" type="button">تصدير الفواتير</button>
+              <button class="nt-button nt-button--primary" type="button">إنشاء فاتورة</button>
+            </div>
+          </header>
+        </div>
+      </section>
+
+      <section class="fixture" aria-labelledby="swedish-heading">
+        <h2 id="swedish-heading">Long Swedish content</h2>
+        <div lang="sv" class="fixture-narrow nt-region">
+          <header class="nt-page-header">
+            <div class="nt-page-header__main">
+              <p class="nt-page-header__eyebrow">Företagsinställningar</p>
+              <h3 class="nt-page-header__title">Leverantörsfakturahanteringsinställningar för långtidsbeställningar</h3>
+              <p class="nt-page-header__description">Sammanfattningsvis påverkar ändringarna samtliga framtida leverantörsfakturor och betalningspåminnelser i hela företaget.</p>
+            </div>
+            <div class="nt-page-header__actions">
+              <button class="nt-button nt-button--primary" type="button">Spara ändringarna</button>
+            </div>
+          </header>
+        </div>
+      </section>
+
+    </main>
+    <script>
+      window.pagesReady = true;
+    </script>
+  </body>
+</html>

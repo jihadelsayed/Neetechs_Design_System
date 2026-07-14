@@ -128,4 +128,10 @@ Packed-tarball consumer verification must resolve the canonical and deprecated r
 - Card/panel and product/domain cards repeat structural header/body/footer CSS. Their semantics differ, and deeper visual extraction is deferred until actual composition markup can be tested.
 - Menu, dropdown, profile menu, and command palette retain pattern-specific CSS because popup geometry and rich content differ; behavioral listeners are canonical.
 - Empty/error/loading legacy patterns remain for compatibility; new content-state variants should avoid rebuilding separate CSS unless they add a distinct product pattern.
-- Calendar/data-grid physical layout mathematics and mobile adaptations remain deferred to Prompt 9.
+- Calendar and data-grid mobile adaptations now exist (agenda list, constrained/record grid modes); remaining physical layout mathematics (event collision, virtualization) stays application-level.
+
+## Adaptive categories and page patterns
+
+Every component declares an adaptive category — intrinsic, reflowing, adaptive, or alternative view — defined in [responsive-and-adaptive-design.md](./responsive-and-adaptive-design.md). Reusable components respond to query containers (`.nt-region`, shell content, dialog/drawer bodies), never to the viewport directly; only shell-level layout uses viewport queries from the documented rem scale.
+
+Page composition uses the structural patterns in `src/patterns/` — `page.css` (header/toolbar/sections/footer actions), `form-layout.css`, `settings-layout.css`, `master-detail.css`, `workflow.css` — documented in [page-patterns-and-workflows.md](./page-patterns-and-workflows.md). These are layout contracts; they encode no product business logic.

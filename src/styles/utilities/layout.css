@@ -118,6 +118,14 @@
   min-height: 1rem;
 }
 
+/* Auto-fitting grid for cards and dashboard widgets: columns derive from a
+ * minimum useful item width instead of a fixed column count. Override
+ * --nt-grid-min-item to the widget's real minimum. */
+.nt-grid--fit {
+  --nt-grid-min-item: 16rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--nt-grid-min-item), 100%), 1fr));
+}
+
 @media (max-width: 48rem) {
   .nt-container {
     padding-inline: var(--nt-page-padding-sm);
@@ -127,6 +135,16 @@
     padding: var(--nt-page-padding-sm);
   }
 
+  .nt-grid--2,
+  .nt-grid--3,
+  .nt-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Inside a query container the fixed-count grids respond to their region's
+ * width instead of the viewport (drawers, dialogs, dashboard columns). */
+@container (max-width: 40rem) {
   .nt-grid--2,
   .nt-grid--3,
   .nt-grid--4 {

@@ -293,7 +293,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .nt-toast-viewport,
   .nt-toast-viewport--top-right,
   .nt-toast-viewport--top-left,
