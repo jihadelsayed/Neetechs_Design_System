@@ -17,6 +17,12 @@
   --nt-color-gray-925: #0b1120;
   --nt-color-gray-950: #020617;
 
+  /* Neetechs signature colors. Blue is the product accent; lavender denotes AI. */
+  --nt-color-brand-blue: #528ef5;
+  --nt-color-brand-blue-hover: #76abff;
+  --nt-color-brand-blue-active: #3b82f6;
+  --nt-color-ai-lavender: #a78bfa;
+
   /* Brand / Accent */
   --nt-color-orange-50: #fff7ed;
   --nt-color-orange-100: #ffedd5;

@@ -23,7 +23,7 @@
   --nt-border-subtle: rgba(15, 23, 42, 0.08);
   --nt-border-muted: rgba(15, 23, 42, 0.12);
   --nt-border-strong: rgba(15, 23, 42, 0.2);
-  --nt-border-interactive: rgba(234, 88, 12, 0.48);
+  --nt-border-interactive: rgba(37, 99, 235, 0.48);
   --nt-border-default: var(--nt-border-muted);
   --nt-border-selected: var(--nt-border-interactive);
 
@@ -34,8 +34,8 @@
   --nt-text-subtle: #64748b;
   --nt-text-disabled: rgba(100, 116, 139, 0.52);
   --nt-text-inverse: #f8fafc;
-  --nt-text-link: var(--nt-color-orange-800);
-  --nt-text-link-hover: var(--nt-color-orange-900);
+  --nt-text-link: var(--nt-color-blue-700);
+  --nt-text-link-hover: var(--nt-color-blue-800);
   --nt-text-on-accent: var(--nt-accent-contrast);
   --nt-text-on-danger: var(--nt-bg-app);
 
@@ -46,24 +46,24 @@
   --nt-icon-disabled: rgba(100, 116, 139, 0.5);
 
   /* Accent */
-  --nt-accent: var(--nt-color-orange-600);
-  --nt-accent-hover: var(--nt-color-orange-500);
-  --nt-accent-active: var(--nt-color-orange-700);
-  --nt-accent-muted: rgba(234, 88, 12, 0.12);
-  --nt-accent-subtle: rgba(234, 88, 12, 0.06);
-  --nt-accent-text: #7c2d12;
+  --nt-accent: var(--nt-color-blue-600);
+  --nt-accent-hover: var(--nt-color-blue-500);
+  --nt-accent-active: var(--nt-color-blue-700);
+  --nt-accent-muted: rgba(37, 99, 235, 0.12);
+  --nt-accent-subtle: rgba(37, 99, 235, 0.06);
+  --nt-accent-text: #1e3a8a;
   --nt-accent-contrast: #ffffff;
 
   /* Focus */
-  --nt-focus-ring: var(--nt-color-orange-700);
-  --nt-focus-ring-muted: rgba(234, 88, 12, 0.24);
+  --nt-focus-ring: var(--nt-color-blue-700);
+  --nt-focus-ring-muted: rgba(37, 99, 235, 0.24);
   --nt-focus-ring-color: var(--nt-focus-ring);
   --nt-focus-ring-danger: var(--nt-color-red-700);
   --nt-focus-ring-inverse: var(--nt-color-white);
 
   /* Selection */
-  --nt-selection-bg: rgba(234, 88, 12, 0.22);
-  --nt-selection-fg: #7c2d12;
+  --nt-selection-bg: rgba(37, 99, 235, 0.2);
+  --nt-selection-fg: #1e3a8a;
   --nt-selection-bg-hover: var(--nt-accent-muted);
   --nt-selection-border: var(--nt-border-interactive);
   --nt-selection-indicator: var(--nt-accent);
@@ -119,11 +119,11 @@
   --nt-interactive-neutral-pressed: var(--nt-bg-surface-active);
   --nt-interactive-neutral-selected: var(--nt-selection-bg);
 
-  --nt-action-primary-bg: var(--nt-color-orange-700);
-  --nt-action-primary-hover: var(--nt-color-orange-800);
-  --nt-action-primary-pressed: var(--nt-color-orange-900);
+  --nt-action-primary-bg: var(--nt-color-blue-700);
+  --nt-action-primary-hover: var(--nt-color-blue-800);
+  --nt-action-primary-pressed: var(--nt-color-blue-900);
   --nt-action-primary-subtle: var(--nt-accent-subtle);
-  --nt-action-primary-border: var(--nt-color-orange-700);
+  --nt-action-primary-border: var(--nt-color-blue-700);
   --nt-action-primary-fg: var(--nt-color-white);
 
   --nt-action-secondary-bg: var(--nt-control-bg);
@@ -163,7 +163,7 @@
   --nt-ai-generated-surface: rgba(147, 51, 234, 0.12);
   --nt-ai-border: rgba(147, 51, 234, 0.22);
   --nt-ai-processing: rgba(147, 51, 234, 0.18);
-  --nt-ai-user-bubble: rgba(234, 88, 12, 0.1);
+  --nt-ai-user-bubble: rgba(37, 99, 235, 0.1);
   --nt-ai-assistant-bubble: rgba(147, 51, 234, 0.09);
   --nt-ai-bg-subtle: var(--nt-ai-bg);
   --nt-ai-action: var(--nt-ai-fg);

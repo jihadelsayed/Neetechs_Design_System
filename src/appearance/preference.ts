@@ -10,7 +10,7 @@ import type {
 export const NT_DEFAULT_APPEARANCE_PREFERENCE: Readonly<NtAppearancePreference> =
   Object.freeze({
     theme: 'system',
-    accent: 'orange',
+    accent: 'blue',
     density: 'comfortable',
     reduceMotion: 'system',
     highContrast: 'system',

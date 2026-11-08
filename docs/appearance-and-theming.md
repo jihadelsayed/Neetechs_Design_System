@@ -21,7 +21,7 @@ interface NtAppearancePreference {
 
 `system` color theme resolves from `prefers-color-scheme`. High contrast is a separate accessibility dimension layered on the resolved light/dark theme. Motion and contrast resolve to `full|reduced` and `normal|high`. Forced colors always activates the high-contrast layer, even when the manual contrast preference is false.
 
-Safe defaults are `system`, `orange`, `comfortable`, system motion, and system contrast. Without browser globals, system color falls back to dark (the package `:root` foundation), motion to full, and contrast to normal.
+Safe defaults are `system`, `blue`, `comfortable`, system motion, and system contrast. Without browser globals, system color falls back to dark (the package `:root` foundation), motion to full, and contrast to normal.
 
 ## Public DOM contract
 
@@ -31,7 +31,7 @@ The controller owns these public attributes on `document.documentElement`:
 <html
   data-nt-theme="dark"
   data-nt-theme-preference="system"
-  data-nt-accent="orange"
+  data-nt-accent="blue"
   data-nt-density="comfortable"
   data-nt-contrast="normal"
   data-nt-motion="full"
@@ -75,7 +75,9 @@ Initialization is idempotent. `destroy()` removes color-scheme, motion, contrast
 
 ## Accent semantics
 
-Orange is the Neetechs default. Blue, green, purple, and neutral remap primary action, selected surface, link, product focus, and interactive-border roles. Components consume semantic tokens and contain no accent-specific selectors. Status, AI, and financial roles do not follow the accent: green selection is not success, purple selection is not AI origin, and financial positive stays financial positive.
+Blue is the Neetechs default. Orange remains available for existing preferences; green, purple, and neutral remap primary action, selected surface, link, product focus, and interactive-border roles. Components consume semantic tokens and contain no accent-specific selectors. Status, AI, and financial roles do not follow the accent: green selection is not success, purple selection is not AI origin, and financial positive stays financial positive.
+
+The dark theme uses a softer navy surface hierarchy, while the light theme keeps clear neutral surfaces. Both themes keep readable foregrounds and use blue for product actions, lavender/purple for AI, green for success, amber for warnings, and red for danger. See [brand-palette.md](./brand-palette.md) for exact values and usage rules. Existing saved orange preferences continue to work until changed in MyAccount.
 
 ## Density semantics
 

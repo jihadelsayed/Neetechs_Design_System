@@ -107,6 +107,14 @@ Specific CSS entry points:
 @import '@neetechs/ui/domain/companies.css';
 ```
 
+## Default brand colors
+
+Neetechs now defaults to a softer navy dark theme with a blue product accent.
+The canonical palette, accessible foreground rules, and rollout notes are in
+[docs/brand-palette.md](./docs/brand-palette.md). Existing saved accent preferences
+continue to work (including orange); applications must resolve appearance from
+the backend rather than overriding user choices.
+
 ## Theme setup
 
 For the shared SSR-safe appearance system, use `@neetechs/ui/appearance` and
@@ -124,7 +132,7 @@ The controller applies the public contract to the root `html` element.
 
 ```html
 <html data-nt-theme="dark" data-nt-theme-preference="system"
-      data-nt-accent="orange" data-nt-density="comfortable"
+      data-nt-accent="blue" data-nt-density="comfortable"
       data-nt-contrast="normal" data-nt-motion="full">
   ...
 </html>

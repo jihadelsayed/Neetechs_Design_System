@@ -223,7 +223,7 @@ test('SSR initialization and malformed persistence are safe', () => {
     cookieString: 'nt_theme=%E0%A4%A',
   });
   assert.equal(state.resolved.theme, 'dark');
-  assert.equal(state.resolved.accent, 'orange');
+  assert.equal(state.resolved.accent, 'blue');
   assert.equal(storage.map.has(NT_APPEARANCE_CACHE_KEY), false);
 });
 
@@ -243,11 +243,11 @@ test('every accent has distinct semantic action and selection mappings while AI 
     dark.match(/--nt-bg-app:\s*([^;]+);/)[1].trim(),
   );
   for (const theme of ['light', 'dark']) {
-    for (const name of ['blue', 'green', 'purple', 'neutral']) {
+    for (const name of ['orange', 'blue', 'green', 'purple', 'neutral']) {
       assert.match(accent, new RegExp(`\\[data-nt-theme='${theme}'\\]\\[data-nt-accent='${name}'\\]`));
     }
   }
-  assert.equal([...accent.matchAll(/--nt-action-primary-bg:\s*var\(--nt-color-[^)]+\)/g)].length, 8);
+  assert.equal([...accent.matchAll(/--nt-action-primary-bg:\s*var\(--nt-color-[^)]+\)/g)].length, 10);
   const genericAccentBridge = accent.match(/\[data-nt-accent\]\s*\{([\s\S]*?)\}/)[1];
   assert.doesNotMatch(genericAccentBridge, /--nt-action-primary-bg:/);
   assert.match(accent, /--nt-selection-indicator:\s*var\(--nt-accent\)/);
