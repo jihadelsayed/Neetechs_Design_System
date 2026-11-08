@@ -175,7 +175,7 @@
   --nt-action-primary-hover: var(--nt-color-purple-300);
   --nt-action-primary-pressed: var(--nt-color-purple-500);
   --nt-action-primary-border: var(--nt-color-purple-400);
-  --nt-focus-ring: rgba(192, 132, 252, 0.78);
+  --nt-focus-ring: rgba(192, 132, 252, 0.9);
   --nt-focus-ring-muted: rgba(192, 132, 252, 0.28);
   --nt-selection-bg: rgba(192, 132, 252, 0.26);
   --nt-selection-fg: #f3e8ff;
