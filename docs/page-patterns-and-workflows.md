@@ -107,7 +107,9 @@ title ("Create invoice", "Edit INV-1042").
 ## Settings page
 
 Use `.nt-settings-layout` (side navigation ↔ scrollable row on narrow) with
-`.nt-settings-section`s.
+`.nt-settings-section`s. Long pages use `--sticky-nav` and
+`__nav--surface`; profile-style pages link in-page sections with
+`aria-current="location"` and show completeness with `__nav-status`.
 
 - Group by user intent, not backend model.
 - Permanent account settings live in MyAccount; tools link to them with
@@ -134,6 +136,30 @@ first, key metrics, recent activity, quick actions.
   alone); charts need accessible summaries.
 - Widgets declare `--nt-grid-min-item`; not every widget gets equal weight.
 - Conversational Neenee pages are conversations, never dashboards.
+
+## Profile page
+
+Compose `.nt-profile-header` (identity, completion, primary actions, an
+optional next-step card) above `.nt-settings-layout--sticky-nav`, whose
+content holds one `.nt-card` per section with a contextual "Edit" or
+"Manage" ghost button in `__header`. Primary sections use `.nt-card--edge`.
+Missing values are inline `.nt-button--link` actions, never empty rows.
+
+## Connections and resources
+
+Providers, connected accounts, integrations, and files use
+`.nt-resource-card` in a `.nt-resource-card-grid`; exactly one card is
+`--current`. Unavailable options stay visible with an explanation instead
+of disappearing. Balances use `.nt-stat--split` with a warning
+`.nt-alert` inside when action is needed. Older items (archived files,
+history) sit in a `.nt-disclosure`.
+
+## Document editor
+
+`.nt-editor-workspace` with a compact page header, a formatting row
+(`.nt-page-toolbar--surface`), a source pane, and a `.nt-document-preview`
+pane. Export actions print only the document. Template and format pickers
+use `.nt-choice-card`s.
 
 ## Master-detail
 

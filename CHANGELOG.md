@@ -8,6 +8,39 @@ out explicitly and ship with compatibility aliases where feasible.
 Releases are cut by `semantic-release` from Conventional Commits, but only
 when the package owner manually runs the release workflow with `publish: true`.
 
+## Unreleased
+
+Additive changes on top of the published 0.1.0 contract (no classes, tokens,
+exports, or behaviors removed).
+
+### Added
+- MyAccount-referenced patterns (see `docs/NEETECHS_UI_UPGRADE_PLAN.md`):
+  - Profile header `.nt-profile-header` (`patterns/profile-header.css`): identity, handle,
+    headline, detail line, completion meter, side column with actions and a next-step card.
+  - Resource card `.nt-resource-card` + `.nt-resource-card-grid`/`-list`
+    (`patterns/resource-card.css`) for providers, connected accounts, files, and keys.
+  - Editor workspace `.nt-editor-workspace`, `.nt-editor-pane`, `.nt-editor-status`
+    (`patterns/editor-workspace.css`) and document preview `.nt-document-preview`
+    (`patterns/document-preview.css`) with print geometry.
+  - Choice card `.nt-choice-card` + `.nt-choice-group` (`components/choice-card.css`).
+  - Disclosure `.nt-disclosure` + `.nt-disclosure-group` (`components/disclosure.css`).
+  - `.nt-button--link`, `.nt-avatar--2xl`, `.nt-avatar--editable` + `__overlay`,
+    `.nt-badge--info`, `.nt-card--edge`, `.nt-progress--reveal`, `.nt-stat--split`
+    (`__body`, `__aside`).
+  - Settings navigation: current-item bar, `aria-current="true"|"location"|"step"`,
+    `__nav-label`, `__nav-status` (`--complete`, `--attention`, `--error`), `__nav-count`,
+    `__nav-group`, `__nav-title`, `__nav--surface`, `.nt-settings-layout--sticky-nav`.
+  - Tokens (all three themes): `--nt-document-canvas`, `--nt-document-paper`,
+    `--nt-document-ink`, `--nt-document-ink-muted`, `--nt-document-rule`.
+
+### Changed
+- Navbar current and hover indicator is an underline that grows from the center (it was
+  an instant inset shadow).
+
+### Fixed
+- Light-theme contrast: descriptions in tinted alerts and eyebrow/subtitle/meta text in
+  muted or tinted cards now use secondary text (muted text measured 4.23–4.34:1 there).
+
 ## 0.1.0 — 2026-11-15
 
 ### Added

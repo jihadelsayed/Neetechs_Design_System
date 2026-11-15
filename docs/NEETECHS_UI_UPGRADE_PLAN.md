@@ -4,7 +4,7 @@ Single progress tracker for the 8-stage `@neetechs/ui` upgrade. Site chrome
 (Header, Navbar, Account dropdown, Mobile navigation, Footer) is part of
 Stages 4–6 below; there is no separate plan.
 
-**Current stage:** 8: 0.1.0 published to npm on 2026-11-15 (local `npm publish` by the owner account, tagged `v0.1.0`); consumer migrations can start.
+**Current stage:** 8: 0.1.0 published to npm on 2026-11-15 (local `npm publish` by the owner account, tagged `v0.1.0`); consumer migrations can start. MyAccount design adoption is on `main` for the next release (see below).
 
 ## Billing-referenced design upgrade (2026-11-15)
 
@@ -92,6 +92,117 @@ tokens; nothing was copied verbatim.
 - The stat-grid snapshot is captured at 1600px so text never wraps under either
   platform's font metrics; it passes on Windows and Linux CI.
 - `src.zip` is still tracked (owner decision, unchanged).
+
+## MyAccount Design Adoption (2026-11-15)
+
+Neetechs_Myaccount (Angular, consuming 0.0.4, commit `d7658b0`) was audited as
+read-only reference material after the Billing upgrade and the 0.1.0 release:
+profile hero and profile page, settings shell, AI settings (provider cards,
+connection overview, credit wallet, usage summary), CV library, CV preview and
+template picker, Resume Studio, desktop/mobile header, and global styles.
+MyAccount was not modified. The work targets the next release: 0.1.0 stays
+exactly as published, and every change is additive (verified against the
+published tarball).
+
+### Comparison results
+
+| Area | MyAccount | Design System before | Better / result |
+|---|---|---|---|
+| Profile hero | 96px rounded avatar, name + handle, headline/location with inline "Add …" actions, completion bar, CV call-to-action panel | Avatar up to 4rem, no profile header, no inline text action | **MyAccount** → added `.nt-profile-header`, `.nt-avatar--2xl`, `--editable`, `.nt-button--link`, `.nt-progress--reveal` |
+| Section navigation | Card-wrapped nav, completion dots, inline-start bar that grows in, in-page anchors | `.nt-settings-layout` nav with selection fill only | **MyAccount** → enhanced settings-layout nav (bar, status, groups, surface, sticky, `aria-current="location"`) |
+| Section cards | Accent edge on core sections, contextual Edit/Manage | Card header with actions | **Combined** → `.nt-card--edge`; actions already covered by `nt-card__actions` |
+| Provider / CV cards | Icon tile, badges, status pill, fact tiles, action row; "in use" border; document tile for CVs | None | **MyAccount** (hardcoded colors) → `.nt-resource-card` on tokens, reusing the Billing-derived description list |
+| Credit wallet / usage | Large balance with side facts and a threshold warning; 4-up stat grid; breakdown rows | `.nt-stat`, `.nt-stat-grid`, `.nt-description-list` (from Billing) | **DS for stats and breakdowns**; added `.nt-stat--split` for the wallet layout |
+| Template picker | Selectable option cards | None (only `.nt-card--selected`) | **MyAccount** → `.nt-choice-card` on native inputs |
+| Archived CVs / history | Native `<details>` with ad-hoc styling | None | **MyAccount idea, DS quality** → `.nt-disclosure` (also fits Billing's RUT claims) |
+| Resume Studio | Split editor/preview, pane headings, status footer, A4 paper on a grey canvas, horizontal scroll on phones, print-only page | None | **MyAccount** (hardcoded colors) → `.nt-editor-workspace`, `.nt-editor-status`, `.nt-document-preview`, `--nt-document-*` tokens |
+| Header nav | Underline that scales in from the center on hover/current | Instant inset bar | **MyAccount** → navbar underline |
+| Account dropdown, mobile nav, footer, drawers, toasts | Local re-implementations with a z-index hot-fix | Package versions with keyboard, layering, RTL, and tests | **DS already better**; no change |
+| Buttons, forms, badges, alerts, tables | Package classes plus local overrides | Package | **DS already better**; added link button and info badge |
+| Motion | Blur fade-ins, pop-in avatar, shimmer sweep, looping pulses (most disabled by MyAccount's own final overrides) | Token-driven motion | **DS**; adopted only the purposeful ones (below) |
+
+### Components improved or added
+- **Added:** `.nt-profile-header`, `.nt-resource-card` (+ `-grid`, `-list`), `.nt-editor-workspace`
+  / `.nt-editor-pane` / `.nt-editor-status`, `.nt-document-preview`, `.nt-choice-card` /
+  `.nt-choice-group`, `.nt-disclosure` / `.nt-disclosure-group`.
+- **Improved:** button (`--link`), avatar (`--2xl`, `--editable` + `__overlay`), badge (`--info`),
+  card (`--edge`; contrast of muted text on tinted cards), progress (`--reveal`), stat
+  (`--split`), alert (tinted description contrast), settings layout navigation, navbar.
+- **Tokens:** `--nt-document-canvas`, `--nt-document-paper`, `--nt-document-ink`,
+  `--nt-document-ink-muted`, `--nt-document-rule` in dark, light, and high-contrast themes.
+- **Billing additions reused, not duplicated:** the credit wallet is `.nt-stat--split` with a
+  `.nt-description-list--boxed` aside; resource-card facts use the description list; usage
+  metrics use `.nt-stat-grid`; profile sections use `.nt-card--padded`.
+
+### Animations and interaction improvements
+- Section-nav current bar grows in (`--nt-ease-emphasized`); in narrow row mode it becomes an
+  underline.
+- Navbar underline grows from the center: neutral on hover, accent for the current page.
+- Avatar "Change" overlay fades in on hover and keyboard focus (always visible on touch).
+- Link buttons fade their underline in.
+- The completion bar fills from zero on first render without moving the track.
+- Choice-card dot or tick grows in; checked cards get a selection ring.
+- Disclosure chevron rotates, and the height animates where `::details-content` exists.
+- Editor status pulses while saving and pops once when saved. The focused editor pane is
+  marked without layout change.
+- All of these use the existing duration/easing tokens, have no layout shift, and are
+  disabled under `prefers-reduced-motion` (tested).
+
+### Patterns already covered by the Design System
+Promotional/next-step panels (card `--muted --padded` with eyebrow/title/subtitle), usage
+breakdown rows (`.nt-description-list--inline`), dashed empty states (`.nt-empty-state`),
+overflow action menus (`.nt-dropdown`/`ntCreateMenu`), skeletons, toasts, dialogs and drawers,
+account dropdown, mobile navigation, footer, quota meters (`.nt-progress`).
+
+### Intentionally excluded
+| MyAccount pattern | Reason |
+|---|---|
+| Blur-in `fadeSlideUp`/`popIn` entrances and staggered card delays | Motion for its own sake; MyAccount's final overrides already disabled them |
+| Hover shimmer sweep on profile cards, looping `brandPulse` on the active nav dot | Decorative, distracting, and repeated; no information value |
+| Scroll-driven card entrances (`animation-timeline: view()`) | Content should be readable immediately; adds motion without feedback value |
+| Radial-gradient hero and nav-card backgrounds, `--brand-rgb` alpha tints | Bridge-era literals; tokens and accent preferences already cover tinting |
+| Resume Studio's literal palette (`#0c1523`, `#f97316`, …) and Arial résumé typography | Hardcoded; the résumé's own typography is application content, not design-system chrome |
+| `@page` named margins and résumé break rules | Document-specific print rules stay in the application; the pattern provides sheet, margins, page breaks, and print visibility |
+| CV upload/processing, wallet API states, provider connection logic | Business logic and services |
+| `<details>`-based CV action menu | Replaced by the existing accessible menu/dropdown |
+
+### Tests and compatibility (2026-11-15, Windows, Node 24, Chromium; local after `npm ci`)
+| Command | Result |
+|---|---|
+| `npm test` | pass: 131/131 unit (+7 in `tests/account-patterns.test.mjs`) and all static contracts |
+| `npx playwright test` | pass: 117/117 (+24 in `account.spec.mjs`: axe in dark, light, high contrast, and RTL; keyboard, focus, responsive, print, and reduced motion; one new snapshot). All 5 pre-existing snapshots unchanged |
+| `npm run check:package` | pass: 299.6 kB packed, 393 files, clean consumer install + import |
+| `check-api --compare` against the published `@neetechs/ui@0.1.0` tarball | pass: nothing removed |
+| `check-api --update` | +123 additions, 0 removals |
+
+Issues found and fixed during testing:
+- Profile header overlapped on phones: a container query cannot restyle its own container.
+  The root now wraps intrinsically and only descendants use the query; a unit test guards
+  against self-referencing queries.
+- Profile handle rendered `jamie@` in RTL: switched to `unicode-bidi: plaintext`.
+- Light-theme contrast (muted text 4.23–4.34:1) in tinted alerts and muted/tinted cards,
+  both predating this work: they now use secondary text.
+- The profile snapshot's height varied with platform font metrics (246px vs 267px). The
+  snapshot pins a metric-compatible stack (`"Liberation Sans", Arial`).
+
+### Remaining issues
+- `.nt-settings-layout` (from before 0.1.0) also queries its own container; its `@media`
+  fallback keeps it working at viewport level, but inside narrow panes on wide screens the
+  nav does not switch to row mode. Fixing it needs a wrapper or a layout change, which is a
+  breaking markup change; left for a deliberate decision.
+- `::details-content` height animation and `@starting-style` progress reveal need current
+  evergreen browsers. Others open instantly or show the final width; nothing breaks.
+- The light theme's `--nt-text-muted` reaches 4.5:1 only on white. Components were fixed
+  case by case; a token-level adjustment would be a visible theme change for every consumer.
+- `.nt-mobile-only` utility specificity (see the Billing section) and the tracked `src.zip`
+  are unchanged.
+- The package version stays 0.1.0 in `package.json`. The release workflow (semantic-release)
+  will compute the next version from these `feat` commits (0.2.0) when the owner runs it;
+  nothing was published.
+
+### Commits
+`7a56e6f`, `e55c051`, `bb4514a`, `cde3c92`, `997c183`, `896dafd`, `7a73f3c`, plus the
+documentation commit that adds this section.
 
 ## Release safety
 

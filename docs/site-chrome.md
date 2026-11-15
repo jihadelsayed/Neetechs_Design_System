@@ -103,6 +103,10 @@ Modifiers: `.nt-navbar--compact` (smaller rows), `.nt-navbar__panel--end`
 (multi-column panel). Current page: `aria-current="page"` (draws an indicator
 bar, so state never depends on color alone). Disabled entries: `aria-disabled="true"`.
 
+Current-page links show an accent underline that grows from the center; on
+hover other links preview the underline in a neutral tone. The underline is
+a shape cue, so the current page never relies on color alone.
+
 ## Account dropdown
 
 ```html
