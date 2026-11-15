@@ -143,6 +143,11 @@
   animation: nt-skeleton-shimmer 1.25s var(--nt-ease-standard) infinite;
 }
 
+/* The sweep follows the reading direction. */
+.nt-skeleton--shimmer:dir(rtl)::after {
+  animation-direction: reverse;
+}
+
 .nt-skeleton-stack {
   display: flex;
   flex-direction: column;

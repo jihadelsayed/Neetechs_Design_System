@@ -26,6 +26,27 @@
   transform: translateY(-1px);
 }
 
+.nt-card--interactive:active {
+  box-shadow: var(--nt-elevation-card);
+  transform: translateY(0);
+}
+
+/* Selected card (choice tiles, compared plans, bound filters). The extra
+ * ring is a shape change, so selection is not conveyed by color alone. */
+.nt-card--selected,
+.nt-card[aria-selected='true'],
+.nt-card[aria-pressed='true'],
+.nt-card[aria-current='true'],
+.nt-card[aria-checked='true'] {
+  border-color: var(--nt-selection-border);
+  box-shadow: 0 0 0 1px var(--nt-selection-border), var(--nt-elevation-card);
+}
+
+.nt-card--interactive:is(.nt-card--selected, [aria-selected='true'], [aria-pressed='true'], [aria-current='true'], [aria-checked='true']):hover {
+  border-color: var(--nt-selection-border);
+  box-shadow: 0 0 0 1px var(--nt-selection-border), var(--nt-elevation-card-hover);
+}
+
 .nt-card--interactive:focus-visible {
   outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
   outline-offset: var(--nt-focus-ring-offset);
@@ -64,6 +85,29 @@
 .nt-card--warning {
   border-color: var(--nt-warning-border);
   background: var(--nt-warning-bg);
+}
+
+.nt-card--info {
+  border-color: var(--nt-info-border);
+  background: var(--nt-info-bg);
+}
+
+/* Accent: the one recommended or primary card in a set. */
+.nt-card--accent {
+  border-color: var(--nt-border-interactive);
+  background: var(--nt-accent-subtle);
+}
+
+/* Padded: content sits directly in the card without header/body wrappers
+ * (dense dashboard tiles). Children stack with the card body rhythm. */
+.nt-card--padded {
+  gap: var(--nt-space-4);
+  padding: var(--nt-density-card-padding);
+}
+
+.nt-card--padded.nt-card--compact {
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-3);
 }
 
 .nt-card__header {

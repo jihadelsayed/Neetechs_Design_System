@@ -38,14 +38,34 @@
   display: inline-flex;
 }
 
+/* Pending without layout shift: when the label is wrapped in
+ * .nt-button__content, the spinner overlays the transparent label so the
+ * button keeps its width while busy. */
+.nt-button[data-nt-state='pending']:has(> .nt-button__content) {
+  position: relative;
+}
+
+/* Opacity (not visibility) keeps the label in the accessible name. */
+.nt-button[data-nt-state='pending']:has(> .nt-button__spinner) > .nt-button__content {
+  opacity: 0;
+}
+
+.nt-button[data-nt-state='pending']:has(> .nt-button__content) > .nt-button__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
 .nt-button[data-nt-state='success'] {
   border-color: var(--nt-success-border);
   box-shadow: 0 0 0 1px var(--nt-success-border);
+  animation: nt-button-feedback-success var(--nt-duration-slower) var(--nt-ease-standard);
 }
 
 .nt-button[data-nt-state='error'] {
   border-color: var(--nt-danger-border);
   box-shadow: 0 0 0 1px var(--nt-danger-border);
+  animation: nt-button-feedback-error var(--nt-duration-slower) var(--nt-ease-standard);
 }
 
 .nt-button:disabled,
@@ -184,6 +204,29 @@
   border-top-color: transparent;
   border-radius: var(--nt-radius-pill);
   animation: nt-spinner 720ms linear infinite;
+}
+
+/* Result feedback: one soft halo pulse that settles on the 1px ring. */
+@keyframes nt-button-feedback-success {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--nt-success-border);
+  }
+
+  40% {
+    box-shadow: 0 0 0 var(--nt-space-1) var(--nt-success-bg), 0 0 0 1px var(--nt-success-border);
+  }
+}
+
+@keyframes nt-button-feedback-error {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--nt-danger-border);
+  }
+
+  40% {
+    box-shadow: 0 0 0 var(--nt-space-1) var(--nt-danger-bg), 0 0 0 1px var(--nt-danger-border);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

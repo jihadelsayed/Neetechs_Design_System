@@ -114,3 +114,37 @@ summary:focus-visible,
     scroll-behavior: auto;
   }
 }
+
+/* Skip link: off-canvas until focused, then slides down as a pill at the
+ * top center of the viewport. Place it first in <body>. */
+.nt-skip-link {
+  position: fixed;
+  inset-block-start: var(--nt-space-3);
+  inset-inline: 0;
+  z-index: var(--nt-z-max);
+  width: max-content;
+  max-width: calc(100% - var(--nt-space-6));
+  margin-inline: auto;
+  padding: var(--nt-space-2-5) var(--nt-space-4);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-action-primary-bg);
+  color: var(--nt-action-primary-fg);
+  box-shadow: var(--nt-elevation-raised);
+  font: var(--nt-text-label-md);
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--nt-space-6)));
+  transition: transform var(--nt-duration-normal) var(--nt-ease-standard);
+}
+
+.nt-skip-link:focus,
+.nt-skip-link:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-skip-link {
+    transition: none;
+  }
+}
