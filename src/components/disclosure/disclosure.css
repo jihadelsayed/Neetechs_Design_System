@@ -1,0 +1,154 @@
+/*
+ * Disclosure: native <details>/<summary> for secondary content that should
+ * stay one click away (archived documents, version history, advanced
+ * options, tax-claim breakdowns). Used by both MyAccount (archived CVs,
+ * CV history) and Billing (RUT/ROT claims). Native semantics give keyboard
+ * and screen-reader support for free; the content height animates where
+ * the browser supports ::details-content, and opens instantly elsewhere.
+ *
+ * Markup: <details class="nt-disclosure">
+ *           <summary class="nt-disclosure__summary">
+ *             <span class="nt-disclosure__title">Archived CVs</span>
+ *             <span class="nt-disclosure__meta">3</span>
+ *             <svg class="nt-disclosure__chevron" aria-hidden="true">…</svg>
+ *           </summary>
+ *           <div class="nt-disclosure__content">…</div>
+ *         </details>
+ */
+
+.nt-disclosure {
+  min-width: 0;
+  color: var(--nt-text-primary);
+  interpolate-size: allow-keywords;
+}
+
+.nt-disclosure::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition:
+    block-size var(--nt-duration-normal) var(--nt-ease-standard),
+    content-visibility var(--nt-duration-normal) var(--nt-ease-standard) allow-discrete;
+}
+
+.nt-disclosure[open]::details-content {
+  block-size: auto;
+}
+
+.nt-disclosure__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-height: var(--nt-target-size-primary);
+  padding-inline: var(--nt-space-2);
+  border-radius: var(--nt-radius-control);
+  font: var(--nt-text-label-lg);
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.nt-disclosure__summary::marker {
+  content: '';
+}
+
+.nt-disclosure__summary:hover {
+  background: var(--nt-bg-surface-hover);
+}
+
+.nt-disclosure__summary:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Sizes */
+
+.nt-disclosure--sm .nt-disclosure__summary {
+  min-height: var(--nt-target-size-default);
+  font: var(--nt-text-label-md);
+}
+
+/* Variants */
+
+/* Surface: a bordered panel (stand-alone sections). */
+.nt-disclosure--surface {
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+}
+
+.nt-disclosure--surface > .nt-disclosure__summary {
+  padding-inline: var(--nt-space-4);
+  border-radius: calc(var(--nt-radius-panel) - var(--nt-space-px));
+}
+
+.nt-disclosure--surface[open] > .nt-disclosure__summary {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.nt-disclosure--surface .nt-disclosure__content {
+  padding: 0 var(--nt-space-4) var(--nt-space-4);
+}
+
+/* Group: stacked disclosures separated by rules (FAQ, history). */
+.nt-disclosure-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nt-disclosure-group > .nt-disclosure + .nt-disclosure {
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+/* Internals */
+
+.nt-disclosure__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nt-disclosure__meta {
+  flex: 0 0 auto;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-disclosure__chevron {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+  color: var(--nt-icon-secondary);
+  transition: transform var(--nt-duration-normal) var(--nt-ease-standard);
+}
+
+.nt-disclosure[open] > .nt-disclosure__summary .nt-disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+.nt-disclosure__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  padding: var(--nt-space-2) var(--nt-space-2) var(--nt-space-3);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-disclosure::details-content,
+  .nt-disclosure__summary,
+  .nt-disclosure__chevron {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,244 @@
+/*
+ * Choice card: a radio or checkbox presented as a selectable card (résumé
+ * templates, plans, AI providers, export formats). Distilled from
+ * MyAccount's template picker. The native input stays in the accessibility
+ * tree and owns keyboard behavior (arrow keys within a radio group, Space
+ * for checkboxes); the card reflects its state through :has().
+ *
+ * Markup: <div class="nt-choice-group" role="radiogroup" aria-labelledby="…">
+ *           <label class="nt-choice-card">
+ *             <input class="nt-choice-card__input" type="radio" name="template" value="pro">
+ *             <span class="nt-choice-card__indicator" aria-hidden="true"></span>
+ *             <span class="nt-choice-card__body">
+ *               <span class="nt-choice-card__title">Professional</span>
+ *               <span class="nt-choice-card__description">One column, ATS friendly</span>
+ *             </span>
+ *           </label>
+ *         </div>
+ */
+
+.nt-choice-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  min-width: 0;
+  min-height: var(--nt-target-size-primary);
+  padding: var(--nt-space-3);
+  border: 1px solid var(--nt-control-border);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  text-align: start;
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-choice-card:hover {
+  border-color: var(--nt-control-border-hover);
+  background: var(--nt-bg-surface-hover);
+}
+
+.nt-choice-card:active {
+  background: var(--nt-bg-surface-active);
+}
+
+.nt-choice-card:has(.nt-choice-card__input:focus-visible) {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Selected: selection fill, border, and an inner ring (shape change), plus
+ * the filled indicator. */
+.nt-choice-card:has(.nt-choice-card__input:checked),
+.nt-choice-card--selected {
+  border-color: var(--nt-selection-border);
+  background: var(--nt-selection-bg);
+  box-shadow: inset 0 0 0 1px var(--nt-selection-border);
+}
+
+.nt-choice-card:has(.nt-choice-card__input:disabled),
+.nt-choice-card--disabled {
+  border-color: var(--nt-border-disabled);
+  background: var(--nt-bg-surface-disabled);
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+}
+
+.nt-choice-card:has(.nt-choice-card__input:disabled) :is(.nt-choice-card__description, .nt-choice-card__meta) {
+  color: var(--nt-text-disabled);
+}
+
+/* Sizes */
+
+.nt-choice-card--sm {
+  gap: var(--nt-space-2);
+  min-height: var(--nt-target-size-default);
+  padding: var(--nt-space-2) var(--nt-space-3);
+}
+
+.nt-choice-card--lg {
+  gap: var(--nt-space-4);
+  padding: var(--nt-space-4);
+}
+
+/* Variants */
+
+/* Indicator-free cards for visual pickers (themes, templates with a
+ * thumbnail); selection relies on the ring and a check in __meta. */
+.nt-choice-card--plain .nt-choice-card__indicator {
+  display: none;
+}
+
+/* Internals */
+
+/* Visually hidden but focusable and announced. */
+.nt-choice-card__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.nt-choice-card__indicator {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--nt-space-4);
+  height: var(--nt-space-4);
+  margin-block-start: var(--nt-space-0-5);
+  border: 1px solid var(--nt-control-border);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-control-bg);
+  transition: var(--nt-transition-colors);
+}
+
+.nt-choice-card:has(input[type='checkbox']) .nt-choice-card__indicator {
+  border-radius: var(--nt-radius-indicator);
+}
+
+/* Radio dot / checkbox tick grow in from the center. */
+.nt-choice-card__indicator::after {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--nt-space-2);
+  height: var(--nt-space-2);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-action-primary-fg);
+  content: '';
+  transform: scale(0);
+  transition: transform var(--nt-duration-fast) var(--nt-ease-emphasized);
+}
+
+.nt-choice-card:has(input[type='checkbox']) .nt-choice-card__indicator::after {
+  width: var(--nt-space-1-5);
+  height: var(--nt-space-2-5);
+  margin-block-start: calc(var(--nt-space-0-5) * 0.5);
+  border: solid var(--nt-action-primary-fg);
+  border-width: 0 2px 2px 0;
+  border-radius: 0;
+  background: transparent;
+  transform: rotate(45deg) scale(0);
+}
+
+.nt-choice-card:has(.nt-choice-card__input:checked) .nt-choice-card__indicator,
+.nt-choice-card--selected .nt-choice-card__indicator {
+  border-color: var(--nt-action-primary-bg);
+  background: var(--nt-action-primary-bg);
+}
+
+.nt-choice-card:has(.nt-choice-card__input:checked) .nt-choice-card__indicator::after,
+.nt-choice-card--selected .nt-choice-card__indicator::after {
+  transform: scale(1);
+}
+
+.nt-choice-card:has(input[type='checkbox']:checked) .nt-choice-card__indicator::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.nt-choice-card:has(.nt-choice-card__input:disabled) .nt-choice-card__indicator {
+  border-color: var(--nt-border-disabled);
+  background: var(--nt-bg-surface-disabled);
+}
+
+.nt-choice-card__media {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--nt-radius-control);
+}
+
+.nt-choice-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-choice-card__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-1) var(--nt-space-2);
+  font: var(--nt-text-label-lg);
+  overflow-wrap: anywhere;
+}
+
+.nt-choice-card__description {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.nt-choice-card:has(.nt-choice-card__input:checked) .nt-choice-card__description,
+.nt-choice-card--selected .nt-choice-card__description {
+  color: var(--nt-text-secondary);
+}
+
+.nt-choice-card__meta {
+  margin-inline-start: auto;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  white-space: nowrap;
+}
+
+/* Group: as many cards per row as fit; cards in a row share a height. */
+.nt-choice-group {
+  --nt-choice-group-min: 13rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--nt-choice-group-min)), 1fr));
+  gap: var(--nt-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.nt-choice-group--stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (forced-colors: active) {
+  .nt-choice-card:has(.nt-choice-card__input:checked),
+  .nt-choice-card--selected {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-choice-card,
+  .nt-choice-card__indicator,
+  .nt-choice-card__indicator::after {
+    transition: none !important;
+  }
+}
