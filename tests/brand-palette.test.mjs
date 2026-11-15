@@ -32,16 +32,16 @@ test('soft navy semantic palette remains centralized in the dark theme', async (
   })) {
     assert.ok(dark.includes(`${role}: ${value};`), `${role} should use ${value}`);
   }
-  assert.match(dark, /--nt-accent:\\s*var\\(--nt-color-brand-blue\\)/);
-  assert.match(colors, /--nt-color-brand-blue:\\s*#528ef5/);
-  assert.match(colors, /--nt-color-ai-lavender:\\s*#a78bfa/);
+  assert.match(dark, /--nt-accent:\s*var\(--nt-color-brand-blue\)/);
+  assert.match(colors, /--nt-color-brand-blue:\s*#528ef5/);
+  assert.match(colors, /--nt-color-ai-lavender:\s*#a78bfa/);
 });
 
 test('legacy orange remains selectable in light and dark themes', async () => {
   const accent = await read('src/styles/appearance/accent.css');
-  assert.match(accent, /\\[data-nt-theme='light'\\]\\[data-nt-accent='orange'\\]/);
-  assert.match(accent, /\\[data-nt-theme='dark'\\]\\[data-nt-accent='orange'\\]/);
-  assert.match(accent, /\\[data-nt-theme='dark'\\]\\[data-nt-accent='blue'\\]/);
+  assert.match(accent, /\[data-nt-theme='light'\]\[data-nt-accent='orange'\]/);
+  assert.match(accent, /\[data-nt-theme='dark'\]\[data-nt-accent='orange'\]/);
+  assert.match(accent, /\[data-nt-theme='dark'\]\[data-nt-accent='blue'\]/);
 });
 
 test('default dark brand colors meet key contrast targets', () => {

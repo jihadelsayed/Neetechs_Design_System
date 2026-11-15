@@ -1,5 +1,5 @@
 ﻿export const NEETECHS_UI_PACKAGE = '@neetechs/ui';
-export const NEETECHS_UI_VERSION = '0.0.2';
+export { NEETECHS_UI_VERSION } from './version.js';
 
 export * from './types/index.js';
 export * from './behaviors/index.js';

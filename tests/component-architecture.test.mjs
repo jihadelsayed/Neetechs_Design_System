@@ -14,7 +14,7 @@ test('compatibility paths resolve to canonical component implementations', async
 test('canonical runtime exports retain dialog, modal, drawer, and menu adapters', async () => {
   const api = await import('../dist/index.js');
 
-  assert.equal(api.NEETECHS_UI_VERSION, '0.0.2');
+  assert.match(api.NEETECHS_UI_VERSION, /^\d+\.\d+\.\d+/);
   assert.equal(typeof api.ntCreateDialog, 'function');
   assert.equal(typeof api.ntCreateModal, 'function');
   assert.equal(typeof api.ntCreateDrawer, 'function');
@@ -27,9 +27,13 @@ test('canonical runtime exports retain dialog, modal, drawer, and menu adapters'
 test('package metadata stays framework-agnostic and versioned from one source', async () => {
   const packageJson = JSON.parse(await readFile('package.json', 'utf8'));
   const sourceIndex = await readFile('src/index.ts', 'utf8');
+  const versionModule = await readFile('src/version.ts', 'utf8');
+  const built = await import('../dist/index.js');
 
   assert.deepEqual(packageJson.dependencies ?? {}, {});
-  assert.match(sourceIndex, new RegExp(`NEETECHS_UI_VERSION = '${packageJson.version}'`));
+  assert.match(sourceIndex, /export \{ NEETECHS_UI_VERSION \} from '\.\/version\.js'/);
+  assert.match(versionModule, new RegExp(`NEETECHS_UI_VERSION = '${packageJson.version.replaceAll('.', '\\.')}'`));
+  assert.equal(built.NEETECHS_UI_VERSION, packageJson.version);
 });
 
 test('table and data-grid retain distinct semantic contracts', async () => {

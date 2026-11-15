@@ -100,7 +100,10 @@ test('Arabic typography and bidi utilities preserve technical and numeric readin
       numericDirection: getComputedStyle(numeric).direction,
       numericVariant: getComputedStyle(numeric).fontVariantNumeric,
       headingTransform: getComputedStyle(heading).textTransform,
-      headingClipped: heading.scrollHeight > heading.clientHeight,
+      // Font-metric overflow (e.g. installed Noto Sans Arabic, ~2.1em ascent+descent)
+      // is harmless while overflow stays visible; only a clipping box can cut glyphs.
+      headingClipped: getComputedStyle(heading).overflowY !== 'visible'
+        && heading.scrollHeight > heading.clientHeight,
       mixedUnicodeBidi: getComputedStyle(mixed).unicodeBidi,
     };
   });

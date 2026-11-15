@@ -37,14 +37,15 @@ export async function validateComponentArchitecture({ rootDir = defaultRoot } = 
     );
   }
 
-  const sourceIndex = await read('src/index.ts');
-  const versionMatch = sourceIndex.match(/NEETECHS_UI_VERSION\s*=\s*['"]([^'"]+)['"]/);
+  // src/version.ts is generated from package.json by scripts/sync-version.mjs.
+  const versionSource = await read('src/version.ts');
+  const versionMatch = versionSource.match(/NEETECHS_UI_VERSION\s*=\s*['"]([^'"]+)['"]/);
   if (versionMatch?.[1] !== packageJson.version) {
     addError(
       errors,
       'version-mismatch',
-      'src/index.ts',
-      `NEETECHS_UI_VERSION must match package.json version ${packageJson.version}`,
+      'src/version.ts',
+      `NEETECHS_UI_VERSION must match package.json version ${packageJson.version} (run npm run build)`,
     );
   }
 
