@@ -71,6 +71,36 @@ unsubscribe();
 appearance.destroy();
 ```
 
+### Pre-paint bootstrap (no theme flash)
+
+`bootstrapNeetechsAppearance()` runs when the application bundle executes,
+which on client-rendered pages can be after first paint. For flash-free
+startup, inline the self-contained bootstrap in `<head>` before stylesheets:
+
+```ts
+import { ntAppearanceBootstrapScript } from '@neetechs/ui/appearance';
+
+// Server or build step: inject into <head>. Under a strict CSP add a nonce/hash.
+const inline = `<script>${ntAppearanceBootstrapScript({ fallbackResolved: 'dark' })}</script>`;
+```
+
+It applies cookie → local cache → system defaults exactly like
+`initialize()` (unit-tested against it across cookie/cache/media matrices),
+never writes storage, and is wrapped in `try/catch`. The controller remains
+the single owner of state once the app starts.
+
+### Partial updates
+
+`setPreference` takes a complete preference. To change one dimension,
+for example from a light/dark toggle, use `updatePreference`, which merges onto
+the current preference so saved accent, density, motion, and contrast choices
+are never reset:
+
+```ts
+appearance.updatePreference({ theme: 'light' });
+appearance.updatePreference({ accent: 'green' });
+```
+
 Initialization is idempotent. `destroy()` removes color-scheme, motion, contrast, and forced-color listeners and subscribers. Invalid complete preferences are ignored. Storage, cookies, media queries, and DOM globals are injectable and guarded when unavailable.
 
 ## Accent semantics

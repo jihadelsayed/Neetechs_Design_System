@@ -75,6 +75,15 @@ export interface AppearanceController {
     preference: NtAppearancePreference,
     options?: SetPreferenceOptions,
   ): NtResolvedAppearanceState;
+  /**
+   * Merges a partial change (for example `{ theme: 'light' }`) onto the current
+   * preference, so switching one dimension never resets saved accent, density,
+   * motion, or contrast choices. Invalid partial values leave state unchanged.
+   */
+  updatePreference(
+    partial: Partial<NtAppearancePreference>,
+    options?: SetPreferenceOptions,
+  ): NtResolvedAppearanceState;
   subscribe(listener: AppearanceChangeListener): () => void;
   destroy(): void;
 }
@@ -332,6 +341,10 @@ export function createAppearanceController(
     },
     setPreference: applyPreference,
     applyResolvedPreference: applyPreference,
+    updatePreference(partial, setOptions = {}) {
+      if (!partial || typeof partial !== 'object') return state;
+      return applyPreference({ ...state.preference, ...partial }, setOptions);
+    },
     subscribe(listener: AppearanceChangeListener): () => void {
       listeners.add(listener);
       return () => listeners.delete(listener);

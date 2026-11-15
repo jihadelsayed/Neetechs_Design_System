@@ -78,3 +78,9 @@ export type {
   ThemeController,
   ThemeControllerOptions,
 } from './theme-controller.js';
+
+export {
+  ntApplyInlineAppearance,
+  ntAppearanceBootstrapScript,
+} from './inline-bootstrap.js';
+export type { NtAppearanceBootstrapScriptOptions } from './inline-bootstrap.js';
