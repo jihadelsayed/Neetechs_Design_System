@@ -140,6 +140,12 @@
   color: var(--nt-accent);
 }
 
+/* Muted text steps up to secondary on tinted alerts so descriptions keep
+ * 4.5:1 contrast in the light theme. Outline alerts keep muted text. */
+:is(.nt-alert--info, .nt-alert--success, .nt-alert--warning, .nt-alert--danger, .nt-alert--neutral, .nt-alert--accent):not(.nt-alert--outline) .nt-alert__description {
+  color: var(--nt-text-secondary);
+}
+
 .nt-alert--outline {
   background: transparent;
 }
