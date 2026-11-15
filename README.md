@@ -235,6 +235,43 @@ const save = ntCreateAsyncAction({
 </button>
 ```
 
+## Button group
+
+```html
+<div class="nt-button-group nt-button-group--attached" role="group" aria-label="Text alignment">
+  <button class="nt-button nt-button--secondary" type="button" aria-pressed="true">Start</button>
+  <button class="nt-button nt-button--secondary" type="button" aria-pressed="false">Center</button>
+</div>
+```
+
+Spaced by default; `--attached` joins buttons, `--vertical` stacks them, `--full`
+stretches them. Pressed state uses `aria-pressed` (color plus an inset ring).
+
+## Popover
+
+Non-modal panel for rich content such as filters or quick settings:
+
+```html
+<div class="nt-popover">
+  <button class="nt-button nt-button--secondary" type="button" id="filters-trigger">Filters</button>
+  <div class="nt-popover__content" id="filters" aria-labelledby="filters-title" hidden>
+    <div class="nt-popover__header"><h3 class="nt-popover__title" id="filters-title">Filter invoices</h3></div>
+    <div class="nt-popover__body">...</div>
+  </div>
+</div>
+```
+
+```ts
+import { ntCreatePopover } from '@neetechs/ui/behaviors';
+
+ntCreatePopover({
+  trigger: document.querySelector<HTMLElement>('#filters-trigger')!,
+  content: document.querySelector<HTMLElement>('#filters')!,
+});
+```
+
+Full catalog of components and behaviors: [docs/components.md](./docs/components.md).
+
 ## Basic input
 
 ```html

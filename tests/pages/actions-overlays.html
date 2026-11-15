@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-nt-theme="light" data-nt-theme-preference="light" data-nt-accent="blue" data-nt-density="comfortable" data-nt-contrast="normal" data-nt-motion="full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neetechs button group and popover example</title>
+    <link rel="stylesheet" href="/src/index.css">
+  </head>
+  <body>
+    <main class="nt-container nt-stack">
+      <h1 class="nt-text-heading-lg">Button groups and popovers</h1>
+
+      <section class="nt-stack" aria-labelledby="groups-heading">
+        <h2 id="groups-heading" class="nt-text-title-md">Button groups</h2>
+        <div class="nt-button-group" role="group" aria-label="Document actions" id="spaced-group">
+          <button class="nt-button nt-button--primary" type="button">Save changes</button>
+          <button class="nt-button nt-button--secondary" type="button">Preview</button>
+          <button class="nt-button nt-button--ghost" type="button" disabled>Archive</button>
+        </div>
+        <div class="nt-button-group nt-button-group--attached" role="group" aria-label="Text alignment" id="attached-group">
+          <button class="nt-button nt-button--secondary" id="align-start" type="button" aria-pressed="true">Start</button>
+          <button class="nt-button nt-button--secondary" id="align-center" type="button" aria-pressed="false">Center</button>
+          <button class="nt-button nt-button--secondary" id="align-end" type="button" aria-pressed="false">End</button>
+        </div>
+      </section>
+
+      <section class="nt-stack" aria-labelledby="popover-heading">
+        <h2 id="popover-heading" class="nt-text-title-md">Popover</h2>
+        <div class="nt-popover">
+          <button class="nt-button nt-button--secondary" id="filters-trigger" type="button">Filters</button>
+          <div class="nt-popover__content" id="filters" aria-labelledby="filters-title" hidden>
+            <div class="nt-popover__header">
+              <h3 class="nt-popover__title" id="filters-title">Filter invoices</h3>
+              <button class="nt-popover__close" id="filters-close" type="button" aria-label="Close filters">×</button>
+            </div>
+            <div class="nt-popover__body">
+              <label class="nt-field">
+                <span class="nt-field__label">Customer</span>
+                <input class="nt-input" id="customer" type="text">
+              </label>
+            </div>
+            <div class="nt-popover__footer">
+              <button class="nt-button nt-button--primary" id="apply-filters" type="button">Apply filters</button>
+            </div>
+          </div>
+        </div>
+        <div class="nt-card-grid">
+          <article class="nt-card nt-card--interactive"><div class="nt-card__body"><h3 class="nt-card__title">Invoice 1001</h3><p>Positioned card below the popover.</p></div></article>
+          <article class="nt-card nt-card--interactive"><div class="nt-card__body"><h3 class="nt-card__title">Invoice 1002</h3><p>Positioned card below the popover.</p></div></article>
+        </div>
+        <button class="nt-button nt-button--ghost" id="after-popover" type="button">Next action</button>
+      </section>
+    </main>
+
+    <script type="module">
+      import { ntCreatePopover } from '/dist/behaviors/index.js';
+
+      for (const button of document.querySelectorAll('#attached-group .nt-button')) {
+        button.addEventListener('click', () => {
+          for (const other of document.querySelectorAll('#attached-group .nt-button')) {
+            other.setAttribute('aria-pressed', String(other === button));
+          }
+        });
+      }
+
+      window.popover = ntCreatePopover({
+        trigger: document.querySelector('#filters-trigger'),
+        content: document.querySelector('#filters'),
+      });
+      window.fixtureReady = true;
+    </script>
+  </body>
+</html>

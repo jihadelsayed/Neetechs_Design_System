@@ -12,7 +12,7 @@ number: find the stacking context that traps the element instead.
 | Header | `--nt-z-header` | 200 | `.nt-header`, `.nt-app-shell__header` |
 | Sidebar | `--nt-z-sidebar` | 300 | `.nt-app-shell__sidebar` |
 | Dropdowns | `--nt-z-dropdown` | 400 | `.nt-dropdown__content`, `.nt-navbar__panel`, split-button menus, search results |
-| Popovers | `--nt-z-popover` | 500 | Reserved for non-menu popovers (not yet used by a component) |
+| Popovers | `--nt-z-popover` | 500 | `.nt-popover__content` (non-modal rich panels) |
 | Tooltips | `--nt-z-tooltip` | 600 | `.nt-tooltip` |
 | Drawers | `--nt-z-drawer` | 700 | `.nt-drawer`, `.nt-mobile-nav--drawer` (backdrop at `drawer − 1`) |
 | Modals | `--nt-z-modal` | 800 | `.nt-dialog` / `.nt-modal` and backdrops, `.nt-command-palette` |

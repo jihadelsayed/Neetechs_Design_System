@@ -1,0 +1,153 @@
+/*
+ * Popover — non-modal floating panel for rich, interactive content
+ * (filters, quick settings, inline forms). Use .nt-tooltip for short
+ * non-interactive hints and .nt-dropdown / .nt-menu for action lists.
+ *
+ *   <div class="nt-popover">
+ *     <button class="nt-button" type="button">Filters</button>
+ *     <div class="nt-popover__content" hidden>…</div>
+ *   </div>
+ *
+ * Behavior: ntCreatePopover() sets role="dialog" (non-modal), wires
+ * aria-expanded/aria-controls, Escape + focus restore, outside click, and
+ * focus-out closing. data-side="top" and data-align="end" flip placement.
+ */
+.nt-popover {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+}
+
+.nt-popover__content {
+  position: absolute;
+  top: calc(100% + var(--nt-space-2));
+  inset-inline-start: 0;
+  z-index: var(--nt-z-popover);
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 16rem;
+  max-width: min(24rem, calc(100vw - var(--nt-space-4)));
+  max-height: min(32rem, calc(100dvh - var(--nt-space-8)));
+  overflow: auto;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-popover);
+  background: var(--nt-bg-surface-overlay);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-elevation-popover);
+}
+
+/* Focus: the panel itself receives focus when it has no focusable content. */
+
+.nt-popover__content:focus-visible,
+.nt-popover__close:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-popover__content[data-state='open'] {
+  animation: nt-popover-in var(--nt-duration-fast) var(--nt-ease-enter);
+}
+
+/* Placement */
+
+.nt-popover__content[data-side='top'] {
+  top: auto;
+  bottom: calc(100% + var(--nt-space-2));
+}
+
+.nt-popover__content[data-align='end'] {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* Sizes */
+
+.nt-popover--sm .nt-popover__content {
+  min-width: 12rem;
+  max-width: min(18rem, calc(100vw - var(--nt-space-4)));
+}
+
+.nt-popover--lg .nt-popover__content {
+  min-width: 20rem;
+  max-width: min(32rem, calc(100vw - var(--nt-space-4)));
+}
+
+/* Internal elements */
+
+.nt-popover__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-popover__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-popover__body {
+  padding: var(--nt-space-4);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-sm);
+}
+
+.nt-popover__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-popover__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-control-height-sm);
+  height: var(--nt-control-height-sm);
+  flex: 0 0 auto;
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-control);
+  background: transparent;
+  color: var(--nt-icon-secondary);
+  cursor: pointer;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-popover__close:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-icon-primary);
+}
+
+@keyframes nt-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (pointer: coarse) {
+  .nt-popover__close {
+    width: var(--nt-target-size-primary);
+    height: var(--nt-target-size-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-popover__content,
+  .nt-popover__close {
+    animation: none !important;
+    transition: none !important;
+  }
+}
