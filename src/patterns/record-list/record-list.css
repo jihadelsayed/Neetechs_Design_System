@@ -1,0 +1,302 @@
+/*
+ * Record list: a short, scannable list of records that each lead somewhere
+ * (recent invoices, pending approvals, health checks). Distilled from the
+ * Billing dashboard: each row has a title with a muted meta line, an
+ * end-aligned figure or status, and a calm hover that strengthens the
+ * border instead of shifting layout. Narrow containers stack the trailing
+ * figure under the title.
+ *
+ * Markup: <ul class="nt-record-list">
+ *           <li><a class="nt-record" href="…">
+ *             <span class="nt-record__leading">…</span>
+ *             <span class="nt-record__main">
+ *               <span class="nt-record__title">…</span>
+ *               <span class="nt-record__meta">…</span>
+ *             </span>
+ *             <span class="nt-record__trailing">…</span>
+ *           </a></li>
+ *         </ul>
+ */
+
+.nt-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  container-type: inline-size;
+  container-name: nt-record-list;
+}
+
+.nt-record-list > li {
+  min-width: 0;
+}
+
+.nt-record {
+  --nt-record-indicator: var(--nt-text-muted);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-3);
+  width: 100%;
+  min-width: 0;
+  min-height: var(--nt-density-list-row-height);
+  padding: var(--nt-space-3);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-body-sm);
+  text-align: start;
+  text-decoration: none;
+  transition: var(--nt-transition-colors);
+}
+
+button.nt-record {
+  font: var(--nt-text-body-sm);
+  appearance: none;
+  cursor: pointer;
+}
+
+:is(a.nt-record[href], button.nt-record, .nt-record--interactive):hover {
+  border-color: var(--nt-border-strong);
+  background: var(--nt-bg-surface-hover);
+}
+
+:is(a.nt-record[href], button.nt-record, .nt-record--interactive):active {
+  background: var(--nt-bg-surface-active);
+}
+
+.nt-record:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Selected (master-detail lists): selection fill plus an inline-start bar. */
+.nt-record--selected,
+.nt-record[aria-current='true'],
+.nt-record[aria-current='page'],
+.nt-record[aria-selected='true'] {
+  border-color: var(--nt-selection-border);
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+}
+
+/* Muted text steps up to secondary on selected and muted rows (contrast). */
+:is(.nt-record--selected, .nt-record[aria-current='true'], .nt-record[aria-current='page'], .nt-record[aria-selected='true'], .nt-record--muted) :is(.nt-record__meta, .nt-record__caption) {
+  color: var(--nt-text-secondary);
+}
+
+.nt-record--selected::before,
+.nt-record[aria-current='true']::before,
+.nt-record[aria-current='page']::before,
+.nt-record[aria-selected='true']::before {
+  position: absolute;
+  inset-block: var(--nt-space-2);
+  inset-inline-start: calc(var(--nt-space-px) * -1);
+  width: var(--nt-space-1);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-selection-indicator);
+  content: '';
+}
+
+.nt-record--disabled,
+.nt-record[aria-disabled='true'] {
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Sizes */
+
+.nt-record-list--compact {
+  gap: var(--nt-space-1);
+}
+
+.nt-record-list--compact .nt-record {
+  gap: var(--nt-space-2);
+  padding: var(--nt-space-2) var(--nt-space-3);
+}
+
+/* Variants */
+
+/* Divided: flush rows inside a card instead of separate boxes. */
+.nt-record-list--divided {
+  gap: 0;
+}
+
+.nt-record-list--divided .nt-record {
+  border-color: transparent;
+  border-radius: var(--nt-radius-item);
+  background: transparent;
+}
+
+.nt-record-list--divided > li + li {
+  border-block-start: 1px solid var(--nt-border-subtle);
+}
+
+.nt-record-list--divided :is(a.nt-record[href], button.nt-record, .nt-record--interactive):hover {
+  border-color: transparent;
+  background: var(--nt-bg-surface-hover);
+}
+
+.nt-record-list--divided :is(.nt-record--selected, .nt-record[aria-current='true'], .nt-record[aria-current='page'], .nt-record[aria-selected='true']) {
+  border-color: var(--nt-selection-border);
+  background: var(--nt-selection-bg);
+}
+
+/* Muted rows for health/status messages that do not navigate. */
+.nt-record--muted {
+  background: var(--nt-bg-surface-muted);
+}
+
+.nt-record--success {
+  --nt-record-indicator: var(--nt-success);
+}
+
+.nt-record--warning {
+  --nt-record-indicator: var(--nt-warning);
+}
+
+.nt-record--danger {
+  --nt-record-indicator: var(--nt-danger);
+}
+
+.nt-record--info {
+  --nt-record-indicator: var(--nt-info);
+}
+
+/* Internals */
+
+.nt-record__leading {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: var(--nt-icon-secondary);
+}
+
+/* Status dot; pair with text (title or trailing badge) carrying the status. */
+.nt-record__indicator {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--nt-space-2-5);
+  height: var(--nt-space-2-5);
+  border: 1px solid var(--nt-bg-surface);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-record-indicator);
+  box-shadow: 0 0 0 1px var(--nt-record-indicator);
+}
+
+.nt-record__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+}
+
+.nt-record__title {
+  min-width: 0;
+  color: inherit;
+  font: var(--nt-text-label-lg);
+  overflow-wrap: anywhere;
+}
+
+.nt-record__meta {
+  min-width: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  overflow-wrap: anywhere;
+}
+
+.nt-record__trailing {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--nt-space-0-5);
+  min-width: 0;
+  text-align: end;
+}
+
+.nt-record__trailing:empty {
+  display: none;
+}
+
+.nt-record__value {
+  color: inherit;
+  font: var(--nt-text-label-lg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  unicode-bidi: isolate;
+}
+
+.nt-record__caption {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  white-space: nowrap;
+}
+
+/* Directional affordance for navigating rows; nudges toward the reading
+ * direction on hover. */
+.nt-record__chevron {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+  color: var(--nt-icon-muted);
+  transition:
+    color var(--nt-duration-fast) var(--nt-ease-standard),
+    transform var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-record__chevron:dir(rtl) {
+  scale: -1 1;
+}
+
+:is(a.nt-record[href], button.nt-record, .nt-record--interactive):hover .nt-record__chevron {
+  color: var(--nt-icon-secondary);
+  transform: translateX(var(--nt-space-0-5));
+}
+
+/* Narrow container: trailing figure moves under the title, start-aligned. */
+@container nt-record-list (max-width: 28rem) {
+  .nt-record {
+    flex-wrap: wrap;
+    row-gap: var(--nt-space-1);
+  }
+
+  .nt-record__main {
+    flex-basis: 0;
+  }
+
+  .nt-record__chevron {
+    order: 1;
+  }
+
+  .nt-record__trailing {
+    order: 2;
+    flex: 1 0 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--nt-space-1) var(--nt-space-2);
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-record,
+  .nt-record__chevron {
+    transition: none !important;
+  }
+
+  :is(a.nt-record[href], button.nt-record, .nt-record--interactive):hover .nt-record__chevron {
+    transform: none;
+  }
+}

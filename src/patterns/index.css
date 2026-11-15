@@ -1,4 +1,5 @@
 @import './page/page.css';
+@import './record-list/record-list.css';
 @import './form-layout/form-layout.css';
 @import './settings-layout/settings-layout.css';
 @import './master-detail/master-detail.css';

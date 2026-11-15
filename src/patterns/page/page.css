@@ -69,6 +69,54 @@
   max-width: 100%;
 }
 
+/* Title row: the title with an inline status badge that wraps under it on
+ * narrow widths instead of squeezing the title. */
+.nt-page-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2) var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-page-header__status {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+}
+
+.nt-page-header__status:empty,
+.nt-page-header__actions:empty {
+  display: none;
+}
+
+/* Surface header: the record "action bar" of document detail pages
+ * (identity, status, contextual actions) on a bordered panel. */
+.nt-page-header--surface {
+  align-items: center;
+  padding: var(--nt-density-card-padding);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+  box-shadow: var(--nt-elevation-card);
+}
+
+/* Compact header: dense workspace chrome above lists and dashboards. */
+.nt-page-header--compact {
+  align-items: center;
+  gap: var(--nt-space-2) var(--nt-space-4);
+}
+
+.nt-page-header--compact .nt-page-header__main {
+  gap: var(--nt-space-0-5);
+}
+
+.nt-page-header--compact .nt-page-header__description {
+  font: var(--nt-text-body-sm);
+  color: var(--nt-text-muted);
+}
+
 /* Page toolbar: search, filters, sort, and view controls under the header. */
 .nt-page-toolbar {
   display: flex;
@@ -104,6 +152,35 @@
   gap: var(--nt-space-2);
   width: 100%;
   min-width: 0;
+}
+
+/* Surface toolbar: a filter panel. Field rows use __fields, which fit as
+ * many filters per row as the container allows; __actions (apply / reset)
+ * align to the field baseline at the end of the row. */
+.nt-page-toolbar--surface {
+  align-items: flex-end;
+  padding: var(--nt-density-toolbar-padding);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+}
+
+.nt-page-toolbar__fields {
+  display: grid;
+  flex: 999 1 32rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  align-items: end;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-page-toolbar__actions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
 }
 
 /* Page body: vertical rhythm for sections; optional supporting aside. */
@@ -163,6 +240,13 @@
   flex-direction: column;
   gap: var(--nt-space-1);
   min-width: 0;
+}
+
+.nt-page-section__eyebrow {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
 }
 
 .nt-page-section__title {
