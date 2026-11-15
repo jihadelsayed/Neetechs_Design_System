@@ -58,6 +58,18 @@
   transform-origin: right center;
 }
 
+/* Reveal: the bar fills from zero when it first renders (profile
+ * completion, quota meters). Width changes afterwards animate as usual. */
+.nt-progress--reveal .nt-progress__bar {
+  transition-duration: var(--nt-duration-slower), var(--nt-duration-fast);
+}
+
+@starting-style {
+  .nt-progress--reveal .nt-progress__bar {
+    width: 0;
+  }
+}
+
 .nt-progress__description {
   margin: 0;
   color: var(--nt-text-muted);

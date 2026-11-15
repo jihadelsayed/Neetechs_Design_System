@@ -123,6 +123,79 @@
   height: 0.875rem;
 }
 
+/* Profile hero size. */
+.nt-avatar--2xl {
+  width: 6rem;
+  height: 6rem;
+  font: var(--nt-text-heading-sm);
+}
+
+.nt-avatar--2xl .nt-avatar__status {
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+}
+
+/* Editable avatar: a <button> or <label> whose overlay ("Change photo")
+ * fades in on hover and keyboard focus. Touch devices without hover show a
+ * compact strip permanently. Give the control its own accessible name. */
+.nt-avatar--editable {
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color var(--nt-duration-fast) var(--nt-ease-standard),
+    box-shadow var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-avatar--editable:hover {
+  border-color: var(--nt-accent);
+}
+
+.nt-avatar--editable:focus-visible,
+.nt-avatar--editable:focus-within:has(:focus-visible) {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-avatar__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nt-space-1);
+  background: color-mix(in srgb, var(--nt-bg-surface-overlay) 86%, transparent);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-sm);
+  text-align: center;
+  text-transform: none;
+  opacity: 0;
+  transition: opacity var(--nt-duration-fast) var(--nt-ease-standard);
+  pointer-events: none;
+}
+
+.nt-avatar__overlay > svg {
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+}
+
+.nt-avatar--editable:hover .nt-avatar__overlay,
+.nt-avatar--editable:focus-visible .nt-avatar__overlay,
+.nt-avatar--editable:focus-within .nt-avatar__overlay {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .nt-avatar__overlay {
+    inset-block-start: auto;
+    min-height: 34%;
+    font: var(--nt-text-caption);
+    opacity: 1;
+  }
+}
+
 .nt-avatar--square {
   border-radius: var(--nt-radius-item);
 }
@@ -210,6 +283,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nt-avatar--editable,
+  .nt-avatar__overlay {
+    transition: none !important;
+  }
+
   .nt-avatar--interactive {
     transition: none !important;
   }

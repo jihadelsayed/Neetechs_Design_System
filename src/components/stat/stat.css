@@ -188,6 +188,36 @@ button.nt-stat {
   border-inline-start: var(--nt-space-1) solid var(--nt-stat-tone);
 }
 
+/* Split: headline figure in __body beside supporting facts in __aside
+ * (balances, quotas). Wraps intrinsically; any other child, such as an
+ * alert, takes a full row. */
+.nt-stat--split {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--nt-space-4);
+}
+
+.nt-stat__body,
+.nt-stat__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-stat__body {
+  flex: 999 1 16rem;
+}
+
+.nt-stat__aside {
+  flex: 1 1 12rem;
+}
+
+.nt-stat--split > :not(.nt-stat__body, .nt-stat__aside) {
+  flex: 1 0 100%;
+}
+
 /* Wide: spans every column of a stat grid (featured figure). */
 .nt-stat--wide {
   grid-column: 1 / -1;

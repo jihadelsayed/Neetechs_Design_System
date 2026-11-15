@@ -72,6 +72,12 @@
   color: var(--nt-danger-text);
 }
 
+.nt-badge--info {
+  border-color: var(--nt-info-border);
+  background: var(--nt-info-bg);
+  color: var(--nt-info-text);
+}
+
 .nt-badge--outline {
   background: transparent;
 }

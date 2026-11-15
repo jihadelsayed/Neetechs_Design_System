@@ -178,6 +178,46 @@
   color: var(--nt-ai-action-hover);
 }
 
+/* Link: an inline text action inside content ("Add headline", "View all").
+ * Keeps button semantics and the focus ring; the underline grows in on
+ * hover so the affordance is not color alone. */
+.nt-button--link {
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--nt-text-link);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.2em;
+  white-space: normal;
+  transition:
+    color var(--nt-duration-fast) var(--nt-ease-standard),
+    text-decoration-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-button--link:not(:disabled):not(.nt-button--disabled):hover {
+  color: var(--nt-text-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.nt-button--link:not(:disabled):active {
+  transform: none;
+}
+
+.nt-button--link:is(:disabled, [aria-disabled='true'], .nt-button--disabled) {
+  background: transparent;
+  color: var(--nt-text-disabled);
+}
+
+.nt-button--link.nt-button--sm {
+  height: auto;
+  padding: 0;
+}
+
 /* Internals */
 
 .nt-button__content {

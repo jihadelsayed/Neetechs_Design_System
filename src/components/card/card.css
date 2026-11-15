@@ -72,6 +72,11 @@
   background: var(--nt-bg-surface-muted);
 }
 
+/* Muted text steps up to secondary on non-white surfaces (contrast). */
+:is(.nt-card--muted, .nt-card--danger, .nt-card--success, .nt-card--warning, .nt-card--info, .nt-card--accent) :is(.nt-card__eyebrow, .nt-card__subtitle, .nt-card__meta) {
+  color: var(--nt-text-secondary);
+}
+
 .nt-card--danger {
   border-color: var(--nt-danger-border);
   background: var(--nt-danger-bg);
@@ -96,6 +101,19 @@
 .nt-card--accent {
   border-color: var(--nt-border-interactive);
   background: var(--nt-accent-subtle);
+}
+
+/* Edge: an inline-start accent edge marking the primary sections of a page
+ * (profile core sections, the current plan). It strengthens to the accent
+ * while the pointer or keyboard focus is inside the card. */
+.nt-card--edge {
+  border-inline-start: var(--nt-space-1) solid var(--nt-border-interactive);
+  transition: border-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-card--edge:hover,
+.nt-card--edge:focus-within {
+  border-inline-start-color: var(--nt-accent);
 }
 
 /* Padded: content sits directly in the card without header/body wrappers
@@ -255,6 +273,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nt-card--edge,
   .nt-card--interactive {
     transition: none !important;
   }
