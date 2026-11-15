@@ -72,6 +72,8 @@ tokens; nothing was copied verbatim.
 | `npx playwright test` | pass: 93/93 (+25 new in `workspace.spec.mjs`, including axe in 3 themes and a stat-grid snapshot); all 4 pre-existing snapshots unchanged |
 | `npm run check:package` | pass: 282.7 kB packed, 381 files, clean consumer install + import |
 | `check:api` baseline update | +127 additions, 0 removals |
+| GitHub Actions on `235e000` (ubuntu) | **failed**: only the new stat-grid snapshot (Linux fallback font wrapped labels at a 1280px viewport; reproduced locally with Verdana) |
+| GitHub Actions on `57ebc72` (ubuntu, full gate incl. Playwright and package check; publish skipped) | pass |
 
 ### Unresolved issues
 - Billing still ships local duplicates (`.billing-sidenav`, `.finance-stat-card`,
@@ -87,8 +89,8 @@ tokens; nothing was copied verbatim.
   previous pending-button behavior; nothing breaks.
 - The rail uses `title` for icon-only labels; a positioned flyout tooltip would be
   clipped by the scrolling nav and was not added.
-- The new snapshot was recorded on Windows with the same cross-platform tolerance as
-  the existing ones; the first Linux CI run confirms it (see the commit status).
+- The stat-grid snapshot is captured at 1600px so text never wraps under either
+  platform's font metrics; it passes on Windows and Linux CI.
 - `src.zip` is still tracked (owner decision, unchanged).
 
 ## Release safety
