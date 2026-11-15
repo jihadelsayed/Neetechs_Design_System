@@ -40,6 +40,8 @@ exports, or behaviors removed).
 ### Fixed
 - Light-theme contrast: descriptions in tinted alerts and eyebrow/subtitle/meta text in
   muted or tinted cards now use secondary text (muted text measured 4.23–4.34:1 there).
+- `.nt-badge--neutral` and the base/draft `.nt-billing-status` use the neutral tone roles
+  (muted text on the muted surface measured 4.34:1 in the light theme).
 
 ## 0.1.0 — 2026-11-15
 

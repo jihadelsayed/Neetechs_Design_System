@@ -182,6 +182,9 @@ Issues found and fixed during testing:
 - Profile handle rendered `jamie@` in RTL: switched to `unicode-bidi: plaintext`.
 - Light-theme contrast (muted text 4.23–4.34:1) in tinted alerts and muted/tinted cards,
   both predating this work: they now use secondary text.
+- Linux CI (`c8247d7`) flagged `.nt-badge--neutral` at 4.34:1 in the light theme (muted
+  text on the muted surface); Windows axe had not. The neutral badge and the base/draft
+  `.nt-billing-status` now use the `--nt-neutral-*` tone roles (`fix(badge)` commit).
 - The profile snapshot's height varied with platform font metrics (246px vs 267px). The
   snapshot pins a metric-compatible stack (`"Liberation Sans", Arial`).
 
@@ -196,13 +199,16 @@ Issues found and fixed during testing:
   case by case; a token-level adjustment would be a visible theme change for every consumer.
 - `.nt-mobile-only` utility specificity (see the Billing section) and the tracked `src.zip`
   are unchanged.
+- One local run failed `actions-overlays.spec.mjs` "pass axe (high contrast)" once (it
+  predates this work and its page has no changed components); 15 repeated runs and the
+  following full run passed. Treated as an intermittent flake; not changed.
 - The package version stays 0.1.0 in `package.json`. The release workflow (semantic-release)
   will compute the next version from these `feat` commits (0.2.0) when the owner runs it;
   nothing was published.
 
 ### Commits
-`7a56e6f`, `e55c051`, `bb4514a`, `cde3c92`, `997c183`, `896dafd`, `7a73f3c`, plus the
-documentation commit that adds this section.
+`7a56e6f`, `e55c051`, `bb4514a`, `cde3c92`, `997c183`, `896dafd`, `7a73f3c`, `c8247d7`
+(docs), the neutral-badge contrast fix, and the documentation update that records it.
 
 ## Release safety
 
