@@ -17,7 +17,8 @@
     "src",
     "docs",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
   ],
   "scripts": {
     "clean": "rimraf dist",
@@ -31,12 +32,13 @@
     "check:content": "node scripts/check-content-contracts.mjs",
     "test:unit": "node --test \"tests/**/*.test.mjs\"",
     "test:browser": "npm run build && playwright test",
-    "test": "npm run check:tokens && npm run check:a11y && npm run check:rtl && npm run check:architecture && npm run check:states && npm run check:responsive && npm run check:content && npm run build && npm run check:docs && npm run test:unit",
+    "test": "npm run check:tokens && npm run check:a11y && npm run check:rtl && npm run check:architecture && npm run check:states && npm run check:responsive && npm run check:content && npm run build && npm run check:docs && npm run check:api && npm run test:unit",
     "pack:local": "npm run build && npm pack",
     "release": "semantic-release",
     "prepack": "npm run build",
     "check:package": "node scripts/check-package.mjs",
-    "check:docs": "node scripts/check-docs.mjs"
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:api": "node scripts/check-api.mjs"
   },
   "exports": {
     ".": {
@@ -117,7 +119,14 @@
     "doc": "docs",
     "test": "tests"
   },
-  "keywords": [],
+  "keywords": [
+    "design-system",
+    "css",
+    "design-tokens",
+    "accessibility",
+    "rtl",
+    "neetechs"
+  ],
   "bugs": {
     "url": "https://github.com/jihadelsayed/Neetechs_Design_System/issues"
   },

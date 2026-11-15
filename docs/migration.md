@@ -1,4 +1,48 @@
-# Appearance migration
+# Migration guide
+
+## Upgrading consumers from 0.0.4 to 0.1.0
+
+0.1.0 is backward compatible: `npm run check:api -- --compare <extracted 0.0.4>`
+confirms that no export path, CSS file, `nt-` class, `--nt-` token, or JS
+binding from 0.0.4 was removed. Intentional visual change: the dark theme uses
+the soft navy palette and blue is the default accent. Every consumer already
+emulates this with a local "bridge".
+
+Do not upgrade a consumer until 0.1.0 is published to npm. Then, per app:
+
+1. `npm install @neetechs/ui@0.1.0` and build.
+2. Delete the palette bridge rules listed below (they now equal package values).
+3. Keep app-specific overrides that are deliberate (listed as *keep*).
+4. Optional: replace a hand-written header/footer/account menu with
+   [site chrome](./site-chrome.md); replace any local header z-index fixes with
+   the package's header layer (see [layering.md](./layering.md)).
+5. Optional: add the pre-paint bootstrap (`ntAppearanceBootstrapScript()`) to
+   `index.html` to remove the startup theme flash.
+
+Bridge analysis: each bridge declaration was resolved in Chromium against the
+0.1.0 package under the same root attributes (dark, blue, normal contrast).
+
+| App | Bridge file | Identical to 0.1.0 (delete) | Different |
+|---|---|---|---|
+| Neetechs_Myaccount | `src/styles.scss` (dark + dark/blue rules) | 47 / 47 | none |
+| Neetechs_Apply | `src/styles.scss` | 50 / 51 | `--nt-text-label-xs: var(--nt-text-label-sm)` (*keep*: deliberate larger micro-labels) |
+| Neetechs_Billing | `src/styles.scss` | 50 / 52 | `--nt-text-label-xs` (*keep*, as Apply); `--nt-selection-border` 0.5 alpha vs package 0.9 (*review*: delete to adopt the package's stronger, more accessible selection border) |
+| Neetechs_AI | `src/styles/brand-theme.css` | 45 / 49 | `--nt-bg-header` 0.94 vs 0.92 alpha, `--nt-border-muted` 0.30 vs 0.27, `--nt-text-muted` `#cbd9ea` vs `#d1e0f2`, `--nt-selection-border` 0.5 vs 0.9 (*review*: near-identical; delete for consistency unless the AI shell needs them) |
+| Neetechs_devices | — | no bridge | — |
+
+Non-token parts of the bridges stay in the apps: MyAccount's `--brand-rgb`
+(used by app SCSS for `rgba()` mixing), global element resets, skeleton and
+animation helpers, and `.field-error`/`.form-error` app classes. `--brand-rgb`
+can later be retired by mixing the semantic accent directly, which also follows
+accent and theme changes automatically:
+
+```css
+.example-highlight {
+  background: color-mix(in srgb, var(--nt-accent) 16%, transparent);
+}
+```
+
+## Appearance migration
 
 ## Page patterns, workflows, and content (Prompt 10)
 
