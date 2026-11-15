@@ -1,0 +1,276 @@
+/*
+ * Editor workspace: a source editor beside a live preview (Markdown résumés,
+ * invoice and contract templates, email templates, AI drafts). Distilled
+ * from MyAccount's Resume Studio: page header and formatting toolbar above,
+ * two bordered panes with headings and a status footer, the preview pane
+ * optionally sticky while the source scrolls, and a print mode that keeps
+ * only the preview. Panes stack when the workspace is narrower than 64rem.
+ *
+ * Compose the header with .nt-page-header--compact and the formatting row
+ * with .nt-page-toolbar--surface; render the preview with
+ * .nt-document-preview.
+ *
+ * Markup: <div class="nt-editor-workspace">
+ *           …header, toolbar…
+ *           <div class="nt-editor-workspace__panes">
+ *             <section class="nt-editor-pane" aria-labelledby="src-title">
+ *               <div class="nt-editor-pane__header">
+ *                 <h2 class="nt-editor-pane__title" id="src-title">Markdown</h2>
+ *               </div>
+ *               <textarea class="nt-editor-pane__source" aria-labelledby="src-title"></textarea>
+ *               <div class="nt-editor-pane__footer">
+ *                 <span class="nt-editor-status" data-state="saved" role="status">Saved</span>
+ *               </div>
+ *             </section>
+ *             <section class="nt-editor-pane nt-editor-pane--preview">…</section>
+ *           </div>
+ *         </div>
+ */
+
+.nt-editor-workspace {
+  --nt-editor-sticky-offset: var(--nt-space-3);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+  container-type: inline-size;
+  container-name: nt-editor-workspace;
+}
+
+.nt-editor-workspace__panes {
+  display: grid;
+  grid-template-columns: minmax(18rem, 2fr) minmax(0, 3fr);
+  align-items: start;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-editor-workspace--balanced .nt-editor-workspace__panes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* The preview follows the reader while a long source scrolls. */
+.nt-editor-workspace--sticky-preview .nt-editor-pane--preview {
+  position: sticky;
+  top: var(--nt-editor-sticky-offset);
+  max-height: calc(100vh - 2 * var(--nt-editor-sticky-offset));
+  max-height: calc(100dvh - 2 * var(--nt-editor-sticky-offset));
+}
+
+.nt-editor-workspace--sticky-preview .nt-editor-pane--preview > .nt-editor-pane__body {
+  overflow: auto;
+}
+
+@container nt-editor-workspace (max-width: 64rem) {
+  .nt-editor-workspace__panes,
+  .nt-editor-workspace--balanced .nt-editor-workspace__panes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nt-editor-workspace--sticky-preview .nt-editor-pane--preview {
+    position: static;
+    max-height: none;
+  }
+}
+
+/* Pane */
+
+.nt-editor-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+  transition: border-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+/* The pane being edited is marked without moving anything. */
+.nt-editor-pane:focus-within {
+  border-color: var(--nt-border-interactive);
+}
+
+.nt-editor-pane__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-2) var(--nt-space-3);
+  min-height: var(--nt-control-height-lg);
+  padding: var(--nt-space-2) var(--nt-space-4);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-editor-pane__title {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-lg);
+}
+
+.nt-editor-pane__meta {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-editor-pane__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-1);
+}
+
+.nt-editor-pane__body {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Full-bleed source editor: monospace, generous line height, inset focus
+ * ring because the pane edge is the control edge. */
+.nt-editor-pane__source {
+  display: block;
+  width: 100%;
+  min-height: 60vh;
+  min-height: 60dvh;
+  margin: 0;
+  padding: var(--nt-space-4);
+  border: 0;
+  border-radius: 0;
+  background: var(--nt-bg-surface-sunken);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-mono-sm);
+  line-height: var(--nt-line-height-body-lg);
+  tab-size: 2;
+  resize: vertical;
+  unicode-bidi: plaintext;
+}
+
+.nt-editor-pane__source:focus,
+.nt-editor-pane__source:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: calc(var(--nt-focus-ring-width) * -1);
+}
+
+.nt-editor-pane__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-2) var(--nt-space-4);
+  padding: var(--nt-space-2) var(--nt-space-4);
+  border-block-start: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-editor-pane__footer:empty {
+  display: none;
+}
+
+@container nt-editor-workspace (max-width: 64rem) {
+  .nt-editor-pane__source {
+    min-height: 40vh;
+    min-height: 40dvh;
+  }
+}
+
+/* Save status: idle / saving / saved / error. Always a word plus a dot; the
+ * dot pulses while saving and pops once when saved. Announce changes with
+ * role="status" on the element. */
+.nt-editor-status {
+  --nt-editor-status-color: var(--nt-text-muted);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1-5);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  white-space: nowrap;
+}
+
+.nt-editor-status::before {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--nt-space-2);
+  height: var(--nt-space-2);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-editor-status-color);
+  content: '';
+}
+
+.nt-editor-status[data-state='saving'] {
+  --nt-editor-status-color: var(--nt-info);
+}
+
+.nt-editor-status[data-state='saving']::before {
+  animation: nt-skeleton-pulse var(--nt-duration-slower) var(--nt-ease-standard) infinite alternate;
+}
+
+.nt-editor-status[data-state='saved'] {
+  --nt-editor-status-color: var(--nt-success);
+
+  color: var(--nt-success-text);
+}
+
+.nt-editor-status[data-state='saved']::before {
+  animation: nt-editor-status-pop var(--nt-duration-slow) var(--nt-ease-emphasized);
+}
+
+.nt-editor-status[data-state='error'] {
+  --nt-editor-status-color: var(--nt-danger);
+
+  color: var(--nt-danger-text);
+}
+
+.nt-editor-status[data-state='unsaved'] {
+  --nt-editor-status-color: var(--nt-warning);
+
+  color: var(--nt-warning-text);
+}
+
+@keyframes nt-editor-status-pop {
+  0% {
+    transform: scale(0.4);
+  }
+
+  60% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Print only the document. */
+@media print {
+  .nt-editor-workspace > :not(.nt-editor-workspace__panes),
+  .nt-editor-pane:not(.nt-editor-pane--preview),
+  .nt-editor-pane__header,
+  .nt-editor-pane__footer {
+    display: none !important;
+  }
+
+  .nt-editor-workspace__panes {
+    display: block;
+  }
+
+  .nt-editor-pane--preview,
+  .nt-editor-workspace--sticky-preview .nt-editor-pane--preview {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    border: 0;
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-editor-pane,
+  .nt-editor-status::before {
+    transition: none !important;
+    animation: none !important;
+  }
+}

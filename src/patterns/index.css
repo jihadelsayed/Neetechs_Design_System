@@ -2,6 +2,8 @@
 @import './record-list/record-list.css';
 @import './profile-header/profile-header.css';
 @import './resource-card/resource-card.css';
+@import './editor-workspace/editor-workspace.css';
+@import './document-preview/document-preview.css';
 @import './form-layout/form-layout.css';
 @import './settings-layout/settings-layout.css';
 @import './master-detail/master-detail.css';

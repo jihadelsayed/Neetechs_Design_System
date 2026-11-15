@@ -1,0 +1,169 @@
+/*
+ * Document preview: a printable page shown at true size on a canvas
+ * (résumés, invoices, offers, contracts, letters). Distilled from
+ * MyAccount's Resume Studio: the sheet keeps its real paper width so lines
+ * wrap exactly as in the exported PDF, and narrow screens scroll the
+ * canvas horizontally instead of squeezing the page. Paper and ink use the
+ * --nt-document-* tokens, which stay paper-colored in every theme.
+ *
+ * The page content's own typography (résumé or invoice layout) belongs to
+ * the application; this pattern provides the canvas, sheet, margins, page
+ * breaks, and print geometry.
+ *
+ * Markup: <div class="nt-document-preview">
+ *           <div class="nt-document-preview__viewport" tabindex="0" role="region" aria-label="Preview">
+ *             <article class="nt-document-preview__page">…</article>
+ *           </div>
+ *           <p class="nt-document-preview__caption">…</p>
+ *         </div>
+ */
+
+.nt-document-preview {
+  --nt-document-page-width: 210mm;
+  --nt-document-page-height: 297mm;
+  --nt-document-margin-block: 13mm;
+  --nt-document-margin-inline: 14mm;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-document-preview__viewport {
+  min-width: 0;
+  padding: var(--nt-space-6) var(--nt-space-4);
+  overflow-x: auto;
+  border-radius: inherit;
+  background: var(--nt-document-canvas);
+  scrollbar-gutter: stable;
+  overscroll-behavior-inline: contain;
+}
+
+.nt-document-preview__viewport:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: calc(var(--nt-focus-ring-width) * -1);
+}
+
+.nt-document-preview__page {
+  box-sizing: border-box;
+  width: var(--nt-document-page-width);
+  min-width: var(--nt-document-page-width);
+  min-height: var(--nt-document-page-height);
+  margin-inline: auto;
+  padding: var(--nt-document-margin-block) var(--nt-document-margin-inline);
+  background: var(--nt-document-paper);
+  color: var(--nt-document-ink);
+  box-shadow: var(--nt-elevation-raised);
+  overflow-wrap: break-word;
+  color-scheme: light;
+}
+
+.nt-document-preview__page + .nt-document-preview__page {
+  margin-block-start: var(--nt-space-6);
+}
+
+/* Page sizes */
+
+.nt-document-preview--letter {
+  --nt-document-page-width: 215.9mm;
+  --nt-document-page-height: 279.4mm;
+}
+
+/* Fluid: on-screen documents that are never printed at a fixed size. */
+.nt-document-preview--fluid .nt-document-preview__page {
+  width: 100%;
+  min-width: 0;
+  max-width: var(--nt-document-page-width);
+  min-height: 0;
+}
+
+/* Margins */
+
+.nt-document-preview--margin-narrow {
+  --nt-document-margin-block: 10mm;
+  --nt-document-margin-inline: 10mm;
+}
+
+.nt-document-preview--margin-wide {
+  --nt-document-margin-block: 17mm;
+  --nt-document-margin-inline: 18mm;
+}
+
+/* Variants */
+
+/* Flush: the canvas fills its container edge to edge (inside an editor
+ * pane). */
+.nt-document-preview--flush .nt-document-preview__viewport {
+  border-radius: 0;
+}
+
+/* Internals */
+
+/* Visible page-break marker on screen; a real page break in print. */
+.nt-document-preview__page-break {
+  position: relative;
+  height: 1px;
+  margin-block: var(--nt-space-5);
+  border-block-start: 1px dashed var(--nt-document-rule);
+}
+
+.nt-document-preview__page-break[data-label]::after {
+  position: absolute;
+  inset-block-start: calc(var(--nt-space-4) * -1);
+  inset-inline-end: 0;
+  padding: var(--nt-space-0-5) var(--nt-space-1-5);
+  background: var(--nt-document-paper);
+  color: var(--nt-document-ink-muted);
+  font: var(--nt-text-caption);
+  content: attr(data-label);
+}
+
+.nt-document-preview__caption {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  text-align: center;
+}
+
+@media (max-width: 40rem) {
+  .nt-document-preview__viewport {
+    padding: var(--nt-space-2);
+  }
+}
+
+@media print {
+  .nt-document-preview,
+  .nt-document-preview__viewport {
+    display: block;
+    padding: 0;
+    overflow: visible;
+    background: none;
+  }
+
+  .nt-document-preview__page {
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .nt-document-preview__page + .nt-document-preview__page {
+    margin-block-start: 0;
+    break-before: page;
+  }
+
+  .nt-document-preview__page-break {
+    height: 0;
+    margin: 0;
+    border: 0;
+    break-before: page;
+  }
+
+  .nt-document-preview__page-break::after,
+  .nt-document-preview__caption {
+    display: none;
+  }
+}

@@ -198,6 +198,14 @@
   --nt-status-paid: var(--nt-success);
   --nt-status-overdue: var(--nt-danger);
   --nt-status-failed: var(--nt-danger);
+
+  /* Document preview: printed paper stays paper-colored in every theme;
+   * only the surrounding canvas follows the theme. */
+  --nt-document-canvas: #000000;
+  --nt-document-paper: #ffffff;
+  --nt-document-ink: #000000;
+  --nt-document-ink-muted: #000000;
+  --nt-document-rule: #000000;
 }
 
 /*
