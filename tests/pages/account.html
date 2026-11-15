@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-nt-theme="dark" data-nt-theme-preference="dark" data-nt-accent="blue" data-nt-density="comfortable" data-nt-contrast="normal" data-nt-motion="full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neetechs account example</title>
+    <link rel="stylesheet" href="/src/index.css">
+  </head>
+  <body>
+    <header class="nt-header">
+      <nav class="nt-navbar" id="navbar" aria-label="Primary">
+        <ul class="nt-navbar__list">
+          <li class="nt-navbar__item"><a class="nt-navbar__link" id="nav-profile" href="#profile" aria-current="page">Profile</a></li>
+          <li class="nt-navbar__item"><a class="nt-navbar__link" id="nav-settings" href="#settings">Settings</a></li>
+          <li class="nt-navbar__item"><a class="nt-navbar__link" href="#studio">Resume Studio</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="nt-container nt-stack nt-stack--xl" id="main">
+      <header class="nt-profile-header nt-profile-header--surface" id="profile">
+        <div class="nt-profile-header__identity">
+          <button class="nt-avatar nt-avatar--2xl nt-avatar--rounded nt-avatar--editable" type="button" id="avatar-edit" aria-label="Change profile photo">
+            <span class="nt-avatar__fallback" aria-hidden="true">JS</span>
+            <span class="nt-avatar__overlay" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="11" r="3.5"/><rect x="2" y="5" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+              Change
+            </span>
+          </button>
+          <div class="nt-profile-header__main">
+            <div class="nt-profile-header__name-row">
+              <h1 class="nt-profile-header__name" id="profile-name">Jamie Svensson</h1>
+              <span class="nt-profile-header__handle">@jamie</span>
+            </div>
+            <p class="nt-profile-header__headline">Full-stack developer · Accessibility and design systems</p>
+            <ul class="nt-profile-header__details" id="profile-details">
+              <li>Stockholm, Sweden</li>
+              <li><button class="nt-button nt-button--link" type="button" id="add-website">Add website</button></li>
+            </ul>
+            <div class="nt-profile-header__completion">
+              <div class="nt-progress nt-progress--sm nt-progress--reveal" id="completion" style="--nt-progress-value: 72%">
+                <div class="nt-progress__header">
+                  <span class="nt-progress__label" id="completion-label">Profile 72% complete</span>
+                </div>
+                <div class="nt-progress__track" role="progressbar" aria-labelledby="completion-label" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+                  <div class="nt-progress__bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nt-profile-header__side" id="profile-side">
+        <div class="nt-profile-header__actions">
+          <a class="nt-button nt-button--ghost" href="#public">View public profile</a>
+          <button class="nt-button nt-button--secondary" type="button">Edit profile</button>
+        </div>
+        <div class="nt-profile-header__aside">
+          <section class="nt-card nt-card--muted nt-card--padded nt-card--compact" aria-labelledby="studio-promo">
+            <span class="nt-card__eyebrow">Resume Studio</span>
+            <h2 class="nt-card__title" id="studio-promo">Turn your profile into a CV</h2>
+            <p class="nt-card__subtitle">One clean column for applications and recruiters.</p>
+            <div class="nt-cluster"><a class="nt-button nt-button--primary nt-button--sm" href="#studio">Build CV</a></div>
+          </section>
+        </div>
+        </div>
+      </header>
+
+      <div class="nt-settings-layout nt-settings-layout--sticky-nav" id="settings">
+        <nav class="nt-settings-layout__nav nt-settings-layout__nav--surface" aria-label="Profile sections">
+          <div class="nt-settings-layout__nav-group">
+            <p class="nt-settings-layout__nav-title">Core</p>
+            <a class="nt-settings-layout__nav-item" href="#bio" aria-current="location" id="nav-bio">
+              <span class="nt-settings-layout__nav-status nt-settings-layout__nav-status--complete" aria-hidden="true"></span>
+              <span class="nt-settings-layout__nav-label">Bio <span class="nt-sr-only">(complete)</span></span>
+            </a>
+            <a class="nt-settings-layout__nav-item" href="#connections" id="nav-connections">
+              <span class="nt-settings-layout__nav-status nt-settings-layout__nav-status--attention" aria-hidden="true"></span>
+              <span class="nt-settings-layout__nav-label">AI connections <span class="nt-sr-only">(needs attention)</span></span>
+              <span class="nt-settings-layout__nav-count">3</span>
+            </a>
+          </div>
+          <div class="nt-settings-layout__nav-group">
+            <p class="nt-settings-layout__nav-title">More</p>
+            <a class="nt-settings-layout__nav-item" href="#template">
+              <span class="nt-settings-layout__nav-status" aria-hidden="true"></span>
+              <span class="nt-settings-layout__nav-label">CV template <span class="nt-sr-only">(not started)</span></span>
+            </a>
+          </div>
+        </nav>
+
+        <div class="nt-settings-layout__content">
+          <section class="nt-card nt-card--edge" id="bio" aria-labelledby="bio-title">
+            <div class="nt-card__header">
+              <h2 class="nt-card__title" id="bio-title">Bio</h2>
+              <button class="nt-button nt-button--ghost nt-button--sm" type="button" id="bio-edit">Edit</button>
+            </div>
+            <div class="nt-card__body"><p>Builds accessible products for small businesses.</p></div>
+          </section>
+
+          <section class="nt-stack nt-stack--lg" id="connections" aria-labelledby="connections-title">
+            <h2 class="nt-text-title-md" id="connections-title">AI connections</h2>
+            <article class="nt-stat nt-stat--split nt-stat--lg nt-stat--warning nt-stat--emphasis" id="wallet">
+              <div class="nt-stat__body">
+                <p class="nt-stat__label">AI credit wallet</p>
+                <strong class="nt-stat__value">$4.20</strong>
+                <p class="nt-stat__hint">Used only for Neetechs-managed AI calls.</p>
+              </div>
+              <div class="nt-stat__aside">
+                <dl class="nt-description-list nt-description-list--boxed nt-description-list--compact">
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">Auto top-up</dt><dd class="nt-description-list__details">Off</dd></div>
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">Last updated</dt><dd class="nt-description-list__details">Today</dd></div>
+                </dl>
+              </div>
+              <div class="nt-alert nt-alert--warning nt-alert--compact" role="status" id="wallet-alert">
+                <div class="nt-alert__body"><p class="nt-alert__description">Your AI credit balance is low.</p></div>
+              </div>
+            </article>
+
+            <div class="nt-resource-card-grid" id="resource-grid">
+              <article class="nt-resource-card nt-resource-card--current" id="card-openai">
+                <div class="nt-resource-card__header">
+                  <span class="nt-resource-card__media" aria-hidden="true">OA</span>
+                  <div class="nt-resource-card__main">
+                    <div class="nt-resource-card__title-row">
+                      <h3 class="nt-resource-card__title">OpenAI</h3>
+                      <span class="nt-badge nt-badge--primary nt-badge--sm">In use</span>
+                    </div>
+                    <p class="nt-resource-card__description">Personal API key</p>
+                  </div>
+                  <span class="nt-resource-card__status"><span class="nt-badge nt-badge--success"><span class="nt-badge__dot" aria-hidden="true"></span>Connected</span></span>
+                </div>
+                <dl class="nt-description-list nt-description-list--boxed nt-description-list--compact">
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">Model</dt><dd class="nt-description-list__details">gpt-5</dd></div>
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">Last tested</dt><dd class="nt-description-list__details">2 Nov</dd></div>
+                </dl>
+                <div class="nt-resource-card__actions" id="openai-actions">
+                  <button class="nt-button nt-button--secondary" type="button">Test</button>
+                  <button class="nt-button nt-button--ghost" type="button">Configure</button>
+                  <button class="nt-button nt-button--danger nt-resource-card__actions-end" type="button">Delete</button>
+                </div>
+              </article>
+              <article class="nt-resource-card nt-resource-card--unavailable">
+                <div class="nt-resource-card__header">
+                  <span class="nt-resource-card__media" aria-hidden="true">CG</span>
+                  <div class="nt-resource-card__main">
+                    <h3 class="nt-resource-card__title">Continue with ChatGPT</h3>
+                    <p class="nt-resource-card__description">Not offered to Neetechs by OpenAI.</p>
+                  </div>
+                  <span class="nt-resource-card__status"><span class="nt-badge nt-badge--neutral">Not available</span></span>
+                </div>
+              </article>
+              <article class="nt-resource-card nt-resource-card--compact" id="card-cv">
+                <div class="nt-resource-card__header">
+                  <span class="nt-resource-card__media nt-resource-card__media--document" aria-hidden="true">PDF</span>
+                  <div class="nt-resource-card__main">
+                    <div class="nt-resource-card__title-row">
+                      <h3 class="nt-resource-card__title">Jamie-Svensson-CV.pdf</h3>
+                      <span class="nt-badge nt-badge--info nt-badge--sm">Default</span>
+                    </div>
+                    <p class="nt-resource-card__description">Uploaded 1 Nov · 182 KB</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <details class="nt-disclosure nt-disclosure--surface" id="archived">
+              <summary class="nt-disclosure__summary" id="archived-summary">
+                <span class="nt-disclosure__title">Archived CVs</span>
+                <span class="nt-disclosure__meta">2</span>
+                <svg class="nt-disclosure__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+              </summary>
+              <div class="nt-disclosure__content" id="archived-content">
+                <p>Archived CVs stay in your history and can be restored.</p>
+                <button class="nt-button nt-button--secondary nt-button--sm" type="button" id="restore">Restore latest</button>
+              </div>
+            </details>
+          </section>
+
+          <fieldset class="nt-choice-group" id="template">
+            <legend class="nt-text-title-md">CV template</legend>
+            <label class="nt-choice-card" id="choice-pro">
+              <input class="nt-choice-card__input" type="radio" name="template" value="professional" checked>
+              <span class="nt-choice-card__indicator" aria-hidden="true"></span>
+              <span class="nt-choice-card__body">
+                <span class="nt-choice-card__title">Professional <span class="nt-badge nt-badge--info nt-badge--sm">Recommended</span></span>
+                <span class="nt-choice-card__description">Classic one column, ATS friendly</span>
+              </span>
+            </label>
+            <label class="nt-choice-card" id="choice-modern">
+              <input class="nt-choice-card__input" type="radio" name="template" value="modern">
+              <span class="nt-choice-card__indicator" aria-hidden="true"></span>
+              <span class="nt-choice-card__body">
+                <span class="nt-choice-card__title">Modern</span>
+                <span class="nt-choice-card__description">Two columns with a sidebar</span>
+              </span>
+            </label>
+            <label class="nt-choice-card" id="choice-disabled">
+              <input class="nt-choice-card__input" type="radio" name="template" value="creative" disabled>
+              <span class="nt-choice-card__indicator" aria-hidden="true"></span>
+              <span class="nt-choice-card__body">
+                <span class="nt-choice-card__title">Creative</span>
+                <span class="nt-choice-card__description">Coming soon</span>
+              </span>
+            </label>
+            <label class="nt-choice-card" id="choice-check">
+              <input class="nt-choice-card__input" type="checkbox" name="photo">
+              <span class="nt-choice-card__indicator" aria-hidden="true"></span>
+              <span class="nt-choice-card__body">
+                <span class="nt-choice-card__title">Include photo</span>
+              </span>
+            </label>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="nt-editor-workspace nt-editor-workspace--sticky-preview" id="studio">
+        <header class="nt-page-header nt-page-header--compact">
+          <div class="nt-page-header__main">
+            <span class="nt-page-header__eyebrow">Resume Studio</span>
+            <h2 class="nt-page-header__title">Markdown résumé</h2>
+          </div>
+          <div class="nt-page-header__actions"><button class="nt-button nt-button--primary" type="button">Export PDF</button></div>
+        </header>
+        <div class="nt-editor-workspace__panes" id="panes">
+          <section class="nt-editor-pane" aria-labelledby="source-title" id="source-pane">
+            <div class="nt-editor-pane__header">
+              <h3 class="nt-editor-pane__title" id="source-title">Markdown</h3>
+              <span class="nt-editor-pane__meta">Use # for your name</span>
+            </div>
+            <textarea class="nt-editor-pane__source" id="source" aria-labelledby="source-title"># Jamie Svensson
+## Experience
+### Developer | 2024 – present
+- Built the design system</textarea>
+            <div class="nt-editor-pane__footer">
+              <span class="nt-editor-status" data-state="saved" role="status" id="save-status">Saved</span>
+              <span>72 characters</span>
+            </div>
+          </section>
+          <section class="nt-editor-pane nt-editor-pane--preview" aria-labelledby="preview-title" id="preview-pane">
+            <div class="nt-editor-pane__header"><h3 class="nt-editor-pane__title" id="preview-title">Preview</h3></div>
+            <div class="nt-editor-pane__body">
+              <div class="nt-document-preview nt-document-preview--flush" id="preview">
+                <div class="nt-document-preview__viewport" tabindex="0" role="region" aria-label="Résumé preview" id="viewport">
+                  <article class="nt-document-preview__page" id="page">
+                    <h1>Jamie Svensson</h1>
+                    <p>Developer · 2024 – present</p>
+                    <div class="nt-document-preview__page-break" data-label="New page" role="separator" aria-label="Page break"></div>
+                    <p>Built the design system.</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script>window.fixtureReady = true;</script>
+  </body>
+</html>
