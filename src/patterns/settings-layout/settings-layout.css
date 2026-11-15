@@ -22,6 +22,7 @@
 }
 
 .nt-settings-layout__nav-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--nt-space-2);
@@ -53,6 +54,110 @@
   color: var(--nt-selection-fg);
 }
 
+/* In-page section navigation (profile sections, long settings pages)
+ * marks the current section with aria-current="true" or "location". */
+.nt-settings-layout__nav-item:is([aria-current='true'], [aria-current='location'], [aria-current='step']) {
+  background: var(--nt-selection-bg);
+  border-color: var(--nt-selection-border);
+  color: var(--nt-selection-fg);
+}
+
+/* Current indicator: an inline-start bar that grows in, so the current
+ * section is identifiable without color. */
+.nt-settings-layout__nav-item::before {
+  position: absolute;
+  inset-block: var(--nt-space-2);
+  inset-inline-start: calc(var(--nt-space-px) * -1);
+  width: var(--nt-space-1);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-selection-indicator);
+  content: '';
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition:
+    opacity var(--nt-duration-fast) var(--nt-ease-standard),
+    transform var(--nt-duration-normal) var(--nt-ease-emphasized);
+}
+
+.nt-settings-layout__nav-item:is([aria-current='page'], [aria-current='true'], [aria-current='location'], [aria-current='step'], .nt-settings-layout__nav-item--active)::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.nt-settings-layout__nav-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Section status (profile completeness, configuration needed). Decorative:
+ * put the meaning in text too, for example a visually hidden "Complete". */
+.nt-settings-layout__nav-status {
+  flex: 0 0 auto;
+  width: var(--nt-space-2);
+  height: var(--nt-space-2);
+  border: 1px solid var(--nt-border-strong);
+  border-radius: var(--nt-radius-pill);
+  background: transparent;
+}
+
+.nt-settings-layout__nav-status--complete {
+  border-color: var(--nt-success);
+  background: var(--nt-success);
+}
+
+.nt-settings-layout__nav-status--attention {
+  border-color: var(--nt-warning);
+  background: var(--nt-warning);
+}
+
+.nt-settings-layout__nav-status--error {
+  border-color: var(--nt-danger);
+  background: var(--nt-danger);
+}
+
+.nt-settings-layout__nav-count {
+  flex: 0 0 auto;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Grouped navigation with headings. */
+.nt-settings-layout__nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-settings-layout__nav-group + .nt-settings-layout__nav-group {
+  margin-block-start: var(--nt-space-3);
+}
+
+.nt-settings-layout__nav-title {
+  margin: 0;
+  padding: var(--nt-space-1) var(--nt-space-3);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+/* Surface navigation: the nav sits on its own card. */
+.nt-settings-layout__nav--surface {
+  padding: var(--nt-space-2);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+}
+
+/* Sticky navigation beside long content (wide layouts only). */
+.nt-settings-layout--sticky-nav .nt-settings-layout__nav {
+  position: sticky;
+  top: calc(var(--nt-header-height) + var(--nt-space-3));
+}
+
 .nt-settings-layout__content {
   display: flex;
   flex-direction: column;
@@ -64,6 +169,27 @@
   .nt-settings-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--nt-space-5);
+  }
+
+  .nt-settings-layout--sticky-nav .nt-settings-layout__nav {
+    position: static;
+  }
+
+  .nt-settings-layout__nav-group + .nt-settings-layout__nav-group {
+    margin-block-start: 0;
+  }
+
+  /* Row mode: the indicator moves under the label. */
+  .nt-settings-layout__nav-item::before {
+    inset-block: auto calc(var(--nt-space-px) * -1);
+    inset-inline: var(--nt-space-2);
+    width: auto;
+    height: var(--nt-space-0-5);
+    transform: scaleX(0.4);
+  }
+
+  .nt-settings-layout__nav-item:is([aria-current='page'], [aria-current='true'], [aria-current='location'], [aria-current='step'], .nt-settings-layout__nav-item--active)::before {
+    transform: scaleX(1);
   }
 
   .nt-settings-layout__nav {
@@ -147,4 +273,11 @@
   gap: var(--nt-space-2);
   color: var(--nt-text-muted);
   font: var(--nt-text-body-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-settings-layout__nav-item,
+  .nt-settings-layout__nav-item::before {
+    transition: none !important;
+  }
 }

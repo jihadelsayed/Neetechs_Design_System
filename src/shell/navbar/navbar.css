@@ -36,6 +36,7 @@
 
 .nt-navbar__link,
 .nt-navbar__trigger {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--nt-space-1-5);
@@ -75,7 +76,31 @@
 .nt-navbar__link--active,
 .nt-navbar__item--active > .nt-navbar__trigger {
   color: var(--nt-text-primary);
-  box-shadow: inset 0 -2px 0 var(--nt-accent);
+}
+
+/* Underline indicator: grows from the center. Hover previews it in a
+ * neutral tone; the current page keeps it in the accent. */
+:is(.nt-navbar__link, .nt-navbar__trigger)::after {
+  position: absolute;
+  inset-inline: var(--nt-space-2);
+  inset-block-end: calc(var(--nt-space-px) * -1);
+  height: var(--nt-space-0-5);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-border-strong);
+  content: '';
+  transform: scaleX(0);
+  transition:
+    transform var(--nt-duration-normal) var(--nt-ease-emphasized),
+    background-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-navbar__link:hover::after {
+  transform: scaleX(1);
+}
+
+:is(.nt-navbar__link[aria-current='page'], .nt-navbar__link--active, .nt-navbar__item--active > .nt-navbar__trigger)::after {
+  background: var(--nt-accent);
+  transform: scaleX(1);
 }
 
 .nt-navbar__trigger[aria-expanded='true'] {
@@ -244,6 +269,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nt-navbar__link::after,
+  .nt-navbar__trigger::after,
   .nt-navbar__link,
   .nt-navbar__trigger,
   .nt-navbar__chevron,
