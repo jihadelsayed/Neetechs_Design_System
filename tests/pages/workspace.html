@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" data-nt-theme="dark" data-nt-theme-preference="dark" data-nt-accent="blue" data-nt-density="compact" data-nt-contrast="normal" data-nt-motion="full">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neetechs workspace example</title>
+    <link rel="stylesheet" href="/src/index.css">
+  </head>
+  <body>
+    <a class="nt-skip-link" href="#workspace-main">Skip to content</a>
+
+    <div class="nt-app-shell nt-app-shell--inset nt-app-shell--offcanvas" id="shell">
+      <aside class="nt-app-shell__sidebar" id="workspace-sidebar" aria-label="Workspace">
+        <nav class="nt-sidebar nt-sidebar--floating" aria-label="Billing navigation">
+          <div class="nt-sidebar__brand">
+            <span class="nt-sidebar__logo" aria-hidden="true">N</span>
+            <span class="nt-sidebar__brand-text">Billing</span>
+          </div>
+          <div class="nt-sidebar__nav">
+            <div class="nt-sidebar__section">
+              <a class="nt-sidebar__item" href="#overview" aria-current="page" id="nav-dashboard">
+                <svg class="nt-sidebar__item-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>
+                <span class="nt-sidebar__item-label">Dashboard</span>
+              </a>
+            </div>
+            <div class="nt-sidebar__group" id="group-sales">
+              <button class="nt-sidebar__group-trigger" type="button" aria-expanded="false" id="trigger-sales">
+                <span class="nt-sidebar__group-label">Sales</span>
+                <svg class="nt-sidebar__group-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+              </button>
+              <div class="nt-sidebar__group-items">
+                <div class="nt-sidebar__group-inner">
+                  <a class="nt-sidebar__item" href="#records" id="nav-invoices">
+                    <svg class="nt-sidebar__item-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="2" width="10" height="16" rx="2"/></svg>
+                    <span class="nt-sidebar__item-label">Invoices</span>
+                  </a>
+                  <a class="nt-sidebar__item" href="#records">
+                    <svg class="nt-sidebar__item-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="7" r="4"/><rect x="4" y="12" width="12" height="6" rx="3"/></svg>
+                    <span class="nt-sidebar__item-label">Customers</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="nt-sidebar__group" id="group-purchases">
+              <button class="nt-sidebar__group-trigger" type="button" aria-expanded="false" id="trigger-purchases">
+                <span class="nt-sidebar__group-label">Purchases</span>
+                <svg class="nt-sidebar__group-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+              </button>
+              <div class="nt-sidebar__group-items">
+                <div class="nt-sidebar__group-inner">
+                  <a class="nt-sidebar__item" href="#records" id="nav-suppliers">
+                    <svg class="nt-sidebar__item-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="2" y="8" width="16" height="9" rx="1"/><path d="M4 8 10 3l6 5z"/></svg>
+                    <span class="nt-sidebar__item-label">Suppliers</span>
+                  </a>
+                  <a class="nt-sidebar__item" href="#records">
+                    <svg class="nt-sidebar__item-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="10" r="7"/></svg>
+                    <span class="nt-sidebar__item-label">Expenses</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nt-sidebar__footer">
+            <button class="nt-button nt-button--ghost nt-button--sm" type="button" data-nt-sidebar-close id="sidebar-close">Close menu</button>
+          </div>
+        </nav>
+      </aside>
+      <div class="nt-app-shell__overlay" id="shell-backdrop" hidden></div>
+
+      <div class="nt-app-shell__main">
+        <header class="nt-app-shell__header nt-cluster" id="workspace-topbar">
+          <button class="nt-icon-button nt-icon-button--ghost nt-app-shell__menu-toggle" type="button" id="menu-toggle" aria-label="Open navigation">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="2" y="4" width="16" height="2" rx="1"/><rect x="2" y="9" width="16" height="2" rx="1"/><rect x="2" y="14" width="16" height="2" rx="1"/></svg>
+          </button>
+          <button class="nt-icon-button nt-icon-button--ghost nt-app-shell__collapse-toggle" type="button" id="collapse-toggle" aria-label="Collapse sidebar">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="2" y="3" width="5" height="14" rx="1"/><rect x="9" y="3" width="9" height="14" rx="1" opacity=".5"/></svg>
+          </button>
+          <span class="nt-text-label-md">Acme AB</span>
+        </header>
+
+        <main class="nt-app-shell__content nt-content-frame" id="workspace-main" tabindex="-1">
+          <div class="nt-page-body" id="overview">
+            <header class="nt-page-header nt-page-header--surface" id="page-header">
+              <div class="nt-page-header__main">
+                <span class="nt-page-header__eyebrow">Invoice</span>
+                <div class="nt-page-header__title-row">
+                  <h1 class="nt-page-header__title">INV-2026-0142</h1>
+                  <span class="nt-page-header__status"><span class="nt-billing-status nt-billing-status--overdue"><span class="nt-billing-status__dot" aria-hidden="true"></span>Overdue</span></span>
+                </div>
+                <p class="nt-page-header__description">Northwind Traders · Due 2 November 2026</p>
+              </div>
+              <div class="nt-page-header__actions">
+                <button class="nt-button nt-button--secondary" type="button">Download PDF</button>
+                <button class="nt-button nt-button--primary" type="button" id="record-payment"><span class="nt-button__content">Record payment</span></button>
+              </div>
+            </header>
+
+            <form class="nt-page-toolbar nt-page-toolbar--surface" id="filters" aria-label="Filter invoices">
+              <div class="nt-page-toolbar__fields">
+                <label class="nt-field"><span class="nt-field__label">Customer</span><input class="nt-input" type="search" name="customer"></label>
+                <label class="nt-field"><span class="nt-field__label">Status</span><select class="nt-select" name="status"><option>All</option><option>Overdue</option></select></label>
+                <label class="nt-field"><span class="nt-field__label">From</span><input class="nt-input" type="date" name="from"></label>
+              </div>
+              <div class="nt-page-toolbar__actions">
+                <button class="nt-button nt-button--ghost" type="reset">Reset</button>
+                <button class="nt-button nt-button--secondary" type="submit">Apply filters</button>
+              </div>
+            </form>
+
+            <section class="nt-page-section" aria-labelledby="kpi-heading">
+              <div class="nt-page-section__header">
+                <div class="nt-page-section__main">
+                  <p class="nt-page-section__eyebrow">Overview</p>
+                  <h2 class="nt-page-section__title" id="kpi-heading">This month</h2>
+                </div>
+              </div>
+              <div class="nt-stat-grid" id="stat-grid">
+                <article class="nt-stat nt-stat--success">
+                  <span class="nt-stat__accent" aria-hidden="true"></span>
+                  <p class="nt-stat__label">Customer payments</p>
+                  <div class="nt-stat__row">
+                    <strong class="nt-stat__value">48 200<span class="nt-stat__unit">SEK</span></strong>
+                    <span class="nt-stat__delta nt-stat__delta--positive">▲ 12%</span>
+                  </div>
+                  <p class="nt-stat__hint">Received since 1 November</p>
+                </article>
+                <a class="nt-stat nt-stat--info" href="#records" aria-current="true" id="stat-receivables">
+                  <span class="nt-stat__accent" aria-hidden="true"></span>
+                  <p class="nt-stat__label">Receivables</p>
+                  <strong class="nt-stat__value">17 950 SEK</strong>
+                  <p class="nt-stat__hint">6 open invoices</p>
+                </a>
+                <article class="nt-stat nt-stat--danger nt-stat--tinted">
+                  <p class="nt-stat__label">Overdue</p>
+                  <strong class="nt-stat__value">4 300 SEK</strong>
+                  <span class="nt-stat__delta nt-stat__delta--negative">2 invoices</span>
+                </article>
+                <article class="nt-stat" aria-busy="true" id="stat-loading">
+                  <p class="nt-stat__label">Supplier payables</p>
+                  <strong class="nt-stat__value">0 SEK</strong>
+                  <p class="nt-stat__hint">Loading</p>
+                </article>
+                <article class="nt-stat nt-stat--warning nt-stat--emphasis nt-stat--wide">
+                  <p class="nt-stat__label">Tax reduction awaiting payout</p>
+                  <strong class="nt-stat__value">9 800 SEK</strong>
+                  <dl class="nt-description-list nt-description-list--boxed">
+                    <div class="nt-description-list__item"><dt class="nt-description-list__term">Not claimed</dt><dd class="nt-description-list__details">3 000 SEK</dd></div>
+                    <div class="nt-description-list__item"><dt class="nt-description-list__term">Submitted</dt><dd class="nt-description-list__details">6 800 SEK</dd></div>
+                  </dl>
+                </article>
+              </div>
+            </section>
+
+            <div class="nt-page-body nt-page-body--with-aside">
+              <section class="nt-card nt-card--padded" aria-labelledby="records-heading" id="records">
+                <h2 class="nt-card__title" id="records-heading">Recent invoices</h2>
+                <ul class="nt-record-list" id="record-list">
+                  <li>
+                    <a class="nt-record" href="#records" id="record-first">
+                      <span class="nt-record__leading"><span class="nt-record__indicator" aria-hidden="true"></span></span>
+                      <span class="nt-record__main"><span class="nt-record__title">INV-2026-0142</span><span class="nt-record__meta">Northwind Traders · 2 Nov</span></span>
+                      <span class="nt-record__trailing"><span class="nt-record__value">4 300 SEK</span><span class="nt-record__caption">Overdue</span></span>
+                      <svg class="nt-record__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="nt-record nt-record--success" href="#records" aria-current="true">
+                      <span class="nt-record__leading"><span class="nt-record__indicator" aria-hidden="true"></span></span>
+                      <span class="nt-record__main"><span class="nt-record__title">INV-2026-0141</span><span class="nt-record__meta">Contoso · 30 Oct</span></span>
+                      <span class="nt-record__trailing"><span class="nt-record__value">12 500 SEK</span><span class="nt-record__caption">Paid</span></span>
+                      <svg class="nt-record__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg>
+                    </a>
+                  </li>
+                </ul>
+              </section>
+              <aside class="nt-card nt-card--padded" aria-labelledby="totals-heading">
+                <h2 class="nt-card__title" id="totals-heading">Totals</h2>
+                <dl class="nt-description-list nt-description-list--inline" id="totals">
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">Subtotal</dt><dd class="nt-description-list__details nt-description-list__details--numeric">3 440 SEK</dd></div>
+                  <div class="nt-description-list__item"><dt class="nt-description-list__term">VAT 25%</dt><dd class="nt-description-list__details nt-description-list__details--numeric">860 SEK</dd></div>
+                  <div class="nt-description-list__item nt-description-list__item--emphasis"><dt class="nt-description-list__term">Amount due</dt><dd class="nt-description-list__details">4 300 SEK</dd></div>
+                </dl>
+              </aside>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script type="module">
+      import { ntCreateSidebar } from '/dist/behaviors/index.js';
+
+      window.sidebarController = ntCreateSidebar({
+        shell: document.querySelector('#shell'),
+        sidebar: document.querySelector('#workspace-sidebar'),
+        collapseToggle: document.querySelector('#collapse-toggle'),
+        menuToggle: document.querySelector('#menu-toggle'),
+        backdrop: document.querySelector('#shell-backdrop'),
+        storageKey: 'nt-test-sidebar-collapsed',
+      });
+      window.fixtureReady = true;
+    </script>
+  </body>
+</html>
