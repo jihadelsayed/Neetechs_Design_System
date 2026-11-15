@@ -49,9 +49,9 @@
 }
 
 .nt-badge--neutral {
-  border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-surface-muted);
-  color: var(--nt-text-muted);
+  border-color: var(--nt-neutral-border);
+  background: var(--nt-neutral-bg);
+  color: var(--nt-neutral-text);
 }
 
 .nt-badge--success {

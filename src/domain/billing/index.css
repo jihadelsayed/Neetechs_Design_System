@@ -231,10 +231,10 @@
   gap: var(--nt-space-1);
   min-height: 1.5rem;
   padding: 0 var(--nt-space-2);
-  border: 1px solid var(--nt-border-subtle);
+  border: 1px solid var(--nt-neutral-border);
   border-radius: var(--nt-radius-pill);
-  background: var(--nt-bg-surface-muted);
-  color: var(--nt-text-muted);
+  background: var(--nt-neutral-bg);
+  color: var(--nt-neutral-text);
   font: var(--nt-text-label-xs);
   letter-spacing: var(--nt-letter-spacing-label);
   white-space: nowrap;
@@ -249,9 +249,9 @@
 }
 
 .nt-billing-status--draft {
-  border-color: var(--nt-border-subtle);
-  background: var(--nt-bg-surface-muted);
-  color: var(--nt-text-muted);
+  border-color: var(--nt-neutral-border);
+  background: var(--nt-neutral-bg);
+  color: var(--nt-neutral-text);
 }
 
 .nt-billing-status--sent,
