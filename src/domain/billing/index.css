@@ -52,6 +52,44 @@
   background: var(--nt-danger-bg);
 }
 
+.nt-billing-metric--info {
+  border-color: var(--nt-info-border);
+  background: var(--nt-info-bg);
+}
+
+/* Short tone bar above the label (Billing dashboard). Tone modifiers color
+ * it; the neutral bar uses the strong border. */
+.nt-billing-metric__accent {
+  display: block;
+  inline-size: var(--nt-space-8);
+  block-size: var(--nt-space-1);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-border-strong);
+}
+
+.nt-billing-metric--success .nt-billing-metric__accent {
+  background: var(--nt-success);
+}
+
+.nt-billing-metric--warning .nt-billing-metric__accent {
+  background: var(--nt-warning);
+}
+
+.nt-billing-metric--danger .nt-billing-metric__accent {
+  background: var(--nt-danger);
+}
+
+.nt-billing-metric--info .nt-billing-metric__accent {
+  background: var(--nt-info);
+}
+
+/* Prominent: the headline figure of a finance dashboard. */
+.nt-billing-metric--prominent .nt-billing-metric__value {
+  font-size: clamp(var(--nt-font-size-title-lg), calc(var(--nt-font-size-title-sm) + 1vw), var(--nt-font-size-heading-md));
+  font-weight: var(--nt-font-weight-bold);
+  line-height: var(--nt-line-height-heading-sm);
+}
+
 .nt-billing-document {
   display: flex;
   flex-direction: column;
@@ -85,6 +123,25 @@
   font: var(--nt-text-label-xs);
   letter-spacing: var(--nt-letter-spacing-label);
   text-transform: uppercase;
+}
+
+.nt-billing-document__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2) var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-billing-document__status {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+}
+
+.nt-billing-document__status:empty {
+  display: none;
 }
 
 .nt-billing-document__title {
@@ -220,6 +277,38 @@
   color: var(--nt-danger-text);
 }
 
+/* Generic tones for workflow states outside the named set (partially paid,
+ * credited, awaiting approval…). The status text carries the meaning. */
+.nt-billing-status--neutral {
+  border-color: var(--nt-neutral-border);
+  background: var(--nt-neutral-bg);
+  color: var(--nt-neutral-text);
+}
+
+.nt-billing-status--info {
+  border-color: var(--nt-info-border);
+  background: var(--nt-info-bg);
+  color: var(--nt-info-text);
+}
+
+.nt-billing-status--success {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+  color: var(--nt-success-text);
+}
+
+.nt-billing-status--warning {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+  color: var(--nt-warning-text);
+}
+
+.nt-billing-status--danger {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+  color: var(--nt-danger-text);
+}
+
 .nt-billing-amount-list {
   display: flex;
   flex-direction: column;
@@ -257,6 +346,48 @@
   color: var(--nt-text-primary);
   font: var(--nt-text-label-md);
   letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-amount-row__value {
+  unicode-bidi: isolate;
+}
+
+/* Divided list: every row separated (totals card). */
+.nt-billing-amount-list--divided {
+  gap: 0;
+}
+
+.nt-billing-amount-list--divided .nt-billing-amount-row {
+  padding-block: var(--nt-space-3);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-billing-amount-list--divided .nt-billing-amount-row:first-child {
+  padding-block-start: 0;
+}
+
+.nt-billing-amount-list--divided .nt-billing-amount-row:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+/* Grand total: the amount due, boxed so it reads first. */
+.nt-billing-amount-row--grand,
+.nt-billing-amount-list--divided .nt-billing-amount-row--grand,
+.nt-billing-amount-list--divided .nt-billing-amount-row--grand:last-child {
+  margin-block-start: var(--nt-space-2);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border: 1px solid var(--nt-border-interactive);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-lg);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-billing-amount-row--grand .nt-billing-amount-row__value {
+  font: var(--nt-text-title-md);
+  font-variant-numeric: tabular-nums;
 }
 
 .nt-billing-amount-row--muted .nt-billing-amount-row__value {
