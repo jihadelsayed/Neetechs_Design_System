@@ -4,3 +4,5 @@
 @import './content-frame/content-frame.css';
 @import '../components/drawer/drawer.css';
 @import './mobile-nav/mobile-nav.css';
+@import './navbar/navbar.css';
+@import './footer/footer.css';

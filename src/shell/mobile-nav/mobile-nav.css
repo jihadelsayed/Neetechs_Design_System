@@ -171,3 +171,84 @@
   z-index: calc(var(--nt-z-drawer) - 1);
   background: var(--nt-bg-backdrop);
 }
+
+/*
+ * Standalone drawer placement for site headers (ntCreateMobileNav).
+ * Inside .nt-app-shell the shell positions the drawer instead.
+ */
+.nt-mobile-nav--drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: var(--nt-z-drawer);
+  max-width: calc(100vw - var(--nt-space-8));
+  padding-block-start: env(safe-area-inset-top, 0rem);
+  padding-inline-start: env(safe-area-inset-left, 0rem);
+}
+
+.nt-mobile-nav--drawer:dir(rtl) {
+  padding-inline-start: env(safe-area-inset-right, 0rem);
+}
+
+.nt-mobile-nav--drawer[data-state='open'] {
+  animation: nt-mobile-nav-in var(--nt-duration-normal) var(--nt-ease-enter);
+}
+
+.nt-mobile-nav--drawer[data-state='open']:dir(rtl) {
+  animation-name: nt-mobile-nav-in-rtl;
+}
+
+.nt-mobile-nav__overlay[data-state='open'] {
+  animation: nt-mobile-nav-fade var(--nt-duration-normal) var(--nt-ease-enter);
+}
+
+@keyframes nt-mobile-nav-in {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nt-mobile-nav-in-rtl {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nt-mobile-nav-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  .nt-mobile-nav__item {
+    min-height: var(--nt-target-size-primary);
+  }
+
+  .nt-mobile-nav__close {
+    min-width: var(--nt-target-size-primary);
+    min-height: var(--nt-target-size-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-mobile-nav,
+  .nt-mobile-nav__close,
+  .nt-mobile-nav__item,
+  .nt-mobile-nav__overlay {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -128,6 +128,23 @@ const appearance = createAppearanceController();
 appearance.initialize();
 ```
 
+To avoid a theme flash on client-rendered pages, emit the pre-paint bootstrap
+as an inline script in `<head>` (server/build time). It reads the same cookie
+and cache as the controller and only sets root attributes:
+
+```ts
+import { ntAppearanceBootstrapScript } from '@neetechs/ui/appearance';
+
+const headScript = `<script>${ntAppearanceBootstrapScript()}</script>`;
+```
+
+Switch one dimension without resetting the others (saved accent and density
+are kept):
+
+```ts
+appearance.updatePreference({ theme: 'light' });
+```
+
 The controller applies the public contract to the root `html` element.
 
 ```html
@@ -224,14 +241,14 @@ const save = ntCreateAsyncAction({
 <label class="nt-field">
   <span class="nt-field__label">Company name</span>
   <input class="nt-input" placeholder="Neetechs" />
-  <span class="nt-field__hint">Used across your workspace.</span>
+  <span class="nt-field__help">Used across your workspace.</span>
 </label>
 ```
 
 Invalid input:
 
 ```html
-<label class="nt-field nt-field--error">
+<label class="nt-field">
   <span class="nt-field__label" id="email-label">Email</span>
   <input id="email" class="nt-input" aria-labelledby="email-label"
          aria-describedby="email-error" aria-invalid="true" />
@@ -296,21 +313,44 @@ See [docs/states-feedback-and-recovery.md](./docs/states-feedback-and-recovery.m
 
 ```html
 <div class="nt-app-shell">
-  <aside class="nt-sidebar">
+  <aside class="nt-app-shell__sidebar nt-sidebar">
     ...
   </aside>
 
-  <div class="nt-shell-main">
-    <header class="nt-header">
+  <div class="nt-app-shell__main">
+    <header class="nt-app-shell__header nt-header">
       ...
     </header>
 
-    <main class="nt-content-frame">
+    <main class="nt-app-shell__content nt-content-frame">
       ...
     </main>
   </div>
 </div>
 ```
+
+## Site chrome: header, navbar, account, mobile nav, footer
+
+Reusable website chrome with configurable logo, navigation, account actions,
+footer columns, and social links. Routing, auth, and URLs stay in the app.
+
+```ts
+import { ntCreateAccountMenu, ntCreateMobileNav, ntCreateNavbar } from '@neetechs/ui/behaviors';
+```
+
+```html
+<header class="nt-header nt-header--sticky">
+  <div class="nt-header__left">
+    <a class="nt-header__brand" href="/"><span class="nt-header__brand-name">Neetechs</span></a>
+  </div>
+  <div class="nt-header__nav"><nav class="nt-navbar" aria-label="Primary">...</nav></div>
+  <div class="nt-header__right">...</div>
+</header>
+<footer class="nt-footer">...</footer>
+```
+
+Full markup, keyboard contract, and examples: [docs/site-chrome.md](./docs/site-chrome.md).
+Stacking rules: [docs/layering.md](./docs/layering.md).
 
 ## Company switcher
 

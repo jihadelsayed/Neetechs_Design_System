@@ -1,0 +1,256 @@
+/*
+ * Footer — configurable site footer.
+ *
+ * Slots: brand (logo, name, tagline, social links), link columns, and a
+ * bottom bar (copyright + legal links). Every region is optional; links,
+ * logos, and URLs come from the application. The footer is its own query
+ * container, so it adapts to the width it is given, not the viewport.
+ */
+.nt-footer {
+  container-type: inline-size;
+  container-name: nt-footer;
+  width: 100%;
+  min-width: 0;
+  border-block-start: 1px solid var(--nt-border-subtle);
+  background: var(--nt-bg-shell);
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-sm);
+}
+
+/* Focus */
+
+.nt-footer__brand-link:focus-visible,
+.nt-footer__link:focus-visible,
+.nt-footer__social-link:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Variants */
+
+.nt-footer--compact .nt-footer__inner {
+  display: none;
+}
+
+.nt-footer--compact .nt-footer__bottom {
+  border-block-start: 0;
+}
+
+.nt-footer--raised {
+  background: var(--nt-bg-surface);
+}
+
+/* Internal elements */
+
+.nt-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--nt-space-8);
+  width: 100%;
+  max-width: var(--nt-container-xl);
+  margin-inline: auto;
+  padding: var(--nt-space-10) var(--nt-space-4);
+}
+
+.nt-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-footer__brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  width: fit-content;
+  max-width: 100%;
+  border-radius: var(--nt-radius-item);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  text-decoration: none;
+}
+
+.nt-footer__logo {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: var(--nt-icon-size-xl);
+}
+
+.nt-footer__brand-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-footer__tagline {
+  max-width: 40ch;
+  margin: 0;
+  color: var(--nt-text-muted);
+}
+
+.nt-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--nt-space-6);
+  min-width: 0;
+}
+
+.nt-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-footer__heading {
+  margin: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+}
+
+.nt-footer__list,
+.nt-footer__legal,
+.nt-footer__social {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+}
+
+/* 24px rows meet WCAG 2.2 target-size (AA) on fine pointers; coarse pointers get 44px below. */
+.nt-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nt-space-6);
+  border-radius: var(--nt-radius-item);
+  color: var(--nt-text-secondary);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.2em;
+  transition: var(--nt-transition-colors), text-decoration-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-footer__link:hover {
+  color: var(--nt-text-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.nt-footer__link[aria-current='page'] {
+  color: var(--nt-text-primary);
+  text-decoration-color: currentColor;
+}
+
+.nt-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nt-space-2);
+}
+
+.nt-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-target-size-default);
+  height: var(--nt-target-size-default);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-control);
+  color: var(--nt-icon-secondary);
+  transition: var(--nt-transition-colors);
+}
+
+.nt-footer__social-link:hover {
+  background: var(--nt-bg-surface-hover);
+  border-color: var(--nt-border-strong);
+  color: var(--nt-icon-primary);
+}
+
+.nt-footer__social-icon {
+  display: block;
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+}
+
+.nt-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  width: 100%;
+  max-width: var(--nt-container-xl);
+  margin-inline: auto;
+  padding: var(--nt-space-5) var(--nt-space-4);
+  padding-block-end: max(var(--nt-space-5), env(safe-area-inset-bottom, 0rem));
+  border-block-start: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+.nt-footer__copyright {
+  margin: 0;
+}
+
+.nt-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--nt-space-4);
+  row-gap: var(--nt-space-1);
+}
+
+.nt-footer__legal .nt-footer__link {
+  color: var(--nt-text-muted);
+}
+
+.nt-footer__legal .nt-footer__link:hover {
+  color: var(--nt-text-link-hover);
+}
+
+/* Container-driven layout */
+
+@container nt-footer (min-width: 48rem) {
+  .nt-footer__inner {
+    grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr);
+    padding-inline: var(--nt-space-6);
+  }
+
+  .nt-footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: var(--nt-space-6);
+  }
+}
+
+@container nt-footer (min-width: 80rem) {
+  .nt-footer__inner,
+  .nt-footer__bottom {
+    padding-inline: var(--nt-space-8);
+  }
+}
+
+@media (pointer: coarse) {
+  .nt-footer__link {
+    min-height: var(--nt-target-size-primary);
+  }
+
+  .nt-footer__social-link {
+    width: var(--nt-target-size-primary);
+    height: var(--nt-target-size-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-footer__link,
+  .nt-footer__social-link {
+    transition: none !important;
+  }
+}

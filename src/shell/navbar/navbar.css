@@ -1,0 +1,255 @@
+/*
+ * Navbar — primary site navigation for .nt-header (desktop/tablet).
+ *
+ * Disclosure-navigation pattern (not role="menu"): top-level links and
+ * submenu buttons stay in the tab order; submenu panels hold plain links.
+ * Behavior: ntCreateNavbar() from @neetechs/ui/behaviors. Below the shell
+ * breakpoint (64rem) the navbar hides and .nt-mobile-nav takes over.
+ *
+ * Layering: panels use --nt-z-dropdown inside the header's own stacking
+ * context (.nt-header is z-index: var(--nt-z-header)), so they always paint
+ * above page content and below drawers, modals, and toasts.
+ */
+.nt-navbar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.nt-navbar__list {
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-navbar__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.nt-navbar__link,
+.nt-navbar__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1-5);
+  min-height: var(--nt-target-size-default);
+  padding-inline: var(--nt-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-control);
+  background: transparent;
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-navbar__link:hover,
+.nt-navbar__trigger:hover {
+  background: var(--nt-bg-surface-hover);
+  color: var(--nt-text-primary);
+}
+
+/* Focus */
+
+.nt-navbar__link:focus-visible,
+.nt-navbar__trigger:focus-visible,
+.nt-navbar__panel-link:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Current / expanded — an inset indicator bar, so state never relies on color alone. */
+
+.nt-navbar__link[aria-current='page'],
+.nt-navbar__link--active,
+.nt-navbar__item--active > .nt-navbar__trigger {
+  color: var(--nt-text-primary);
+  box-shadow: inset 0 -2px 0 var(--nt-accent);
+}
+
+.nt-navbar__trigger[aria-expanded='true'] {
+  background: var(--nt-selection-bg);
+  border-color: var(--nt-selection-border);
+  color: var(--nt-selection-fg);
+}
+
+/* Disabled */
+
+.nt-navbar__link[aria-disabled='true'],
+.nt-navbar__link--disabled,
+.nt-navbar__trigger:disabled,
+.nt-navbar__trigger[aria-disabled='true'],
+.nt-navbar__panel-link[aria-disabled='true'] {
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Variants */
+
+.nt-navbar--compact .nt-navbar__link,
+.nt-navbar--compact .nt-navbar__trigger {
+  min-height: var(--nt-target-size-compact);
+  padding-inline: var(--nt-space-2);
+  font: var(--nt-text-label-sm);
+}
+
+/* Internal elements */
+
+.nt-navbar__chevron {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.4em;
+  height: 0.4em;
+  margin-block-start: -0.2em;
+  border-block-end: 2px solid currentColor;
+  border-inline-end: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-navbar__trigger[aria-expanded='true'] .nt-navbar__chevron {
+  margin-block-start: 0.2em;
+  transform: rotate(225deg);
+}
+
+.nt-navbar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+  flex: 0 0 auto;
+}
+
+.nt-navbar__panel {
+  position: absolute;
+  top: calc(100% + var(--nt-space-2));
+  inset-inline-start: 0;
+  z-index: var(--nt-z-dropdown);
+  min-width: 16rem;
+  max-width: min(28rem, calc(100vw - var(--nt-space-4)));
+  max-height: min(32rem, calc(100dvh - var(--nt-header-height) - var(--nt-space-4)));
+  overflow-y: auto;
+  padding: var(--nt-space-2);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-popover);
+  background: var(--nt-bg-surface-overlay);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-elevation-popover);
+}
+
+.nt-navbar__panel[data-state='open'] {
+  animation: nt-navbar-panel-in var(--nt-duration-fast) var(--nt-ease-enter);
+}
+
+.nt-navbar__panel--end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+.nt-navbar__panel--wide {
+  min-width: min(36rem, calc(100vw - var(--nt-space-4)));
+}
+
+.nt-navbar__panel-list {
+  display: grid;
+  gap: var(--nt-space-0-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-navbar__panel--wide .nt-navbar__panel-list {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.nt-navbar__panel-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  min-height: var(--nt-target-size-default);
+  justify-content: center;
+  padding: var(--nt-space-2) var(--nt-space-3);
+  border-radius: var(--nt-radius-item);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  text-decoration: none;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-navbar__panel-link:hover {
+  background: var(--nt-bg-surface-hover);
+}
+
+.nt-navbar__panel-link[aria-current='page'] {
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+  box-shadow: inset 2px 0 0 var(--nt-accent);
+}
+
+.nt-navbar__panel-link[aria-current='page']:dir(rtl) {
+  box-shadow: inset -2px 0 0 var(--nt-accent);
+}
+
+.nt-navbar__panel-description {
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  white-space: normal;
+}
+
+@keyframes nt-navbar-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The shell hands navigation to .nt-mobile-nav below the shell breakpoint. */
+@media (max-width: 64rem) {
+  .nt-navbar {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-navbar__link[aria-current='page'],
+  .nt-navbar__trigger[aria-expanded='true'] {
+    outline: 1px solid CanvasText;
+  }
+}
+
+@media (pointer: coarse) {
+  .nt-navbar__link,
+  .nt-navbar__trigger,
+  .nt-navbar__panel-link {
+    min-height: var(--nt-target-size-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-navbar__link,
+  .nt-navbar__trigger,
+  .nt-navbar__chevron,
+  .nt-navbar__panel,
+  .nt-navbar__panel-link {
+    animation: none !important;
+    transition: none !important;
+  }
+}

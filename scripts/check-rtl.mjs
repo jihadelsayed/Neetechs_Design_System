@@ -24,7 +24,8 @@ export const RTL_ALLOWLIST = [
   ['src/styles/responsive.css', ['physical-property'], 'Safe-area insets are physically anchored device cutouts; both inline sides are padded symmetrically.'],
   ['src/ai/ai-action-button/ai-action-button.css', ['translate-x'], 'Decorative shine traverses both physical directions and carries no meaning.'],
   ['src/components/skeleton/skeleton.css', ['translate-x'], 'Decorative shimmer traverses both physical directions and carries no meaning.'],
-  ['src/styles/animations/motion.css', ['translate-x'], 'Public slide-in-left/right animations intentionally describe physical motion.'],
+  ['src/shell/mobile-nav/mobile-nav.css', ['translate-x'], 'Drawer entry keyframes have an explicit :dir(rtl) counterpart (nt-mobile-nav-in-rtl).'],
+  ['src/styles/animations/motion.css', ['translate-x'],'Public slide-in-left/right animations intentionally describe physical motion.'],
 ];
 
 async function walkCss(directory) {

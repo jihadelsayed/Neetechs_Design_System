@@ -152,7 +152,7 @@ try {
   }
 
   // Wildcard spot checks resolved by the consumer (Node conditions only apply to JS).
-  for (const specifier of [`${pkg.name}/behaviors/dropdown`]) {
+  for (const specifier of [`${pkg.name}/behaviors/dropdown`, `${pkg.name}/behaviors/navigation`]) {
     try {
       execFileSync(process.execPath, ['--input-type=module', '-e', `await import('${specifier}')`], {
         cwd: consumer, stdio: ['ignore', 'pipe', 'pipe'],

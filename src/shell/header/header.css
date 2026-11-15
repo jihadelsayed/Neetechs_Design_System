@@ -13,6 +13,127 @@
   backdrop-filter: blur(18px);
 }
 
+/*
+ * Layering: backdrop-filter makes the header a stacking context. Positioning
+ * it at --nt-z-header keeps header dropdowns (navbar panels, account menu)
+ * above page content such as cards. :where() keeps this at zero specificity
+ * so .nt-app-shell__header's sticky positioning still wins.
+ */
+:where(.nt-header) {
+  position: relative;
+  z-index: var(--nt-z-header);
+}
+
+.nt-header--sticky {
+  position: sticky;
+  top: 0;
+}
+
+.nt-header__brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  min-height: var(--nt-target-size-default);
+  border-radius: var(--nt-radius-item);
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  text-decoration: none;
+}
+
+.nt-header__brand:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-header__logo {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: var(--nt-icon-size-xl);
+}
+
+.nt-header__brand-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* With a navbar slot the leading cluster hugs its content (brand + menu button). */
+.nt-header__left:has(~ .nt-header__nav) {
+  flex: 0 1 auto;
+}
+
+.nt-header__nav {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+}
+
+.nt-header__account {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  max-width: 16rem;
+  min-height: var(--nt-control-height-md);
+  padding-block: var(--nt-space-0-5);
+  padding-inline: var(--nt-space-1) var(--nt-space-2);
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-pill);
+  background: transparent;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  cursor: pointer;
+  appearance: none;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-header__account:hover {
+  background: var(--nt-bg-surface-hover);
+  border-color: var(--nt-border-subtle);
+}
+
+.nt-header__account:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+.nt-header__account[aria-expanded='true'] {
+  background: var(--nt-selection-bg);
+  border-color: var(--nt-selection-border);
+  color: var(--nt-selection-fg);
+}
+
+.nt-header__account-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-header__account-chevron {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.4em;
+  height: 0.4em;
+  margin-block-start: -0.2em;
+  border-block-end: 2px solid currentColor;
+  border-inline-end: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-header__account[aria-expanded='true'] .nt-header__account-chevron {
+  margin-block-start: 0.2em;
+  transform: rotate(225deg);
+}
+
 .nt-header__left,
 .nt-header__center,
 .nt-header__right {
@@ -176,5 +297,32 @@
 
   .nt-header__right {
     gap: var(--nt-space-1);
+  }
+
+  .nt-header__account-name,
+  .nt-header__account-chevron {
+    display: none;
+  }
+
+  .nt-header__brand-name--collapsible {
+    display: none;
+  }
+}
+
+/* Coarse pointers: full-size touch targets for header controls. */
+@media (pointer: coarse) {
+  .nt-header__action,
+  .nt-header__account {
+    min-width: var(--nt-target-size-primary);
+    min-height: var(--nt-target-size-primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-header__search,
+  .nt-header__action,
+  .nt-header__account,
+  .nt-header__account-chevron {
+    transition: none !important;
   }
 }
