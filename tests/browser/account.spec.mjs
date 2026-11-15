@@ -245,10 +245,10 @@ test.describe('editor workspace and document preview', () => {
 
   test('editing marks the pane and the saved status pops once', async ({ page }) => {
     await load(page);
-    await page.locator('#source').focus();
-    const border = await page.locator('#source-pane').evaluate((pane) => getComputedStyle(pane).borderTopColor);
     const idle = await page.locator('#preview-pane').evaluate((pane) => getComputedStyle(pane).borderTopColor);
-    expect(border).not.toBe(idle);
+    await page.locator('#source').focus();
+    // The border color transitions; poll until it settles away from the idle color.
+    await expect.poll(() => page.locator('#source-pane').evaluate((pane) => getComputedStyle(pane).borderTopColor)).not.toBe(idle);
     const status = await page.locator('#save-status').evaluate((element) => ({
       name: getComputedStyle(element, '::before').animationName,
       text: element.textContent.trim(),
