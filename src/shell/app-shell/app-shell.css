@@ -6,6 +6,7 @@
   min-height: 100dvh;
   background: var(--nt-bg-app);
   color: var(--nt-text-primary);
+  transition: grid-template-columns var(--nt-duration-normal) var(--nt-ease-standard);
 }
 
 .nt-app-shell--collapsed {
@@ -71,5 +72,140 @@
 
   .nt-app-shell__main {
     grid-template-rows: var(--nt-header-height) minmax(0, 1fr);
+  }
+}
+
+/* Shell toggles: the collapse toggle exists only while the sidebar is
+ * docked; the menu toggle only while it is hidden or off-canvas. Scoped to
+ * the shell so they win over the button's own display (shell CSS loads
+ * before components). */
+.nt-app-shell .nt-app-shell__menu-toggle,
+.nt-app-shell [data-nt-sidebar-close] {
+  display: none;
+}
+
+/* Inset layout: the sidebar and content float as separate panels on the
+ * app background (Billing workspace look). Pair with .nt-sidebar--floating. */
+.nt-app-shell--inset {
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-3);
+}
+
+.nt-app-shell--inset .nt-app-shell__sidebar {
+  top: var(--nt-space-3);
+  height: calc(100vh - 2 * var(--nt-space-3));
+  height: calc(100dvh - 2 * var(--nt-space-3));
+}
+
+@media (max-width: 64rem) {
+  .nt-app-shell .nt-app-shell__collapse-toggle {
+    display: none;
+  }
+
+  .nt-app-shell .nt-app-shell__menu-toggle {
+    display: inline-flex;
+  }
+
+  .nt-app-shell--inset {
+    gap: 0;
+    padding: var(--nt-space-2);
+  }
+
+  /* Off-canvas: below the shell breakpoint the same sidebar slides in from
+   * the inline-start edge instead of disappearing, so apps keep one
+   * navigation tree. ntCreateSidebar sets data-state, traps focus, and
+   * closes on Escape, outside click, navigation, or growing to desktop. */
+  .nt-app-shell--offcanvas .nt-app-shell__sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: var(--nt-z-drawer);
+    display: block;
+    width: min(calc(var(--nt-sidebar-width) + var(--nt-space-6)), calc(100vw - var(--nt-space-12)));
+    height: 100vh;
+    height: 100dvh;
+    padding: var(--nt-space-2);
+    padding-block-start: max(var(--nt-space-2), env(safe-area-inset-top, 0rem));
+    padding-block-end: max(var(--nt-space-2), env(safe-area-inset-bottom, 0rem));
+    background: var(--nt-bg-sidebar);
+    box-shadow: var(--nt-elevation-drawer);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform var(--nt-duration-normal) var(--nt-ease-exit),
+      visibility 0s linear var(--nt-duration-normal);
+  }
+
+  .nt-app-shell--offcanvas .nt-app-shell__sidebar:dir(rtl) {
+    transform: translateX(100%);
+  }
+
+  .nt-app-shell--offcanvas .nt-app-shell__sidebar[data-state='open'] {
+    visibility: visible;
+    transform: none;
+    transition:
+      transform var(--nt-duration-slow) var(--nt-ease-enter),
+      visibility 0s linear 0s;
+  }
+
+  .nt-app-shell--offcanvas .nt-app-shell__sidebar .nt-sidebar {
+    height: 100%;
+    max-height: none;
+    border-inline-end: 0;
+  }
+
+  .nt-app-shell--offcanvas [data-nt-sidebar-close] {
+    display: inline-flex;
+  }
+
+  .nt-app-shell--offcanvas .nt-app-shell__overlay[data-state='open'] {
+    animation: nt-fade-in var(--nt-duration-normal) var(--nt-ease-standard);
+  }
+
+  /* A desktop rail preference never leaks into the off-canvas panel. */
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed :is(.nt-sidebar__brand-text, .nt-sidebar__section-label, .nt-sidebar__item-badge) {
+    display: revert;
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__group-trigger {
+    display: flex;
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__brand {
+    justify-content: flex-start;
+    padding-inline: var(--nt-space-4);
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__item {
+    justify-content: flex-start;
+    padding-inline: var(--nt-space-3);
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__item-label {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed :is(.nt-sidebar__group, .nt-sidebar__section) + :is(.nt-sidebar__group, .nt-sidebar__section) {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__group-trigger[aria-expanded='false'] + .nt-sidebar__group-items {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-app-shell,
+  .nt-app-shell__sidebar {
+    transition: none !important;
+  }
+
+  .nt-app-shell__overlay {
+    animation: none !important;
   }
 }
