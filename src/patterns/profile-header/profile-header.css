@@ -1,0 +1,205 @@
+/*
+ * Profile header: identity at the top of a profile, account, company, or
+ * contact page. Distilled from MyAccount: a large (optionally editable)
+ * avatar, name with handle, headline and detail line, a completion meter,
+ * contextual inline actions for missing information ("Add headline" as
+ * .nt-button--link), primary actions, and an optional aside for a
+ * promotional or next-step card. Lays out from its own width.
+ *
+ * Markup: <header class="nt-profile-header">
+ *           <div class="nt-profile-header__identity">
+ *             <span class="nt-avatar nt-avatar--2xl nt-avatar--rounded">…</span>
+ *             <div class="nt-profile-header__main">
+ *               <div class="nt-profile-header__name-row">
+ *                 <h1 class="nt-profile-header__name">…</h1>
+ *                 <span class="nt-profile-header__handle">@…</span>
+ *               </div>
+ *               <p class="nt-profile-header__headline">…</p>
+ *               <ul class="nt-profile-header__details"><li>…</li></ul>
+ *               <div class="nt-profile-header__completion">nt-progress</div>
+ *             </div>
+ *           </div>
+ *           <div class="nt-profile-header__side">
+ *             <div class="nt-profile-header__actions">…</div>
+ *             <div class="nt-profile-header__aside">…</div>
+ *           </div>
+ *         </header>
+ *
+ * The root wraps intrinsically: the side column moves under the identity
+ * when both no longer fit side by side; descendants then re-align through
+ * the nt-profile-header container query.
+ */
+
+.nt-profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--nt-space-4) var(--nt-space-6);
+  min-width: 0;
+  container-type: inline-size;
+  container-name: nt-profile-header;
+}
+
+/* Sizes */
+
+.nt-profile-header--compact {
+  gap: var(--nt-space-2) var(--nt-space-4);
+}
+
+.nt-profile-header--compact .nt-profile-header__identity {
+  gap: var(--nt-space-3);
+}
+
+.nt-profile-header--compact .nt-profile-header__name {
+  font: var(--nt-text-title-lg);
+}
+
+/* Variants */
+
+.nt-profile-header--surface {
+  padding: var(--nt-density-card-padding);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-surface);
+  box-shadow: var(--nt-elevation-card);
+}
+
+/* Internals */
+
+.nt-profile-header__identity {
+  display: flex;
+  flex: 999 1 24rem;
+  align-items: flex-start;
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-profile-header__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--nt-space-1-5);
+  min-width: 0;
+}
+
+.nt-profile-header__name-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--nt-space-1) var(--nt-space-2-5);
+  min-width: 0;
+}
+
+.nt-profile-header__name {
+  margin: 0;
+  min-width: 0;
+  color: var(--nt-text-primary);
+  font-family: var(--nt-font-sans);
+  font-size: clamp(var(--nt-font-size-title-lg), calc(var(--nt-font-size-title-sm) + 1.2vw), var(--nt-font-size-heading-md));
+  font-weight: var(--nt-font-weight-bold);
+  line-height: var(--nt-line-height-heading-sm);
+  letter-spacing: var(--nt-letter-spacing-heading);
+  overflow-wrap: anywhere;
+}
+
+.nt-profile-header__handle {
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-label-md);
+  unicode-bidi: plaintext;
+}
+
+.nt-profile-header__headline {
+  margin: 0;
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-body-md);
+  overflow-wrap: anywhere;
+}
+
+/* Detail line: location, organization, member since. Separators are
+ * generated with empty alternative text so they are not announced. */
+.nt-profile-header__details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-1) var(--nt-space-2);
+  margin: 0;
+  padding: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  list-style: none;
+}
+
+.nt-profile-header__details > li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1-5);
+  min-width: 0;
+}
+
+.nt-profile-header__details > li + li::before {
+  margin-inline-end: var(--nt-space-0-5);
+  color: var(--nt-text-subtle);
+  content: '·' / '';
+}
+
+.nt-profile-header__completion {
+  width: min(100%, 18rem);
+  margin-block-start: var(--nt-space-1);
+}
+
+.nt-profile-header__side {
+  display: flex;
+  flex: 1 1 22rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-profile-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-profile-header__actions:empty,
+.nt-profile-header__aside:empty,
+.nt-profile-header__side:empty {
+  display: none;
+}
+
+.nt-profile-header__aside {
+  width: min(100%, 22rem);
+  min-width: 0;
+}
+
+/* Once the side column has wrapped under the identity, align it to the
+ * start like the rest of the header. */
+@container nt-profile-header (max-width: 48rem) {
+  .nt-profile-header__side {
+    align-items: stretch;
+  }
+
+  .nt-profile-header__actions {
+    justify-content: flex-start;
+  }
+
+  .nt-profile-header__aside {
+    width: min(100%, 32rem);
+  }
+}
+
+/* Narrow: the avatar sits above the text. */
+@container nt-profile-header (max-width: 30rem) {
+  .nt-profile-header__identity {
+    flex-direction: column;
+    gap: var(--nt-space-3);
+  }
+
+  .nt-profile-header__completion {
+    width: 100%;
+  }
+}

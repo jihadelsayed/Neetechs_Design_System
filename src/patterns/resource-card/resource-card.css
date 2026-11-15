@@ -1,0 +1,258 @@
+/*
+ * Resource card: one connected or owned thing with its own status and
+ * actions: AI provider connections, connected accounts, integrations,
+ * uploaded documents, API keys, devices, payment methods. Distilled from
+ * MyAccount's provider cards and CV library cards: an identity tile, title
+ * with inline badges, an end-aligned status, a compact facts row, and an
+ * action row. The "in use" card is marked with a selection ring.
+ *
+ * Markup: <article class="nt-resource-card">
+ *           <div class="nt-resource-card__header">
+ *             <span class="nt-resource-card__media" aria-hidden="true">OA</span>
+ *             <div class="nt-resource-card__main">
+ *               <div class="nt-resource-card__title-row">
+ *                 <h3 class="nt-resource-card__title">OpenAI</h3>
+ *               </div>
+ *               <p class="nt-resource-card__description">…</p>
+ *             </div>
+ *             <span class="nt-resource-card__status">nt-badge</span>
+ *           </div>
+ *           <dl class="nt-description-list nt-description-list--boxed nt-description-list--compact">…</dl>
+ *           <div class="nt-resource-card__actions">…</div>
+ *         </article>
+ */
+
+.nt-resource-card {
+  --nt-resource-card-media-bg: var(--nt-accent-subtle);
+  --nt-resource-card-media-fg: var(--nt-accent-text);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-4);
+  min-width: 0;
+  padding: var(--nt-density-card-padding);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-bg-surface);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-elevation-card);
+  container-type: inline-size;
+  container-name: nt-resource-card;
+  transition: var(--nt-transition-colors);
+}
+
+.nt-resource-card:hover {
+  border-color: var(--nt-border-strong);
+}
+
+.nt-resource-card:focus-within {
+  border-color: var(--nt-border-strong);
+}
+
+/* Current: the resource in use (default provider, primary CV). */
+.nt-resource-card--current,
+.nt-resource-card[aria-current='true'] {
+  border-color: var(--nt-selection-border);
+  box-shadow: 0 0 0 1px var(--nt-selection-border), var(--nt-elevation-card);
+}
+
+/* Unavailable resources stay readable; actions inside should be disabled. */
+.nt-resource-card--unavailable {
+  --nt-resource-card-media-bg: var(--nt-bg-surface-muted);
+  --nt-resource-card-media-fg: var(--nt-text-secondary);
+
+  background: var(--nt-bg-surface-muted);
+  box-shadow: none;
+}
+
+.nt-resource-card--unavailable .nt-resource-card__description {
+  color: var(--nt-text-secondary);
+}
+
+/* Sizes */
+
+.nt-resource-card--compact {
+  gap: var(--nt-space-3);
+  padding: var(--nt-space-3);
+}
+
+.nt-resource-card--compact .nt-resource-card__media {
+  width: var(--nt-control-height-md);
+  height: var(--nt-control-height-md);
+}
+
+/* Variants */
+
+.nt-resource-card--warning {
+  --nt-resource-card-media-bg: var(--nt-warning-bg);
+  --nt-resource-card-media-fg: var(--nt-warning-text);
+
+  border-color: var(--nt-warning-border);
+}
+
+.nt-resource-card--danger {
+  --nt-resource-card-media-bg: var(--nt-danger-bg);
+  --nt-resource-card-media-fg: var(--nt-danger-text);
+
+  border-color: var(--nt-danger-border);
+}
+
+.nt-resource-card--success {
+  --nt-resource-card-media-bg: var(--nt-success-bg);
+  --nt-resource-card-media-fg: var(--nt-success-text);
+}
+
+.nt-resource-card--flat {
+  box-shadow: none;
+}
+
+/* Internals */
+
+.nt-resource-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+/* Identity tile: initials, a logo, or an icon. */
+.nt-resource-card__media {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-control-height-lg);
+  height: var(--nt-control-height-lg);
+  overflow: hidden;
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-resource-card-media-bg);
+  color: var(--nt-resource-card-media-fg);
+  font: var(--nt-text-label-lg);
+  font-weight: var(--nt-font-weight-bold);
+  text-transform: uppercase;
+}
+
+.nt-resource-card__media > :is(img, svg) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nt-resource-card__media > svg {
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+}
+
+/* Document tile: a portrait page for files (CVs, invoices, contracts). */
+.nt-resource-card__media--document {
+  width: var(--nt-control-height-lg);
+  height: calc(var(--nt-control-height-lg) * 1.25);
+  border: 1px solid var(--nt-border-muted);
+  border-radius: var(--nt-radius-control);
+  background: var(--nt-bg-surface-muted);
+  color: var(--nt-accent-text);
+  font: var(--nt-text-label-sm);
+  font-weight: var(--nt-font-weight-bold);
+}
+
+.nt-resource-card__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-resource-card__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-1) var(--nt-space-2);
+  min-width: 0;
+}
+
+.nt-resource-card__title {
+  margin: 0;
+  min-width: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+  overflow-wrap: anywhere;
+}
+
+.nt-resource-card__description {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.nt-resource-card__status {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--nt-space-2);
+}
+
+.nt-resource-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+/* A destructive or overflow action pushed to the end of the row. */
+.nt-resource-card__actions-end {
+  margin-inline-start: auto;
+}
+
+.nt-resource-card__footer {
+  margin: 0;
+  padding-block-start: var(--nt-space-3);
+  border-block-start: 1px solid var(--nt-border-subtle);
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+}
+
+/* Card collection: as many cards per row as fit. */
+.nt-resource-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: var(--nt-space-4);
+  min-width: 0;
+}
+
+.nt-resource-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+/* Narrow card: status takes its own row; actions fill the width. */
+@container nt-resource-card (max-width: 26rem) {
+  .nt-resource-card__header {
+    flex-wrap: wrap;
+  }
+
+  .nt-resource-card__status {
+    order: 1;
+    flex-basis: 100%;
+  }
+
+  .nt-resource-card__actions > :is(.nt-button, a.nt-button) {
+    flex: 1 1 100%;
+  }
+
+  .nt-resource-card__actions-end {
+    margin-inline-start: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-resource-card {
+    transition: none !important;
+  }
+}
