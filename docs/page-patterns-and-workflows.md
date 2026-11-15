@@ -59,6 +59,10 @@ Compose: `.nt-page-header` (identity + primary create action) →
 `.nt-page-toolbar` (search, filters, sort, applied-filter row) → count →
 table/grid/record list → `.nt-pagination`.
 
+- Filter panels: `.nt-page-toolbar--surface` with `__fields` (as many
+  filters per row as fit, aligned to the field baseline) and `__actions`
+  (reset / apply at the end of the row).
+
 - Bulk actions appear only after selection (toolbar swap with an accessible
   announcement), the create action stays visible.
 - Data representation (table, data grid, record list) follows the data's
@@ -75,6 +79,12 @@ Compose: `.nt-page-header` with `__meta` (status badge + text, reference,
 key figures) → tabs or `.nt-page-section`s → related records/activity →
 `.nt-page-footer-actions` (destructive in `__start`).
 
+- Document-style records (invoices, contracts, orders) use
+  `.nt-page-header--surface`: eyebrow (document type), `__title-row` with
+  the reference and an inline `__status` badge, description (counterparty,
+  due date), and contextual `__actions`. Read-only fields use
+  `.nt-description-list`; totals use `.nt-description-list--inline` with an
+  `__item--emphasis` row for the amount due.
 - Record identity wraps rather than truncating; status never relies on badge
   color alone (always text).
 - Edit (primary) and destructive actions never compete visually.
@@ -115,6 +125,11 @@ Compose `.nt-page-header` (context/date range in `__meta`) →
 `.nt-grid--fit` of cards ordered by decision importance: attention-required
 first, key metrics, recent activity, quick actions.
 
+- Key figures use `.nt-stat` cards in a `.nt-stat-grid` (at most four per
+  row, collapsing intrinsically); a featured figure uses `.nt-stat--wide`
+  with a `.nt-description-list--boxed` breakdown. Recent activity uses
+  `.nt-record-list`. Use `.nt-page-header--compact` for dense workspace
+  pages.
 - Metrics need label + value + context + change meaning (text, not color
   alone); charts need accessible summaries.
 - Widgets declare `--nt-grid-min-item`; not every widget gets equal weight.

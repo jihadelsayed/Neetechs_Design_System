@@ -35,7 +35,41 @@ when the package owner manually runs the release workflow with `publish: true`.
   path in docs exists), `check:api` (no public export, CSS file, class, token, or JS binding
   removed; baseline in `api/public-api.json`, verified against published 0.0.4).
 
+- Billing-referenced workspace upgrade (see `docs/NEETECHS_UI_UPGRADE_PLAN.md`):
+  - Stat (KPI) card `.nt-stat` + intrinsic `.nt-stat-grid` (`components/stat.css`): tone bar,
+    icon tile, tabular value, trend delta, tones, `--tinted`, `--emphasis`, `--wide`,
+    `--sm`/`--lg`, interactive/selected states, and `aria-busy` loading without layout shift.
+  - Description list `.nt-description-list` (`components/description-list.css`): responsive
+    grid, `--inline` totals with dividers, `--boxed` breakdown tiles, emphasized rows.
+  - Record list `.nt-record-list` / `.nt-record` (`patterns/record-list.css`): navigable
+    rows with indicator, meta, end-aligned value, direction-aware chevron, container-query
+    stacking, selected bar, `--divided`, `--compact`.
+  - Page patterns: `.nt-page-header--surface` (document action bar), `--compact`,
+    `__title-row`, `__status`; `.nt-page-toolbar--surface` filter panel with `__fields`
+    and `__actions`; `.nt-page-section__eyebrow`.
+  - Workspace sidebar: collapsible groups (`.nt-sidebar__group`, `__group-trigger`,
+    `__group-items`, `__group-inner`, `__group-label`, `__group-chevron`), animated active
+    indicator, `.nt-sidebar--floating`, standalone `.nt-sidebar--collapsed` rail.
+  - App shell: `.nt-app-shell--offcanvas` (same sidebar slides in below 64rem),
+    `.nt-app-shell--inset`, `.nt-app-shell__menu-toggle`, `.nt-app-shell__collapse-toggle`,
+    `[data-nt-sidebar-close]`, animated rail width.
+  - `ntCreateSidebar()` (`@neetechs/ui/behaviors`): rail with persisted preference,
+    disclosure groups, modal off-canvas mode (focus trap, Escape, outside click, scroll
+    lock, inert background, focus return, close on navigate and on desktop resize).
+  - Cards: `.nt-card--selected` (and `aria-selected`/`aria-pressed`/`aria-current`/
+    `aria-checked`), `--info`, `--accent`, `--padded`, pressed state for `--interactive`.
+  - Buttons: pending state keeps the button width when the label is wrapped in
+    `.nt-button__content`; success and error states play one halo pulse.
+  - `.nt-skip-link` (shared skip-to-content link).
+  - Billing domain: `.nt-billing-metric__accent`, `--info`, `--prominent`;
+    `.nt-billing-document__title-row`, `__status`; generic `.nt-billing-status` tones;
+    `.nt-billing-amount-list--divided`, `.nt-billing-amount-row--grand`.
+
 ### Changed
+- Collapsed sidebar rail labels are now visually hidden instead of `display: none`, so
+  icon-only items keep their accessible names (no visual change).
+- Active sidebar items show an inline-start indicator bar in addition to the selection fill.
+- Skeleton shimmer sweeps in the reading direction under RTL.
 - `.nt-header` now establishes its own layer (`position: relative; z-index: var(--nt-z-header)`
   at zero specificity), so header dropdowns always paint above page content. Inside
   `.nt-app-shell__header` the shell's sticky positioning still applies.

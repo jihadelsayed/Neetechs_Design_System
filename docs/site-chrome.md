@@ -215,6 +215,77 @@ becomes a single row. Variants: `.nt-footer--compact` (bottom bar only) and
 `.nt-footer--raised` (surface background). Choose heading levels that fit the
 page outline; the class carries the styling.
 
+## Workspace sidebar
+
+Application workspaces (Billing, Companies, MyAccount) use `.nt-app-shell`
+with `.nt-sidebar`. `ntCreateSidebar` adds the interactions; routing stays
+with the application.
+
+```html
+<div class="nt-app-shell nt-app-shell--inset nt-app-shell--offcanvas" id="shell">
+  <aside class="nt-app-shell__sidebar" id="workspace-sidebar" aria-label="Workspace">
+    <nav class="nt-sidebar nt-sidebar--floating" aria-label="Billing navigation">
+      <div class="nt-sidebar__nav">
+        <div class="nt-sidebar__group">
+          <button class="nt-sidebar__group-trigger" type="button" aria-expanded="true">
+            <span class="nt-sidebar__group-label">Sales</span>
+            <svg class="nt-sidebar__group-chevron" aria-hidden="true"></svg>
+          </button>
+          <div class="nt-sidebar__group-items">
+            <div class="nt-sidebar__group-inner">
+              <a class="nt-sidebar__item" href="/invoices" aria-current="page">
+                <svg class="nt-sidebar__item-icon" aria-hidden="true"></svg>
+                <span class="nt-sidebar__item-label">Invoices</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nt-sidebar__footer">
+        <button class="nt-button nt-button--ghost nt-button--sm" type="button" data-nt-sidebar-close>Close menu</button>
+      </div>
+    </nav>
+  </aside>
+  <div class="nt-app-shell__overlay" hidden></div>
+  <div class="nt-app-shell__main">
+    <header class="nt-app-shell__header">
+      <button class="nt-icon-button nt-icon-button--ghost nt-app-shell__menu-toggle" type="button" aria-label="Open navigation"></button>
+      <button class="nt-icon-button nt-icon-button--ghost nt-app-shell__collapse-toggle" type="button" aria-label="Collapse sidebar"></button>
+    </header>
+    <main class="nt-app-shell__content">…</main>
+  </div>
+</div>
+```
+
+```ts
+import { ntCreateSidebar } from '@neetechs/ui/behaviors';
+
+const sidebar = ntCreateSidebar({
+  shell: document.querySelector('#shell'),
+  sidebar: document.querySelector('#workspace-sidebar'),
+  collapseToggle: document.querySelector('.nt-app-shell__collapse-toggle'),
+  menuToggle: document.querySelector('.nt-app-shell__menu-toggle'),
+  backdrop: document.querySelector('.nt-app-shell__overlay'),
+  storageKey: 'billing.sidebar.collapsed',
+});
+// After the app re-renders navigation or changes the current route:
+sidebar.refresh();
+```
+
+| Feature | Contract |
+|---|---|
+| Active item | `aria-current="page"` (or `--active`): selection fill plus an inline-start indicator bar that grows in (a shape cue, not color only) |
+| Collapsible groups | Disclosure buttons (`aria-expanded` + `aria-controls`); height animates through grid rows; closed items leave the tab order; a group containing the current page opens on init and on `refresh()` |
+| Icon rail | `setCollapsed(true)` or the collapse toggle sets `.nt-app-shell--collapsed` (standalone: `.nt-sidebar--collapsed`); the grid column animates; labels are visually hidden but keep accessible names; icon-only items get a `title`; groups show all items separated by dividers |
+| Persistence | Optional `storageKey` in `localStorage`; storage failures are ignored |
+| Off-canvas (`.nt-app-shell--offcanvas`) | Below 64rem the same sidebar slides in from the inline-start edge as a modal panel: focus trap, Escape, backdrop and outside click, scroll lock, inert background, focus returns to the menu toggle, closes on navigation and when the viewport grows to desktop. A desktop rail preference never applies inside the panel |
+| Inset layout (`.nt-app-shell--inset` + `.nt-sidebar--floating`) | Sidebar and content float as separate rounded panels on the app background |
+| Toggles | `.nt-app-shell__collapse-toggle` shows only while docked; `.nt-app-shell__menu-toggle` and `[data-nt-sidebar-close]` only below the shell breakpoint |
+| SSR | Server markup renders the expanded desktop sidebar; the controller reads storage and media queries only in the browser |
+
+Without `.nt-app-shell--offcanvas` the sidebar keeps its existing behavior
+(hidden below 64rem; use the mobile navigation drawer).
+
 ## Responsive, touch, RTL, themes
 
 - Desktop (≥ 64rem): navbar + account dropdown. Tablet/phone: menu button +

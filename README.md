@@ -615,6 +615,30 @@ Stacking rules: [docs/layering.md](./docs/layering.md).
 </section>
 ```
 
+Totals cards separate every row with `.nt-billing-amount-list--divided` and
+box the amount due with `.nt-billing-amount-row--grand`. Headers can keep the
+status inline with the reference via `.nt-billing-document__title-row` and
+`.nt-billing-document__status`. Workflow states outside the named set use the
+generic tones `.nt-billing-status--neutral`, `--info`, `--success`,
+`--warning`, `--danger` (the text always names the state). Dashboard metrics
+can show a tone bar (`.nt-billing-metric__accent`), an info tone
+(`.nt-billing-metric--info`), and a headline size
+(`.nt-billing-metric--prominent`); new dashboards should prefer the
+domain-neutral `.nt-stat` card.
+
+```html
+<div class="nt-billing-amount-list nt-billing-amount-list--divided">
+  <div class="nt-billing-amount-row">
+    <span class="nt-billing-amount-row__label">VAT 25%</span>
+    <span class="nt-billing-amount-row__value">250 SEK</span>
+  </div>
+  <div class="nt-billing-amount-row nt-billing-amount-row--grand">
+    <span class="nt-billing-amount-row__label">Amount due</span>
+    <span class="nt-billing-amount-row__value">1,250 SEK</span>
+  </div>
+</div>
+```
+
 ## TypeScript helpers
 
 ```ts
