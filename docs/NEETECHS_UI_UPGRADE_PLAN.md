@@ -174,6 +174,8 @@ account dropdown, mobile navigation, footer, quota meters (`.nt-progress`).
 | `npm run check:package` | pass: 299.6 kB packed, 393 files, clean consumer install + import |
 | `check-api --compare` against the published `@neetechs/ui@0.1.0` tarball | pass: nothing removed |
 | `check-api --update` | +123 additions, 0 removals |
+| GitHub Actions `c8247d7`, `4169bc1` (ubuntu) | **failed**: first a real light-theme contrast bug in `.nt-badge--neutral` (fixed in `16ae4f8`), then a timing race in one new test (fixed in `0824ca6`) |
+| GitHub Actions `0824ca6` (ubuntu, full gate incl. Playwright and package check; publish skipped) | pass |
 
 Issues found and fixed during testing:
 - Profile header overlapped on phones: a container query cannot restyle its own container.
@@ -208,7 +210,8 @@ Issues found and fixed during testing:
 
 ### Commits
 `7a56e6f`, `e55c051`, `bb4514a`, `cde3c92`, `997c183`, `896dafd`, `7a73f3c`, `c8247d7`
-(docs), the neutral-badge contrast fix, and the documentation update that records it.
+(docs), `16ae4f8` (neutral badge contrast), `4169bc1` (docs), `0824ca6` (test race fix), and
+the documentation commit recording these CI results.
 
 ## Release safety
 
