@@ -30,6 +30,13 @@ Bridge analysis: each bridge declaration was resolved in Chromium against the
 | Neetechs_AI | `src/styles/brand-theme.css` | 45 / 49 | `--nt-bg-header` 0.94 vs 0.92 alpha, `--nt-border-muted` 0.30 vs 0.27, `--nt-text-muted` `#cbd9ea` vs `#d1e0f2`, `--nt-selection-border` 0.5 vs 0.9 (*review*: near-identical; delete for consistency unless the AI shell needs them) |
 | Neetechs_devices | — | no bridge | — |
 
+Header layer: `.nt-header` now sets `position: relative; z-index: var(--nt-z-header)`
+at zero specificity. Billing's `.site-header` already applies exactly this
+locally (removable after upgrading); devices' sticky `:host` header and Billing's
+fixed mobile header keep their own positioning because class selectors win.
+`.nt-header` was already a stacking context (`backdrop-filter`), so drawers
+nested inside it are unaffected; their containing layer moves from 0 to 200.
+
 Non-token parts of the bridges stay in the apps: MyAccount's `--brand-rgb`
 (used by app SCSS for `rgba()` mixing), global element resets, skeleton and
 animation helpers, and `.field-error`/`.form-error` app classes. `--brand-rgb`
