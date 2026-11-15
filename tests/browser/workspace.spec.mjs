@@ -325,8 +325,11 @@ test.describe('reduced motion', () => {
 });
 
 test.describe('visual regression', () => {
+  // 1600px leaves each of the four cards enough room that no label or value
+  // wraps with either Windows or Linux fallback font metrics, so the
+  // snapshot height is platform-independent.
   test('dashboard stat grid renders stably', async ({ page }) => {
-    await load(page, { width: 1280 });
+    await load(page, { width: 1600 });
     await settle(page);
     await page.locator('#stat-loading').evaluate((stat) => stat.removeAttribute('aria-busy'));
     await expect(page.locator('#stat-grid')).toHaveScreenshot('workspace-stat-grid.png', {
