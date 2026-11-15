@@ -1,0 +1,187 @@
+/*
+ * Description list: labelled read-only values for detail pages, summaries,
+ * and record metadata. Distilled from Billing's document detail pages:
+ * muted labels above strong values in a responsive grid, an inline
+ * "label … value" layout with row dividers for totals, boxed tiles for
+ * breakdowns, and an emphasized grand-total row.
+ *
+ * Markup: <dl class="nt-description-list">
+ *           <div class="nt-description-list__item">
+ *             <dt class="nt-description-list__term">…</dt>
+ *             <dd class="nt-description-list__details">…</dd>
+ *           </div>
+ *         </dl>
+ */
+
+.nt-description-list {
+  --nt-description-list-min: 12rem;
+  --nt-description-list-gap: var(--nt-space-4);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-description-list-min)), 1fr));
+  gap: var(--nt-description-list-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.nt-description-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-description-list__term {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-sm);
+  letter-spacing: var(--nt-letter-spacing-label);
+  overflow-wrap: anywhere;
+}
+
+.nt-description-list__details {
+  margin: 0;
+  min-width: 0;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-body-md);
+  overflow-wrap: anywhere;
+  unicode-bidi: plaintext;
+}
+
+/* Values that are copied or compared: references, IBANs, amounts. */
+.nt-description-list__details--numeric {
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: isolate;
+}
+
+.nt-description-list__details--muted {
+  color: var(--nt-text-muted);
+}
+
+.nt-description-list__item--full {
+  grid-column: 1 / -1;
+}
+
+/* Sizes */
+
+.nt-description-list--compact {
+  --nt-description-list-gap: var(--nt-space-3);
+}
+
+.nt-description-list--compact .nt-description-list__details {
+  font: var(--nt-text-body-sm);
+}
+
+/* Variants */
+
+/* Fixed column counts that still collapse to one column when narrow. */
+.nt-description-list--2 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, max(var(--nt-description-list-min), (100% - var(--nt-description-list-gap)) / 2)), 1fr));
+}
+
+.nt-description-list--3 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, max(var(--nt-description-list-min), (100% - 2 * var(--nt-description-list-gap)) / 3)), 1fr));
+}
+
+/* Inline: label at the start, value at the end, divided rows (totals,
+ * summaries in a narrow aside). */
+.nt-description-list--inline {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.nt-description-list--inline .nt-description-list__item {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--nt-space-1) var(--nt-space-4);
+  padding-block: var(--nt-space-3);
+  border-block-end: 1px solid var(--nt-border-subtle);
+}
+
+.nt-description-list--inline .nt-description-list__item:first-child {
+  padding-block-start: 0;
+}
+
+.nt-description-list--inline .nt-description-list__item:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.nt-description-list--inline .nt-description-list__term {
+  flex: 1 1 8rem;
+  font: var(--nt-text-body-sm);
+  letter-spacing: var(--nt-letter-spacing-normal);
+}
+
+.nt-description-list--inline .nt-description-list__details {
+  flex: 0 1 auto;
+  font: var(--nt-text-label-lg);
+  text-align: end;
+}
+
+/* Boxed: each item is a tile (breakdowns, mini statistics). */
+.nt-description-list--boxed {
+  --nt-description-list-min: 10.5rem;
+  --nt-description-list-gap: var(--nt-space-3);
+}
+
+.nt-description-list--boxed .nt-description-list__item {
+  padding: var(--nt-space-3);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
+}
+
+/* Muted surface: terms step up to secondary text for contrast. */
+.nt-description-list--boxed .nt-description-list__term {
+  color: var(--nt-text-secondary);
+}
+
+.nt-description-list--boxed .nt-description-list__details {
+  font: var(--nt-text-title-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Emphasized row: the figure the reader came for (grand total, balance
+ * due). Border and weight change, not just color. */
+.nt-description-list__item--emphasis {
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border: 1px solid var(--nt-border-interactive);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface-muted);
+}
+
+.nt-description-list--inline .nt-description-list__item--emphasis,
+.nt-description-list--inline .nt-description-list__item--emphasis:first-child,
+.nt-description-list--inline .nt-description-list__item--emphasis:last-child {
+  margin-block-start: var(--nt-space-2);
+  padding: var(--nt-space-3) var(--nt-space-4);
+  border-block-end: 1px solid var(--nt-border-interactive);
+}
+
+.nt-description-list__item--emphasis .nt-description-list__term {
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-lg);
+}
+
+.nt-description-list__item--emphasis .nt-description-list__details {
+  font: var(--nt-text-title-md);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tones for a value that needs status meaning; pair with text such as
+ * "Overdue" or a sign so meaning never depends on color. */
+.nt-description-list__details--success {
+  color: var(--nt-success-text);
+}
+
+.nt-description-list__details--warning {
+  color: var(--nt-warning-text);
+}
+
+.nt-description-list__details--danger {
+  color: var(--nt-danger-text);
+}

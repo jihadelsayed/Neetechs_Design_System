@@ -1,0 +1,403 @@
+/*
+ * Stat (KPI) card: one headline figure with its label, optional trend, and
+ * supporting hint. Distilled from the Billing dashboard: compact padding,
+ * sentence-case labels, a large tabular value, a short tone bar that carries
+ * category without tinting the whole card, and skeleton loading that keeps
+ * the final layout so values never shift when data arrives.
+ *
+ * Markup: <article class="nt-stat"> or <a class="nt-stat nt-stat--interactive">
+ * inside <div class="nt-stat-grid">. Domain-neutral; finance pages compose it
+ * with formatted amounts.
+ */
+
+.nt-stat {
+  --nt-stat-tone: var(--nt-border-strong);
+  --nt-stat-tone-bg: var(--nt-bg-surface-muted);
+  --nt-stat-tone-fg: var(--nt-text-secondary);
+  --nt-stat-surface: var(--nt-bg-surface);
+  --nt-stat-border: var(--nt-border-subtle);
+  --nt-stat-value-color: var(--nt-text-primary);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-2);
+  min-width: 0;
+  padding: var(--nt-density-card-padding);
+  border: 1px solid var(--nt-stat-border);
+  border-radius: var(--nt-radius-card);
+  background: var(--nt-stat-surface);
+  color: var(--nt-text-primary);
+  box-shadow: var(--nt-elevation-card);
+  text-align: start;
+  text-decoration: none;
+  transition: var(--nt-motion-card);
+}
+
+/* Interactive stats (links or buttons that drill into a report). */
+.nt-stat--interactive,
+a.nt-stat[href],
+button.nt-stat {
+  cursor: pointer;
+}
+
+button.nt-stat {
+  width: 100%;
+  font: inherit;
+  appearance: none;
+}
+
+:is(.nt-stat--interactive, a.nt-stat[href], button.nt-stat):hover {
+  border-color: var(--nt-border-strong);
+  box-shadow: var(--nt-elevation-card-hover);
+  transform: translateY(calc(var(--nt-space-px) * -1));
+}
+
+:is(.nt-stat--interactive, a.nt-stat[href], button.nt-stat):active {
+  box-shadow: var(--nt-elevation-card);
+  transform: translateY(0);
+}
+
+.nt-stat:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Selected stat: a filter or chart series is bound to it. The ring adds a
+ * shape change so selection is not communicated by color alone. */
+.nt-stat--selected,
+.nt-stat[aria-pressed='true'],
+.nt-stat[aria-current='true'],
+.nt-stat[aria-current='page'] {
+  --nt-stat-tone: var(--nt-selection-indicator);
+  --nt-stat-border: var(--nt-selection-border);
+
+  box-shadow: 0 0 0 1px var(--nt-selection-border), var(--nt-elevation-card);
+}
+
+/* Loading keeps the final layout: the value slot becomes a pulse block at
+ * the same line height, so swapping in the real figure causes no shift. */
+.nt-stat--loading .nt-stat__value,
+.nt-stat[aria-busy='true'] .nt-stat__value,
+.nt-stat__value--loading {
+  min-inline-size: 60%;
+  border-radius: var(--nt-radius-indicator);
+  background: var(--nt-bg-surface-muted);
+  color: transparent;
+  user-select: none;
+  animation: nt-skeleton-pulse var(--nt-duration-slower) var(--nt-ease-standard) infinite alternate;
+}
+
+.nt-stat--loading .nt-stat__value *,
+.nt-stat[aria-busy='true'] .nt-stat__value * {
+  visibility: hidden;
+}
+
+.nt-stat--loading .nt-stat__delta,
+.nt-stat[aria-busy='true'] .nt-stat__delta {
+  visibility: hidden;
+}
+
+/* Sizes */
+
+.nt-stat--sm {
+  gap: var(--nt-space-1);
+  padding: var(--nt-space-3);
+}
+
+.nt-stat--sm .nt-stat__value {
+  font-size: var(--nt-font-size-title-lg);
+}
+
+.nt-stat--lg .nt-stat__value {
+  font-size: clamp(var(--nt-font-size-heading-sm), calc(var(--nt-font-size-title-md) + 2vw), var(--nt-font-size-display-sm));
+}
+
+/* Tones set the bar, icon tile, and emphasis edge. */
+
+.nt-stat--success {
+  --nt-stat-tone: var(--nt-success);
+  --nt-stat-tone-bg: var(--nt-success-bg);
+  --nt-stat-tone-fg: var(--nt-success-text);
+}
+
+.nt-stat--warning {
+  --nt-stat-tone: var(--nt-warning);
+  --nt-stat-tone-bg: var(--nt-warning-bg);
+  --nt-stat-tone-fg: var(--nt-warning-text);
+}
+
+.nt-stat--danger {
+  --nt-stat-tone: var(--nt-danger);
+  --nt-stat-tone-bg: var(--nt-danger-bg);
+  --nt-stat-tone-fg: var(--nt-danger-text);
+}
+
+.nt-stat--info {
+  --nt-stat-tone: var(--nt-info);
+  --nt-stat-tone-bg: var(--nt-info-bg);
+  --nt-stat-tone-fg: var(--nt-info-text);
+}
+
+.nt-stat--accent {
+  --nt-stat-tone: var(--nt-accent);
+  --nt-stat-tone-bg: var(--nt-accent-subtle);
+  --nt-stat-tone-fg: var(--nt-accent-text);
+}
+
+/* Tinted: the whole card carries the tone (exceptional states only, e.g. an
+ * overdue total). Combine with a tone modifier. */
+.nt-stat--tinted.nt-stat--success {
+  --nt-stat-surface: var(--nt-success-bg);
+  --nt-stat-border: var(--nt-success-border);
+  --nt-stat-value-color: var(--nt-success-text);
+}
+
+.nt-stat--tinted.nt-stat--warning {
+  --nt-stat-surface: var(--nt-warning-bg);
+  --nt-stat-border: var(--nt-warning-border);
+  --nt-stat-value-color: var(--nt-warning-text);
+}
+
+.nt-stat--tinted.nt-stat--danger {
+  --nt-stat-surface: var(--nt-danger-bg);
+  --nt-stat-border: var(--nt-danger-border);
+  --nt-stat-value-color: var(--nt-danger-text);
+}
+
+.nt-stat--tinted.nt-stat--info {
+  --nt-stat-surface: var(--nt-info-bg);
+  --nt-stat-border: var(--nt-info-border);
+  --nt-stat-value-color: var(--nt-info-text);
+}
+
+.nt-stat--tinted.nt-stat--accent {
+  --nt-stat-surface: var(--nt-accent-subtle);
+  --nt-stat-border: var(--nt-border-interactive);
+  --nt-stat-value-color: var(--nt-accent-text);
+}
+
+/* Muted text on a tinted surface steps up to secondary for contrast. */
+.nt-stat--tinted :is(.nt-stat__label, .nt-stat__hint, .nt-stat__unit, .nt-stat__meta) {
+  color: var(--nt-text-secondary);
+}
+
+/* Emphasis: a thick inline-start edge in the tone color, a shape cue that
+ * survives grayscale and forced colors. */
+.nt-stat--emphasis {
+  border-inline-start: var(--nt-space-1) solid var(--nt-stat-tone);
+}
+
+/* Wide: spans every column of a stat grid (featured figure). */
+.nt-stat--wide {
+  grid-column: 1 / -1;
+}
+
+.nt-stat--flat {
+  box-shadow: none;
+}
+
+.nt-stat--ghost {
+  --nt-stat-surface: transparent;
+  --nt-stat-border: transparent;
+
+  box-shadow: none;
+}
+
+/* Internals */
+
+.nt-stat__accent {
+  display: block;
+  inline-size: var(--nt-space-8);
+  block-size: var(--nt-space-1);
+  margin-block-end: var(--nt-space-1);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-stat-tone);
+  transition: background-color var(--nt-duration-fast) var(--nt-ease-standard);
+}
+
+.nt-stat__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-stat__label {
+  margin: 0;
+  min-width: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-label-md);
+  letter-spacing: var(--nt-letter-spacing-label);
+  overflow-wrap: anywhere;
+}
+
+.nt-stat__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--nt-control-height-sm);
+  height: var(--nt-control-height-sm);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-stat-tone-bg);
+  color: var(--nt-stat-tone-fg);
+}
+
+.nt-stat__icon > svg {
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+}
+
+.nt-stat__value {
+  display: block;
+  align-self: flex-start;
+  max-width: 100%;
+  margin: 0;
+  color: var(--nt-stat-value-color);
+  font-family: var(--nt-font-sans);
+  font-size: clamp(var(--nt-font-size-title-lg), calc(var(--nt-font-size-title-sm) + 1vw), var(--nt-font-size-heading-md));
+  font-weight: var(--nt-font-weight-bold);
+  line-height: var(--nt-line-height-heading-sm);
+  letter-spacing: var(--nt-letter-spacing-heading);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  unicode-bidi: isolate;
+}
+
+.nt-stat__unit {
+  margin-inline-start: var(--nt-space-1);
+  color: var(--nt-text-muted);
+  font-size: var(--nt-font-size-body-sm);
+  font-weight: var(--nt-font-weight-medium);
+  letter-spacing: var(--nt-letter-spacing-normal);
+}
+
+.nt-stat__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--nt-space-2);
+  min-width: 0;
+}
+
+/* Trend: always include a sign or arrow glyph in the content; the tone is a
+ * secondary cue. */
+.nt-stat__delta {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--nt-space-1);
+  min-height: var(--nt-space-5);
+  padding-inline: var(--nt-space-1-5);
+  border: 1px solid var(--nt-neutral-border);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-neutral-bg);
+  color: var(--nt-neutral-text);
+  font: var(--nt-text-label-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  unicode-bidi: isolate;
+}
+
+.nt-stat__delta--positive {
+  border-color: var(--nt-success-border);
+  background: var(--nt-success-bg);
+  color: var(--nt-success-text);
+}
+
+.nt-stat__delta--negative {
+  border-color: var(--nt-danger-border);
+  background: var(--nt-danger-bg);
+  color: var(--nt-danger-text);
+}
+
+.nt-stat__delta--warning {
+  border-color: var(--nt-warning-border);
+  background: var(--nt-warning-bg);
+  color: var(--nt-warning-text);
+}
+
+.nt-stat__delta-icon {
+  display: inline-flex;
+  width: var(--nt-icon-size-xs);
+  height: var(--nt-icon-size-xs);
+}
+
+.nt-stat__hint {
+  margin: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.nt-stat__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  margin: 0;
+  padding: 0;
+  color: var(--nt-text-muted);
+  font: var(--nt-text-caption);
+  font-variant-numeric: tabular-nums;
+  list-style: none;
+}
+
+.nt-stat__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nt-space-2);
+  margin-block-start: auto;
+  padding-block-start: var(--nt-space-3);
+  border-block-start: 1px solid var(--nt-border-subtle);
+  font: var(--nt-text-label-sm);
+}
+
+/* Stat grid: at most --nt-stat-grid-columns columns, never narrower than
+ * --nt-stat-grid-min, collapsing intrinsically (no viewport queries), so it
+ * behaves the same in a page, a drawer, or a split pane. */
+.nt-stat-grid {
+  --nt-stat-grid-columns: 4;
+  --nt-stat-grid-min: 13rem;
+  --nt-stat-grid-gap: var(--nt-space-4);
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(
+      min(100%, max(var(--nt-stat-grid-min), (100% - (var(--nt-stat-grid-columns) - 1) * var(--nt-stat-grid-gap)) / var(--nt-stat-grid-columns))),
+      1fr
+    )
+  );
+  gap: var(--nt-stat-grid-gap);
+  min-width: 0;
+}
+
+.nt-stat-grid--2 {
+  --nt-stat-grid-columns: 2;
+}
+
+.nt-stat-grid--3 {
+  --nt-stat-grid-columns: 3;
+}
+
+.nt-stat-grid--compact {
+  --nt-stat-grid-min: 10.5rem;
+  --nt-stat-grid-gap: var(--nt-space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-stat,
+  .nt-stat__accent,
+  .nt-stat__value {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  :is(.nt-stat--interactive, a.nt-stat[href], button.nt-stat):hover {
+    transform: none;
+  }
+}
