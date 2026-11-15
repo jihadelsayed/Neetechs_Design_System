@@ -8,7 +8,7 @@ out explicitly and ship with compatibility aliases where feasible.
 Releases are cut by `semantic-release` from Conventional Commits, but only
 when the package owner manually runs the release workflow with `publish: true`.
 
-## 0.1.0 — unreleased (release candidate)
+## 0.1.0 — 2026-11-15
 
 ### Added
 - Soft navy dark palette with blue as the default brand accent (`--nt-bg-app: #202d42`,

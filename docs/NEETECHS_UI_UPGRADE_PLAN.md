@@ -4,7 +4,7 @@ Single progress tracker for the 8-stage `@neetechs/ui` upgrade. Site chrome
 (Header, Navbar, Account dropdown, Mobile navigation, Footer) is part of
 Stages 4–6 below; there is no separate plan.
 
-**Current stage:** 8: consumer readiness verified; Billing-referenced design upgrade added to the 0.1.0 candidate (see below); awaiting owner approval to publish 0.1.0.
+**Current stage:** 8: 0.1.0 published to npm on 2026-11-15 (local `npm publish` by the owner account, tagged `v0.1.0`); consumer migrations can start.
 
 ## Billing-referenced design upgrade (2026-11-15)
 
@@ -184,10 +184,9 @@ tokens; nothing was copied verbatim.
 
 ## Blockers
 
-- **npm publish authorization** (owner): required before any consumer migration.
+- None. 0.1.0 was published on 2026-11-15 at the owner's request.
 
 ## Next actions
 
-1. Owner: run the release workflow with `publish: true` to publish 0.1.0.
-2. Migrate MyAccount (delete the 47-token bridge), then Billing, Apply, AI, devices.
-3. Owner: decide whether to delete `src.zip`.
+1. Migrate MyAccount (delete the 47-token bridge), then Billing, Apply, AI, devices.
+2. Owner: decide whether to delete `src.zip`.
