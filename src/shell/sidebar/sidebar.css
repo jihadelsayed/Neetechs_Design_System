@@ -310,6 +310,64 @@
 }
 
 
+/* Brand action: a control at the inline end of the brand row, such as the
+ * off-canvas close button (data-nt-sidebar-close). */
+.nt-sidebar__brand-action {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+
+/* Account summary for the footer: avatar, name, plan or role, and an
+ * optional menu button. The rail keeps only the avatar. */
+.nt-sidebar__account {
+  display: flex;
+  align-items: center;
+  gap: var(--nt-space-3);
+  min-width: 0;
+}
+
+.nt-sidebar__account-avatar {
+  flex: 0 0 auto;
+  width: var(--nt-control-height-md);
+  height: var(--nt-control-height-md);
+}
+
+.nt-sidebar__account-text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nt-sidebar__account-name,
+.nt-sidebar__account-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-sidebar__account-name {
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+}
+
+.nt-sidebar__account-meta {
+  color: var(--nt-text-secondary);
+  font: var(--nt-text-label-sm);
+}
+
+.nt-sidebar__account-action {
+  flex: 0 0 auto;
+}
+
+:is(.nt-app-shell--collapsed, .nt-sidebar--collapsed) .nt-sidebar__account {
+  justify-content: center;
+}
+
+:is(.nt-app-shell--collapsed, .nt-sidebar--collapsed) :is(.nt-sidebar__account-text, .nt-sidebar__account-action) {
+  display: none;
+}
+
 /* Search slot: <div class="nt-sidebar__search"> between the brand and the
  * nav holds a search field or command trigger. The collapsed rail hides it
  * (a search field cannot be operated at icon width); keep a command palette
@@ -378,7 +436,10 @@
   z-index: -1;
   border-radius: inherit;
   background-color: var(--nt-glass-bg);
-  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 40%);
+  background-image:
+    linear-gradient(to bottom, var(--nt-glass-highlight), transparent 32%),
+    radial-gradient(130% 55% at 25% 108%, var(--nt-glass-ambient-start), transparent 72%);
+  box-shadow: inset 0 1px 0 var(--nt-glass-highlight);
   content: '';
   pointer-events: none;
   -webkit-backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
@@ -397,6 +458,23 @@
 .nt-sidebar--glass .nt-sidebar__brand-text {
   overflow: hidden;
   white-space: nowrap;
+}
+
+.nt-sidebar--glass .nt-sidebar__footer {
+  overflow: hidden;
+  padding-inline: calc(var(--nt-sidebar-logo-inset) - var(--nt-space-px)) var(--nt-space-3);
+}
+
+/* Glass search field: a quiet translucent control with the shared search
+ * bar anatomy (icon, input, shortcut hint). */
+.nt-sidebar--glass .nt-sidebar__search .nt-search-bar__control {
+  border-color: var(--nt-glass-border);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-glass-item-hover);
+}
+
+.nt-sidebar--glass .nt-sidebar__search .nt-search-bar__control:hover {
+  border-color: var(--nt-border-strong);
 }
 
 .nt-sidebar--glass .nt-sidebar__nav {
@@ -428,9 +506,9 @@
 
 .nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active),
 .nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
-  border-color: var(--nt-border-strong);
-  background: var(--nt-bg-inverse);
-  color: var(--nt-text-inverse);
+  border-color: transparent;
+  background: var(--nt-glass-selected-bg);
+  color: var(--nt-glass-selected-fg);
   box-shadow: var(--nt-elevation-control);
   transform: none;
 }
@@ -476,17 +554,24 @@
   transition: opacity var(--nt-duration-normal) var(--nt-ease-standard);
 }
 
-@media not all and (max-width: 64rem) {
+@media not all and (max-width: 40rem) {
   .nt-sidebar--glass.nt-sidebar--collapsed {
     inline-size: var(--nt-sidebar-width-collapsed);
   }
 
-  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label) {
+  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__group-label) {
     opacity: 1;
     transform: none;
     transition:
       opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast),
       transform var(--nt-duration-layout) var(--nt-ease-glide),
+      visibility 0s linear 0s;
+  }
+
+  .nt-sidebar--glass :is(.nt-sidebar__account-text, .nt-sidebar__account-action) {
+    opacity: 1;
+    transition:
+      opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast),
       visibility 0s linear 0s;
   }
 
@@ -519,8 +604,29 @@
     display: block;
   }
 
+  /* Rail badges move to the icon's top inline-end corner and pop in once
+   * the rail has settled; expanding returns them to the end of the row. */
   :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-badge {
+    position: absolute;
+    inset-block-start: calc(var(--nt-space-1) * -1);
+    inset-inline-start: calc(var(--nt-sidebar-icon-inset) + var(--nt-space-3));
     display: inline-flex;
+    margin: 0;
+    pointer-events: none;
+    animation: nt-sidebar-rail-badge-in var(--nt-duration-normal) var(--nt-ease-spring) var(--nt-duration-layout) both;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__account-text, .nt-sidebar__account-action) {
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--nt-duration-fast) var(--nt-ease-standard),
+      visibility 0s linear var(--nt-duration-fast);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__account {
+    justify-content: flex-start;
   }
 
   :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__search {
@@ -536,7 +642,7 @@
       visibility 0s linear var(--nt-duration-layout);
   }
 
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label) {
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__group-label) {
     opacity: 0;
     transform: translateX(calc(var(--nt-space-2) * -1 * var(--nt-sidebar-direction)));
     transition:
@@ -545,7 +651,7 @@
       visibility 0s linear var(--nt-duration-fast);
   }
 
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-badge) {
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__brand-text {
     visibility: hidden;
   }
 
@@ -613,19 +719,21 @@
 
 /* ==========================================================================
  * Curved active-item connection (opt-in): add .nt-sidebar--cutout beside
- * .nt-sidebar--glass when the sidebar's inline-end edge touches a content
- * panel (see .nt-app-shell--connected). The selected item becomes a tab of
- * that panel: ::before paints the tab body from the item to the sidebar
- * edge, and ::after paints the two concave corners above and below it.
+ * .nt-sidebar--glass. The selected item becomes a tab that runs into the
+ * sidebar's inline-end edge: ::before paints the tab body from the item to
+ * the edge, and ::after paints the two concave corners above and below it.
  *
  * Both layers live in the nav gutter, so selection never changes layout and
  * the shapes are not clipped by the scroll container or group wrappers.
- * The fill is --nt-sidebar-cutout-surface (default: the app background, the
- * surface .nt-app-shell--connected gives its content panel); set it on any
- * ancestor when the adjoining panel uses another surface.
+ * The fill is --nt-sidebar-cutout-surface and the text --nt-sidebar-cutout-fg
+ * (defaults: the selected-on-glass roles). Inside .nt-app-shell--connected
+ * they become the content panel's surface, so the tab joins the panel.
+ *
+ * In the floating rail the tab settles into a centered tile; the connected
+ * rail keeps the tab. The open off-canvas panel shows a plain pill.
  * ======================================================================== */
-@media not all and (max-width: 64rem) {
-  .nt-sidebar--glass.nt-sidebar--cutout {
+@media not all and (max-width: 40rem) {
+  .nt-app-shell--connected .nt-sidebar--glass.nt-sidebar--cutout {
     border-inline-end-width: 0;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
@@ -643,7 +751,9 @@
     transform: translateX(calc(var(--nt-space-4) * var(--nt-sidebar-direction)));
     transition:
       opacity var(--nt-duration-normal) var(--nt-ease-standard),
-      transform var(--nt-duration-slow) var(--nt-ease-glide);
+      transform var(--nt-duration-slow) var(--nt-ease-glide),
+      inset-inline-end var(--nt-duration-layout) var(--nt-ease-glide),
+      border-radius var(--nt-duration-layout) var(--nt-ease-glide);
   }
 
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::before {
@@ -656,7 +766,7 @@
     border-end-start-radius: var(--nt-radius-item);
     border-start-end-radius: 0;
     border-end-end-radius: 0;
-    background: var(--nt-sidebar-cutout-surface, var(--nt-bg-app));
+    background: var(--nt-sidebar-cutout-surface, var(--nt-glass-selected-bg));
   }
 
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::after {
@@ -669,14 +779,14 @@
         transparent calc(var(--nt-sidebar-gutter) - var(--nt-space-px) * 2),
         var(--nt-sidebar-cutout-edge) calc(var(--nt-sidebar-gutter) - var(--nt-space-px)),
         var(--nt-sidebar-cutout-edge) var(--nt-sidebar-gutter),
-        var(--nt-sidebar-cutout-surface, var(--nt-bg-app)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
+        var(--nt-sidebar-cutout-surface, var(--nt-glass-selected-bg)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
       ) 0% 0% / var(--nt-sidebar-gutter) var(--nt-sidebar-gutter) no-repeat,
       radial-gradient(
         circle at var(--nt-sidebar-cutout-x) 100%,
         transparent calc(var(--nt-sidebar-gutter) - var(--nt-space-px) * 2),
         var(--nt-sidebar-cutout-edge) calc(var(--nt-sidebar-gutter) - var(--nt-space-px)),
         var(--nt-sidebar-cutout-edge) var(--nt-sidebar-gutter),
-        var(--nt-sidebar-cutout-surface, var(--nt-bg-app)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
+        var(--nt-sidebar-cutout-surface, var(--nt-glass-selected-bg)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
       ) 0% 100% / var(--nt-sidebar-gutter) var(--nt-sidebar-gutter) no-repeat;
   }
 
@@ -684,7 +794,7 @@
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
     border-color: transparent;
     background: transparent;
-    color: var(--nt-text-primary);
+    color: var(--nt-sidebar-cutout-fg, var(--nt-glass-selected-fg));
     box-shadow: none;
     transform: none;
   }
@@ -693,6 +803,19 @@
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
     opacity: 1;
     transform: none;
+  }
+
+  /* Floating rail: the tab shrinks back to the item and becomes a tile. */
+  :is(.nt-app-shell--collapsed:not(.nt-app-shell--connected) .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed).nt-sidebar--cutout .nt-sidebar__item::before {
+    inset-inline-end: calc(var(--nt-space-px) * -1);
+    border-inline-end-width: 1px;
+    border-start-end-radius: var(--nt-radius-item);
+    border-end-end-radius: var(--nt-radius-item);
+  }
+
+  :is(.nt-app-shell--collapsed:not(.nt-app-shell--connected) .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed).nt-sidebar--cutout .nt-sidebar__item::after,
+  :is(.nt-app-shell--collapsed:not(.nt-app-shell--connected) .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed).nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    opacity: 0;
   }
 
   /* High contrast keeps the connection but outlines it, because the tab
@@ -709,6 +832,32 @@
     background-color: var(--nt-glass-bg-strong);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+/* An open off-canvas panel floats over the page: there is no edge to join,
+ * so the current item is a plain selected pill. */
+:is(.nt-app-shell__sidebar[data-state='open'] .nt-sidebar--cutout, .nt-sidebar--cutout[data-state='open']) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+  border-color: transparent;
+  background: var(--nt-glass-selected-bg);
+  color: var(--nt-glass-selected-fg);
+  box-shadow: var(--nt-elevation-control);
+}
+
+:is(.nt-app-shell__sidebar[data-state='open'] .nt-sidebar--cutout, .nt-sidebar--cutout[data-state='open']) .nt-sidebar__item::after,
+:is(.nt-app-shell__sidebar[data-state='open'] .nt-sidebar--cutout, .nt-sidebar--cutout[data-state='open']) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
+  display: none;
+}
+
+@keyframes nt-sidebar-rail-badge-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -759,12 +908,16 @@
   .nt-sidebar__section-label::after,
   .nt-sidebar__search,
   .nt-sidebar--glass,
-  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label, .nt-sidebar__item-icon) {
+  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label, .nt-sidebar__item-icon, .nt-sidebar__account-text, .nt-sidebar__account-action) {
     transition: none !important;
   }
 
+  .nt-sidebar__item-badge {
+    animation: none !important;
+  }
+
   .nt-sidebar--glass .nt-sidebar__item:hover:not(.nt-sidebar__item--disabled),
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label, .nt-sidebar__item-icon) {
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__group-label, .nt-sidebar__item-icon) {
     transform: none;
   }
 }

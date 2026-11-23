@@ -41,7 +41,9 @@ export interface NtSidebarOptions {
   storageKey?: string | null;
   /**
    * Media query in which the sidebar is off-canvas. Defaults to the shell
-   * breakpoint (`ntViewportQuery('lg')`). `null` disables off-canvas mode.
+   * breakpoint (`ntViewportQuery('lg')`), or to the phone bound
+   * (`ntViewportQuery('sm')`) when `shell` has `nt-app-shell--dock-tablet`.
+   * `null` disables off-canvas mode.
    */
   offcanvasQuery?: string | null;
   /** Close the off-canvas sidebar after a link inside it is activated. Default `true`. */
@@ -121,12 +123,15 @@ export function ntCreateSidebar(options: NtSidebarOptions): NtSidebarController 
     closeSelector = DEFAULT_CLOSE_SELECTOR,
     initialCollapsed = false,
     storageKey = null,
-    offcanvasQuery = ntViewportQuery('lg'),
+    offcanvasQuery: providedOffcanvasQuery,
     closeOnNavigate = true,
     onCollapsedChange,
     onOpenChange,
   } = options;
 
+  const offcanvasQuery = providedOffcanvasQuery !== undefined
+    ? providedOffcanvasQuery
+    : ntViewportQuery(shell?.classList.contains('nt-app-shell--dock-tablet') ? 'sm' : 'lg');
   const doc = sidebar.ownerDocument;
   const win = doc.defaultView;
   const collapseTarget = shell ?? (sidebar.classList.contains('nt-sidebar')
@@ -148,7 +153,7 @@ export function ntCreateSidebar(options: NtSidebarOptions): NtSidebarController 
   function syncItemTitles(): void {
     for (const item of sidebar.querySelectorAll<HTMLElement>(itemSelector)) {
       const generated = item.hasAttribute(GENERATED_TITLE);
-      if (collapsed) {
+      if (railApplied()) {
         if (item.hasAttribute('title') && !generated) continue;
         const label = item.querySelector('.nt-sidebar__item-label')?.textContent?.trim()
           || item.getAttribute('aria-label')
@@ -163,8 +168,12 @@ export function ntCreateSidebar(options: NtSidebarOptions): NtSidebarController 
     }
   }
 
+  // The rail is a docked presentation: while the sidebar is off-canvas the
+  // preference is kept but not applied, so the panel always opens in full.
+  const railApplied = () => collapsed && !isOffcanvas();
+
   function syncCollapsed(): void {
-    collapseTarget.classList.toggle(collapsedClass, collapsed);
+    collapseTarget.classList.toggle(collapsedClass, railApplied());
     if (collapseToggle) {
       collapseToggle.setAttribute('aria-expanded', String(!collapsed));
       ntSetAriaControls(collapseToggle, sidebar, 'nt-sidebar');
@@ -295,6 +304,7 @@ export function ntCreateSidebar(options: NtSidebarOptions): NtSidebarController 
   const handleBackdropClick = () => close();
   const handleMediaChange = () => {
     if (!isOffcanvas() && isOpen) close({ restoreFocus: false });
+    syncCollapsed();
   };
 
   sidebar.addEventListener('click', handleSidebarClick);

@@ -60,23 +60,31 @@
   background: var(--nt-bg-backdrop);
 }
 
+/* Connected workspaces fill the active tab with the content panel's
+ * surface, so the tab and the panel read as one shape. */
+.nt-app-shell--glass.nt-app-shell--connected {
+  --nt-sidebar-cutout-surface: var(--nt-bg-app);
+  --nt-sidebar-cutout-fg: var(--nt-text-primary);
+}
+
 /* Opt-in glass workspace. Pair .nt-app-shell--glass on the shell with
  * .nt-sidebar--glass on its .nt-sidebar. The shell paints an ambient frame
  * (so frosted surfaces have something to refract), the sidebar floats on it,
- * and the content area stays a solid, readable panel. Desktop only: the
- * mobile off-canvas navigation keeps the regular shell layout.
+ * and page content sits on the frame; cards, tables, and forms keep their
+ * own solid surfaces. Docked layouts only: the off-canvas navigation keeps
+ * the regular shell layout.
  *
  * Add .nt-app-shell--connected (with .nt-sidebar--cutout on the sidebar) to
- * join the sidebar and the content panel into one frame, so the selected
- * navigation item reads as a tab of the panel. */
+ * put the content on one solid panel joined to the sidebar, so the selected
+ * navigation item reads as a tab of that panel. */
 @media not all and (max-width: 64rem) {
   .nt-app-shell--glass {
     gap: var(--nt-space-3);
     padding: var(--nt-space-3);
     background-color: var(--nt-glass-backdrop);
     background-image:
-      radial-gradient(48rem 36rem at 0% 0%, var(--nt-glass-ambient-start), transparent 72%),
-      radial-gradient(44rem 34rem at 100% 100%, var(--nt-glass-ambient-end), transparent 72%);
+      radial-gradient(44rem 32rem at 8% 108%, var(--nt-glass-ambient-start), transparent 72%),
+      radial-gradient(52rem 34rem at 96% 104%, var(--nt-glass-ambient-end), transparent 72%);
     transition: grid-template-columns var(--nt-duration-layout) var(--nt-ease-glide);
   }
 
@@ -89,14 +97,14 @@
   .nt-app-shell--glass .nt-app-shell__main {
     min-height: calc(100vh - var(--nt-space-6));
     min-height: calc(100dvh - var(--nt-space-6));
-    border: 1px solid var(--nt-glass-border);
-    border-radius: var(--nt-radius-panel);
-    background: var(--nt-bg-app);
   }
 
+  /* The sticky header floats as strong glass so content scrolling under it
+   * stays legible without a per-frame blur. */
   .nt-app-shell--glass .nt-app-shell__header {
-    border-start-start-radius: var(--nt-radius-panel);
-    border-start-end-radius: var(--nt-radius-panel);
+    border: 1px solid var(--nt-glass-border);
+    border-radius: var(--nt-radius-panel);
+    background: var(--nt-glass-bg-strong);
   }
 
   .nt-app-shell--glass .nt-app-shell__sidebar > .nt-sidebar--glass {
@@ -104,7 +112,6 @@
   }
 
   .nt-app-shell--glass.nt-app-shell--connected {
-    --nt-sidebar-cutout-surface: var(--nt-bg-app);
     position: relative;
     isolation: isolate;
     column-gap: 0;
@@ -127,14 +134,16 @@
   }
 
   .nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__main {
+    border: 1px solid var(--nt-glass-border);
     border-inline-start-width: 0;
+    border-radius: var(--nt-radius-panel);
     border-start-start-radius: 0;
     border-end-start-radius: 0;
     background: var(--nt-sidebar-cutout-surface);
   }
 
   .nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__header {
-    border-start-start-radius: 0;
+    border-radius: 0;
   }
 }
 
@@ -274,6 +283,136 @@
   .nt-app-shell--offcanvas.nt-app-shell--collapsed .nt-sidebar__group-trigger[aria-expanded='false'] + .nt-sidebar__group-items {
     grid-template-rows: 0fr;
     visibility: hidden;
+  }
+}
+
+/* Tablet docking (opt-in): .nt-app-shell--dock-tablet keeps the sidebar
+ * docked, full or as the rail, down to the phone bound (40rem) instead of
+ * moving it off-canvas below 64rem. ntCreateSidebar sees the class and
+ * moves its off-canvas query to ntViewportQuery('sm'). These rules restate
+ * the docked layout over the off-canvas rules above. */
+@media not all and (max-width: 40rem) {
+  .nt-app-shell--dock-tablet {
+    grid-template-columns: var(--nt-sidebar-width) minmax(0, 1fr);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed {
+    grid-template-columns: var(--nt-sidebar-width-collapsed) minmax(0, 1fr);
+  }
+
+  .nt-app-shell.nt-app-shell--dock-tablet .nt-app-shell__sidebar {
+    position: sticky;
+    inset: auto;
+    top: 0;
+    z-index: var(--nt-z-sidebar);
+    display: block;
+    width: auto;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  .nt-app-shell--dock-tablet .nt-app-shell__collapse-toggle {
+    display: inline-flex;
+  }
+
+  .nt-app-shell--dock-tablet :is(.nt-app-shell__menu-toggle, [data-nt-sidebar-close]) {
+    display: none;
+  }
+
+  .nt-app-shell--dock-tablet .nt-app-shell__sidebar .nt-sidebar:not(.nt-sidebar--glass, .nt-sidebar--floating) {
+    border-inline-end: 1px solid var(--nt-border-subtle);
+  }
+
+  .nt-app-shell--dock-tablet .nt-app-shell__sidebar .nt-sidebar--glass {
+    border-inline-end: 1px solid var(--nt-glass-border);
+  }
+
+  .nt-app-shell--dock-tablet .nt-app-shell__sidebar .nt-sidebar--floating {
+    border-inline-end: 1px solid var(--nt-border-subtle);
+  }
+
+  /* Re-apply the rail that the off-canvas rules revert below 64rem. */
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed :is(.nt-sidebar__brand-text, .nt-sidebar__section-label, .nt-sidebar__item-badge, .nt-sidebar__group-trigger) {
+    display: none;
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed .nt-sidebar__brand {
+    justify-content: center;
+    padding-inline: var(--nt-space-2);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed .nt-sidebar__item {
+    justify-content: center;
+    padding-inline: var(--nt-space-2);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed .nt-sidebar__item-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed :is(.nt-sidebar__group, .nt-sidebar__section) + :is(.nt-sidebar__group, .nt-sidebar__section) {
+    padding-block-start: var(--nt-space-1);
+    border-block-start: 1px solid var(--nt-border-subtle);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--collapsed .nt-sidebar__group-trigger[aria-expanded='false'] + .nt-sidebar__group-items {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  /* Glass and connected layouts at tablet widths (same as desktop). */
+  .nt-app-shell--dock-tablet.nt-app-shell--glass {
+    gap: var(--nt-space-3);
+    padding: var(--nt-space-3);
+    background-color: var(--nt-glass-backdrop);
+    background-image:
+      radial-gradient(44rem 32rem at 8% 108%, var(--nt-glass-ambient-start), transparent 72%),
+      radial-gradient(52rem 34rem at 96% 104%, var(--nt-glass-ambient-end), transparent 72%);
+    transition: grid-template-columns var(--nt-duration-layout) var(--nt-ease-glide);
+  }
+
+  .nt-app-shell.nt-app-shell--dock-tablet.nt-app-shell--glass .nt-app-shell__sidebar {
+    top: var(--nt-space-3);
+    height: calc(100vh - var(--nt-space-6));
+    height: calc(100dvh - var(--nt-space-6));
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--glass .nt-app-shell__main {
+    min-height: calc(100vh - var(--nt-space-6));
+    min-height: calc(100dvh - var(--nt-space-6));
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--glass .nt-app-shell__header {
+    border: 1px solid var(--nt-glass-border);
+    border-radius: var(--nt-radius-panel);
+    background: var(--nt-glass-bg-strong);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--glass.nt-app-shell--connected {
+    column-gap: 0;
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__main {
+    border: 1px solid var(--nt-glass-border);
+    border-inline-start-width: 0;
+    border-radius: var(--nt-radius-panel);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    background: var(--nt-sidebar-cutout-surface);
+  }
+
+  .nt-app-shell--dock-tablet.nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__header {
+    border-radius: 0;
   }
 }
 

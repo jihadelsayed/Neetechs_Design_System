@@ -75,10 +75,12 @@
   --nt-glass-bg-strong: rgba(241, 245, 249, 0.9);
   --nt-glass-border: rgba(15, 23, 42, 0.1);
   --nt-glass-highlight: rgba(255, 255, 255, 0.55);
-  --nt-glass-item-bg: rgba(255, 255, 255, 0.18);
+  --nt-glass-item-bg: transparent;
   --nt-glass-item-hover: rgba(255, 255, 255, 0.66);
-  --nt-glass-ambient-start: rgba(82, 142, 245, 0.18);
-  --nt-glass-ambient-end: rgba(167, 139, 250, 0.14);
+  --nt-glass-selected-bg: #ffffff;
+  --nt-glass-selected-fg: #020617;
+  --nt-glass-ambient-start: rgba(82, 142, 245, 0.26);
+  --nt-glass-ambient-end: rgba(129, 140, 248, 0.2);
   --nt-glass-backdrop: #dfe6f0;
 
   /* Scrollbar */

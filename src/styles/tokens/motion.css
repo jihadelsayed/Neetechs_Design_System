@@ -5,7 +5,7 @@
   --nt-duration-slow: 260ms;
   --nt-duration-slower: 420ms;
   /* Primary layout morphs: rail-to-panel, card expansion, drawers. */
-  --nt-duration-layout: 320ms;
+  --nt-duration-layout: 300ms;
 
   --nt-ease-linear: linear;
   --nt-ease-standard: cubic-bezier(0.2, 0, 0, 1);

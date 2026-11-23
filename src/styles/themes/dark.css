@@ -72,15 +72,17 @@
   /* Glass material: opt-in translucent navigation and floating surfaces.
    * --nt-glass-backdrop is the frame color glass sits on; text over glass
    * keeps the --nt-text-* contrast because the tint stays mostly opaque. */
-  --nt-glass-bg: rgba(13, 20, 33, 0.68);
-  --nt-glass-bg-strong: rgba(32, 45, 66, 0.9);
-  --nt-glass-border: rgba(202, 217, 237, 0.18);
-  --nt-glass-highlight: rgba(255, 255, 255, 0.07);
-  --nt-glass-item-bg: rgba(255, 255, 255, 0.025);
-  --nt-glass-item-hover: rgba(255, 255, 255, 0.075);
-  --nt-glass-ambient-start: rgba(82, 142, 245, 0.24);
-  --nt-glass-ambient-end: rgba(167, 139, 250, 0.14);
-  --nt-glass-backdrop: #0d1420;
+  --nt-glass-bg: rgba(28, 44, 84, 0.46);
+  --nt-glass-bg-strong: rgba(24, 37, 66, 0.86);
+  --nt-glass-border: rgba(148, 178, 255, 0.24);
+  --nt-glass-highlight: rgba(255, 255, 255, 0.09);
+  --nt-glass-item-bg: transparent;
+  --nt-glass-item-hover: rgba(255, 255, 255, 0.08);
+  --nt-glass-selected-bg: #eef3fc;
+  --nt-glass-selected-fg: #0b1324;
+  --nt-glass-ambient-start: rgba(56, 108, 246, 0.42);
+  --nt-glass-ambient-end: rgba(99, 102, 241, 0.3);
+  --nt-glass-backdrop: #0a1226;
 
   /* Scrollbar */
   --nt-scrollbar-size: 0.75rem;

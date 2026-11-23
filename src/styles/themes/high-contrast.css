@@ -76,6 +76,8 @@
   --nt-glass-highlight: transparent;
   --nt-glass-item-bg: transparent;
   --nt-glass-item-hover: var(--nt-bg-surface-hover);
+  --nt-glass-selected-bg: #ffffff;
+  --nt-glass-selected-fg: #000000;
   --nt-glass-ambient-start: transparent;
   --nt-glass-ambient-end: transparent;
   --nt-glass-backdrop: #000000;
@@ -258,6 +260,8 @@
   --nt-glass-highlight: transparent;
   --nt-glass-item-bg: transparent;
   --nt-glass-item-hover: var(--nt-bg-surface-hover);
+  --nt-glass-selected-bg: var(--nt-bg-inverse);
+  --nt-glass-selected-fg: var(--nt-text-inverse);
   --nt-glass-ambient-start: transparent;
   --nt-glass-ambient-end: transparent;
   --nt-glass-backdrop: var(--nt-bg-app);
@@ -283,6 +287,8 @@
     --nt-glass-highlight: transparent;
     --nt-glass-item-bg: transparent;
     --nt-glass-item-hover: var(--nt-bg-surface-hover);
+    --nt-glass-selected-bg: var(--nt-bg-inverse);
+    --nt-glass-selected-fg: var(--nt-text-inverse);
     --nt-glass-ambient-start: transparent;
     --nt-glass-ambient-end: transparent;
     --nt-glass-backdrop: var(--nt-bg-app);
@@ -302,6 +308,8 @@
     --nt-glass-highlight: transparent;
     --nt-glass-item-bg: transparent;
     --nt-glass-item-hover: var(--nt-bg-surface-hover);
+    --nt-glass-selected-bg: var(--nt-bg-inverse);
+    --nt-glass-selected-fg: var(--nt-text-inverse);
     --nt-glass-ambient-start: transparent;
     --nt-glass-ambient-end: transparent;
     --nt-glass-backdrop: var(--nt-bg-app);
@@ -344,6 +352,8 @@
     --nt-glass-highlight: transparent;
     --nt-glass-item-bg: transparent;
     --nt-glass-item-hover: Canvas;
+    --nt-glass-selected-bg: Highlight;
+    --nt-glass-selected-fg: HighlightText;
     --nt-glass-ambient-start: transparent;
     --nt-glass-ambient-end: transparent;
     --nt-glass-backdrop: Canvas;
