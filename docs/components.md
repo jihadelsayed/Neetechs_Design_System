@@ -46,7 +46,8 @@ Detailed guides: [site-chrome.md](./site-chrome.md) · [component-guidelines.md]
 | Editor workspace | `.nt-editor-workspace`, `.nt-editor-pane`, `.nt-editor-status` | `patterns/editor-workspace.css` |
 | Document preview | `.nt-document-preview` | `patterns/document-preview.css` |
 | Container, stack, cluster, grid, divider | `.nt-container`, `.nt-stack`, `.nt-cluster`, `.nt-grid`, `.nt-divider` | `utilities/layout.css` |
-| App shell, sidebar, content frame | `.nt-app-shell`, `.nt-sidebar`, `.nt-content-frame` | `shell/app-shell.css`, `shell/sidebar.css`, `shell/content-frame.css` (behavior: `ntCreateSidebar`, see [Workspace sidebar](./site-chrome.md#workspace-sidebar)) |
+| App shell, sidebar, content frame | `.nt-app-shell`, `.nt-sidebar`, `.nt-content-frame` | `shell/app-shell.css`, `shell/sidebar.css`, `shell/content-frame.css` (behavior: `ntCreateSidebar`, see [Workspace sidebar](./site-chrome.md#workspace-sidebar); glass and connected variants: [Glass and motion](./glass-and-motion.md)) |
+| Glass material | `.nt-glass`, `.nt-glass-backdrop`, `.nt-card--glass`, `.nt-panel--glass` | `utilities/glass.css`, `components/card.css`, `components/panel.css` (see [Glass and motion](./glass-and-motion.md#glass-material)) |
 | Page, master-detail, settings layout | `.nt-page`, `.nt-master-detail`, `.nt-settings-layout` | `patterns/*.css` |
 
 ## Navigation and site chrome
@@ -59,7 +60,9 @@ Detailed guides: [site-chrome.md](./site-chrome.md) · [component-guidelines.md]
 | Mobile navigation | `.nt-mobile-nav` | `shell/mobile-nav.css` | `ntCreateMobileNav` |
 | Footer | `.nt-footer` | `shell/footer.css` | — |
 | Menu / dropdown | `.nt-menu`, `.nt-dropdown` | `components/menu.css`, `components/dropdown.css` | `ntCreateMenu`, `ntCreateDropdown` |
-| Tabs | `.nt-tabs` | `components/tabs.css` | `ntCreateTabs` |
+| Tabs | `.nt-tabs` (`--sliding`) | `components/tabs.css` | `ntCreateTabs`, `ntCreateSelectionIndicator` |
+| Dock | `.nt-dock` | `components/dock.css` | — |
+| Floating action menu | `.nt-fab` | `components/fab.css` | `ntCreateMenuPopover` |
 | Breadcrumb | `.nt-breadcrumb` | `components/breadcrumb.css` | — |
 | Pagination | `.nt-pagination` | `components/pagination.css` | — |
 | Company / workspace switcher | `.nt-company-switcher` | `patterns/company-switcher.css` | `ntCreateMenu` |
@@ -315,6 +318,8 @@ prompt input, proposal card, suggestion card, tool call) and domain modules
 
 ## Utilities
 
+`ntCreateSelectionIndicator` (sliding tab and segmented-control indicators,
+see [Glass and motion](./glass-and-motion.md#sliding-selection-indicator)),
 `ntCreateFocusTrap`, `ntCreateOverlay`, `ntLockScroll`, `ntCreateRovingFocus`,
 `ntResolveDirection`, `ntGetInlineArrowKeys`, `ntWatchViewport`,
 `ntViewportQuery`, and id/ARIA helpers (`ntEnsureId`, `ntSetAriaControls`, …)

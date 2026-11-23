@@ -14,6 +14,26 @@ Additive changes on top of the published 0.1.0 contract (no classes, tokens,
 exports, or behaviors removed).
 
 ### Added
+- Glass and motion (see `docs/glass-and-motion.md`), all opt-in:
+  - Glass sidebar `.nt-sidebar--glass` with a rail morph that keeps icons in place, and
+    `.nt-sidebar--cutout`: the current item connects to the content panel with concave
+    corners (LTR/RTL, expanded/collapsed, high-contrast outline, forced-colors fallback).
+    Hook: `--nt-sidebar-cutout-surface`. Optional `.nt-sidebar__search` slot.
+  - Shell: `.nt-app-shell--glass` (ambient frame, solid content panel) and
+    `.nt-app-shell--connected` (sidebar and panel joined into one frame).
+  - Glass material roles in all three themes (`--nt-glass-bg`, `-bg-strong`, `-border`,
+    `-highlight`, `-item-bg`, `-item-hover`, `-ambient-start`, `-ambient-end`, `-backdrop`)
+    and `--nt-glass-blur`, `--nt-glass-blur-strong`, `--nt-glass-saturate`; solid under
+    high contrast, `prefers-contrast: more`, reduced transparency, and forced colors.
+  - `utilities/glass.css` (`.nt-glass`, `--strong`, `--floating`, `--interactive`,
+    `.nt-glass-backdrop`), `.nt-card--glass`, `.nt-card--lift`, `.nt-panel--glass`,
+    `.nt-command-palette--glass`.
+  - `ntCreateSelectionIndicator()` with `.nt-tabs--sliding` and
+    `.nt-segmented-control--sliding`.
+  - Dock `.nt-dock` (`components/dock.css`) and floating action menu `.nt-fab`
+    (`components/fab.css`, wired with `ntCreateMenuPopover`).
+  - Motion tokens `--nt-duration-layout`, `--nt-ease-glide`, `--nt-ease-spring`,
+    `--nt-motion-stagger`, `--nt-transition-selection`, `--nt-motion-selection`.
 - MyAccount-referenced patterns (see `docs/NEETECHS_UI_UPGRADE_PLAN.md`):
   - Profile header `.nt-profile-header` (`patterns/profile-header.css`): identity, handle,
     headline, detail line, completion meter, side column with actions and a next-step card.
@@ -34,10 +54,19 @@ exports, or behaviors removed).
     `--nt-document-ink`, `--nt-document-ink-muted`, `--nt-document-rule`.
 
 ### Changed
+- Overlay motion: entrances use `--nt-ease-enter`, exits `--nt-ease-exit`; drawers slide in
+  over `--nt-duration-layout`; toasts enter with `--nt-ease-spring`.
 - Navbar current and hover indicator is an underline that grows from the center (it was
   an instant inset shadow).
 
 ### Fixed
+- Exit animations of dialogs, drawers, dropdowns, tooltips, popovers, and the command
+  palette never played because the behaviors hide the overlay in the same frame; overlays
+  now keep `display` for the exit duration where `allow-discrete` transitions are supported.
+- Sidebar group wrappers clipped the focus ring of their items.
+- Glass sidebar (unreleased): RTL/responsive gate failures, a cutout that could not reach
+  the content panel, rail-morph jumps, and fixed-position descendants trapped by
+  `backdrop-filter`.
 - Light-theme contrast: descriptions in tinted alerts and eyebrow/subtitle/meta text in
   muted or tinted cards now use secondary text (muted text measured 4.23–4.34:1 there).
 - `.nt-badge--neutral` and the base/draft `.nt-billing-status` use the neutral tone roles

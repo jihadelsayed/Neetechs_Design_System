@@ -225,6 +225,9 @@ Application workspaces (Billing, Companies, MyAccount) use `.nt-app-shell`
 with `.nt-sidebar`. `ntCreateSidebar` adds the interactions; routing stays
 with the application.
 
+For the opt-in glass sidebar, the curved active-item connection, and the
+connected glass shell, see [Glass and motion](./glass-and-motion.md).
+
 ```html
 <div class="nt-app-shell nt-app-shell--inset nt-app-shell--offcanvas" id="shell">
   <aside class="nt-app-shell__sidebar" id="workspace-sidebar" aria-label="Workspace">

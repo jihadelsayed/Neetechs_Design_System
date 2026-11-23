@@ -271,6 +271,7 @@ ntCreatePopover({
 ```
 
 Full catalog of components and behaviors: [docs/components.md](./docs/components.md).
+Opt-in glass surfaces, the glass sidebar and connected shell, sliding selection, dock, floating action menu, and the motion tokens: [docs/glass-and-motion.md](./docs/glass-and-motion.md).
 
 ## Basic input
 
