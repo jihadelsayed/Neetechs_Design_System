@@ -223,19 +223,19 @@
 }
 
 :is(.nt-dialog-backdrop, .nt-modal-backdrop)[data-state='open'] {
-  animation: nt-dialog-backdrop-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-dialog-backdrop-in var(--nt-duration-normal) var(--nt-ease-enter);
 }
 
 :is(.nt-dialog-backdrop, .nt-modal-backdrop)[data-state='closed'] {
-  animation: nt-dialog-backdrop-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-dialog-backdrop-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 :is(.nt-dialog, .nt-modal)[data-state='open'] {
-  animation: nt-dialog-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-dialog-in var(--nt-duration-normal) var(--nt-ease-enter);
 }
 
 :is(.nt-dialog, .nt-modal)[data-state='closed'] {
-  animation: nt-dialog-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-dialog-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 
@@ -249,6 +249,15 @@
 .nt-dialog--md { width: min(100%, 34rem); }
 .nt-dialog--lg { width: min(100%, 48rem); }
 .nt-dialog--xl { width: min(100%, 64rem); }
+
+/* Exit motion: behaviors set [hidden] in the same frame they mark an
+ * overlay closed, which used to cut the closing keyframes off. Keeping
+ * display for the exit duration lets them play; browsers without
+ * allow-discrete transitions close instantly, exactly as before. */
+:is(.nt-dialog-backdrop, .nt-modal-backdrop, .nt-dialog, .nt-modal)[data-state='closed'] {
+  pointer-events: none;
+  transition: display var(--nt-duration-fast) allow-discrete;
+}
 
 @keyframes nt-dialog-backdrop-in {
   from {

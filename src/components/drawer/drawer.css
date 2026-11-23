@@ -266,53 +266,62 @@
 }
 
 .nt-drawer-backdrop[data-state='open'] {
-  animation: nt-drawer-backdrop-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-backdrop-in var(--nt-duration-normal) var(--nt-ease-enter);
 }
 
 .nt-drawer-backdrop[data-state='closed'] {
-  animation: nt-drawer-backdrop-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-backdrop-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-drawer[data-state='open'].nt-drawer--right {
-  animation: nt-drawer-right-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-right-in var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-drawer[data-state='closed'].nt-drawer--right {
-  animation: nt-drawer-right-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-right-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-drawer[data-state='open'].nt-drawer--left {
-  animation: nt-drawer-left-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-left-in var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-drawer[data-state='closed'].nt-drawer--left {
-  animation: nt-drawer-left-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-left-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-drawer[data-state='open'].nt-drawer--inline-start,
 .nt-drawer[data-state='open'].nt-drawer--inline-end {
-  animation: nt-drawer-inline-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-inline-in var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-drawer[data-state='closed'].nt-drawer--inline-start,
 .nt-drawer[data-state='closed'].nt-drawer--inline-end {
-  animation: nt-drawer-inline-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-inline-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-drawer[data-state='open'].nt-drawer--top {
-  animation: nt-drawer-top-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-top-in var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-drawer[data-state='closed'].nt-drawer--top {
-  animation: nt-drawer-top-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-top-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-drawer[data-state='open'].nt-drawer--bottom {
-  animation: nt-drawer-bottom-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-drawer-bottom-in var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-drawer[data-state='closed'].nt-drawer--bottom {
-  animation: nt-drawer-bottom-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-drawer-bottom-out var(--nt-duration-fast) var(--nt-ease-exit) both;
+}
+
+/* Exit motion: behaviors set [hidden] in the same frame they mark an
+ * overlay closed, which used to cut the closing keyframes off. Keeping
+ * display for the exit duration lets them play; browsers without
+ * allow-discrete transitions close instantly, exactly as before. */
+:is(.nt-drawer, .nt-drawer-backdrop)[data-state='closed'] {
+  pointer-events: none;
+  transition: display var(--nt-duration-fast) allow-discrete;
 }
 
 @keyframes nt-drawer-backdrop-in {

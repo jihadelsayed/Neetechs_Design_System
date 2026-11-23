@@ -152,11 +152,11 @@
 }
 
 .nt-toast[data-state='open'] {
-  animation: nt-toast-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-toast-in var(--nt-duration-slow) var(--nt-ease-spring);
 }
 
 .nt-toast[data-state='closed'] {
-  animation: nt-toast-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-toast-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-toast[data-swipe='move'] {
@@ -169,7 +169,7 @@
 }
 
 .nt-toast[data-swipe='end'] {
-  animation: nt-toast-swipe-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-toast-swipe-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-toast:dir(rtl)[data-swipe='end'] {

@@ -125,6 +125,28 @@
   color: var(--nt-icon-primary);
 }
 
+/* Exit motion: behaviors set [hidden] in the same frame they close a
+ * popover, which used to cut the closing keyframes off. Keeping
+ * display for the exit duration lets them play; browsers without
+ * allow-discrete transitions close instantly, exactly as before. */
+.nt-popover__content[hidden] {
+  pointer-events: none;
+  animation: nt-popover-out var(--nt-duration-fast) var(--nt-ease-exit) both;
+  transition: display var(--nt-duration-fast) allow-discrete;
+}
+
+@keyframes nt-popover-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--nt-space-1) * -1)) scale(0.98);
+  }
+}
+
 @keyframes nt-popover-in {
   from {
     opacity: 0;

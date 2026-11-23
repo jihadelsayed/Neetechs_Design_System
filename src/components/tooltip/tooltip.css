@@ -215,16 +215,25 @@
 }
 
 .nt-tooltip__content[data-state='open'] {
-  animation: nt-tooltip-in var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-tooltip-in var(--nt-duration-fast) var(--nt-ease-enter);
 }
 
 .nt-tooltip__content[data-state='closed'] {
-  animation: nt-tooltip-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-tooltip-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-tooltip__content[data-hidden='true'],
 .nt-tooltip__content[hidden] {
   display: none !important;
+}
+
+/* Exit motion: behaviors set [hidden] in the same frame they mark an
+ * overlay closed, which used to cut the closing keyframes off. Keeping
+ * display for the exit duration lets them play; browsers without
+ * allow-discrete transitions close instantly, exactly as before. */
+.nt-tooltip__content[data-state='closed'] {
+  pointer-events: none;
+  transition: display var(--nt-duration-fast) allow-discrete;
 }
 
 @keyframes nt-tooltip-in {

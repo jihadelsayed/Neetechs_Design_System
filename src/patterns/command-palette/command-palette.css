@@ -352,19 +352,60 @@
 }
 
 .nt-command-palette-backdrop[data-state='open'] {
-  animation: nt-command-palette-backdrop-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-command-palette-backdrop-in var(--nt-duration-normal) var(--nt-ease-enter);
 }
 
 .nt-command-palette-backdrop[data-state='closed'] {
-  animation: nt-command-palette-backdrop-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-command-palette-backdrop-out var(--nt-duration-fast) var(--nt-ease-exit) both;
 }
 
 .nt-command-palette[data-state='open'] {
-  animation: nt-command-palette-in var(--nt-duration-normal) var(--nt-ease-standard);
+  animation: nt-command-palette-in var(--nt-duration-normal) var(--nt-ease-enter);
 }
 
 .nt-command-palette[data-state='closed'] {
-  animation: nt-command-palette-out var(--nt-duration-fast) var(--nt-ease-standard);
+  animation: nt-command-palette-out var(--nt-duration-fast) var(--nt-ease-exit) both;
+}
+
+/* Glass palette (opt-in): the palette floats as strong glass over the
+ * dimmed workspace. Results stay legible because the strong tint is
+ * nearly opaque and every glass role turns solid in high contrast. */
+.nt-command-palette--glass {
+  isolation: isolate;
+  border-color: var(--nt-glass-border);
+  background-color: var(--nt-glass-bg-strong);
+  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 30%);
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+}
+
+.nt-command-palette--glass :is(.nt-command-palette__header, .nt-command-palette__footer) {
+  border-color: var(--nt-glass-border);
+  background: transparent;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-command-palette--glass {
+    background-color: var(--nt-bg-surface-overlay);
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-command-palette--glass {
+    border-color: CanvasText;
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Exit motion: behaviors set [hidden] in the same frame they mark an
+ * overlay closed, which used to cut the closing keyframes off. Keeping
+ * display for the exit duration lets them play; browsers without
+ * allow-discrete transitions close instantly, exactly as before. */
+:is(.nt-command-palette, .nt-command-palette-backdrop)[data-state='closed'] {
+  pointer-events: none;
+  transition: display var(--nt-duration-fast) allow-discrete;
 }
 
 @keyframes nt-command-palette-backdrop-in {
