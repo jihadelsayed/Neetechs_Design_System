@@ -60,6 +60,33 @@
   background: var(--nt-bg-backdrop);
 }
 
+/* Opt-in inset glass workspace. Pair .nt-app-shell--glass on the
+ * shell with .nt-sidebar--glass on its existing .nt-sidebar.
+ * Keep sizing and collapse motion at the shell level, without changing
+ * the default app shell or the mobile off-canvas navigation. */
+@media (min-width: 64.0625rem) {
+  .nt-app-shell--glass {
+    gap: var(--nt-space-3);
+    padding: var(--nt-space-3);
+    transition: grid-template-columns var(--nt-duration-slow) var(--nt-ease-emphasized);
+  }
+
+  .nt-app-shell--glass .nt-app-shell__sidebar {
+    top: var(--nt-space-3);
+    height: calc(100vh - var(--nt-space-6));
+    height: calc(100dvh - var(--nt-space-6));
+  }
+
+  .nt-app-shell--glass .nt-app-shell__main {
+    min-height: calc(100vh - var(--nt-space-6));
+    min-height: calc(100dvh - var(--nt-space-6));
+  }
+
+  .nt-app-shell--glass .nt-app-shell__sidebar > .nt-sidebar--glass {
+    height: 100%;
+  }
+}
+
 @media (max-width: 64rem) {
   .nt-app-shell,
   .nt-app-shell--collapsed {
