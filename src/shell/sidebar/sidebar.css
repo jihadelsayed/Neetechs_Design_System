@@ -457,6 +457,11 @@
  * so items never jump vertically while the sidebar morphs. */
 .nt-sidebar--glass :is(.nt-sidebar__section-label, .nt-sidebar__group-trigger) {
   position: relative;
+  color: var(--nt-text-secondary);
+}
+
+.nt-sidebar--glass .nt-sidebar__group-trigger:hover {
+  color: var(--nt-text-primary);
 }
 
 .nt-sidebar--glass :is(.nt-sidebar__section-label, .nt-sidebar__group-trigger)::after {

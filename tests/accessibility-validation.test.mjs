@@ -21,7 +21,7 @@ after(async () => {
 test('the production accessibility source and semantic contrast contract passes', async () => {
   const result = await validateAccessibility({ rootDir: repositoryRoot });
   assert.deepEqual(result.errors, []);
-  assert.equal(result.results.length, 140);
+  assert.equal(result.results.length, 190);
   assert.ok(result.results.every(({ ratio, minimum }) => ratio >= minimum));
 });
 

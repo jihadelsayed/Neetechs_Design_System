@@ -21,6 +21,11 @@ const REQUIRED_PAIRS = [
   ['success status', '--nt-success-text', '--nt-success-bg', 4.5, '--nt-bg-surface'],
   ['warning status', '--nt-warning-text', '--nt-warning-bg', 4.5, '--nt-bg-surface'],
   ['danger status', '--nt-danger-text', '--nt-danger-bg', 4.5, '--nt-bg-surface'],
+  ['glass navigation text', '--nt-text-secondary', '--nt-glass-bg', 4.5, '--nt-glass-backdrop'],
+  ['glass navigation hover', '--nt-text-primary', '--nt-glass-item-hover', 4.5, '--nt-glass-backdrop'],
+  ['glass floating text', '--nt-text-primary', '--nt-glass-bg-strong', 4.5, '--nt-glass-backdrop'],
+  ['glass section label', '--nt-text-secondary', '--nt-glass-bg', 4.5, '--nt-glass-backdrop'],
+  ['connected tab text', '--nt-text-primary', '--nt-bg-app', 4.5, '--nt-bg-app'],
 ];
 
 async function walkCss(directory) {
