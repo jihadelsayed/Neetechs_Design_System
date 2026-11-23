@@ -60,15 +60,24 @@
   background: var(--nt-bg-backdrop);
 }
 
-/* Opt-in inset glass workspace. Pair .nt-app-shell--glass on the
- * shell with .nt-sidebar--glass on its existing .nt-sidebar.
- * Keep sizing and collapse motion at the shell level, without changing
- * the default app shell or the mobile off-canvas navigation. */
-@media (min-width: 64.0625rem) {
+/* Opt-in glass workspace. Pair .nt-app-shell--glass on the shell with
+ * .nt-sidebar--glass on its .nt-sidebar. The shell paints an ambient frame
+ * (so frosted surfaces have something to refract), the sidebar floats on it,
+ * and the content area stays a solid, readable panel. Desktop only: the
+ * mobile off-canvas navigation keeps the regular shell layout.
+ *
+ * Add .nt-app-shell--connected (with .nt-sidebar--cutout on the sidebar) to
+ * join the sidebar and the content panel into one frame, so the selected
+ * navigation item reads as a tab of the panel. */
+@media not all and (max-width: 64rem) {
   .nt-app-shell--glass {
     gap: var(--nt-space-3);
     padding: var(--nt-space-3);
-    transition: grid-template-columns var(--nt-duration-slow) var(--nt-ease-emphasized);
+    background-color: var(--nt-glass-backdrop);
+    background-image:
+      radial-gradient(48rem 36rem at 0% 0%, var(--nt-glass-ambient-start), transparent 72%),
+      radial-gradient(44rem 34rem at 100% 100%, var(--nt-glass-ambient-end), transparent 72%);
+    transition: grid-template-columns var(--nt-duration-layout) var(--nt-ease-glide);
   }
 
   .nt-app-shell--glass .nt-app-shell__sidebar {
@@ -80,10 +89,52 @@
   .nt-app-shell--glass .nt-app-shell__main {
     min-height: calc(100vh - var(--nt-space-6));
     min-height: calc(100dvh - var(--nt-space-6));
+    border: 1px solid var(--nt-glass-border);
+    border-radius: var(--nt-radius-panel);
+    background: var(--nt-bg-app);
+  }
+
+  .nt-app-shell--glass .nt-app-shell__header {
+    border-start-start-radius: var(--nt-radius-panel);
+    border-start-end-radius: var(--nt-radius-panel);
   }
 
   .nt-app-shell--glass .nt-app-shell__sidebar > .nt-sidebar--glass {
     height: 100%;
+  }
+
+  .nt-app-shell--glass.nt-app-shell--connected {
+    --nt-sidebar-cutout-surface: var(--nt-bg-app);
+    position: relative;
+    isolation: isolate;
+    column-gap: 0;
+  }
+
+  /* One shadow for the joined frame, on a static layer behind it: per-panel
+   * shadows would fall across the seam and shade the connected tab. */
+  .nt-app-shell--glass.nt-app-shell--connected::before {
+    position: absolute;
+    inset: var(--nt-space-3);
+    z-index: -1;
+    border-radius: var(--nt-radius-panel);
+    box-shadow: var(--nt-elevation-raised);
+    content: '';
+    pointer-events: none;
+  }
+
+  .nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__sidebar > .nt-sidebar--glass {
+    box-shadow: none;
+  }
+
+  .nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__main {
+    border-inline-start-width: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    background: var(--nt-sidebar-cutout-surface);
+  }
+
+  .nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__header {
+    border-start-start-radius: 0;
   }
 }
 
@@ -228,6 +279,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nt-app-shell,
+  .nt-app-shell--glass,
   .nt-app-shell__sidebar {
     transition: none !important;
   }

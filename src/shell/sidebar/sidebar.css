@@ -233,12 +233,18 @@
     visibility 0s linear 0s;
 }
 
+/* The inner wrapper clips the height animation. It bleeds into the nav
+ * gutter (negative margin, matching padding) so the clip box leaves room for
+ * focus rings and decorations without moving any item. */
 .nt-sidebar__group-inner {
+  --nt-sidebar-group-bleed: var(--nt-space-1);
   display: flex;
   flex-direction: column;
   gap: var(--nt-density-navigation-gap);
   min-width: 0;
   min-height: 0;
+  margin: calc(var(--nt-sidebar-group-bleed) * -1);
+  padding: var(--nt-sidebar-group-bleed);
   overflow: hidden;
 }
 
@@ -303,42 +309,125 @@
   border-block-start: 1px solid var(--nt-border-subtle);
 }
 
-/* Opt-in glass surface for workspace navigation. The regular sidebar is
- * unchanged; add .nt-sidebar--glass beside .nt-sidebar to enable this look.
- * All surfaces use existing theme tokens, including the inverse active pill. */
+
+/* Search slot: <div class="nt-sidebar__search"> between the brand and the
+ * nav holds a search field or command trigger. The collapsed rail hides it
+ * (a search field cannot be operated at icon width); keep a command palette
+ * shortcut in the header or footer for the rail. */
+.nt-sidebar__search {
+  display: grid;
+  grid-template-rows: 1fr;
+  min-width: 0;
+  padding: var(--nt-space-3) var(--nt-space-3) var(--nt-space-1);
+}
+
+.nt-sidebar__search > * {
+  min-width: 0;
+  min-height: 0;
+}
+
+:is(.nt-app-shell--collapsed, .nt-sidebar--collapsed) .nt-sidebar__search {
+  display: none;
+}
+
+/* ==========================================================================
+ * Glass sidebar (opt-in): add .nt-sidebar--glass beside .nt-sidebar.
+ *
+ * Colors come from the --nt-glass-* theme roles, which resolve to solid
+ * surfaces in high contrast, prefers-contrast: more, reduced transparency,
+ * and forced colors, so no rule below depends on translucency.
+ *
+ * The frosted material is painted by ::before rather than the sidebar box:
+ * a backdrop-filter on the sidebar itself would make it the containing
+ * block of position: fixed descendants (footer menus, popovers).
+ *
+ * Rail morph: icons keep one inline-start inset in both states, computed so
+ * they sit centered in the collapsed rail. Collapsing never moves an icon;
+ * the column narrows while labels fade and slide out, and expanding reverses
+ * it with labels arriving after the width has started to grow.
+ * ======================================================================== */
 .nt-sidebar--glass {
+  --nt-sidebar-gutter: var(--nt-space-3);
+  --nt-sidebar-icon-inset: calc(
+    (var(--nt-sidebar-width-collapsed) - var(--nt-sidebar-gutter) * 2 - var(--nt-space-5) - var(--nt-space-px) * 4) / 2
+  );
+  --nt-sidebar-logo-inset: calc(
+    (var(--nt-sidebar-width-collapsed) - var(--nt-control-height-md) - var(--nt-space-px) * 2) / 2
+  );
+  --nt-sidebar-direction: 1;
+  --nt-sidebar-cutout-x: 0%;
+  --nt-sidebar-cutout-edge: transparent;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid var(--nt-border-subtle);
+  border: 1px solid var(--nt-glass-border);
   border-radius: var(--nt-radius-panel);
-  background: var(--nt-bg-sidebar);
-  background: color-mix(in srgb, var(--nt-bg-sidebar) 82%, transparent);
+  background: transparent;
   box-shadow: var(--nt-elevation-raised);
-  -webkit-backdrop-filter: blur(var(--nt-space-4)) saturate(1.15);
-  backdrop-filter: blur(var(--nt-space-4)) saturate(1.15);
+  transition: inline-size var(--nt-duration-layout) var(--nt-ease-glide);
+}
+
+.nt-sidebar--glass:dir(rtl) {
+  --nt-sidebar-direction: -1;
+  --nt-sidebar-cutout-x: 100%;
+}
+
+.nt-sidebar--glass::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: var(--nt-glass-bg);
+  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 40%);
+  content: '';
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+}
+
+.nt-sidebar--glass :is(.nt-sidebar__brand, .nt-sidebar__footer) {
+  border-color: var(--nt-glass-border);
+}
+
+.nt-sidebar--glass .nt-sidebar__brand {
+  overflow: hidden;
+  padding-inline: var(--nt-sidebar-logo-inset) var(--nt-space-4);
+}
+
+.nt-sidebar--glass .nt-sidebar__brand-text {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.nt-sidebar--glass .nt-sidebar__nav {
+  overflow-x: hidden;
+  scrollbar-color: var(--nt-scrollbar-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+.nt-sidebar--glass .nt-sidebar__group-inner {
+  --nt-sidebar-group-bleed: var(--nt-sidebar-gutter);
 }
 
 .nt-sidebar--glass .nt-sidebar__item {
-  border-color: var(--nt-border-subtle);
-  border-radius: var(--nt-radius-pill);
-  background: color-mix(in srgb, var(--nt-bg-surface) 32%, transparent);
+  isolation: isolate;
+  padding-inline: var(--nt-sidebar-icon-inset) var(--nt-space-3);
+  border-color: transparent;
+  border-radius: calc(var(--nt-density-navigation-item-height) / 2);
+  background: var(--nt-glass-item-bg);
   transition:
-    background-color var(--nt-duration-normal) var(--nt-ease-standard),
-    border-color var(--nt-duration-normal) var(--nt-ease-standard),
-    color var(--nt-duration-normal) var(--nt-ease-standard),
-    box-shadow var(--nt-duration-normal) var(--nt-ease-standard),
-    border-radius var(--nt-duration-slow) var(--nt-ease-emphasized),
-    column-gap var(--nt-duration-slow) var(--nt-ease-emphasized),
-    transform var(--nt-duration-normal) var(--nt-ease-emphasized);
+    var(--nt-transition-selection),
+    border-radius var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
 .nt-sidebar--glass .nt-sidebar__item:hover:not(.nt-sidebar__item--disabled) {
-  background: color-mix(in srgb, var(--nt-bg-surface-hover) 76%, transparent);
+  background: var(--nt-glass-item-hover);
+  color: var(--nt-text-primary);
   transform: translateY(calc(var(--nt-space-0-5) * -1));
 }
 
-.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active),
+.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
   border-color: var(--nt-border-strong);
   background: var(--nt-bg-inverse);
   color: var(--nt-text-inverse);
@@ -346,203 +435,331 @@
   transform: none;
 }
 
-.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
-  background: var(--nt-bg-inverse);
+.nt-sidebar--glass .nt-sidebar__item::before {
+  inset-inline-start: var(--nt-space-1);
 }
 
-:is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
-  border-radius: var(--nt-radius-item);
+.nt-sidebar--glass .nt-sidebar__item-icon {
+  transition: transform var(--nt-duration-layout) var(--nt-ease-glide);
 }
 
-/* Smooth glass rail morph: preserve the label in the accessibility tree
- * while visually collapsing it. The existing controller continues to own
- * collapse state, keyboard behavior, and generated titles. */
-@media (min-width: 64.0625rem) {
-  .nt-sidebar--glass .nt-sidebar__item-label {
-    position: static;
-    width: auto;
-    height: auto;
-    max-inline-size: var(--nt-sidebar-width);
+.nt-sidebar--glass .nt-sidebar__search {
+  overflow: hidden;
+  transition:
+    grid-template-rows var(--nt-duration-layout) var(--nt-ease-glide),
+    padding var(--nt-duration-layout) var(--nt-ease-glide),
+    opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast),
+    visibility 0s linear 0s;
+}
+
+/* Section labels and group triggers carry a divider that only shows in the
+ * rail, where their text is hidden. They keep their height in both states,
+ * so items never jump vertically while the sidebar morphs. */
+.nt-sidebar--glass :is(.nt-sidebar__section-label, .nt-sidebar__group-trigger) {
+  position: relative;
+}
+
+.nt-sidebar--glass :is(.nt-sidebar__section-label, .nt-sidebar__group-trigger)::after {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: var(--nt-space-3);
+  height: 1px;
+  background: var(--nt-glass-border);
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--nt-duration-normal) var(--nt-ease-standard);
+}
+
+@media not all and (max-width: 64rem) {
+  .nt-sidebar--glass.nt-sidebar--collapsed {
+    inline-size: var(--nt-sidebar-width-collapsed);
+  }
+
+  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label) {
     opacity: 1;
-    clip-path: none;
-    transform: translateX(0);
+    transform: none;
     transition:
-      max-inline-size var(--nt-duration-slow) var(--nt-ease-emphasized),
-      opacity var(--nt-duration-normal) var(--nt-ease-standard),
-      transform var(--nt-duration-slow) var(--nt-ease-emphasized);
+      opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast),
+      transform var(--nt-duration-layout) var(--nt-ease-glide),
+      visibility 0s linear 0s;
   }
 
-  .nt-sidebar--glass .nt-sidebar__item-icon {
-    transform: scale(1);
-    transition: transform var(--nt-duration-slow) var(--nt-ease-emphasized);
+  .nt-sidebar--glass .nt-sidebar__group-chevron {
+    opacity: 1;
+    transition:
+      transform var(--nt-duration-normal) var(--nt-ease-standard),
+      opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast);
   }
 
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
-    column-gap: 0;
+  .nt-sidebar--glass .nt-sidebar__section-label {
+    transition: color var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast);
+  }
+
+  .nt-sidebar--glass .nt-sidebar__group-trigger {
+    transition:
+      var(--nt-transition-colors),
+      visibility 0s linear 0s;
+  }
+
+  /* Collapsed rail. Overrides the base rail rules that remove or visually
+   * hide elements, because removal cannot animate. Labels stay exposed to
+   * assistive technology; the controller adds a title to every item. */
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__brand {
+    justify-content: flex-start;
+    padding-inline: var(--nt-sidebar-logo-inset) var(--nt-space-4);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__section-label) {
+    display: block;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-badge {
+    display: inline-flex;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__search {
+    display: grid;
+    grid-template-rows: 0fr;
+    padding-block: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--nt-duration-layout) var(--nt-ease-glide),
+      padding var(--nt-duration-layout) var(--nt-ease-glide),
+      opacity var(--nt-duration-fast) var(--nt-ease-standard),
+      visibility 0s linear var(--nt-duration-layout);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label) {
+    opacity: 0;
+    transform: translateX(calc(var(--nt-space-2) * -1 * var(--nt-sidebar-direction)));
+    transition:
+      opacity var(--nt-duration-fast) var(--nt-ease-standard),
+      transform var(--nt-duration-layout) var(--nt-ease-glide),
+      visibility 0s linear var(--nt-duration-fast);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-badge) {
+    visibility: hidden;
   }
 
   :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-label {
     position: static;
     width: auto;
     height: auto;
-    max-inline-size: 0;
-    opacity: 0;
+    overflow: hidden;
     clip-path: none;
-    transform: translateX(calc(var(--nt-space-2) * -1));
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__group-chevron {
+    opacity: 0;
+    transition:
+      transform var(--nt-duration-normal) var(--nt-ease-standard),
+      opacity var(--nt-duration-fast) var(--nt-ease-standard);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__section-label {
+    color: transparent;
+    transition: color var(--nt-duration-fast) var(--nt-ease-standard);
+  }
+
+  /* Group triggers leave the tab order in the rail (visibility), after
+   * their text has faded; the divider stays visible in their place. */
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__group-trigger {
+    display: flex;
+    visibility: hidden;
+    transition:
+      var(--nt-transition-colors),
+      visibility 0s linear var(--nt-duration-fast);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__section-label, .nt-sidebar__group-trigger)::after {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--nt-duration-normal) var(--nt-ease-standard) var(--nt-duration-fast);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
+    justify-content: flex-start;
+    padding-inline: var(--nt-sidebar-icon-inset) var(--nt-space-3);
+    border-radius: var(--nt-radius-item);
   }
 
   :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-icon {
-    transform: scale(1.06);
+    transform: scale(1.08);
   }
 
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed):dir(rtl) .nt-sidebar__item-label {
-    transform: translateX(var(--nt-space-2));
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__nav {
+    scrollbar-width: none;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__group, .nt-sidebar__section) + :is(.nt-sidebar__group, .nt-sidebar__section) {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__group > .nt-sidebar__group-items {
+    transition:
+      grid-template-rows var(--nt-duration-layout) var(--nt-ease-glide),
+      visibility 0s linear 0s;
   }
 }
 
-/* Optional seamless cutout. Pair nt-sidebar--cutout with nt-sidebar--glass
- * when navigation sits next to an inverse-color workspace surface.
- * Two quarter-circle gradients carve a soft concave edge above and below
- * the selected pill. The normal glass pill is unchanged without this class. */
-@media (min-width: 64.0625rem) {
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
-    z-index: 1;
-    margin-inline-end: calc(var(--nt-space-3) * -1);
+/* ==========================================================================
+ * Curved active-item connection (opt-in): add .nt-sidebar--cutout beside
+ * .nt-sidebar--glass when the sidebar's inline-end edge touches a content
+ * panel (see .nt-app-shell--connected). The selected item becomes a tab of
+ * that panel: ::before paints the tab body from the item to the sidebar
+ * edge, and ::after paints the two concave corners above and below it.
+ *
+ * Both layers live in the nav gutter, so selection never changes layout and
+ * the shapes are not clipped by the scroll container or group wrappers.
+ * The fill is --nt-sidebar-cutout-surface (default: the app background, the
+ * surface .nt-app-shell--connected gives its content panel); set it on any
+ * ancestor when the adjoining panel uses another surface.
+ * ======================================================================== */
+@media not all and (max-width: 64rem) {
+  .nt-sidebar--glass.nt-sidebar--cutout {
+    border-inline-end-width: 0;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
-    border-inline-end-color: transparent;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::before,
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::after {
+    position: absolute;
+    inset-inline-start: auto;
+    inset-inline-end: calc((var(--nt-sidebar-gutter) + var(--nt-space-px)) * -1);
+    z-index: -1;
+    content: '';
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(calc(var(--nt-space-4) * var(--nt-sidebar-direction)));
+    transition:
+      opacity var(--nt-duration-normal) var(--nt-ease-standard),
+      transform var(--nt-duration-slow) var(--nt-ease-glide);
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::before {
+    inset-block: calc(var(--nt-space-px) * -1);
+    inset-inline-start: calc(var(--nt-space-px) * -1);
+    width: auto;
+    border: 1px solid var(--nt-sidebar-cutout-edge);
+    border-inline-end-width: 0;
+    border-start-start-radius: var(--nt-radius-item);
+    border-end-start-radius: var(--nt-radius-item);
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    background: var(--nt-sidebar-cutout-surface, var(--nt-bg-app));
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::after {
+    inset-block: calc(var(--nt-sidebar-gutter) * -1);
+    width: var(--nt-sidebar-gutter);
+    border-radius: 0;
+    background:
+      radial-gradient(
+        circle at var(--nt-sidebar-cutout-x) 0%,
+        transparent calc(var(--nt-sidebar-gutter) - var(--nt-space-px) * 2),
+        var(--nt-sidebar-cutout-edge) calc(var(--nt-sidebar-gutter) - var(--nt-space-px)),
+        var(--nt-sidebar-cutout-edge) var(--nt-sidebar-gutter),
+        var(--nt-sidebar-cutout-surface, var(--nt-bg-app)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
+      ) 0% 0% / var(--nt-sidebar-gutter) var(--nt-sidebar-gutter) no-repeat,
+      radial-gradient(
+        circle at var(--nt-sidebar-cutout-x) 100%,
+        transparent calc(var(--nt-sidebar-gutter) - var(--nt-space-px) * 2),
+        var(--nt-sidebar-cutout-edge) calc(var(--nt-sidebar-gutter) - var(--nt-space-px)),
+        var(--nt-sidebar-cutout-edge) var(--nt-sidebar-gutter),
+        var(--nt-sidebar-cutout-surface, var(--nt-bg-app)) calc(var(--nt-sidebar-gutter) + var(--nt-space-px))
+      ) 0% 100% / var(--nt-sidebar-gutter) var(--nt-sidebar-gutter) no-repeat;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active),
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
+    border-color: transparent;
+    background: transparent;
+    color: var(--nt-text-primary);
+    box-shadow: none;
+    transform: none;
   }
 
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before,
   .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
-    position: absolute;
-    inset-block: auto;
-    inset-inline-start: auto;
-    inset-inline-end: 0;
-    width: var(--nt-space-5);
-    height: var(--nt-space-5);
-    border-radius: 0;
-    content: '';
     opacity: 1;
     transform: none;
-    pointer-events: none;
-    transition: none;
   }
 
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
-    inset-block-start: calc(var(--nt-space-5) * -1);
-    background: radial-gradient(
-      circle at top left,
-      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
-      var(--nt-bg-inverse) var(--nt-space-5)
-    );
-  }
-
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
-    inset-block-end: calc(var(--nt-space-5) * -1);
-    background: radial-gradient(
-      circle at bottom left,
-      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
-      var(--nt-bg-inverse) var(--nt-space-5)
-    );
-  }
-
-  .nt-sidebar--glass.nt-sidebar--cutout:dir(rtl) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
-    background: radial-gradient(
-      circle at top right,
-      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
-      var(--nt-bg-inverse) var(--nt-space-5)
-    );
-  }
-
-  .nt-sidebar--glass.nt-sidebar--cutout:dir(rtl) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
-    background: radial-gradient(
-      circle at bottom right,
-      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
-      var(--nt-bg-inverse) var(--nt-space-5)
-    );
-  }
-
-  /* A collapsed rail has no adjoining inverse panel: restore the pill and
-   * the original non-color active indicator instead of showing notches. */
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
-    margin-inline-end: 0;
-    border-start-end-radius: var(--nt-radius-item);
-    border-end-end-radius: var(--nt-radius-item);
-    border-inline-end-color: var(--nt-border-strong);
-  }
-
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
-    inset-block: var(--nt-space-2);
-    inset-inline-start: calc(var(--nt-space-px) * -1);
-    inset-inline-end: auto;
-    width: var(--nt-space-1);
-    height: auto;
-    border-radius: var(--nt-radius-pill);
-    background: var(--nt-selection-indicator);
-    transform: scaleY(1);
-  }
-
-  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
-    content: none;
+  /* High contrast keeps the connection but outlines it, because the tab
+   * and the sidebar share one solid color there. */
+  :is([data-nt-theme='high-contrast'], [data-nt-contrast='high']) .nt-sidebar--glass.nt-sidebar--cutout {
+    --nt-sidebar-cutout-edge: var(--nt-border-strong);
   }
 }
 
-@media (forced-colors: active) {
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
-    margin-inline-end: 0;
-    border-start-end-radius: var(--nt-radius-pill);
-    border-end-end-radius: var(--nt-radius-pill);
-    border-inline-end-color: Highlight;
-  }
-
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before,
-  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
-    display: none;
-  }
-}
-
-/* Keep the higher-contrast palette solid rather than translucent. */
-:is([data-nt-theme='high-contrast'], [data-nt-contrast='high']) .nt-sidebar--glass {
-  background: var(--nt-bg-sidebar);
-  box-shadow: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
-/* In the mobile off-canvas presentation, clarity beats frosted effects. */
+/* The off-canvas panel already sits on a solid shell surface: skip the
+ * blur there and keep the stronger, more readable tint. */
 @media (max-width: 64rem) {
-  .nt-app-shell--offcanvas .nt-sidebar--glass {
-    background: var(--nt-bg-sidebar);
+  .nt-app-shell--offcanvas .nt-sidebar--glass::before {
+    background-color: var(--nt-glass-bg-strong);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-sidebar--glass::before {
+    background-color: var(--nt-glass-bg-strong);
   }
 }
 
 @media (forced-colors: active) {
   .nt-sidebar--glass {
+    border-color: CanvasText;
+  }
+
+  .nt-sidebar--glass::before {
     background: Canvas;
-    color: CanvasText;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
 
-  .nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::after {
+    display: none;
+  }
+
+  .nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active),
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active),
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
     border-color: Highlight;
     background: Highlight;
     color: HighlightText;
     box-shadow: none;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item::before {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nt-sidebar__item,
   .nt-sidebar__item::before,
+  .nt-sidebar__item::after,
   .nt-sidebar__group-trigger,
+  .nt-sidebar__group-trigger::after,
   .nt-sidebar__group-chevron,
   .nt-sidebar__group-items,
-  .nt-sidebar--glass .nt-sidebar__item-label,
-  .nt-sidebar--glass .nt-sidebar__item-icon {
+  .nt-sidebar__section-label,
+  .nt-sidebar__section-label::after,
+  .nt-sidebar__search,
+  .nt-sidebar--glass,
+  .nt-sidebar--glass :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label, .nt-sidebar__item-icon) {
     transition: none !important;
+  }
+
+  .nt-sidebar--glass .nt-sidebar__item:hover:not(.nt-sidebar__item--disabled),
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) :is(.nt-sidebar__brand-text, .nt-sidebar__item-label, .nt-sidebar__item-badge, .nt-sidebar__group-label, .nt-sidebar__item-icon) {
+    transform: none;
   }
 }

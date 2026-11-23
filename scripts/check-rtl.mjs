@@ -26,6 +26,7 @@ export const RTL_ALLOWLIST = [
   ['src/components/skeleton/skeleton.css', ['translate-x'], 'Decorative shimmer traverses both physical directions and carries no meaning.'],
   ['src/patterns/record-list/record-list.css', ['translate-x'], 'Chevron hover nudge runs inside `scale: -1 1` under :dir(rtl), so it always moves toward the reading direction.'],
   ['src/shell/app-shell/app-shell.css', ['translate-x'], 'Off-canvas sidebar entry has an explicit :dir(rtl) counterpart that slides from the inline-start edge.'],
+  ['src/shell/sidebar/sidebar.css', ['translate-x'], 'Glass rail labels and the connected tab slide along --nt-sidebar-direction, which :dir(rtl) sets to -1.'],
   ['src/shell/mobile-nav/mobile-nav.css', ['translate-x'], 'Drawer entry keyframes have an explicit :dir(rtl) counterpart (nt-mobile-nav-in-rtl).'],
   ['src/styles/animations/motion.css', ['translate-x'],'Public slide-in-left/right animations intentionally describe physical motion.'],
 ];
