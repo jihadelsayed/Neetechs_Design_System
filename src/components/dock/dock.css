@@ -1,0 +1,319 @@
+/* Dock: a compact glass bar of icon destinations or quick actions.
+ *
+ *   <nav class="nt-dock nt-dock--floating" aria-label="Quick navigation">
+ *     <a class="nt-dock__item" href="/home" aria-current="page">
+ *       <svg class="nt-dock__icon" aria-hidden="true">...</svg>
+ *       <span class="nt-dock__label">Home</span>
+ *     </a>
+ *     <span class="nt-dock__separator" aria-hidden="true"></span>
+ *     <button class="nt-dock__item" type="button">...</button>
+ *   </nav>
+ *
+ * The label is the item's accessible name and is always in the DOM; it
+ * shows as a tooltip on hover and keyboard focus (or permanently with
+ * .nt-dock--labels). Items may also sit in <ul class="nt-dock__list">. */
+.nt-dock,
+.nt-dock__list {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-1);
+  min-width: 0;
+}
+
+.nt-dock {
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--nt-space-1-5);
+  border: 1px solid var(--nt-glass-border);
+  border-radius: var(--nt-radius-dialog);
+  background-color: var(--nt-glass-bg);
+  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 55%);
+  box-shadow: var(--nt-elevation-popover);
+  color: var(--nt-text-secondary);
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+}
+
+.nt-dock__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-dock__item {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-target-size-primary);
+  height: var(--nt-target-size-primary);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-glass-item-bg);
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    var(--nt-transition-colors),
+    transform var(--nt-duration-normal) var(--nt-ease-spring);
+}
+
+.nt-dock__item:hover {
+  background: var(--nt-glass-item-hover);
+  color: var(--nt-text-primary);
+}
+
+.nt-dock__item:active {
+  transform: scale(0.94);
+}
+
+/* 2. Focus */
+.nt-dock__item:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* 3. Disabled */
+.nt-dock__item:disabled,
+.nt-dock__item[aria-disabled='true'],
+.nt-dock__item--disabled {
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Selected destination: surface plus a dot under the icon, so the state
+ * does not rely on color alone. */
+.nt-dock__item:is([aria-current]:not([aria-current='false']), [aria-pressed='true'], .nt-dock__item--active) {
+  border-color: var(--nt-selection-border);
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+}
+
+.nt-dock__item::after {
+  position: absolute;
+  inset-block-end: calc(var(--nt-space-1) * -1);
+  inset-inline: 0;
+  width: var(--nt-space-1);
+  height: var(--nt-space-1);
+  margin-inline: auto;
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-selection-indicator);
+  content: '';
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity var(--nt-duration-fast) var(--nt-ease-standard),
+    transform var(--nt-duration-normal) var(--nt-ease-spring);
+}
+
+.nt-dock__item:is([aria-current]:not([aria-current='false']), [aria-pressed='true'], .nt-dock__item--active)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 4. Sizes */
+.nt-dock--sm .nt-dock__item {
+  width: var(--nt-control-height-md);
+  height: var(--nt-control-height-md);
+}
+
+.nt-dock--sm .nt-dock__icon {
+  width: var(--nt-icon-size-sm);
+  height: var(--nt-icon-size-sm);
+}
+
+.nt-dock--lg .nt-dock__item {
+  width: var(--nt-control-height-xl);
+  height: var(--nt-control-height-xl);
+}
+
+.nt-dock--lg .nt-dock__icon {
+  width: var(--nt-icon-size-lg);
+  height: var(--nt-icon-size-lg);
+}
+
+/* 5. Variants */
+/* Fixed to the bottom of the viewport, centered, clear of the home
+ * indicator on phones. */
+.nt-dock--floating {
+  position: fixed;
+  inset-block-end: max(var(--nt-space-4), env(safe-area-inset-bottom, 0rem));
+  inset-inline: 0;
+  z-index: var(--nt-z-sticky);
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.nt-dock--vertical,
+.nt-dock--vertical .nt-dock__list {
+  flex-direction: column;
+}
+
+.nt-dock--vertical .nt-dock__separator {
+  width: 60%;
+  height: 1px;
+  margin: var(--nt-space-1) 0;
+}
+
+/* Persistent labels under the icons (compact bottom bar). */
+.nt-dock--labels .nt-dock__item {
+  flex-direction: column;
+  gap: var(--nt-space-0-5);
+  width: auto;
+  min-width: var(--nt-target-size-primary);
+  height: auto;
+  min-height: var(--nt-target-size-primary);
+  padding: var(--nt-space-1) var(--nt-space-2);
+}
+
+.nt-dock--labels .nt-dock__item::after {
+  inset-block-end: var(--nt-space-0-5);
+}
+
+/* 6. Internal elements */
+.nt-dock__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+  color: currentColor;
+  transition: transform var(--nt-duration-normal) var(--nt-ease-spring);
+}
+
+.nt-dock__separator {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1px;
+  height: 60%;
+  min-height: var(--nt-space-5);
+  margin-inline: var(--nt-space-1);
+  background: var(--nt-glass-border);
+}
+
+.nt-dock__badge {
+  position: absolute;
+  inset-block-start: calc(var(--nt-space-1) * -1);
+  inset-inline-end: calc(var(--nt-space-1) * -1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Tooltip label: centered over the item with logical insets and auto
+ * margins, so it needs no direction-specific transform. */
+.nt-dock__label {
+  position: absolute;
+  inset-block-end: calc(100% + var(--nt-space-3));
+  inset-inline: -10rem;
+  z-index: 2;
+  width: max-content;
+  max-width: 12rem;
+  margin-inline: auto;
+  padding: var(--nt-space-1) var(--nt-space-2);
+  border-radius: var(--nt-radius-control);
+  background: var(--nt-bg-inverse);
+  box-shadow: var(--nt-elevation-popover);
+  color: var(--nt-text-inverse);
+  font: var(--nt-text-label-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--nt-space-1)) scale(0.96);
+  transition:
+    opacity var(--nt-duration-fast) var(--nt-ease-exit),
+    transform var(--nt-duration-fast) var(--nt-ease-exit);
+}
+
+.nt-dock__item:is(:hover, :focus-visible) .nt-dock__label {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--nt-duration-normal) var(--nt-ease-enter) var(--nt-duration-fast),
+    transform var(--nt-duration-normal) var(--nt-ease-spring) var(--nt-duration-fast);
+}
+
+.nt-dock--vertical .nt-dock__label {
+  inset-block: -10rem;
+  inset-inline: calc(100% + var(--nt-space-3)) auto;
+  height: max-content;
+  margin-block: auto;
+  margin-inline: 0;
+}
+
+.nt-dock--labels .nt-dock__label {
+  position: static;
+  max-width: 100%;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font: var(--nt-text-label-xs);
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Magnification on precise pointers: the hovered item rises and its
+ * neighbors follow a little, like a desktop dock. */
+@media (hover: hover) and (pointer: fine) {
+  .nt-dock:not(.nt-dock--labels) .nt-dock__item:hover .nt-dock__icon {
+    transform: scale(1.18);
+  }
+
+  .nt-dock:not(.nt-dock--labels, .nt-dock--vertical) .nt-dock__item:hover {
+    transform: translateY(calc(var(--nt-space-1) * -1));
+  }
+
+  .nt-dock:not(.nt-dock--labels) .nt-dock__item:is(:hover + .nt-dock__item, :has(+ .nt-dock__item:hover)) .nt-dock__icon {
+    transform: scale(1.08);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-dock {
+    background-color: var(--nt-glass-bg-strong);
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-dock {
+    border-color: CanvasText;
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .nt-dock__item:is([aria-current]:not([aria-current='false']), [aria-pressed='true'], .nt-dock__item--active) {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .nt-dock__label {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* 7. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nt-dock__item,
+  .nt-dock__item::after,
+  .nt-dock__icon,
+  .nt-dock__label {
+    transition: none !important;
+  }
+
+  .nt-dock__item:active,
+  .nt-dock__item:hover,
+  .nt-dock__item:hover .nt-dock__icon,
+  .nt-dock__item .nt-dock__icon,
+  .nt-dock__item:is(:hover, :focus-visible) .nt-dock__label {
+    transform: none !important;
+  }
+}

@@ -33,3 +33,5 @@
 @import './drawer/drawer.css';
 @import './menu/menu.css';
 @import './panel/panel.css';
+@import './dock/dock.css';
+@import './fab/fab.css';

@@ -1,0 +1,281 @@
+/* Floating action menu: one primary trigger that fans out related actions.
+ *
+ *   <div class="nt-fab nt-fab--floating">
+ *     <button class="nt-fab__trigger" type="button" aria-label="Create">
+ *       <svg class="nt-fab__trigger-icon" aria-hidden="true">...</svg>
+ *     </button>
+ *     <div class="nt-fab__actions" hidden>
+ *       <button class="nt-fab__action" type="button">
+ *         <span class="nt-fab__action-label">New invoice</span>
+ *         <span class="nt-fab__action-icon"><svg aria-hidden="true">...</svg></span>
+ *       </button>
+ *     </div>
+ *   </div>
+ *
+ * Wire it with ntCreateMenuPopover({ trigger, content: actions,
+ * itemSelector: '.nt-fab__action' }) for the menu-button pattern: menu
+ * roles, aria-expanded, arrow keys, Escape, outside click, and focus return.
+ * The trigger comes first in the DOM (reading and tab order); the actions
+ * stack above it visually and enter one after another, nearest first. */
+.nt-fab {
+  --nt-fab-size: calc(var(--nt-target-size-primary) + var(--nt-space-3));
+  position: relative;
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--nt-space-3);
+}
+
+.nt-fab__trigger {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nt-space-2);
+  width: var(--nt-fab-size);
+  height: var(--nt-fab-size);
+  padding: 0;
+  border: 1px solid var(--nt-action-primary-border);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-action-primary-bg);
+  box-shadow: var(--nt-elevation-raised);
+  color: var(--nt-action-primary-fg);
+  font: var(--nt-text-label-md);
+  cursor: pointer;
+  appearance: none;
+  transition:
+    var(--nt-transition-colors),
+    transform var(--nt-duration-normal) var(--nt-ease-spring);
+}
+
+.nt-fab__trigger:hover {
+  border-color: var(--nt-action-primary-hover);
+  background: var(--nt-action-primary-hover);
+  box-shadow: var(--nt-elevation-popover);
+  transform: translateY(calc(var(--nt-space-0-5) * -1));
+}
+
+.nt-fab__trigger:active {
+  background: var(--nt-action-primary-pressed);
+  transform: scale(0.96);
+}
+
+/* 2. Focus */
+.nt-fab__trigger:focus-visible,
+.nt-fab__action:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* 3. Disabled and open states */
+.nt-fab__trigger:disabled,
+.nt-fab__trigger[aria-disabled='true'],
+.nt-fab__trigger--disabled {
+  border-color: var(--nt-border-disabled);
+  background: var(--nt-bg-surface-disabled);
+  box-shadow: none;
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nt-fab__action:disabled,
+.nt-fab__action[aria-disabled='true'],
+.nt-fab__action--disabled {
+  color: var(--nt-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* The icon turns (plus to close) as a shape cue for the expanded state. */
+.nt-fab__trigger[aria-expanded='true'] .nt-fab__trigger-icon {
+  transform: rotate(45deg);
+}
+
+/* 4. Sizes */
+.nt-fab--sm {
+  --nt-fab-size: var(--nt-target-size-primary);
+}
+
+.nt-fab--lg {
+  --nt-fab-size: calc(var(--nt-target-size-primary) + var(--nt-space-5));
+}
+
+/* 5. Variants */
+.nt-fab--floating {
+  position: fixed;
+  inset-block-end: max(var(--nt-space-6), env(safe-area-inset-bottom, 0rem));
+  inset-inline-end: var(--nt-space-6);
+  z-index: var(--nt-z-sticky);
+}
+
+.nt-fab--secondary .nt-fab__trigger {
+  border-color: var(--nt-border-subtle);
+  background: var(--nt-bg-surface-overlay);
+  color: var(--nt-text-primary);
+}
+
+.nt-fab--secondary .nt-fab__trigger:hover {
+  border-color: var(--nt-border-strong);
+  background: var(--nt-bg-surface-hover);
+}
+
+/* Extended trigger with a visible text label. */
+.nt-fab--extended .nt-fab__trigger {
+  width: auto;
+  padding-inline: var(--nt-space-4) var(--nt-space-5);
+}
+
+/* 6. Internal elements */
+.nt-fab__trigger-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+  transition: transform var(--nt-duration-slow) var(--nt-ease-spring);
+}
+
+.nt-fab__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--nt-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nt-fab__actions > * {
+  --nt-fab-index: 0;
+}
+
+.nt-fab__actions > :nth-child(2) { --nt-fab-index: 1; }
+.nt-fab__actions > :nth-child(3) { --nt-fab-index: 2; }
+.nt-fab__actions > :nth-child(4) { --nt-fab-index: 3; }
+.nt-fab__actions > :nth-child(5) { --nt-fab-index: 4; }
+.nt-fab__actions > :nth-child(n + 6) { --nt-fab-index: 5; }
+
+.nt-fab__actions[data-state='open'] > * {
+  animation: nt-fab-action-in var(--nt-duration-normal) var(--nt-ease-spring) both;
+  animation-delay: calc(var(--nt-fab-index) * var(--nt-motion-stagger));
+}
+
+/* Exit: the menu behavior hides the list in the same frame it closes it;
+ * keeping display for the exit duration lets the actions fade out. */
+.nt-fab__actions[data-state='closed'] {
+  pointer-events: none;
+  transition: display var(--nt-duration-fast) allow-discrete;
+}
+
+.nt-fab__actions[data-state='closed'] > * {
+  animation: nt-fab-action-out var(--nt-duration-fast) var(--nt-ease-exit) both;
+}
+
+.nt-fab__action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nt-space-3);
+  padding: 0;
+  border: 0;
+  border-radius: var(--nt-radius-pill);
+  background: transparent;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+  text-align: end;
+  cursor: pointer;
+  appearance: none;
+}
+
+.nt-fab__action-label {
+  padding: var(--nt-space-1) var(--nt-space-3);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-control);
+  background: var(--nt-bg-surface-overlay);
+  box-shadow: var(--nt-elevation-control);
+  white-space: nowrap;
+}
+
+.nt-fab__action-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: var(--nt-target-size-primary);
+  height: var(--nt-target-size-primary);
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-bg-surface-overlay);
+  box-shadow: var(--nt-elevation-control);
+  color: var(--nt-icon-primary);
+  transition:
+    var(--nt-transition-colors),
+    transform var(--nt-duration-normal) var(--nt-ease-spring);
+}
+
+.nt-fab__action-icon > svg {
+  width: var(--nt-icon-size-md);
+  height: var(--nt-icon-size-md);
+}
+
+.nt-fab__action:is(:hover, :focus-visible, [data-state='active']) .nt-fab__action-icon {
+  border-color: var(--nt-border-strong);
+  background: var(--nt-bg-surface-hover);
+  transform: scale(1.06);
+}
+
+@keyframes nt-fab-action-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--nt-space-2)) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes nt-fab-action-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(var(--nt-space-1)) scale(0.96);
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-fab__trigger {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .nt-fab__action-icon,
+  .nt-fab__action-label {
+    border-color: ButtonText;
+  }
+}
+
+/* 7. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nt-fab__trigger,
+  .nt-fab__trigger-icon,
+  .nt-fab__action-icon {
+    transition: none !important;
+  }
+
+  .nt-fab__actions > * {
+    animation: none !important;
+  }
+
+  .nt-fab__trigger:hover,
+  .nt-fab__trigger:active,
+  .nt-fab__action:is(:hover, :focus-visible, [data-state='active']) .nt-fab__action-icon {
+    transform: none;
+  }
+}
