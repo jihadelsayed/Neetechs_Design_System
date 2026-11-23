@@ -303,6 +303,88 @@
   border-block-start: 1px solid var(--nt-border-subtle);
 }
 
+/* Opt-in glass surface for workspace navigation. The regular sidebar is
+ * unchanged; add .nt-sidebar--glass beside .nt-sidebar to enable this look.
+ * All surfaces use existing theme tokens, including the inverse active pill. */
+.nt-sidebar--glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-panel);
+  background: var(--nt-bg-sidebar);
+  background: color-mix(in srgb, var(--nt-bg-sidebar) 82%, transparent);
+  box-shadow: var(--nt-elevation-raised);
+  -webkit-backdrop-filter: blur(var(--nt-space-4)) saturate(1.15);
+  backdrop-filter: blur(var(--nt-space-4)) saturate(1.15);
+}
+
+.nt-sidebar--glass .nt-sidebar__item {
+  border-color: var(--nt-border-subtle);
+  border-radius: var(--nt-radius-pill);
+  background: color-mix(in srgb, var(--nt-bg-surface) 32%, transparent);
+  transition:
+    background-color var(--nt-duration-normal) var(--nt-ease-standard),
+    border-color var(--nt-duration-normal) var(--nt-ease-standard),
+    color var(--nt-duration-normal) var(--nt-ease-standard),
+    box-shadow var(--nt-duration-normal) var(--nt-ease-standard),
+    transform var(--nt-duration-normal) var(--nt-ease-emphasized);
+}
+
+.nt-sidebar--glass .nt-sidebar__item:hover:not(.nt-sidebar__item--disabled) {
+  background: color-mix(in srgb, var(--nt-bg-surface-hover) 76%, transparent);
+  transform: translateY(calc(var(--nt-space-0-5) * -1));
+}
+
+.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+  border-color: var(--nt-border-strong);
+  background: var(--nt-bg-inverse);
+  color: var(--nt-text-inverse);
+  box-shadow: var(--nt-elevation-control);
+  transform: none;
+}
+
+.nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active):hover {
+  background: var(--nt-bg-inverse);
+}
+
+:is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
+  border-radius: var(--nt-radius-item);
+}
+
+/* Keep the higher-contrast palette solid rather than translucent. */
+:is([data-nt-theme='high-contrast'], [data-nt-contrast='high']) .nt-sidebar--glass {
+  background: var(--nt-bg-sidebar);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* In the mobile off-canvas presentation, clarity beats frosted effects. */
+@media (max-width: 64rem) {
+  .nt-app-shell--offcanvas .nt-sidebar--glass {
+    background: var(--nt-bg-sidebar);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-sidebar--glass {
+    background: Canvas;
+    color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .nt-sidebar--glass .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+    box-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nt-sidebar__item,
   .nt-sidebar__item::before,
