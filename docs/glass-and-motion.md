@@ -17,23 +17,32 @@ contrast, RTL, and reduced motion.
    pieces you use: `shell/app-shell.css`, `shell/sidebar.css`,
    `utilities/glass.css`, `components/dock.css`, `components/fab.css`.
 2. Add the modifiers to the existing shell markup:
-   `nt-app-shell--glass nt-app-shell--connected` on `.nt-app-shell` and
-   `nt-sidebar--glass nt-sidebar--cutout` on `.nt-sidebar`.
+   `nt-app-shell--glass` on `.nt-app-shell` and
+   `nt-sidebar--glass nt-sidebar--cutout` on `.nt-sidebar`. Optional:
+   `nt-app-shell--dock-tablet` keeps the sidebar docked on tablets, and
+   `nt-app-shell--connected` joins the content to one solid panel.
 3. Keep `ntCreateSidebar` as it is; it already owns collapse state, titles,
-   groups, and the mobile off-canvas panel.
+   groups, and the mobile off-canvas panel. It detects
+   `nt-app-shell--dock-tablet` and moves its off-canvas query to the phone
+   bound by itself.
 4. Keep setting `aria-current="page"` on the current item from your router.
    The CSS animates the connection; no JavaScript is involved.
 
 ```html
-<div class="nt-app-shell nt-app-shell--glass nt-app-shell--connected nt-app-shell--offcanvas" id="shell">
+<div class="nt-app-shell nt-app-shell--glass nt-app-shell--dock-tablet nt-app-shell--offcanvas" id="shell">
   <aside class="nt-app-shell__sidebar" id="workspace-sidebar" aria-label="Workspace">
     <nav class="nt-sidebar nt-sidebar--glass nt-sidebar--cutout" aria-label="Workspace navigation">
       <div class="nt-sidebar__brand">
         <span class="nt-sidebar__logo" aria-hidden="true">N</span>
         <span class="nt-sidebar__brand-text">Neetechs</span>
+        <button class="nt-icon-button nt-icon-button--ghost nt-sidebar__brand-action" type="button" data-nt-sidebar-close aria-label="Close navigation"></button>
       </div>
       <div class="nt-sidebar__search">
-        <input class="nt-input nt-input--sm" type="search" aria-label="Search workspace">
+        <label class="nt-search-bar__control">
+          <svg class="nt-search-bar__icon" aria-hidden="true"></svg>
+          <input class="nt-search-bar__input" type="search" placeholder="Search" aria-label="Search workspace">
+          <kbd class="nt-search-bar__kbd">⌘K</kbd>
+        </label>
       </div>
       <div class="nt-sidebar__nav">
         <div class="nt-sidebar__section">
@@ -45,8 +54,18 @@ contrast, RTL, and reduced motion.
           <a class="nt-sidebar__item" href="/inbox">
             <svg class="nt-sidebar__item-icon" aria-hidden="true"></svg>
             <span class="nt-sidebar__item-label">Inbox</span>
-            <span class="nt-badge nt-badge--info nt-sidebar__item-badge">4</span>
+            <span class="nt-badge nt-badge--primary nt-sidebar__item-badge">4</span>
           </a>
+        </div>
+      </div>
+      <div class="nt-sidebar__footer">
+        <div class="nt-sidebar__account">
+          <span class="nt-avatar nt-avatar--brand nt-sidebar__account-avatar" aria-hidden="true">N</span>
+          <span class="nt-sidebar__account-text">
+            <span class="nt-sidebar__account-name">Neetechs Team</span>
+            <span class="nt-sidebar__account-meta">Pro plan</span>
+          </span>
+          <button class="nt-icon-button nt-icon-button--ghost nt-sidebar__account-action" type="button" aria-label="Account options"></button>
         </div>
       </div>
     </nav>
@@ -84,8 +103,10 @@ behavior is SSR-safe to import; the CSS is complete before hydration.
 | Class | Effect |
 |---|---|
 | `.nt-sidebar--glass` | Frosted material, highlight, glass border, glass item pills, and the smooth rail morph. |
-| `.nt-sidebar--cutout` | The current item becomes a tab of the adjoining panel, with concave corners above and below. Pair with `--glass`. |
-| `.nt-sidebar__search` | Optional search slot between brand and nav. Hidden (and out of tab order) in the rail. |
+| `.nt-sidebar--cutout` | The current item becomes a light tab that runs into the sidebar's inline-end edge with concave corners above and below. Pair with `--glass`. |
+| `.nt-sidebar__search` | Optional search slot between brand and nav (search bar anatomy: icon, input, `kbd` hint). Hidden (and out of tab order) in the rail. |
+| `.nt-sidebar__brand-action` | Control at the end of the brand row, such as the off-canvas close button. |
+| `.nt-sidebar__account` (`__account-avatar`, `__account-text`, `__account-name`, `__account-meta`, `__account-action`) | Footer account summary; the rail keeps only the avatar. |
 
 **Rail morph.** Icons keep one inline-start inset in both states, computed so
 they sit centered in the collapsed rail; collapsing never moves an icon.
@@ -98,10 +119,12 @@ the controller adds a `title` to each item.
 
 **Connection.** The tab body (`::before`) and both corners (`::after`) are
 painted in the nav gutter, so selecting another item changes no layout: the
-old tab slides back toward the panel while the new one slides out of it. The
-fill is `--nt-sidebar-cutout-surface` (default `--nt-bg-app`, which is also
-what `.nt-app-shell--connected` paints the content panel with). Set it on any
-ancestor if the adjoining panel uses a different surface:
+old tab slides back toward the edge while the new one slides out of it. The
+fill is `--nt-sidebar-cutout-surface` and the text `--nt-sidebar-cutout-fg`
+(defaults: the selected-on-glass roles `--nt-glass-selected-bg` and
+`--nt-glass-selected-fg`). `.nt-app-shell--connected` sets them to the
+content panel's surface so the tab joins the panel. Set them on any ancestor
+if the adjoining surface is different:
 
 ```css
 .billing-workspace {
@@ -109,20 +132,23 @@ ancestor if the adjoining panel uses a different surface:
 }
 ```
 
-The connection works expanded and collapsed, in LTR and RTL (one gradient
-mirrored through `--nt-sidebar-cutout-x`), and keeps the standard focus ring.
-High contrast keeps the connection and outlines it; forced colors fall back
-to a `Highlight` item. Below the 64rem shell breakpoint the off-canvas panel
-uses the regular glass pill, without blur.
+In the rail, the floating tab settles into a centered tile and badges pin to
+the icon's top corner; a connected rail keeps the tab. The connection works
+in LTR and RTL (one gradient mirrored through `--nt-sidebar-cutout-x`) and
+keeps the standard focus ring. High contrast keeps the connection and
+outlines it; forced colors fall back to a `Highlight` item. The open
+off-canvas panel shows a plain selected pill, without blur, and always opens
+in full: the rail preference is kept but not applied off-canvas.
 
 ## Glass shell
 
 | Class | Effect |
 |---|---|
-| `.nt-app-shell--glass` | Ambient frame behind the shell, floating glass sidebar, and a solid, rounded content panel. Desktop only. |
-| `.nt-app-shell--connected` | Removes the gap so the sidebar and content panel form one frame with a single shadow. Pair with `.nt-sidebar--cutout`. |
+| `.nt-app-shell--glass` | Ambient frame behind the shell, floating glass sidebar, a strong-glass sticky header, and content on the frame (cards, tables, and forms keep their solid surfaces). Docked layouts only. |
+| `.nt-app-shell--connected` | Puts the content on one solid panel joined to the sidebar, with a single frame shadow. Pair with `.nt-sidebar--cutout`. |
+| `.nt-app-shell--dock-tablet` | Keeps the sidebar docked (full or rail) down to 40rem instead of going off-canvas below 64rem. |
 
-Collapse animates `grid-template-columns` over `--nt-duration-layout` with
+Collapse animates `grid-template-columns` over `--nt-duration-layout` (300ms) with
 `--nt-ease-glide`. The frosted layer is a pseudo-element of the sidebar, so
 the sidebar does not become the containing block of `position: fixed` menus
 in its footer.
@@ -132,6 +158,7 @@ in its footer.
 Theme roles (defined in the dark, light, and high-contrast themes):
 `--nt-glass-bg`, `--nt-glass-bg-strong`, `--nt-glass-border`,
 `--nt-glass-highlight`, `--nt-glass-item-bg`, `--nt-glass-item-hover`,
+`--nt-glass-selected-bg`, `--nt-glass-selected-fg`,
 `--nt-glass-ambient-start`, `--nt-glass-ambient-end`, `--nt-glass-backdrop`.
 Optical tokens: `--nt-glass-blur`, `--nt-glass-blur-strong`,
 `--nt-glass-saturate`.
@@ -252,7 +279,7 @@ text label), `--sm`, `--lg`. Actions enter one after another
 
 | Token | Value | Use |
 |---|---|---|
-| `--nt-duration-layout` | 320ms | Rail-to-panel, drawers, other surfaces that change size or slide in. |
+| `--nt-duration-layout` | 300ms | Rail-to-panel, drawers, other surfaces that change size or slide in. |
 | `--nt-ease-glide` | `cubic-bezier(0.32, 0.72, 0, 1)` | Soft deceleration for layout and sliding indicators. |
 | `--nt-ease-spring` | `cubic-bezier(0.34, 1.3, 0.64, 1)` | Small overshoot for entrances and pops (toasts, dock, FAB); never for layout. |
 | `--nt-motion-stagger` | 24ms | Delay between sibling entrances. |
@@ -275,7 +302,7 @@ and each component also disables its own transitions under the media query.
 - Rail tooltips are the native `title` attribute set by `ntCreateSidebar`;
   a styled rail tooltip would need overflow-escaping positioning.
 - The glass shell animates `grid-template-columns`, which re-lays out the
-  content column during the 320ms collapse. Very heavy pages may prefer
+  content column during the 300ms collapse. Very heavy pages may prefer
   `data-nt-motion="reduced"`.
 - The sliding indicator measures with `offsetLeft`. In a horizontally
   scrolling RTL tab list (`.nt-tabs--scrollable` with `dir="rtl"`) browsers

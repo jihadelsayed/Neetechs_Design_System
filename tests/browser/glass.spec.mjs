@@ -32,6 +32,17 @@ const box = (page, selector) => page.locator(selector).evaluate((element) => {
   return { left: rect.left, right: rect.right, top: rect.top, width: rect.width, center: rect.left + rect.width / 2 };
 });
 
+const connect = (page) => page.locator('[data-toggle=connected]').click();
+
+const resolveColor = (page, value) => page.evaluate((color) => {
+  const probe = document.createElement('div');
+  probe.style.background = color;
+  document.body.append(probe);
+  const resolved = getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  return resolved;
+}, value);
+
 const pseudo = (page, selector, which) => page.locator(selector).evaluate((element, name) => {
   const style = getComputedStyle(element, name);
   return { opacity: Number(style.opacity), background: style.backgroundColor, display: style.display };
@@ -99,19 +110,38 @@ test.describe('glass sidebar rail morph', () => {
   });
 });
 
-test.describe('connected active item', () => {
-  test('the content panel adjoins the sidebar and the tab uses its surface', async ({ page }) => {
+test.describe('curved active item', () => {
+  test('floating sidebar: the selected pill runs into the sidebar edge', async ({ page }) => {
     await load(page);
+    const tab = await pseudo(page, '#nav-calendar', '::before');
+    expect(tab.opacity).toBe(1);
+    expect(tab.background).toBe(await resolveColor(page, 'var(--nt-glass-selected-bg)'));
+    expect((await pseudo(page, '#nav-calendar', '::after')).opacity).toBe(1);
+    expect((await pseudo(page, '#nav-overview', '::before')).opacity).toBe(0);
+    // The tab layer ends at the sidebar's inner edge, past the item box.
+    const geometry = await page.evaluate(() => {
+      const item = document.querySelector('#nav-calendar');
+      const nav = document.querySelector('#glass-nav');
+      const style = getComputedStyle(item, '::before');
+      return {
+        itemRight: item.getBoundingClientRect().right - item.clientLeft,
+        navInnerRight: nav.getBoundingClientRect().right - nav.clientLeft,
+        insetEnd: Number.parseFloat(style.insetInlineEnd),
+      };
+    });
+    expect(geometry.itemRight - geometry.insetEnd).toBeCloseTo(geometry.navInnerRight, 0);
+  });
+
+  test('connected shell: the panel adjoins the sidebar and the tab uses its surface', async ({ page }) => {
+    await load(page);
+    await connect(page);
+    await waitForTransitions(page);
     const sidebar = await box(page, '#glass-nav');
     const main = await box(page, '.nt-app-shell__main');
     expect(Math.abs(main.left - sidebar.right)).toBeLessThan(1);
-
-    const tab = await pseudo(page, '#nav-overview', '::before');
+    const tab = await pseudo(page, '#nav-calendar', '::before');
     const panelBackground = await page.locator('.nt-app-shell__main').evaluate((element) => getComputedStyle(element).backgroundColor);
-    expect(tab.opacity).toBe(1);
     expect(tab.background).toBe(panelBackground);
-    expect((await pseudo(page, '#nav-overview', '::after')).opacity).toBe(1);
-    expect((await pseudo(page, '#nav-calendar', '::before')).opacity).toBe(0);
   });
 
   test('selecting another item moves the connection without changing layout', async ({ page }) => {
@@ -121,18 +151,40 @@ test.describe('connected active item', () => {
     await waitForTransitions(page);
     expect(await box(page, '#nav-invoices')).toEqual(before);
     expect((await pseudo(page, '#nav-invoices', '::before')).opacity).toBe(1);
-    expect((await pseudo(page, '#nav-overview', '::before')).opacity).toBe(0);
+    expect((await pseudo(page, '#nav-calendar', '::before')).opacity).toBe(0);
+    await expect(page.locator('#breadcrumb-current')).toHaveText('Invoices');
   });
 
-  test('the connection survives the collapsed rail', async ({ page }) => {
+  test('floating rail turns the tab into a centered tile; connected rail keeps the tab', async ({ page }) => {
     await load(page);
     await page.locator('#collapse-toggle').click();
     await waitForTransitions(page);
-    expect((await pseudo(page, '#nav-overview', '::before')).opacity).toBe(1);
+    expect((await pseudo(page, '#nav-calendar', '::before')).opacity).toBe(1);
+    expect((await pseudo(page, '#nav-calendar', '::after')).opacity).toBe(0);
+    const insetEnd = await page.locator('#nav-calendar').evaluate((element) => Number.parseFloat(getComputedStyle(element, '::before').insetInlineEnd));
+    expect(insetEnd).toBeGreaterThan(-2);
+
+    await connect(page);
+    await waitForTransitions(page);
+    expect((await pseudo(page, '#nav-calendar', '::after')).opacity).toBe(1);
+  });
+
+  test('rail badges pin to the icon corner', async ({ page }) => {
+    await load(page);
+    await page.locator('#collapse-toggle').click();
+    await waitForTransitions(page);
+    const badge = page.locator('#nav-inbox .nt-sidebar__item-badge');
+    await expect(badge).toBeVisible();
+    const icon = await box(page, '#nav-inbox .nt-sidebar__item-icon');
+    const rail = await box(page, '#glass-nav');
+    const badgeBox = await box(page, '#nav-inbox .nt-sidebar__item-badge');
+    expect(badgeBox.left).toBeGreaterThan(icon.left);
+    expect(badgeBox.right).toBeLessThanOrEqual(rail.right);
   });
 
   test('RTL mirrors the shell and the corner geometry', async ({ page }) => {
     await load(page, { attributes: { dir: 'rtl' } });
+    await connect(page);
     await waitForTransitions(page);
     const sidebar = await box(page, '#glass-nav');
     const main = await box(page, '.nt-app-shell__main');
@@ -141,29 +193,50 @@ test.describe('connected active item', () => {
     expect(origin).toBe('100%');
   });
 
-  test('keyboard focus stays visible on the connected item', async ({ page }) => {
+  test('keyboard focus stays visible on the current item', async ({ page }) => {
     await load(page);
-    await page.locator('#nav-overview').focus();
+    await page.locator('#nav-calendar').focus();
     await page.keyboard.press('Tab');
     await page.keyboard.press('Shift+Tab');
-    const outline = await page.locator('#nav-overview').evaluate((element) => getComputedStyle(element).outlineStyle);
+    const outline = await page.locator('#nav-calendar').evaluate((element) => getComputedStyle(element).outlineStyle);
     expect(outline).toBe('solid');
   });
+});
 
-  test('mobile off-canvas uses the regular pill, not the desktop cutout', async ({ page }) => {
-    await load(page, { width: 390, height: 800 });
+test.describe('responsive glass shell', () => {
+  test('tablet keeps the sidebar docked with the connected pill', async ({ page }) => {
+    await load(page, { width: 768, height: 1024 });
+    await expect(page.locator('#glass-nav')).toBeVisible();
+    await expect(page.locator('#menu-toggle')).toBeHidden();
+    await expect(page.locator('#collapse-toggle')).toBeVisible();
+    expect(await page.evaluate(() => window.sidebarController.isOffcanvas)).toBe(false);
+    const main = await box(page, '.nt-app-shell__main');
+    expect(main.left).toBeGreaterThan(200);
+    expect((await pseudo(page, '#nav-calendar', '::after')).opacity).toBe(1);
+
+    await page.locator('#collapse-toggle').click();
+    await waitForTransitions(page);
+    expect((await box(page, '#glass-nav')).width).toBeLessThan(80);
+  });
+
+  test('mobile opens off-canvas in full with a plain pill and a close button', async ({ page }) => {
+    await load(page);
+    await page.locator('#collapse-toggle').click();
+    await page.setViewportSize({ width: 390, height: 844 });
+    // The rail preference is kept but never applied off-canvas.
+    await expect(page.locator('#shell')).not.toHaveClass(/nt-app-shell--collapsed/);
     await page.locator('#menu-toggle').click();
     await waitForTransitions(page);
-    const background = await page.locator('#nav-overview').evaluate((element) => getComputedStyle(element).backgroundColor);
-    const inverse = await page.evaluate(() => {
-      const probe = document.createElement('div');
-      probe.style.background = 'var(--nt-bg-inverse)';
-      document.body.append(probe);
-      const value = getComputedStyle(probe).backgroundColor;
-      probe.remove();
-      return value;
-    });
-    expect(background).toBe(inverse);
+    await expect(page.getByRole('link', { name: 'Calendar' })).toBeVisible();
+    await expect(page.locator('#nav-calendar .nt-sidebar__item-label')).toHaveCSS('opacity', '1');
+    const background = await page.locator('#nav-calendar').evaluate((element) => getComputedStyle(element).backgroundColor);
+    expect(background).toBe(await resolveColor(page, 'var(--nt-glass-selected-bg)'));
+    expect((await pseudo(page, '#nav-calendar', '::after')).display).toBe('none');
+
+    await page.locator('#sidebar-close').click();
+    await expect(page.locator('#glass-sidebar')).toHaveAttribute('data-state', 'closed');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(page.locator('#shell')).toHaveClass(/nt-app-shell--collapsed/);
   });
 });
 

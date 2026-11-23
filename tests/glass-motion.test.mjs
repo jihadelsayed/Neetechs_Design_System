@@ -15,6 +15,8 @@ const GLASS_ROLES = [
   '--nt-glass-highlight',
   '--nt-glass-item-bg',
   '--nt-glass-item-hover',
+  '--nt-glass-selected-bg',
+  '--nt-glass-selected-fg',
   '--nt-glass-ambient-start',
   '--nt-glass-ambient-end',
   '--nt-glass-backdrop',
@@ -68,7 +70,10 @@ test('motion tokens include layout timing and are collapsed by both reduced-moti
 test('sidebar cutout follows the adjoining surface and is direction-neutral', async () => {
   const css = stripComments(await read('src/shell/sidebar/sidebar.css'));
   const cutout = css.slice(css.indexOf('.nt-sidebar--glass.nt-sidebar--cutout'));
-  assert.match(cutout, /var\(--nt-sidebar-cutout-surface, var\(--nt-bg-app\)\)/);
+  assert.match(cutout, /var\(--nt-sidebar-cutout-surface, var\(--nt-glass-selected-bg\)\)/);
+  assert.match(cutout, /var\(--nt-sidebar-cutout-fg, var\(--nt-glass-selected-fg\)\)/);
+  // An open off-canvas panel shows a plain pill instead of the edge tab.
+  assert.match(css, /\.nt-app-shell__sidebar\[data-state='open'\] \.nt-sidebar--cutout/);
   assert.doesNotMatch(cutout, /circle at (?:top|bottom) (?:left|right)/, 'corner gradients must not use physical keywords');
   assert.match(css, /\.nt-sidebar--glass:dir\(rtl\)\s*\{[^}]*--nt-sidebar-cutout-x:\s*100%/);
   // The glass material lives on ::before so the sidebar is not a containing
@@ -78,14 +83,25 @@ test('sidebar cutout follows the adjoining surface and is direction-neutral', as
   assert.match(css, /\.nt-sidebar--glass::before\s*\{[^}]*backdrop-filter/);
 });
 
-test('glass shell layouts stay desktop-only so mobile off-canvas is unchanged', async () => {
+test('glass shell layouts apply only where the sidebar is docked', async () => {
   const css = stripComments(await read('src/shell/app-shell/app-shell.css'));
   const desktop = css.indexOf('@media not all and (max-width: 64rem)');
-  assert.ok(desktop >= 0);
-  for (const selector of ['.nt-app-shell--glass {', '.nt-app-shell--glass.nt-app-shell--connected {']) {
-    const index = css.indexOf(selector);
-    assert.ok(index > desktop, `${selector} is inside the desktop media query`);
-  }
+  const tablet = css.indexOf('@media not all and (max-width: 40rem)');
+  assert.ok(desktop >= 0 && tablet > desktop);
+  const desktopBlock = css.slice(desktop, css.indexOf('@media (max-width: 64rem)', desktop));
+  assert.ok(desktopBlock.includes('.nt-app-shell--glass {'), 'glass frame is desktop-scoped');
+  assert.ok(desktopBlock.includes('.nt-app-shell--glass.nt-app-shell--connected .nt-app-shell__main {'), 'connected panel is desktop-scoped');
+  const tabletBlock = css.slice(tablet);
+  assert.ok(tabletBlock.includes('.nt-app-shell--dock-tablet.nt-app-shell--glass {'), 'tablet docking is opt-in');
+  // Connected shells hand their panel surface to the tab at every docked width.
+  assert.match(css, /\.nt-app-shell--glass\.nt-app-shell--connected \{\s*--nt-sidebar-cutout-surface: var\(--nt-bg-app\);\s*--nt-sidebar-cutout-fg: var\(--nt-text-primary\);/);
+});
+
+test('the sidebar controller keeps the rail preference off-canvas and docks tablets on request', async () => {
+  const source = await read('src/behaviors/sidebar.ts');
+  assert.match(source, /nt-app-shell--dock-tablet/);
+  assert.match(source, /ntViewportQuery\([^)]*'sm'/);
+  assert.match(source, /collapsed && !isOffcanvas\(\)/);
 });
 
 test('overlay exit animations keep display alive for the exit duration', async () => {

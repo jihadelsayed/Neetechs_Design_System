@@ -15,10 +15,17 @@ exports, or behaviors removed).
 
 ### Added
 - Glass and motion (see `docs/glass-and-motion.md`), all opt-in:
-  - Glass sidebar `.nt-sidebar--glass` with a rail morph that keeps icons in place, and
-    `.nt-sidebar--cutout`: the current item connects to the content panel with concave
-    corners (LTR/RTL, expanded/collapsed, high-contrast outline, forced-colors fallback).
-    Hook: `--nt-sidebar-cutout-surface`. Optional `.nt-sidebar__search` slot.
+  - Glass sidebar `.nt-sidebar--glass` with a 300ms rail morph that keeps icons in place,
+    and `.nt-sidebar--cutout`: the current item is a light tab that runs into the sidebar
+    edge with concave corners, settles into a centered tile in the rail, and joins the
+    content panel in connected shells (LTR/RTL, high-contrast outline, forced-colors
+    fallback). Hooks: `--nt-sidebar-cutout-surface`, `--nt-sidebar-cutout-fg`. Rail badges
+    pin to the icon corner. New slots: `.nt-sidebar__search`, `.nt-sidebar__brand-action`,
+    `.nt-sidebar__account` (+ `__account-avatar`, `-text`, `-name`, `-meta`, `-action`).
+  - `.nt-app-shell--dock-tablet` keeps the sidebar docked down to 40rem;
+    `ntCreateSidebar` detects it and moves its off-canvas query to `ntViewportQuery('sm')`.
+    The controller no longer applies the rail class while the sidebar is off-canvas.
+  - Roles `--nt-glass-selected-bg` and `--nt-glass-selected-fg` in all three themes.
   - Shell: `.nt-app-shell--glass` (ambient frame, solid content panel) and
     `.nt-app-shell--connected` (sidebar and panel joined into one frame).
   - Glass material roles in all three themes (`--nt-glass-bg`, `-bg-strong`, `-border`,
@@ -64,6 +71,9 @@ exports, or behaviors removed).
   palette never played because the behaviors hide the overlay in the same frame; overlays
   now keep `display` for the exit duration where `allow-discrete` transitions are supported.
 - Sidebar group wrappers clipped the focus ring of their items.
+- Calendar week grid: weekday, time, and event-time labels use secondary text (muted text
+  measured 4.26–4.39:1 on the light muted surfaces); the scrolling body has a focus ring
+  for `tabindex="0"`.
 - Glass sidebar (unreleased): RTL/responsive gate failures, a cutout that could not reach
   the content panel, rail-morph jumps, and fixed-position descendants trapped by
   `backdrop-filter`.
