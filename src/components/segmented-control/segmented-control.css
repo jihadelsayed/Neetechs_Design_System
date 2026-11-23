@@ -180,6 +180,64 @@
   box-shadow: none;
 }
 
+/* Sliding thumb (opt-in): add .nt-segmented-control--sliding and attach
+ * ntCreateSelectionIndicator({ container }). One thumb glides between the
+ * options; the checked label keeps its text color and loses its own
+ * surface while the thumb is placed. Without the helper the static
+ * checked style remains. */
+.nt-segmented-control--sliding {
+  /* Defaults; ntCreateSelectionIndicator writes the measured values. */
+  --nt-indicator-x: 0rem;
+  --nt-indicator-y: 0rem;
+  --nt-indicator-width: 0rem;
+  --nt-indicator-height: 0rem;
+  isolation: isolate;
+}
+
+.nt-segmented-control--sliding:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::before {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 0;
+  width: var(--nt-indicator-width);
+  height: var(--nt-indicator-height);
+  border: 1px solid var(--nt-selection-border);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-selection-bg);
+  box-shadow: var(--nt-elevation-control);
+  content: '';
+  pointer-events: none;
+  translate: var(--nt-indicator-x) var(--nt-indicator-y);
+}
+
+.nt-segmented-control--sliding[data-nt-indicator='ready']::before {
+  transition:
+    translate var(--nt-duration-slow) var(--nt-ease-glide),
+    width var(--nt-duration-slow) var(--nt-ease-glide),
+    height var(--nt-duration-slow) var(--nt-ease-glide);
+}
+
+.nt-segmented-control--sliding:is([data-nt-indicator='placed'], [data-nt-indicator='ready']) :is(.nt-segmented-control__input:checked + .nt-segmented-control__label, .nt-segmented-control__label[aria-selected='true'], .nt-segmented-control__label[data-state='active'], .nt-segmented-control__label--active) {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.nt-segmented-control--sliding.nt-segmented-control--sm:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::before {
+  border-radius: var(--nt-radius-control);
+}
+
+.nt-segmented-control--sliding.nt-segmented-control--accent:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::before {
+  border-color: var(--nt-selection-indicator);
+  background: var(--nt-selection-indicator);
+}
+
+.nt-segmented-control--sliding.nt-segmented-control--ghost:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::before {
+  border-color: var(--nt-border-subtle);
+  background: var(--nt-bg-surface-muted);
+  box-shadow: none;
+}
+
 @media (max-width: 40rem) {
   .nt-segmented-control--responsive {
     display: flex;
@@ -199,7 +257,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nt-segmented-control__label {
+  .nt-segmented-control__label,
+  .nt-segmented-control::before {
     transition: none !important;
   }
 }

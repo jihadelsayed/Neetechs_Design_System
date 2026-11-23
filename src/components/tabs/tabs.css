@@ -228,6 +228,96 @@
   padding-block-start: 0;
 }
 
+/* Sliding indicator (opt-in): add .nt-tabs--sliding and attach
+ * ntCreateSelectionIndicator({ container: list }). The helper writes the
+ * selected trigger's geometry to the list; one indicator glides between
+ * triggers with transform-based motion. Until the helper has measured
+ * (server render, before hydration) the per-trigger indicator stays. */
+.nt-tabs--sliding .nt-tabs__list {
+  /* Defaults; ntCreateSelectionIndicator writes the measured values. */
+  --nt-indicator-x: 0rem;
+  --nt-indicator-y: 0rem;
+  --nt-indicator-width: 0rem;
+  --nt-indicator-height: 0rem;
+  position: relative;
+  isolation: isolate;
+}
+
+.nt-tabs--sliding .nt-tabs__trigger {
+  z-index: 1;
+}
+
+.nt-tabs--sliding .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+  position: absolute;
+  inset-block: auto -1px;
+  inset-inline-start: 0;
+  z-index: 2;
+  width: calc(var(--nt-indicator-width) - var(--nt-space-4));
+  height: 2px;
+  margin-inline-start: var(--nt-space-2);
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-selection-indicator);
+  content: '';
+  pointer-events: none;
+  translate: var(--nt-indicator-x) 0;
+}
+
+.nt-tabs--sliding .nt-tabs__list[data-nt-indicator='ready']::after {
+  transition:
+    translate var(--nt-duration-slow) var(--nt-ease-glide),
+    width var(--nt-duration-slow) var(--nt-ease-glide),
+    height var(--nt-duration-slow) var(--nt-ease-glide);
+}
+
+.nt-tabs--sliding .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready']) .nt-tabs__trigger::after {
+  display: none;
+}
+
+/* Boxed and pill lists slide a surface behind the triggers instead. */
+.nt-tabs--sliding:is(.nt-tabs--boxed, .nt-tabs--pills) .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+  inset-block: 0 auto;
+  z-index: 0;
+  width: var(--nt-indicator-width);
+  height: var(--nt-indicator-height);
+  margin: 0;
+  translate: var(--nt-indicator-x) var(--nt-indicator-y);
+}
+
+.nt-tabs--sliding.nt-tabs--boxed .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+  border: 1px solid var(--nt-border-subtle);
+  border-radius: var(--nt-radius-item);
+  background: var(--nt-bg-surface);
+  box-shadow: var(--nt-elevation-control);
+}
+
+.nt-tabs--sliding.nt-tabs--pills .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+  border-radius: var(--nt-radius-pill);
+  background: var(--nt-selection-indicator);
+}
+
+.nt-tabs--sliding:is(.nt-tabs--boxed, .nt-tabs--pills) .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready']) .nt-tabs__trigger {
+  background: transparent;
+  box-shadow: none;
+}
+
+.nt-tabs--sliding.nt-tabs--boxed .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready']) .nt-tabs__trigger:is([aria-selected='true'], [data-state='active'], .nt-tabs__trigger--active) {
+  border-color: transparent;
+}
+
+.nt-tabs--sliding.nt-tabs--pills .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready']) .nt-tabs__trigger:not([aria-selected='true'], [data-state='active'], .nt-tabs__trigger--active):hover {
+  background: var(--nt-bg-surface-hover);
+}
+
+/* Vertical lists move the bar along the inline-end edge. */
+.nt-tabs--sliding.nt-tabs--vertical .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+  inset-block: 0 auto;
+  inset-inline: auto -1px;
+  width: 2px;
+  height: calc(var(--nt-indicator-height) - var(--nt-space-4));
+  margin: var(--nt-space-2) 0 0;
+  translate: 0 var(--nt-indicator-y);
+}
+
 .nt-tabs--sm .nt-tabs__trigger {
   min-height: var(--nt-control-height-sm);
   padding-inline: var(--nt-space-2);
@@ -283,11 +373,21 @@
   .nt-tabs--vertical .nt-tabs__trigger--active::after {
     transform: scaleX(1);
   }
+  .nt-tabs--sliding.nt-tabs--vertical .nt-tabs__list:is([data-nt-indicator='placed'], [data-nt-indicator='ready'])::after {
+    inset-block: auto -1px;
+    inset-inline: 0 auto;
+    width: calc(var(--nt-indicator-width) - var(--nt-space-4));
+    height: 2px;
+    margin: 0;
+    margin-inline-start: var(--nt-space-2);
+    translate: var(--nt-indicator-x) 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nt-tabs__trigger,
-  .nt-tabs__trigger::after {
+  .nt-tabs__trigger::after,
+  .nt-tabs__list::after {
     transition: none !important;
   }
 }

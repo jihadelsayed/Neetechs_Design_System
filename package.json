@@ -56,6 +56,7 @@
     "./utilities/layout.css": "./src/styles/utilities/layout.css",
     "./utilities/text.css": "./src/styles/utilities/text.css",
     "./utilities/visibility.css": "./src/styles/utilities/visibility.css",
+    "./utilities/glass.css": "./src/styles/utilities/glass.css",
     "./localization.css": "./src/styles/localization.css",
     "./responsive.css": "./src/styles/responsive.css",
     "./animations/motion.css": "./src/styles/animations/motion.css",

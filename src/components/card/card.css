@@ -253,6 +253,55 @@
   gap: var(--nt-space-5);
 }
 
+/* Glass card (opt-in) for summaries floating on a glass backdrop
+ * (.nt-glass-backdrop, .nt-app-shell--glass frame). Keep forms, tables,
+ * and dense content on the solid default card. */
+.nt-card--glass {
+  isolation: isolate;
+  border-color: var(--nt-glass-border);
+  background-color: var(--nt-glass-bg-strong);
+  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 48%);
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+}
+
+.nt-card--glass.nt-card--interactive:hover {
+  border-color: var(--nt-border-strong);
+  background-color: var(--nt-glass-bg-strong);
+}
+
+/* Lift (opt-in): a softer, slower hover for showcase and dashboard tiles. */
+.nt-card--lift {
+  transition:
+    var(--nt-transition-colors),
+    box-shadow var(--nt-duration-slow) var(--nt-ease-glide),
+    transform var(--nt-duration-slow) var(--nt-ease-glide);
+}
+
+.nt-card--lift:hover {
+  box-shadow: var(--nt-elevation-card-hover);
+  transform: translateY(calc(var(--nt-space-1) * -1));
+}
+
+.nt-card--lift:active {
+  transform: translateY(calc(var(--nt-space-0-5) * -1));
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-card--glass {
+    background-color: var(--nt-bg-surface);
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-card--glass {
+    border-color: CanvasText;
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 .nt-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
@@ -274,11 +323,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nt-card--edge,
-  .nt-card--interactive {
+  .nt-card--interactive,
+  .nt-card--lift {
     transition: none !important;
   }
 
-  .nt-card--interactive:hover {
+  .nt-card--interactive:hover,
+  .nt-card--lift:hover,
+  .nt-card--lift:active {
     transform: none;
   }
 }

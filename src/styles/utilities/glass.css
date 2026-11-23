@@ -1,0 +1,97 @@
+/* Glass material utilities.
+ *
+ * .nt-glass paints any container with the theme's glass roles; components
+ * that own a background expose their own --glass modifier instead
+ * (.nt-sidebar--glass, .nt-card--glass, .nt-panel--glass, .nt-dock,
+ * .nt-command-palette--glass) because component CSS loads after utilities.
+ *
+ * Every --nt-glass-* role resolves to a solid surface with zero blur in high
+ * contrast, prefers-contrast: more, reduced transparency, and forced colors,
+ * so text on glass never depends on what lies behind it. Use glass for
+ * navigation and floating chrome; keep forms, tables, and dialogs solid. */
+.nt-glass {
+  isolation: isolate;
+  border: 1px solid var(--nt-glass-border);
+  background-color: var(--nt-glass-bg);
+  background-image: linear-gradient(to bottom, var(--nt-glass-highlight), transparent 45%);
+  color: var(--nt-text-primary);
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+}
+
+/* Denser tint for floating panels that carry reading content. */
+.nt-glass--strong {
+  background-color: var(--nt-glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+  backdrop-filter: blur(var(--nt-glass-blur-strong)) saturate(var(--nt-glass-saturate));
+}
+
+/* Rounded, elevated floating surface (toolbars, inspectors, popouts). */
+.nt-glass--floating {
+  border-radius: var(--nt-radius-panel);
+  box-shadow: var(--nt-elevation-popover);
+}
+
+/* Hover and pressed feedback for clickable glass tiles. Pair with a native
+ * interactive element (a, button) so focus and semantics come for free. */
+.nt-glass--interactive {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    var(--nt-transition-colors),
+    transform var(--nt-duration-slow) var(--nt-ease-glide);
+}
+
+.nt-glass--interactive:hover {
+  border-color: var(--nt-border-strong);
+  background-color: var(--nt-glass-bg-strong);
+  transform: translateY(calc(var(--nt-space-0-5) * -1));
+}
+
+.nt-glass--interactive:active {
+  transform: none;
+}
+
+.nt-glass--interactive:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: var(--nt-focus-ring-offset);
+}
+
+/* Ambient backdrop: gives glass something to refract. Apply to a page,
+ * region, or hero; the gradients are decorative and direction-neutral. */
+.nt-glass-backdrop {
+  background-color: var(--nt-glass-backdrop);
+  background-image:
+    radial-gradient(48rem 36rem at 0% 0%, var(--nt-glass-ambient-start), transparent 72%),
+    radial-gradient(44rem 34rem at 100% 100%, var(--nt-glass-ambient-end), transparent 72%);
+  color: var(--nt-text-primary);
+}
+
+/* Without backdrop-filter, translucent tints would lose legibility over
+ * busy content: fall back to the strong (near-opaque) tint. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-glass {
+    background-color: var(--nt-glass-bg-strong);
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-glass {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-glass--interactive {
+    transition: none !important;
+  }
+
+  .nt-glass--interactive:hover {
+    transform: none;
+  }
+}

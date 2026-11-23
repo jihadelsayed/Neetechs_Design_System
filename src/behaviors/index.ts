@@ -16,3 +16,4 @@ export * from './viewport.js';
 export * from './navigation.js';
 export * from './sidebar.js';
 export * from './popover.js';
+export * from './selection-indicator.js';

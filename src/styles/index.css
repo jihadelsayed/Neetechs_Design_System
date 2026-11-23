@@ -21,6 +21,7 @@
 @import './utilities/layout.css';
 @import './utilities/text.css';
 @import './utilities/visibility.css';
+@import './utilities/glass.css';
 
 @import './animations/motion.css';
 @import './accessibility.css';
