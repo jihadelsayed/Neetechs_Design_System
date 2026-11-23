@@ -328,6 +328,8 @@
     border-color var(--nt-duration-normal) var(--nt-ease-standard),
     color var(--nt-duration-normal) var(--nt-ease-standard),
     box-shadow var(--nt-duration-normal) var(--nt-ease-standard),
+    border-radius var(--nt-duration-slow) var(--nt-ease-emphasized),
+    column-gap var(--nt-duration-slow) var(--nt-ease-emphasized),
     transform var(--nt-duration-normal) var(--nt-ease-emphasized);
 }
 
@@ -350,6 +352,52 @@
 
 :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
   border-radius: var(--nt-radius-item);
+}
+
+/* Smooth glass rail morph: preserve the label in the accessibility tree
+ * while visually collapsing it. The existing controller continues to own
+ * collapse state, keyboard behavior, and generated titles. */
+@media (min-width: 64.0625rem) {
+  .nt-sidebar--glass .nt-sidebar__item-label {
+    position: static;
+    width: auto;
+    height: auto;
+    max-inline-size: var(--nt-sidebar-width);
+    opacity: 1;
+    clip-path: none;
+    transform: translateX(0);
+    transition:
+      max-inline-size var(--nt-duration-slow) var(--nt-ease-emphasized),
+      opacity var(--nt-duration-normal) var(--nt-ease-standard),
+      transform var(--nt-duration-slow) var(--nt-ease-emphasized);
+  }
+
+  .nt-sidebar--glass .nt-sidebar__item-icon {
+    transform: scale(1);
+    transition: transform var(--nt-duration-slow) var(--nt-ease-emphasized);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item {
+    column-gap: 0;
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-label {
+    position: static;
+    width: auto;
+    height: auto;
+    max-inline-size: 0;
+    opacity: 0;
+    clip-path: none;
+    transform: translateX(calc(var(--nt-space-2) * -1));
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed) .nt-sidebar__item-icon {
+    transform: scale(1.06);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass, .nt-sidebar--glass.nt-sidebar--collapsed):dir(rtl) .nt-sidebar__item-label {
+    transform: translateX(var(--nt-space-2));
+  }
 }
 
 /* Keep the higher-contrast palette solid rather than translucent. */
@@ -390,7 +438,9 @@
   .nt-sidebar__item::before,
   .nt-sidebar__group-trigger,
   .nt-sidebar__group-chevron,
-  .nt-sidebar__group-items {
+  .nt-sidebar__group-items,
+  .nt-sidebar--glass .nt-sidebar__item-label,
+  .nt-sidebar--glass .nt-sidebar__item-icon {
     transition: none !important;
   }
 }
