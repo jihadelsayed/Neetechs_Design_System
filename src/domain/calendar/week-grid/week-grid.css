@@ -65,6 +65,13 @@
   background: var(--nt-bg-surface);
 }
 
+/* A scrolling body is a keyboard stop (tabindex="0" + aria-label) so the
+ * week can be scrolled without a pointer; the ring sits inside the clip. */
+.nt-calendar-week-grid__body:focus-visible {
+  outline: var(--nt-focus-ring-width) solid var(--nt-focus-ring-color);
+  outline-offset: calc(var(--nt-focus-ring-width) * -1);
+}
+
 .nt-calendar-week-grid__grid {
   display: grid;
   grid-template-columns: 4.5rem repeat(7, minmax(8rem, 1fr));
@@ -101,7 +108,7 @@
 }
 
 .nt-calendar-week-grid__weekday {
-  color: var(--nt-text-muted);
+  color: var(--nt-text-secondary);
   font: var(--nt-text-label-xs);
   letter-spacing: var(--nt-letter-spacing-label);
   text-transform: uppercase;
@@ -177,7 +184,7 @@
   border-inline-end: 1px solid var(--nt-border-subtle);
   border-bottom: 1px solid var(--nt-border-subtle);
   background: var(--nt-bg-surface-muted);
-  color: var(--nt-text-muted);
+  color: var(--nt-text-secondary);
   font: var(--nt-text-caption);
   font-variant-numeric: tabular-nums;
 }
@@ -258,7 +265,7 @@
 
 .nt-calendar-week-grid__event-time {
   overflow: hidden;
-  color: var(--nt-text-muted);
+  color: var(--nt-text-secondary);
   font: var(--nt-text-caption);
   font-variant-numeric: tabular-nums;
   text-overflow: ellipsis;
