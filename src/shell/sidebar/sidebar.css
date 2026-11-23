@@ -400,6 +400,108 @@
   }
 }
 
+/* Optional seamless cutout. Pair nt-sidebar--cutout with nt-sidebar--glass
+ * when navigation sits next to an inverse-color workspace surface.
+ * Two quarter-circle gradients carve a soft concave edge above and below
+ * the selected pill. The normal glass pill is unchanged without this class. */
+@media (min-width: 64.0625rem) {
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+    z-index: 1;
+    margin-inline-end: calc(var(--nt-space-3) * -1);
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-inline-end-color: transparent;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before,
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    position: absolute;
+    inset-block: auto;
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    width: var(--nt-space-5);
+    height: var(--nt-space-5);
+    border-radius: 0;
+    content: '';
+    opacity: 1;
+    transform: none;
+    pointer-events: none;
+    transition: none;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
+    inset-block-start: calc(var(--nt-space-5) * -1);
+    background: radial-gradient(
+      circle at top left,
+      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
+      var(--nt-bg-inverse) var(--nt-space-5)
+    );
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    inset-block-end: calc(var(--nt-space-5) * -1);
+    background: radial-gradient(
+      circle at bottom left,
+      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
+      var(--nt-bg-inverse) var(--nt-space-5)
+    );
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout:dir(rtl) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
+    background: radial-gradient(
+      circle at top right,
+      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
+      var(--nt-bg-inverse) var(--nt-space-5)
+    );
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout:dir(rtl) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    background: radial-gradient(
+      circle at bottom right,
+      transparent calc(var(--nt-space-5) - var(--nt-space-px)),
+      var(--nt-bg-inverse) var(--nt-space-5)
+    );
+  }
+
+  /* A collapsed rail has no adjoining inverse panel: restore the pill and
+   * the original non-color active indicator instead of showing notches. */
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+    margin-inline-end: 0;
+    border-start-end-radius: var(--nt-radius-item);
+    border-end-end-radius: var(--nt-radius-item);
+    border-inline-end-color: var(--nt-border-strong);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before {
+    inset-block: var(--nt-space-2);
+    inset-inline-start: calc(var(--nt-space-px) * -1);
+    inset-inline-end: auto;
+    width: var(--nt-space-1);
+    height: auto;
+    border-radius: var(--nt-radius-pill);
+    background: var(--nt-selection-indicator);
+    transform: scaleY(1);
+  }
+
+  :is(.nt-app-shell--collapsed .nt-sidebar--glass.nt-sidebar--cutout, .nt-sidebar--glass.nt-sidebar--cutout.nt-sidebar--collapsed) .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    content: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active) {
+    margin-inline-end: 0;
+    border-start-end-radius: var(--nt-radius-pill);
+    border-end-end-radius: var(--nt-radius-pill);
+    border-inline-end-color: Highlight;
+  }
+
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::before,
+  .nt-sidebar--glass.nt-sidebar--cutout .nt-sidebar__item:is([aria-current='page'], .nt-sidebar__item--active)::after {
+    display: none;
+  }
+}
+
 /* Keep the higher-contrast palette solid rather than translucent. */
 :is([data-nt-theme='high-contrast'], [data-nt-contrast='high']) .nt-sidebar--glass {
   background: var(--nt-bg-sidebar);
