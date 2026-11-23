@@ -68,6 +68,19 @@
   --nt-selection-border: var(--nt-border-interactive);
   --nt-selection-indicator: var(--nt-accent);
 
+  /* Glass material: opt-in translucent navigation and floating surfaces.
+   * --nt-glass-backdrop is the frame color glass sits on; text over glass
+   * keeps the --nt-text-* contrast because the tint stays mostly opaque. */
+  --nt-glass-bg: rgba(226, 232, 240, 0.64);
+  --nt-glass-bg-strong: rgba(241, 245, 249, 0.9);
+  --nt-glass-border: rgba(15, 23, 42, 0.1);
+  --nt-glass-highlight: rgba(255, 255, 255, 0.55);
+  --nt-glass-item-bg: rgba(255, 255, 255, 0.18);
+  --nt-glass-item-hover: rgba(255, 255, 255, 0.66);
+  --nt-glass-ambient-start: rgba(82, 142, 245, 0.18);
+  --nt-glass-ambient-end: rgba(167, 139, 250, 0.14);
+  --nt-glass-backdrop: #dfe6f0;
+
   /* Scrollbar */
   --nt-scrollbar-size: 0.75rem;
   --nt-scrollbar-track: transparent;

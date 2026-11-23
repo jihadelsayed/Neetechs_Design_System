@@ -3,8 +3,12 @@
   --nt-duration-normal: 0.01ms;
   --nt-duration-slow: 0.01ms;
   --nt-duration-slower: 0.01ms;
+  --nt-duration-layout: 0.01ms;
+  --nt-motion-stagger: 0ms;
   --nt-transition-transform: none;
   --nt-transition-overlay: opacity 0.01ms linear;
+  --nt-transition-selection: var(--nt-transition-colors);
+  --nt-motion-selection: var(--nt-transition-colors);
   --nt-motion-card: var(--nt-transition-colors);
   --nt-motion-dialog: var(--nt-transition-overlay);
   --nt-motion-drawer: var(--nt-transition-overlay);
@@ -34,7 +38,11 @@
     --nt-duration-normal: 0.01ms;
     --nt-duration-slow: 0.01ms;
     --nt-duration-slower: 0.01ms;
+    --nt-duration-layout: 0.01ms;
+    --nt-motion-stagger: 0ms;
     --nt-transition-transform: none;
     --nt-transition-overlay: opacity 0.01ms linear;
+    --nt-transition-selection: var(--nt-transition-colors);
+    --nt-motion-selection: var(--nt-transition-colors);
   }
 }

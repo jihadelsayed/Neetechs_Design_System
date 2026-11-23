@@ -68,6 +68,21 @@
   --nt-selection-border: var(--nt-border-interactive);
   --nt-selection-indicator: var(--nt-accent);
 
+  /* Glass material: high contrast never depends on translucency, so every
+   * glass role resolves to a solid surface with a strong boundary. */
+  --nt-glass-bg: #000000;
+  --nt-glass-bg-strong: #050505;
+  --nt-glass-border: var(--nt-border-strong);
+  --nt-glass-highlight: transparent;
+  --nt-glass-item-bg: transparent;
+  --nt-glass-item-hover: var(--nt-bg-surface-hover);
+  --nt-glass-ambient-start: transparent;
+  --nt-glass-ambient-end: transparent;
+  --nt-glass-backdrop: #000000;
+  --nt-glass-blur: 0rem;
+  --nt-glass-blur-strong: 0rem;
+  --nt-glass-saturate: 1;
+
   /* Scrollbar */
   --nt-scrollbar-size: 0.875rem;
   --nt-scrollbar-track: #000000;
@@ -237,6 +252,18 @@
   --nt-elevation-drawer: none;
   --nt-elevation-toast: none;
   --nt-elevation-overlay: none;
+  --nt-glass-bg: var(--nt-bg-sidebar);
+  --nt-glass-bg-strong: var(--nt-bg-surface);
+  --nt-glass-border: var(--nt-border-strong);
+  --nt-glass-highlight: transparent;
+  --nt-glass-item-bg: transparent;
+  --nt-glass-item-hover: var(--nt-bg-surface-hover);
+  --nt-glass-ambient-start: transparent;
+  --nt-glass-ambient-end: transparent;
+  --nt-glass-backdrop: var(--nt-bg-app);
+  --nt-glass-blur: 0rem;
+  --nt-glass-blur-strong: 0rem;
+  --nt-glass-saturate: 1;
 }
 
 @media (prefers-contrast: more) {
@@ -250,6 +277,37 @@
     --nt-control-border-hover: var(--nt-text-primary);
     --nt-control-border-focus: var(--nt-text-primary);
     --nt-focus-ring: var(--nt-text-primary);
+    --nt-glass-bg: var(--nt-bg-sidebar);
+    --nt-glass-bg-strong: var(--nt-bg-surface);
+    --nt-glass-border: var(--nt-border-strong);
+    --nt-glass-highlight: transparent;
+    --nt-glass-item-bg: transparent;
+    --nt-glass-item-hover: var(--nt-bg-surface-hover);
+    --nt-glass-ambient-start: transparent;
+    --nt-glass-ambient-end: transparent;
+    --nt-glass-backdrop: var(--nt-bg-app);
+    --nt-glass-blur: 0rem;
+    --nt-glass-blur-strong: 0rem;
+    --nt-glass-saturate: 1;
+  }
+}
+
+/* Reduced transparency: glass surfaces become their solid equivalents. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-nt-theme] {
+    --nt-glass-bg: var(--nt-bg-sidebar);
+    --nt-glass-bg-strong: var(--nt-bg-surface);
+    --nt-glass-border: var(--nt-border-strong);
+    --nt-glass-highlight: transparent;
+    --nt-glass-item-bg: transparent;
+    --nt-glass-item-hover: var(--nt-bg-surface-hover);
+    --nt-glass-ambient-start: transparent;
+    --nt-glass-ambient-end: transparent;
+    --nt-glass-backdrop: var(--nt-bg-app);
+    --nt-glass-blur: 0rem;
+    --nt-glass-blur-strong: 0rem;
+    --nt-glass-saturate: 1;
   }
 }
 
@@ -280,6 +338,18 @@
     --nt-selection-border: Highlight;
     --nt-selection-fg: HighlightText;
     --nt-selection-indicator: Highlight;
+    --nt-glass-bg: Canvas;
+    --nt-glass-bg-strong: Canvas;
+    --nt-glass-border: ButtonText;
+    --nt-glass-highlight: transparent;
+    --nt-glass-item-bg: transparent;
+    --nt-glass-item-hover: Canvas;
+    --nt-glass-ambient-start: transparent;
+    --nt-glass-ambient-end: transparent;
+    --nt-glass-backdrop: Canvas;
+    --nt-glass-blur: 0rem;
+    --nt-glass-blur-strong: 0rem;
+    --nt-glass-saturate: 1;
     --nt-action-primary-bg: Highlight;
     --nt-action-primary-hover: Highlight;
     --nt-action-primary-pressed: Highlight;

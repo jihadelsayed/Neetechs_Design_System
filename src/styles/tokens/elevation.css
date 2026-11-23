@@ -23,4 +23,11 @@
   --nt-elevation-border-subtle: 1px solid var(--nt-border-subtle);
   --nt-elevation-border-strong: 1px solid var(--nt-border-strong);
 
+  /* Glass material. Colors live in the themes (--nt-glass-*); these are the
+   * optical parameters. Blur is kept modest so frosted surfaces stay cheap
+   * to composite on ordinary laptops and phones. */
+  --nt-glass-blur: 0.875rem;
+  --nt-glass-blur-strong: 1.5rem;
+  --nt-glass-saturate: 1.35;
+
 }
