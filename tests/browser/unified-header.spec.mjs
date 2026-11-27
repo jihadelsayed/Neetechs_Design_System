@@ -105,3 +105,63 @@ test('mobile drawer opens, closes on navigation and releases modal state on dest
   expect(await page.locator('#main').evaluate(el => el.inert)).toBe(false);
   expect(await page.evaluate(() => document.body.style.overflow)).not.toBe('hidden');
 });
+
+test('keyboard moves across navigation in LTR and RTL and restores panel trigger focus', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await load(page);
+  const tools = page.locator('.nt-navbar [data-nt-header-item="tools"]');
+  const products = page.locator('#fixture-header-nav-1-trigger');
+  await tools.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(products).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('#fixture-header-nav-1-panel a')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(products).toBeFocused();
+  await page.evaluate(() => {
+    const f = window.headerFixture;
+    f.controller.update({ ...f.config, direction: 'rtl' });
+  });
+  await tools.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(products).toBeFocused();
+});
+
+test('mobile focus stays inside drawer and Escape restores trigger and scroll state', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await load(page);
+  const trigger = page.locator('#fixture-header-mobile-trigger');
+  const drawer = page.locator('#fixture-header-mobile');
+  const close = drawer.locator('.nt-mobile-nav__close');
+  await trigger.click();
+  await expect(close).toBeFocused();
+  expect(await page.locator('#main').evaluate(el => el.inert)).toBe(true);
+  expect(await page.evaluate(() => document.body.style.overflow)).toBe('hidden');
+  await page.keyboard.press('Shift+Tab');
+  await expect(drawer.locator('[data-nt-header-action="logout"]')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(drawer).toBeHidden();
+  await expect(trigger).toBeFocused();
+  expect(await page.locator('#main').evaluate(el => el.inert)).toBe(false);
+  expect(await page.evaluate(() => document.body.style.overflow)).not.toBe('hidden');
+});
+
+test.describe('touch interaction', () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  test('touch opens drawer, delegates an action once and closes normally', async ({ page }) => {
+    await load(page);
+    const trigger = page.locator('#fixture-header-mobile-trigger');
+    const drawer = page.locator('#fixture-header-mobile');
+    await trigger.tap();
+    await expect(drawer).toBeVisible();
+    await drawer.locator('[data-nt-header-action="logout"]').tap();
+    await expect(drawer).toBeHidden();
+    expect(await page.evaluate(() => window.headerFixture.actions)).toEqual([{ id: 'logout', action: 'logout' }]);
+    expect(await page.locator('#main').evaluate(el => el.inert)).toBe(false);
+    await trigger.tap();
+    await drawer.locator('.nt-mobile-nav__close').tap();
+    await expect(drawer).toBeHidden();
+  });
+});
