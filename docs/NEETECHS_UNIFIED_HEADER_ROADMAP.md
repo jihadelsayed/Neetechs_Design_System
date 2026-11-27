@@ -208,6 +208,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Added four unit tests and two browser tests. Updated account integration docs. Local git ls-remote again failed to resolve github.com. Full package compilation, unit/browser execution, real framework integration and mobile interaction verification remain open. No consumer changes, npm release or deployment.
 - Next: steps 51–60 design-system testing; keep all failed or unexecuted gates explicitly open. MyAccount migration follows a successful local package gate.
 
+### Testing — Steps 51–55 partial verification
+
+- Recovered the exact GitHub blobs for renderer (e82aa15a2be6150645c606d4249ec1e3dd996cc1), types (e96813399fe6d4a842a7522a3a07165c06032694), icons (447b24c7d66de249201c2c40bfdc18d82c813ea5), account (53a6bba8f4d7ee4d1276c358804abb0ee62cd435), and preferences (332c3974422b28db2f9d9f84ff8ad4215fa30d63). Strict TypeScript 5.8.3 isolated compilation passed without stub dependencies for these five modules.
+- Ran 17/17 Node 22 unit tests from three exact repository files (renderer c5cb527150560f92eaf18d10b6504625528add1e, account f1d0a88752652719a1768eb22a2760ba8f24dc15, features 476fe7303ebd405ce1dfdf904901c6a42f34e2b8). All passed.
+- Compiled the original and new strict type fixtures successfully; nine expected invalid configurations are rejected. Added check:header-types to the default npm test gate and a package-root runtime export test. The complete root export/API compatibility gate is not run.
+- Existing browser tests cover dropdown coordination, keyboard Escape, focus restoration and DOM state updates. Added two touch browser regression cases. None of those browser controller tests were executed in this iteration; do not mark them passed.
+- GitHub DNS still prevents a full checkout; the local environment lacks the repository Playwright npm dependencies. Steps 51–55 remain open for full API/package and browser verification. Progress remains 45/100; isolated success is evidence, not full gate completion. No runtime code changes, publication, deployment or app migration.
+- Next: steps 56–60 responsive/theme/RTL/SSR/package verification. Revisit all outstanding test gates before MyAccount migration.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
