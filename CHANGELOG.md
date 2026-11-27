@@ -10,6 +10,20 @@ when the package owner manually runs the release workflow with `publish: true`.
 
 ## Unreleased
 
+### Unified global header (development preview)
+
+- Added framework-independent ntRenderHeader and ntMountHeader, shared branding
+  and logo export, typed account states, configurable ecosystem navigation,
+  optional app switcher, appearance/language preferences, notifications summary,
+  and mobile drawer account parity.
+- Added host-owned action and router delegation, SSR-safe rendering, shared
+  avatar fallback, and scoped responsive/RTL/accessibility styling.
+- Added Angular 20, React 18 and plain HTML/JavaScript integration references.
+- Fixed package validation to resolve exported assets without importing PNG as JS.
+- No application cutover or npm release is implied. Full package, framework and
+  browser verification remains pending; see docs/unified-header-release.md.
+
+
 Additive changes on top of the published 0.1.0 contract (no classes, tokens,
 exports, or behaviors removed).
 
