@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (21/100 completed at source-implementation level; shared responsive layout implemented; browser and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (25/100 completed at source-implementation level; shared material, sticky layout, spacing and typography implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -165,6 +165,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Added nine Playwright cases spanning 320–1440px, RTL and breakpoint transitions. These cases are authored, not executed. Full build and actual visual/interaction verification remain open; the source implementation count is not a test pass count.
 - Next: verify shared glass, sticky behavior, spacing and typography. Steps 21 and 53–60 remain verification gates; no application or npm deployment.
 
+### Phase 2 — Steps 27–30 material and typography
+
+- Scoped unified header material to the existing strong glass tint and blur/saturation tokens, with solid fallback for unsupported backdrop filters, reduced transparency and forced colors. Legacy header rules remain unchanged.
+- Sticky presentation explicitly uses logical block-start positioning and the shared header stacking token. Browser fixture uses a display: contents host, matching reference adapters; real consumer shells must still be checked for sticky constraints.
+- Existing density roles control navigation gaps and responsive padding. Brand and subtitle use the existing title and caption typography roles. No new theme tokens or fixed color palette.
+- Six isolated Chromium 144 checks passed using the new CSS block with a minimal fixture and representative existing token values: glass, sticky, typography, tablet/mobile density, legacy isolation and forced colors. This is not the complete stylesheet or controller suite. Added six package-level Playwright tests, not executed in the repository environment.
+- Step 21 and the full build, responsive, accessibility and application integration gates remain open. No package release or application deployment.
+- Next: shared icons, hover/current states, motion, overlay layering and extension slots.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -196,10 +205,10 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 24. Implement desktop navigation
 - [x] 25. Implement mobile responsive layout
 - [x] 26. Implement tablet layout
-- [ ] 27. Use existing glass tokens
-- [ ] 28. Implement sticky behavior
-- [ ] 29. Use shared spacing/dimensions
-- [ ] 30. Use shared typography
+- [x] 27. Use existing glass tokens
+- [x] 28. Implement sticky behavior
+- [x] 29. Use shared spacing/dimensions
+- [x] 30. Use shared typography
 - [ ] 31. Use shared icons
 - [ ] 32. Implement hover and current states
 - [ ] 33. Use shared motion tokens

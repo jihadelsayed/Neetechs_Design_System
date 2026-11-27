@@ -437,3 +437,74 @@
   .nt-header[data-nt-header] { gap: var(--nt-space-2); }
   .nt-header[data-nt-header] .nt-header__left { gap: var(--nt-space-2); }
 }
+
+
+/* Shared material and typography for the unified header. */
+.nt-header[data-nt-header] {
+  box-sizing: border-box;
+  min-block-size: var(--nt-header-height);
+  background: var(--nt-bg-surface);
+  border-block-end-color: var(--nt-glass-border);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--nt-text-primary);
+  font: var(--nt-text-label-md);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nt-header[data-nt-header] {
+    background: var(--nt-glass-bg-strong);
+    -webkit-backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+    backdrop-filter: blur(var(--nt-glass-blur)) saturate(var(--nt-glass-saturate));
+  }
+}
+
+.nt-header[data-nt-header].nt-header--sticky {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--nt-z-header);
+}
+
+.nt-header[data-nt-header] .nt-header__brand-name {
+  font: var(--nt-text-title-sm);
+  letter-spacing: var(--nt-letter-spacing-title);
+}
+
+.nt-header[data-nt-header] .nt-header__subtitle {
+  font: var(--nt-text-caption);
+}
+
+.nt-header[data-nt-header] .nt-header__extras,
+.nt-header[data-nt-header] .nt-header__right {
+  gap: var(--nt-density-navigation-gap);
+}
+
+@media (max-width: 64rem) {
+  .nt-header[data-nt-header] {
+    padding-inline: var(--nt-density-toolbar-padding);
+  }
+}
+
+@media (max-width: 40rem) {
+  .nt-header[data-nt-header] {
+    padding-inline: var(--nt-density-control-padding-inline);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nt-header[data-nt-header] {
+    background: var(--nt-bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-header[data-nt-header] {
+    background: Canvas;
+    color: CanvasText;
+    border-block-end-color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
