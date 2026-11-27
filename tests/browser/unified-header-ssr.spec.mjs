@@ -68,8 +68,12 @@ test('two independent instances have unique accessible references and preserve R
 test('guest markup contains neither authenticated identity nor logout action', async ({ page }) => {
   await page.setContent(documentHtml(ntRenderHeader(guest)));
   await expect(page.locator('#host')).not.toContainText('Example User');
-  await expect(page.locator('[data-nt-header-action="login"]')).toHaveCount(1);
+  await expect(page.locator('[data-nt-header-action="login"]')).toHaveCount(2);
   await expect(page.locator('[data-nt-header-action="logout"]')).toHaveCount(0);
+  await expect(page.locator('#ssr-header-account-panel [data-nt-header-action="login"]')).toHaveCount(1);
+  await expect(page.locator('#ssr-header-mobile [data-nt-header-action="login"]')).toHaveCount(1);
+  await expect(page.locator('#ssr-header-account-panel')).toBeHidden();
+  await expect(page.locator('#ssr-header-mobile')).toBeHidden();
 });
 
 test('hostile labels and URLs remain inert when parsed as a document', async ({ page }) => {
@@ -106,7 +110,7 @@ test('mount reuses real server markup and replaces a stale snapshot before attac
   expect(await page.evaluate(() => window.__ssrReused)).toBe(true);
   await expect(page.locator('#header-host')).not.toContainText('Example User');
   await expect(page.locator('[data-nt-header-action="logout"]')).toHaveCount(0);
-  await expect(page.locator('[data-nt-header-action="login"]')).toHaveCount(1);
+  await expect(page.locator('[data-nt-header-action="login"]')).toHaveCount(2);
   await page.locator('#ssr-header-account-trigger').click();
   await expect(page.locator('#ssr-header-account-panel')).toBeVisible();
   await page.evaluate(() => window.__ssrController.destroy());
