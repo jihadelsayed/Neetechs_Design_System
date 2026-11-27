@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-nt-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Unified header fixture</title><link rel="stylesheet" href="/src/index.css"></head>
+<body>
+<div id="header-host"></div>
+<main id="main"><h1>Unified header fixture</h1><button id="outside" type="button">Outside</button></main>
+<script type="module">
+import { ntRenderHeader, ntMountHeader } from '/dist/index.js';
+const config = {
+  id: 'fixture-header',
+  brand: { label: 'Neetechs', href: '/', internal: true, appName: 'MyAccount' },
+  labels: { primaryNavigation: 'Primary', mobileNavigation: 'Site', openNavigation: 'Open site menu', closeNavigation: 'Close site menu', account: 'Account', accountLoading: 'Checking account' },
+  navigation: [
+    { kind: 'link', id: 'tools', label: 'Tools', href: '/tools', internal: true },
+    { kind: 'group', id: 'products', label: 'Products', children: [{ kind: 'link', id: 'billing', label: 'Billing', href: '/billing', internal: true }] }
+  ],
+  account: { state: 'authenticated', identity: { name: 'Example User' }, items: [{ kind: 'action', id: 'logout', action: 'logout', label: 'Sign out' }] },
+  appearance: { label: 'Theme', selectedId: 'dark', choices: [{ id: 'light', label: 'Light', action: 'light' }] }
+};
+const host = document.querySelector('#header-host');
+host.innerHTML = ntRenderHeader(config);
+const before = host.firstElementChild;
+const actions = [], navigations = [];
+const options = { onAction: value => actions.push(value), onNavigate: value => { navigations.push(value); return true; } };
+const controller = ntMountHeader(host, config, options);
+window.headerFixture = { config, host, before, controller, actions, navigations, options, mount: ntMountHeader };
+</script>
+</body>
+</html>
