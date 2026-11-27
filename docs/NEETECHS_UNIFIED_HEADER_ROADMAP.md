@@ -180,7 +180,7 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Preserved existing hover and route-current styles; selected menu choices, disabled controls, reduced motion and forced-color selection styling are scoped to the unified header. Avatar image is positioned over the fallback.
 - Retained shared header/dropdown/drawer stacking tokens. Controller fits open panels within viewport horizontally on open/resize; actual consumer stacking contexts and narrow-layout overflow remain verification gates.
 - Added optional structured workspace and contextual action slots. They use the existing configuration and host callbacks in both desktop and mobile layouts, not arbitrary HTML. Framework-owned custom DOM/widget slots are not implemented; assess any real consumer that cannot be represented by typed entries before adopting.
-- Added four unit tests and four Playwright cases. They are authored, not executed in the package checkout. Do not interpret source implementation checkmarks as runtime verification. No consumer changes, publication or deployment.
+- Isolated icon registry strict TypeScript compilation passed; the exact local source Git blob matched 447b24c7d66de249201c2c40bfdc18d82c813ea5. Node assertions passed for all 12 supported icons and five rejected inputs (including prototype keys and malicious SVG strings). Added four unit tests and four Playwright cases; the repository's complete suites were not executed. Renderer/controller changes require full compile and browser regression validation. No consumer changes, publication or deployment.
 - Next: ecosystem navigation registry and shared product links (steps 36–40). Step 21 and all remaining validation gates remain open.
 
 ## Audit and architecture
