@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 in progress (5/100 verified audit tasks; no runtime implementation or deployment yet).
+Status: Phase 1 in progress (11/100 source-audit and architecture tasks; no runtime implementation or deployment yet).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -47,9 +47,51 @@ Versions are declared dependencies from package.json, not installed lockfile res
 - Existing header SCSS has local layering fixes. Verify Resume Studio and right drawer stacking before removing them. Preserve app-specific sidebar and page headers.
 - Design system reference: docs/site-chrome.md, src/shell/header/header.css, src/behaviors/navigation.ts and src/behaviors/index.ts. Existing navbar, account menu and mobile drawer already cover keyboard, focus and dismissal behavior. No global component renderer yet verified.
 
+
+## Detailed comparison — pilot and priority apps
+
+| App | Brand destination | Primary navigation | Account/localization differences |
+| --- | --- | --- | --- |
+| MyAccount | neetechs.com | External Tools, Products, Company | Local settings route without locale prefix (Angular base href); normalized returnUrl; picture_tag; light/dark |
+| Frontend | Angular router home | Internal /tools, /apps, /digital-products, /company | SiteLanguageSwitcherComponent in both variants; $localize keys; picture; preserve routerLink and active state |
+| Apply | Angular router home | Internal /, /dashboard, /applications and external neetechs.com | AppLocaleService, applyText and languageHref; preserve path/query/hash and locale prefixes; cross-domain account settings; separate Apply sidebar |
+| Billing | neetechs.com | External Tools, Products, Company | Cross-domain localized account settings; picture_tag; RuntimeConfigService host on desktop |
+
+All four duplicate account name fallbacks, sign-in/sign-up redirects, guest/authenticated branches, sign-out, theme toggle, and mobile/desktop menu state. CSS files repeat account avatar, brand, navigation, menu, hamburger and drawer styles. MyAccount has approximately 744 lines of local header SCSS (70 + 297 + 377 as returned by source line splitting); remove only after equivalent behavior is tested. Frontend, Apply and Billing have their own related SCSS files; shared tokens alone do not eliminate duplication.
+
+## Additional application observations
+
+- Companies: Company Center brand and internal dashboard/companies/create-company routes; existing i18n labels and route-active handling.
+- Calendar, Phone, Ticket, Proof: separate desktop/mobile variants. Proof has localized labels and product routes; Ticket has explicit trigger/panel focus and hidden state.
+- BrandKit, Boost, Devices: existing product-specific single headers; retain subtitles, loading state, workspace links and mobile drawer behavior through adapters.
+- Data: header includes its own notification and user menu components; expose extension points rather than replacing their domain behavior.
+- Tools: React AppLayout; Explore, Create Tool, My Tools, Favorites, developer settings and staff-only Reviews; retain React Router and authorization filtering.
+- Vault: workspace shell header with sidebar toggle and secure workspace identity; adapt existing shell rather than add another topbar.
+- Agent: workspace topbar includes company name, workspace selector, sidebar toggle and logout.
+- DaySlice: planner topbar has product-specific actions and print-hidden behavior; preserve planner tools and print layout.
+- Resume: public profile hero navigation uses section anchors and conditional Experience, Work, Publications, Contact links. Treat as a public profile variant, not as a logged-in dashboard.
+- AI: ChatHeader owns sidebar toggle, company/model selectors and account action; do not replace chat functionality or force a second global header.
+- Accounts: authentication-only routes require explicit exclusion review; do not introduce a global account menu into login/signup without a justified requirement.
+- Policies, Tracker, Restaurant, legacy projects and full native/extension scope remain open pending further inventory.
+
+## Architecture decision and proposed public API
+
+Use a framework-independent renderer plus the existing navigation controllers in the design system. Do not create separate copies of markup in Angular and React. Proposed source path: src/shell/header/unified-header.ts, with adjacent types and tests. Keep existing CSS exports and behavior contracts backward compatible. Export the new API from the existing package root after implementation and checks; do not introduce a mandatory framework dependency.
+
+- Proposed API: ntRenderHeader(config) returns deterministic escaped markup for SSR; ntMountHeader(root, config, options) attaches or mounts the same markup and returns a controller with update(config), closeMenus(), and destroy(). Exact signatures may evolve during implementation and tests. No document/window access at module import. Use caller-provided stable instance IDs (unique within the page) for SSR/ARIA consistency. Hydrate existing compatible markup instead of recreating it unnecessarily.
+- Configuration: brand {label, href, logoUrl?, appName?, subtitle?}, navigation items (stable id, localized label, href or action, current/disabled, optional grouped children), account as a discriminated loading/guest/authenticated state, localized accessibility labels, optional appearance/language/app-switcher/notification/actions, sticky/embedded presentation and app-owned workspace slots. No embedded auth token, network request, permissions checks, or app-router dependency.
+- Link contract: preserve real hrefs, fragment links, modified clicks, external navigation and keyboard activation. Adapters may intercept only unmodified supported internal links through a supplied navigation handler. Application decides the active route and permitted menu items. Do not put authorization decisions in the UI registry.
+- Account/actions: adapters provide login/signup/logout/settings/theme/locale handlers or links; no hardcoded returnUrl, runtime host or locale normalization in the renderer. State updates must remove stale authenticated identity immediately on sign-out. Support avatar error fallback without error loops. Loading is distinct from guest.
+- Ecosystem registry: separate optional Neetechs link configuration from generic header rendering. Existing links are the baseline. New Billing/app switcher/language/notification features require verified route or provider support; hide unsupported controls, not fake them. Preserve existing app-specific destinations and role filtering.
+- Behavior: reuse ntCreateNavbar, ntCreateAccountMenu and ntCreateMobileNav. Coordinate menus, use shared breakpoint and layering tokens, preserve escape/outside click/focus restoration, ensure mobile drawer is not clipped by a backdrop-filter stacking context, destroy listeners and overlays on teardown.
+- Security: escape all text/attributes in SSR; validate allowed href and image URL schemes (no javascript or executable data URLs); no unsanitized HTML configuration. Extension slots are trusted application-owned nodes/components, not arbitrary HTML strings. No authentication/authorization changes.
+- Compatibility: Angular 14/15/20/21, React 18 and plain HTML consumers must be validated. Thin adapters keep their own lifecycle, router, state and localization integrations; no framework-specific imports in the generic package. Existing public API gate allows additive exports.
+- MyAccount pilot acceptance: header remains absent for CV preview; one responsive global header; preserve existing auth and route behavior, settings, theme, profile/avatar fallback, overlay stacking, skip link, footer, right drawer and application content. Test guest/loading/authenticated, logout, localized paths, mobile/desktop/RTL, keyboard and Resume Studio before deleting old code.
+- Release acceptance: run design-system test/build/browser/API/package gates and local package integration with MyAccount before manual npm publication. No app deployments until the published package and lockfiles are verified.
+
 ## Progress and evidence
 
-Audit reads performed directly on GitHub main. Steps checked below refer only to source inspection. No local clone, npm build, browser test, publication or deployment was performed. Steps 1–2 remain open because local synchronization and exhaustive active-app classification are not verified. Step 3 covers the initial declared dependency matrix; lockfile/install verification remains a release prerequisite. Steps 7–11 and 13–15 remain open pending complete source-level comparison. Step 12 records MyAccount auth dependencies; verify each app's adapter during migration.
+Audit reads performed directly on GitHub main. Steps checked below refer only to source inspection. No local clone, npm build, browser test, publication or deployment was performed. Steps 1–2 remain open because local synchronization and exhaustive active-app classification are not verified. Step 3 covers the initial declared dependency matrix; lockfile/install verification remains a release prerequisite. Steps 7–9, 11, 14 and 15 now have source comparison and architecture evidence. Steps 10 and 13 remain open because the remaining-app audit and full route inventory are not exhaustive; verify each migration independently. Step 12 records MyAccount auth dependencies; verify each app's adapter during migration.
 
 ## Audit and architecture
 
@@ -59,15 +101,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 4. Audit shared header CSS and behaviors
 - [x] 5. Audit MyAccount desktop header
 - [x] 6. Audit MyAccount mobile header
-- [ ] 7. Audit main website header
-- [ ] 8. Audit Apply header
-- [ ] 9. Audit Billing header
+- [x] 7. Audit main website header
+- [x] 8. Audit Apply header
+- [x] 9. Audit Billing header
 - [ ] 10. Audit remaining headers
-- [ ] 11. Identify duplicate markup, CSS and state
+- [x] 11. Identify duplicate markup, CSS and state
 - [x] 12. Inventory authentication dependencies
 - [ ] 13. Inventory URLs and navigation
-- [ ] 14. Record app-specific behavior and exclusions
-- [ ] 15. Define public API and architecture
+- [x] 14. Record app-specific behavior and exclusions
+- [x] 15. Define public API and architecture
 
 ## Shared header development
 
