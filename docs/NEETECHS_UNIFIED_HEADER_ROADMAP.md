@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (14/100 completed; interactive controller implemented as follow-up to step 18; browser verification and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (15/100 completed at source-implementation level; Angular 20 reference adapter added; actual Angular build, integration, browser verification and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -121,6 +121,16 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Count stays 14/100 because this finishes the implementation follow-up to already-counted step 18; no separate browser/hydration or interaction verification step is marked complete. Remaining visual, SSR framework adapter, accessibility, notification and workspace-slot work is open. No npm publication or deployment.
 - Next: build the Angular adapter with SSR/hydration-safe lifecycle and test the existing MyAccount state/routing contract without removing its legacy header prematurely.
 
+
+### Phase 2 — Angular 20 reference adapter (2026-11-27)
+
+- Added `docs/integrations/angular/nt-header.component.ts` (43f7047): standalone Angular wrapper using the package renderer/controller, afterNextRender, reactive input snapshots, navigation callback, action output and explicit teardown. The reference source stays outside the framework-independent package's TypeScript build; it is not yet an importable Angular package entry.
+- SSR strategy: initial markup comes only from the shared escaped renderer; the scoped ngSkipHydration host opts out of Angular hydration for controller-owned DOM. Actual Angular SSR/AOT and hydration behavior are not verified. Angular 14/15 require a legacy lifecycle adapter review.
+- Isolated TypeScript 5.8.3 strict checking passed using narrow Angular API declarations and the exact header type contract. Verified adapter blob 31d1d0c1e29c82359bffa028522dd4d5dd93f4d0 on GitHub. This is not a real Angular compiler or integration test.
+- Added four Jasmine integration specs (de06222) for one header/action dispatch, latest route callback, state update and teardown, plus integration instructions (4175185). These tests are not executed because the Angular dependencies and repository clone are unavailable in the execution environment.
+- MyAccount still declares @neetechs/ui 0.2.0 and enables hydration. No changes to MyAccount, its legacy headers, package versions, auth or deployment. Step 19 records the reference adapter implementation only. Actual package adoption and framework verification remain gated by steps 21, 59–60 and 61–75.
+- Next: implement the React reference adapter, then address SSR, packaging and shared responsive behavior before MyAccount migration.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -144,7 +154,7 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 16. Create component directory
 - [x] 17. Define typed configuration interfaces
 - [x] 18. Implement framework-independent renderer/component (pure renderer; client controller pending in subsequent behavior and hydration steps)
-- [ ] 19. Implement Angular adapter
+- [x] 19. Implement Angular adapter (Angular 20 reference source; actual Angular compilation, packaging and older-version compatibility pending)
 - [ ] 20. Implement React adapter
 - [ ] 21. Implement SSR-safe rendering and hydration
 - [ ] 22. Implement brand logo
