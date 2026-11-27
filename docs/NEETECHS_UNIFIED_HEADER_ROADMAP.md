@@ -277,6 +277,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Tools main has an inactive role-aware React candidate under docs/unified-header/tools-unified-header.tsx (b87f446), preserving public, authenticated and staff navigation and existing sign-in/sign-out handlers. Candidate deliberately suppresses identity and restricted navigation during refresh/error; verify this behavior and the existing profile destination before activation. No actual React compile or test run.
 - All five steps remain open because the verified shared package, MyAccount pilot and actual consumer tests are outstanding. Progress stays 47/100. No application production code, dependency manifests, auth services, deployment or publication changed. Next: prepare Companies, Calendar, Resume, AI and Phone (86–90), preserving chat and workspace-specific controls.
 
+### Consumer wave 2 — steps 86–90 preparation
+
+- Audited main manifests, root layouts, route ownership and actual header/workspace sources for Companies, Calendar, Resume, AI and Phone. All five declare @neetechs/ui 0.2.0. Recorded baseline blobs and per-app regression gates in docs/integrations/consumer-migration-86-90.md (88643bf).
+- Companies retains localized dashboard/company/create routes and separate company selector/sidebar. Calendar owns a specialized context and creation topbar; Neenee owns live company/model selection, conversation title, sidebar and settings overlay. Neither should acquire a second global header or lose specialized controls. Resume is a public profile hero with conditional anchors and download/social links, and uses Angular 15 (requires a compatible lifecycle adapter before migration).
+- Phone root classifier omits nine protected route segments and hash-only boundaries, potentially causing duplicate global and workspace chrome. Staged a route classification candidate under Phone docs/unified-header (2beb8f7). Prefer route metadata for final integration. Existing workspace selector, billing link, auth and mobile sidebar remain untouched.
+- All five migration steps remain open; no actual consumer tests, package upgrades, production changes, releases or deployments. Progress remains 47/100. Next: Data, Vault, BrandKit, Agent and remaining frontends (91–95).
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
