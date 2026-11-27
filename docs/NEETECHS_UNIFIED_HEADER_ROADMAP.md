@@ -284,6 +284,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Phone root classifier omits nine protected route segments and hash-only boundaries, potentially causing duplicate global and workspace chrome. Staged a route classification candidate under Phone docs/unified-header (2beb8f7). Prefer route metadata for final integration. Existing workspace selector, billing link, auth and mobile sidebar remain untouched.
 - All five migration steps remain open; no actual consumer tests, package upgrades, production changes, releases or deployments. Progress remains 47/100. Next: Data, Vault, BrandKit, Agent and remaining frontends (91–95).
 
+### Consumer wave 3 — steps 91–95 preparation
+
+- Reviewed ten consumer manifests and actual root/header or workspace source for Data, Vault, BrandKit, Agent, Ticket, Boost, DaySlice, Proof, Devices and Policies. Tracker repository and minimal README exist but root package.json was unavailable. Recorded source blob baselines and migration criteria in docs/integrations/consumer-migration-91-95.md (71ad181).
+- Data and Policies use Angular 14; Data's header infers userExist from localStorage token presence, which cannot serve as verified auth state. Policies has no shared package dependency, a legacy login iframe and empty root route config; verify scope/deployment before migration. DaySlice uses Angular 21 and a standalone planner shell with print-hidden controls. Preserve specialized Vault/Agent workspace topbars, company selector, guarded routes and independent drawers.
+- BrandKit/Ticket/Boost/Proof/Devices have root headers, but existing route maps, auth state, themes, native mobile dialog and locale behavior differ. Preserve actual navigation and app-specific behavior rather than replacing every app with a generic ecosystem menu.
+- Steps 91–95 remain open; Tracker eligibility, comprehensive active-app inventory and older/newer Angular adapter verification remain unresolved. No consumer changes, tests, dependency upgrades, publication or deployment in this wave. Progress remains 47/100. Next: final verification preparation (96–100), including anti-drift checks, cross-domain route verification and accurate remaining gate inventory. Do not mark unexecuted checks passed.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
