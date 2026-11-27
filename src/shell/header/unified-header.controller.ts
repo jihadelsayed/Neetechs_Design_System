@@ -15,6 +15,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
   let navbar: NtNavbarController | undefined;
   let mobile: NtMobileNavController | undefined;
   const menus: NtAccountMenuController[] = [];
+  const breakpoint = doc.defaultView?.matchMedia?.('(max-width: 64rem)');
 
   function closeDisclosures(): void {
     navbar?.close();
@@ -118,9 +119,20 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
     if (options.onNavigate({ id: itemId, href })) { event.preventDefault(); closeMenus(); }
   };
 
+  const onBreakpointChange = (): void => {
+    const active = doc.activeElement;
+    const inHeader = active !== null && root.contains(active);
+    closeMenus();
+    if (inHeader && active instanceof HTMLElement && active.getClientRects().length === 0) {
+      const target = breakpoint?.matches ? root.querySelector<HTMLElement>('.nt-header__mobile-trigger') : root.querySelector<HTMLElement>('.nt-header__brand[href]');
+      target?.focus({ preventScroll: true });
+    }
+  };
+
   function destroy(): void {
     if (destroyed) return;
     destroyed = true;
+    breakpoint?.removeEventListener('change', onBreakpointChange);
     root.removeEventListener('click', onClick);
     root.removeEventListener('error', onError, true);
     disposeBehaviors();
@@ -130,6 +142,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
 
   const initial = prepare(markup);
   mounted.add(root);
+  breakpoint?.addEventListener('change', onBreakpointChange);
   root.addEventListener('click', onClick);
   root.addEventListener('error', onError, true);
   try { install(initial); checkAvatars(); } catch (error) { destroy(); throw error; }

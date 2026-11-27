@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (18/100 completed at source-implementation level; shared brand asset and naming implemented; framework builds, integration and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (21/100 completed at source-implementation level; shared responsive layout implemented; browser and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -158,6 +158,13 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Default logo URL follows existing Frontend source; live URL availability, npm tarball asset export, actual app asset-copy configuration and visual layout still need verification. No consumer changed or deployment performed. Step 21 remains open.
 - Next: desktop navigation and responsive layout (steps 24–26), then shared visual styles.
 
+### Phase 2 — Steps 24–26 responsive layouts (source implementation)
+
+- Scope CSS changes to the unified header. Retain existing 64rem breakpoint: desktop primary navigation and optional controls; tablet/mobile menu, brand and account. Optional controls (appearance, language, apps and configured actions) remain available inside the mobile drawer. Group labels and selected choices are visible, and active child routes mark their desktop group.
+- Use shared sizing tokens, flex shrink and text truncation for long labels; ensure button-based drawer items match links. Close menus on breakpoint changes and release modal state through existing controllers. No change to legacy header styles or app routing.
+- Added nine Playwright cases spanning 320–1440px, RTL and breakpoint transitions. These cases are authored, not executed. Full build and actual visual/interaction verification remain open; the source implementation count is not a test pass count.
+- Next: verify shared glass, sticky behavior, spacing and typography. Steps 21 and 53–60 remain verification gates; no application or npm deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -186,9 +193,9 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [ ] 21. Implement SSR-safe rendering and hydration
 - [x] 22. Implement brand logo
 - [x] 23. Implement optional app name
-- [ ] 24. Implement desktop navigation
-- [ ] 25. Implement mobile responsive layout
-- [ ] 26. Implement tablet layout
+- [x] 24. Implement desktop navigation
+- [x] 25. Implement mobile responsive layout
+- [x] 26. Implement tablet layout
 - [ ] 27. Use existing glass tokens
 - [ ] 28. Implement sticky behavior
 - [ ] 29. Use shared spacing/dimensions
