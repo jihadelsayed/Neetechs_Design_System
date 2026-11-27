@@ -74,14 +74,15 @@ export function ntRenderHeader(config: NtHeaderConfig): string {
   const choiceMarkup = choices.map(([key, menu]) => menu ? disclosure(`${id}-${key}`, menu.label, `${ntRenderHeaderIcon(key)}<span class="nt-header__control-label">${escapeHtml(menu.label)}</span>`, `<div class="nt-profile-menu__section">${choiceEntries(menu)}</div>`) : '').join('');
   const notifications = config.notifications;
   const unread = notifications?.unreadCount;
-  const badge = typeof unread === 'number' && Number.isSafeInteger(unread) && unread > 0
-    ? `<span class="nt-header__notification-count"${notifications?.accessibleLabel ? ' aria-hidden="true"' : ''}>${unread > 99 ? '99+' : unread}</span>` : '';
+  const count = typeof unread === 'number' && Number.isSafeInteger(unread) && unread > 0 ? String(unread) : '';
+  const notificationLabel = notifications?.accessibleLabel ?? (notifications ? `${notifications.label}${count ? ` (${count})` : ''}` : '');
+  const badge = count ? `<span class="nt-header__notification-count" aria-hidden="true">${Number(count) > 99 ? '99+' : count}</span>` : '';
   const notificationPanel = notifications ? (notifications.items.length
     ? notifications.items.map(item => entry(item, 'nt-profile-menu__item')).join('')
     : `<p class="nt-header__notification-empty">${escapeHtml(notifications.emptyLabel)}</p>`) : '';
-  const notificationMarkup = notifications ? disclosure(`${id}-notifications`, notifications.accessibleLabel ?? notifications.label,
+  const notificationMarkup = notifications ? disclosure(`${id}-notifications`, notificationLabel,
     `${ntRenderHeaderIcon('notifications')}<span class="nt-header__control-label">${escapeHtml(notifications.label)}</span>${badge}`, `<div class="nt-profile-menu__section">${notificationPanel}</div>`) : '';
-  const mobileNotifications = notifications ? `<div class="nt-mobile-nav__section" role="group" aria-label="${escapeHtml(notifications.accessibleLabel ?? notifications.label)}"><div class="nt-mobile-nav__section-label" aria-hidden="true">${escapeHtml(notifications.label)}${badge}</div>${notifications.items.length ? notifications.items.map(item => entry(item, 'nt-mobile-nav__item')).join('') : notificationPanel}</div>` : '';
+  const mobileNotifications = notifications ? `<div class="nt-mobile-nav__section" role="group" aria-label="${escapeHtml(notificationLabel)}"><div class="nt-mobile-nav__section-label" aria-hidden="true">${escapeHtml(notifications.label)}${badge}</div>${notifications.items.length ? notifications.items.map(item => entry(item, 'nt-mobile-nav__item')).join('') : notificationPanel}</div>` : '';
   const mobileAccount = account && account.state !== 'loading' ? `<div class="nt-mobile-nav__section" role="group" aria-label="${escapeHtml(labels.account)}"><div class="nt-mobile-nav__section-label">${escapeHtml(identity?.name ?? labels.account)}</div>${account.items.map(item => entry(item, 'nt-mobile-nav__item')).join('')}</div>` : '';
   const switcher = config.appSwitcher && !config.appSwitcher.disabled ? disclosure(`${id}-apps`, config.appSwitcher.label, `${ntRenderHeaderIcon('apps')}<span class="nt-header__control-label">${escapeHtml(config.appSwitcher.label)}</span>`, `<div class="nt-profile-menu__section">${config.appSwitcher.children.map((item) => entry(item, 'nt-profile-menu__item')).join('')}</div>`) : '';
   const actions = actionItems.map((item) => entry(item, 'nt-button nt-button--ghost nt-button--sm')).join('');
