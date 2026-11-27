@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (15/100 completed at source-implementation level; Angular 20 reference adapter added; actual Angular build, integration, browser verification and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (16/100 completed at source-implementation level; Angular and React reference adapters added; actual framework builds, integration, browser verification and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -131,6 +131,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - MyAccount still declares @neetechs/ui 0.2.0 and enables hydration. No changes to MyAccount, its legacy headers, package versions, auth or deployment. Step 19 records the reference adapter implementation only. Actual package adoption and framework verification remain gated by steps 21, 59–60 and 61–75.
 - Next: implement the React reference adapter, then address SSR, packaging and shared responsive behavior before MyAccount migration.
 
+
+### Phase 2 — React 18 reference adapter (2026-11-27)
+
+- Added `docs/integrations/react/nt-header.tsx` (a1a9ea0): stable initial HTML host, shared controller, committed callback refs, config updates, StrictMode-oriented mount/cleanup, keyed instance-ID changes and server-safe effect selection. No duplicated header markup or mandatory React dependency.
+- Isolated TypeScript 5.8.3 strict compilation passed with narrow React/JSX and shared-header declarations (not actual React dependencies). Verified the exact tested adapter blob a44c8c416ed4a44310aaa5563a734052c3805029 on GitHub.
+- Added five jsdom integration cases (8eb36f0) and one server-rendering case (f065fba). Tests are authored but not executed: the current environment cannot resolve the npm registry/GitHub and lacks React dependencies. Real framework hydration, StrictMode and lifecycle behavior remain unverified.
+- Added integration and consumer gates (08d15bc). Tools declares React 18.3.1, React Router 6 and @neetechs/ui 0.2.0. Preserve role-filtered navigation, developer settings, sign-in/sign-out, skip link, Outlet and footer. Neenee chat-specific company/model controls must remain intact.
+- No consumer repositories, dependency versions or deployed apps changed. Step 20 counts reference implementation only. Step 21 (SSR/hydration verification) remains open. Next: address SSR and hydration integration, then branding and responsive header tasks; prioritize the MyAccount pilot after package verification.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -155,7 +164,7 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 17. Define typed configuration interfaces
 - [x] 18. Implement framework-independent renderer/component (pure renderer; client controller pending in subsequent behavior and hydration steps)
 - [x] 19. Implement Angular adapter (Angular 20 reference source; actual Angular compilation, packaging and older-version compatibility pending)
-- [ ] 20. Implement React adapter
+- [x] 20. Implement React adapter (React 18 reference source; actual framework compilation, packaging and integration tests pending)
 - [ ] 21. Implement SSR-safe rendering and hydration
 - [ ] 22. Implement brand logo
 - [ ] 23. Implement optional app name
