@@ -116,3 +116,19 @@ test('mount reuses real server markup and replaces a stale snapshot before attac
   await page.evaluate(() => window.__ssrController.destroy());
   await expect(page.locator('#header-host header')).toHaveCount(0);
 });
+
+test('SSR preserves optional notification and preference controls in RTL', async ({ page }) => {
+  const html = ntRenderHeader({
+    ...authenticated, direction: 'rtl',
+    appearance: { label: 'Appearance', selectedId: 'dark', choices: [{ id: 'dark', label: 'Dark', action: 'dark' }] },
+    language: { label: 'Language', selectedId: 'ar', choices: [{ id: 'ar', label: 'العربية', action: 'ar' }] },
+    notifications: { label: 'Notifications', unreadCount: 120, emptyLabel: 'Nothing new', items: [{ kind: 'action', id: 'notice', label: 'Open notifications', action: 'notice' }] },
+  });
+  await page.setContent(documentHtml(html));
+  await expect(page.locator('[data-nt-header-item="notice"]')).toHaveCount(2);
+  await expect(page.locator('.nt-header__notification-count')).toHaveText(['99+', '99+']);
+  await expect(page.locator('#ssr-header-notifications-trigger')).toHaveAttribute('aria-label', 'Notifications (120)');
+  await expect(page.locator('[aria-pressed="true"]')).toHaveCount(4);
+  await expect(page.locator('#ssr-header')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('#ssr-header-mobile')).toHaveAttribute('dir', 'rtl');
+});
