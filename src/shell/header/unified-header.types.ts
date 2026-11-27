@@ -82,6 +82,16 @@ export interface NtHeaderChoiceMenu {
   readonly choices: readonly NtHeaderChoice[];
 }
 
+/** Optional host-owned notification summary. No fetching or read-state mutation in UI. */
+export interface NtHeaderNotifications {
+  readonly label: string;
+  /** Localized accessible summary, e.g. "Notifications, 3 unread". */
+  readonly accessibleLabel?: string;
+  readonly unreadCount?: number;
+  readonly emptyLabel: string;
+  readonly items: readonly NtHeaderEntry[];
+}
+
 /** Structured application extension slots; no raw HTML or executable configuration. */
 export interface NtHeaderSlots {
   /** App-owned workspace selector, visible in desktop navigation and mobile drawer. */
@@ -101,6 +111,7 @@ export interface NtHeaderConfig {
   readonly appearance?: NtHeaderChoiceMenu;
   readonly language?: NtHeaderChoiceMenu;
   readonly appSwitcher?: NtHeaderGroup;
+  readonly notifications?: NtHeaderNotifications;
   readonly actions?: readonly NtHeaderEntry[];
   readonly slots?: NtHeaderSlots;
   readonly presentation?: 'standard' | 'sticky' | 'embedded';
