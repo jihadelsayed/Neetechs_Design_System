@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 in progress (11/100 source-audit and architecture tasks; no runtime implementation or deployment yet).
+Status: Phase 1 remains open; Phase 2 started (13/100 completed; type contract implemented, runtime renderer and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -93,6 +93,15 @@ Use a framework-independent renderer plus the existing navigation controllers in
 
 Audit reads performed directly on GitHub main. Steps checked below refer only to source inspection. No local clone, npm build, browser test, publication or deployment was performed. Steps 1–2 remain open because local synchronization and exhaustive active-app classification are not verified. Step 3 covers the initial declared dependency matrix; lockfile/install verification remains a release prerequisite. Steps 7–9, 11, 14 and 15 now have source comparison and architecture evidence. Steps 10 and 13 remain open because the remaining-app audit and full route inventory are not exhaustive; verify each migration independently. Step 12 records MyAccount auth dependencies; verify each app's adapter during migration.
 
+
+### Phase 2 — typed contract (2026-11-27)
+
+- Added `src/shell/header/unified-header.types.ts` (commit 22a958e), creating the implementation location alongside header.css. Link/action/group discriminated unions, loading/guest/authenticated account state, localized labels, brand, appearance/language choices, app switcher, optional actions, presentation and direction are defined without framework dependencies.
+- Added `tests/types/unified-header.test.ts` (commit 00a9566), covering valid configuration and four expected compile failures; exposed the types through the package root (commit 4cdffb3). This is additive and does not change runtime exports.
+- Isolated TypeScript 5.8.3 compilation passed with strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes, isolatedModules and verbatimModuleSyntax, ES2022/DOM and Bundler resolution. The two tested source files match GitHub blob hashes a5305c2eef2d15f4bbc8fe8d936d66006cfb8bb7 and 5a4bdf5b3d449a89fb87692ecbe2935ab7fc69c6. Run locally from repository root: `npx tsc --noEmit --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --isolatedModules --verbatimModuleSyntax --module ESNext --moduleResolution Bundler --target ES2022 --lib ES2022,DOM,DOM.Iterable tests/types/unified-header.test.ts`.
+- The type fixture is not yet wired into the package's default test script. Step 51 remains open for comprehensive public API testing. URL validation, escaping, lifecycle, extension slots, notification integration and all runtime behavior are pending. The full repository cannot be cloned in the current execution environment (GitHub DNS unavailable), so no full build, package tests, publication or deployment is claimed.
+- Next: implement the framework-independent renderer and runtime tests, preserving the existing CSS and behavior controllers. Keep remaining audit steps open until verified.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -113,8 +122,8 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 
 ## Shared header development
 
-- [ ] 16. Create component directory
-- [ ] 17. Define typed configuration interfaces
+- [x] 16. Create component directory
+- [x] 17. Define typed configuration interfaces
 - [ ] 18. Implement framework-independent renderer/component
 - [ ] 19. Implement Angular adapter
 - [ ] 20. Implement React adapter
