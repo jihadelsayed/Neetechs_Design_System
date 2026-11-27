@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (14/100 completed; typed contract and pure renderer implemented, interactive mount and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (14/100 completed; interactive controller implemented as follow-up to step 18; browser verification and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -110,6 +110,16 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Added `tests/unit/unified-header.test.mjs` (b05bf72) and additive package-root runtime export (0f83369). Isolated strict TypeScript 5.8.3 compilation and 8/8 Node 22 tests passed. Verified the exact renderer and unit test file Git blob hashes against GitHub: 2e05044e61f808cbe4d3302ed2a4a288829a6db1 and c5cb527150560f92eaf18d10b6504625528add1e. Isolated compilation used a structurally matching subset of the current header types, not the full package build.
 - Step 18 covers the pure renderer. Interactive mount/controller, menu coordination, route callbacks, avatar error handling, focus, hydration, responsive overflow, group active-state styling, optional feature accessibility and workspace slots are not complete; do not integrate or deploy yet. SSR/browser and comprehensive package test steps remain open. Full clone still blocked by GitHub DNS in the execution environment.
 - Next: implement and test the framework-independent client controller using the existing navigation behaviors, then validate framework adapters and MyAccount.
+
+
+### Phase 2 — interactive mount controller (2026-11-27)
+
+- Implemented `src/shell/header/unified-header.controller.ts` (2c7dbbe), exported `ntMountHeader` at package root (d1552d5). Mounts into a dedicated connected host; reuses matching SSR DOM, rejects duplicate mount or conflicting IDs, coordinates existing navbar/account/mobile drawer controllers, delegates actions and ordinary same-origin internal links, retries avatar fallback once, updates snapshots and removes listeners/overlay state on destroy.
+- The controller passes isolated TypeScript 5.8.3 strict compilation with ES2022, DOM, Bundler resolution, noUncheckedIndexedAccess, exactOptionalPropertyTypes, isolatedModules and verbatimModuleSyntax. The exact tested controller blob is d2e059ecd24981a3a6a1c958d40428225da3030d (verified on GitHub). The imported dependencies were represented by matching narrow type declarations; this is not a full repository build or integration test.
+- Added `tests/pages/unified-header.html` (aa14908) and `tests/browser/unified-header.spec.mjs` (23eae54), six browser test cases for SSR node reuse, duplicate mounting, menu coordination/keyboard and action dispatch, internal navigation/modifier behavior, auth updates/teardown, broken avatar recovery and mobile drawer cleanup.
+- Browser tests are written but not executed; GitHub DNS still blocks full clone in the local execution environment. Run from a complete checkout with the package dependencies installed: `npm run test:browser -- tests/browser/unified-header.spec.mjs`. Full build and existing regression suite remain mandatory before adoption.
+- Count stays 14/100 because this finishes the implementation follow-up to already-counted step 18; no separate browser/hydration or interaction verification step is marked complete. Remaining visual, SSR framework adapter, accessibility, notification and workspace-slot work is open. No npm publication or deployment.
+- Next: build the Angular adapter with SSR/hydration-safe lifecycle and test the existing MyAccount state/routing contract without removing its legacy header prematurely.
 
 ## Audit and architecture
 
