@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (48/100 completed at source-implementation/documentation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (49/100 completed at source-implementation/documentation and isolated type-gate level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -298,6 +298,14 @@ Use the repository's configured Playwright projects and install any additional b
 - Steps 96–98 and 100 remain open: source audits and verification criteria are not real deployed-route, authentication or screenshot results. No package publication, application cutover or deployment. Source version remains 0.3.0; npm availability unverified. The roadmap has 48 checked source/documentation steps and 52 open.
 - All 100 steps have now been reviewed. Next action is the full package gate, not more speculative application migrations. Local git ls-remote still reports GitHub DNS resolution failure; run the gate from a network-enabled checkout of main and record actual results.
 
+### Verification resumed — step 51 and pure header unit suite
+
+- Rechecked local git ls-remote against GitHub main: DNS still fails. npm registry DNS also does not resolve locally. No complete checkout or dependencies installed.
+- Recovered the remaining brand/ecosystem source and unit files, and compared all seven pure header source files, five unit test files and two type test files against exact main Git blob SHAs. Renderer e82aa15a2be6150645c606d4249ec1e3dd996cc1 and types e96813399fe6d4a842a7522a3a07165c06032694 unchanged. Newly recovered brand 72e85228dc4c70bf84987e03e96c4873af7cd9f0, ecosystem 7a7fa234ec6cb44ab8485cc3c7f94f1ee08dbd62, brand test 1ac1fcfee9678722887f87f98d3e1d2e1005cbd7 and ecosystem test ac47d3f8dd4564536188effdc5ca486fe79f7146 matched main.
+- Executed the exact package check:header-types TypeScript command with TypeScript 5.8.3; both type fixtures passed including expected invalid configurations. Mark step 51 complete at the configured source type-gate level. Actual package root import/type declarations and tarball still require step 60.
+- Strictly compiled all seven pure modules with Node 22.16.0 and TypeScript 5.8.3; ran all five recovered header unit files using node --test. 27/27 passed, zero skipped, including brand, ecosystem, auth, optional features and deterministic/escaped SSR rendering. Step 52 remains partial because controller updates have not been tested in a real browser.
+- No runtime source changes were required. Controller/navigation/drawer dependency graph, full stylesheet, actual Playwright suite, root build and package validation still need the full checkout. No publishing, consumer cutover or deployment. Progress 49/100, 51 open.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -359,7 +367,7 @@ Use the repository's configured Playwright projects and install any additional b
 
 ## Design system testing
 
-- [ ] 51. Test typed public API
+- [x] 51. Test typed public API (configured source type gate passed; installed root package export validation remains step 60)
 - [ ] 52. Test rendering and updates
 - [ ] 53. Test dropdown behavior
 - [ ] 54. Test keyboard and focus
