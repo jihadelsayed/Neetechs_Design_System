@@ -246,6 +246,14 @@ Use the repository's configured Playwright projects and install any additional b
 - Candidate maps verified AuthStore state, existing name/avatar precedence, RuntimeConfigService destinations, localized returnUrl, Angular Location/router settings, LogoutService and ThemeStore. Language switching deliberately deferred until existing reload and locale routing behavior is reconciled. Candidate uses environment-specific login URL, localized profile root, shared brand/app label, 64rem breakpoint and sticky-from-top behavior; confirm parity or approve these differences before activation.
 - Dependency remains 0.2.0; existing header and shell are untouched. Steps 61–75 remain open because package gates and real Angular integration are not run. Progress remains 45/100; no npm publication or deployment.
 
+### MyAccount — steps 66–70 staged refinement
+
+- MyAccount main: added host auth and language URL helpers (cf77756), staged Angular language actions (2457414), five additional Jasmine regression cases (c64a8cc), and updated pilot checklist (b7366fc). No active header, package version, authentication service or routing changes.
+- Verified Accounts main declares login, signup and logout sibling routes. Candidate uses runtime-configured login URL, validates signup pairing, preserves query/hash and uses existing AuthStore, LogoutService and ThemeStore. Existing LogoutService appears to append /logout to a URL ending /login; this is a separate unresolved endpoint issue, not changed here.
+- The candidate exposes English, Swedish and Arabic only on matching Angular localized builds and preserves selectedLanguage storage while navigating the locale URL rather than invoking reload-only LanguageService. Six other declared Angular locales remain unsupported by the current localized-path helper; verify or reconcile before activation.
+- Exact host mapper blob 3898ae2eb6b018910e5dd4f79b5ed44346a87e78 and localized-path blob eef8beed9e23d14954c598aa0b417e6950c210f5 compiled in strict TypeScript 5.8.3; eight isolated Node tests passed. Ten Jasmine cases are committed but not run with Angular. Full checkout remains blocked by DNS, so package and actual integration gates remain open.
+- Steps 61–75 remain open and progress remains 45/100. Next: shell/sidebar, CV preview and overlay compatibility review, route parity and rollback preparation (71–75). No publishing or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
