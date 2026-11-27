@@ -35,3 +35,5 @@ export { ntCreateHeaderBrand, NT_HEADER_BRAND_NAME, NT_HEADER_LOGO_URL, type NtH
 export { ntRenderHeaderIcon, type NtHeaderIcon } from './shell/header/unified-header.icons.js';
 
 export { NT_ECOSYSTEM_LINKS, ntCreateEcosystemNavigation, type NtEcosystemApp, type NtEcosystemNavigationOptions } from './shell/header/unified-header.ecosystem.js';
+
+export { ntCreateHeaderAccount, type NtHeaderAccountSnapshot, type NtHeaderIdentitySource, type NtHeaderAccountDestination, type NtHeaderAccountOptions } from './shell/header/unified-header.account.js';
