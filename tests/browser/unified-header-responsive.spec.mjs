@@ -69,3 +69,50 @@ test('switching viewport clears open menus and releases modal background', async
   await expect(page.locator('#fixture-header-mobile')).toBeHidden();
   expect(await page.locator('#main').evaluate(el => el.inert)).toBe(false);
 });
+
+test('desktop width constraints start immediately above the mobile breakpoint', async ({ page }) => {
+  for (const width of [1024, 1025]) {
+    await load(page, width);
+    const left = page.locator('#fixture-header .nt-header__left');
+    expect(await left.evaluate(el => getComputedStyle(el).maxWidth)).toBe(width > 1024 ? '30%' : 'none');
+    expect(await page.evaluate(() => matchMedia('not all and (max-width: 64rem)').matches)).toBe(width > 1024);
+  }
+});
+
+test('explicit root theme preserves native color scheme and header foreground', async ({ page }) => {
+  await load(page, 1280);
+  const header = page.locator('#fixture-header');
+  for (const [theme, scheme, foreground] of [
+    ['dark', 'dark', 'rgb(248, 250, 252)'],
+    ['light', 'light', 'rgb(2, 6, 23)'],
+    ['high-contrast', 'dark', 'rgb(255, 255, 255)'],
+  ]) {
+    await page.evaluate(value => { document.documentElement.dataset.ntTheme = value; }, theme);
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe(scheme);
+    await expect(header).toHaveCSS('color', foreground);
+    if (theme === 'high-contrast') await expect(header).toHaveCSS('background-color', 'rgb(5, 5, 5)');
+  }
+  await page.evaluate(() => { delete document.documentElement.dataset.ntTheme; });
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe('dark');
+});
+
+test('forced colors disable glass filtering and preserve disclosure controls', async ({ page }) => {
+  await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
+  await load(page, 1280);
+  await expect(page.locator('#fixture-header')).toHaveCSS('backdrop-filter', 'none');
+  const account = page.locator('#fixture-header-account-trigger');
+  await account.focus();
+  await page.keyboard.press('Enter');
+  await expect(account).toHaveAttribute('aria-expanded', 'true');
+  await page.keyboard.press('Escape');
+  await expect(account).toBeFocused();
+});
+
+test('RTL drawer anchors to the viewport inline start', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await load(page, 390, 'rtl');
+  await page.locator('#fixture-header-mobile-trigger').click();
+  const drawer = page.locator('#fixture-header-mobile');
+  await expect(drawer).toBeVisible();
+  expect(await drawer.evaluate(el => Math.abs(el.getBoundingClientRect().right - document.documentElement.clientWidth))).toBeLessThan(2);
+});
