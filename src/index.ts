@@ -26,3 +26,5 @@ export type {
 } from './shell/header/unified-header.types.js';
 
 export { ntRenderHeader } from './shell/header/unified-header.js';
+
+export { ntMountHeader } from './shell/header/unified-header.controller.js';
