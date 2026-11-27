@@ -579,3 +579,25 @@
     outline-offset: -1px;
   }
 }
+
+/* Optional notification summary, scoped to shared header surfaces. */
+:is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) .nt-header__notification-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-inline-start: var(--nt-space-1);
+  padding-inline: var(--nt-space-1);
+  min-inline-size: 1.25em;
+  border: 1px solid var(--nt-selection-border);
+  border-radius: 999px;
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+  font: var(--nt-text-caption);
+  font-variant-numeric: tabular-nums;
+}
+:is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) .nt-header__notification-empty {
+  margin: 0;
+  padding: var(--nt-space-2);
+  overflow-wrap: anywhere;
+}
