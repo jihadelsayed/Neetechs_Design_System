@@ -328,6 +328,12 @@ Use the repository's configured Playwright projects and install any additional b
 - MyAccount commits 9a58ba2 (pure helper), f05ed56 (existing LogoutService integration), 41055e2 (seven Jasmine regressions). Exact helper blob d11a7f18cadc224d4c3a44075c5bacf5dccd50f0 compiled under TypeScript 5.8.3 strict plus noImplicitReturns/noPropertyAccessFromIndexSignature/exactOptionalPropertyTypes and passed 7/7 isolated Node cases. Additional noUncheckedIndexedAccess check flagged an existing localized-path.ts issue; flag not enabled in consumer tsconfig, left untouched. Angular suite and actual server-side logout, redirect/localhost behavior still unverified.
 - Step 68 is partial, not completed; shared header remains inactive, package version unchanged, no deployment. Progress remains 54/100. Remaining primary gate: full package and actual consumer compile.
 
+### Pilot prerequisite — nine-locale routing correction
+
+- MyAccount and Accounts Angular/Firebase configurations declare nine builds. Separate UI build language from existing three-language auth portal helpers. MyAccount main adds localized-build-path.ts (6ecfe7b), corrects staged mapper (7e35b50), stages nine-language selector using LOCALE_ID (795954e), and corrects frontend authGuard's localized return path using Angular Location.prepareExternalUrl (24b9874). Existing backend/Accounts services and portal locale selection unchanged. For six additional locales, English portal fallback can preserve the requested localized UI return path. No header activation or deployment.
+- Exact mapper and build-helper Git blobs 0a7d096824af40779fc220327340796216c6b193 and cda6bdc6796086cab4b9c65ca0dd0ff8f3bf30b5 compiled with strict TypeScript 5.8.3, exactOptionalPropertyTypes and noUncheckedIndexedAccess. 12/12 isolated Node test groups passed, including all 81 language-switch combinations and nine account destination sets. Seven Jasmine cases added (2b14c56), not run via Angular.
+- Step 70 remains partial: actual localized AOT builds, translations, direct legacy duplicate-locale routes, guard/Accounts end-to-end auth, and actual header integration are unverified. Local GitHub DNS failure persists and npm dependencies unavailable. Progress remains 54/100. No publication, deployment, new branch or Actions.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
