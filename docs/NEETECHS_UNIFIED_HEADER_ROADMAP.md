@@ -240,6 +240,12 @@ npm run check:package
 
 Use the repository's configured Playwright projects and install any additional browsers they require. If any check fails, repair the existing shared implementation, rerun the gate, and record actual results before using the local package in MyAccount. Do not publish an unverified package.
 
+### MyAccount — staged preparation, no activation (2026-11-27)
+
+- MyAccount main now has a pure host mapping (c7f9275), five Jasmine cases (2d83962), inactive Angular reference candidate (a614019), and integration checklist (4b6baa6). Verified exact pure mapper and existing localized-path blobs cf040cbbc0cc6201032c019d782db697b268071f and eef8beed9e23d14954c598aa0b417e6950c210f5; strict TypeScript 5.8.3 compile and five isolated Node assertions passed.
+- Candidate maps verified AuthStore state, existing name/avatar precedence, RuntimeConfigService destinations, localized returnUrl, Angular Location/router settings, LogoutService and ThemeStore. Language switching deliberately deferred until existing reload and locale routing behavior is reconciled. Candidate uses environment-specific login URL, localized profile root, shared brand/app label, 64rem breakpoint and sticky-from-top behavior; confirm parity or approve these differences before activation.
+- Dependency remains 0.2.0; existing header and shell are untouched. Steps 61–75 remain open because package gates and real Angular integration are not run. Progress remains 45/100; no npm publication or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
