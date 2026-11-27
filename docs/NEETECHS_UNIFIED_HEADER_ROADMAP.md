@@ -140,6 +140,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Added integration and consumer gates (08d15bc). Tools declares React 18.3.1, React Router 6 and @neetechs/ui 0.2.0. Preserve role-filtered navigation, developer settings, sign-in/sign-out, skip link, Outlet and footer. Neenee chat-specific company/model controls must remain intact.
 - No consumer repositories, dependency versions or deployed apps changed. Step 20 counts reference implementation only. Step 21 (SSR/hydration verification) remains open. Next: address SSR and hydration integration, then branding and responsive header tasks; prioritize the MyAccount pilot after package verification.
 
+
+### Phase 2 — Step 21 SSR and hydration verification (partial, 2026-11-27)
+
+- Recovered the actual renderer and complete header type source into the isolated test workspace and matched GitHub blob SHAs `2e05044e61f808cbe4d3302ed2a4a288829a6db1` and `a5305c2eef2d15f4bbc8fe8d936d66006cfb8bb7`. Compiled these exact sources together using TypeScript 5.8.3, strict/noUncheckedIndexedAccess/exactOptionalPropertyTypes/isolatedModules/verbatimModuleSyntax, ES2022 and Bundler resolution. No stub types for this renderer check.
+- Ran five checks against Node-generated HTML in real Chromium 144.0.7559.96 via Python Playwright: loading state with no account actions; document/template DOM equivalence; two instances with unique IDs and valid ARIA references plus RTL; guest snapshot without authenticated identity/actions; hostile markup/URL safety. All five passed. Browser HTTP navigation is restricted by environment policy, so checks used setContent (document parsing, not live HTTP SSR).
+- Added six permanent Playwright cases in `tests/browser/unified-header-ssr.spec.mjs` (4d752bd): five document parsing checks corresponding to the isolated browser checks, plus a controller integration case that mounts Node-generated markup and replaces a stale snapshot. The repository's actual Playwright suite has not been executed here.
+- SSR rule for consumers: supply the same stable instance ID and initial configuration on server and first client render. For unverified sessions use loading, not cached authenticated identity or guessed guest state. After verification, update the controller with a new immutable snapshot. Never embed session secrets or raw API HTML in header configuration. Angular adapter deliberately opts out of Angular hydration for its owned DOM; React requires matching initial snapshots. Verify real framework integration before changing MyAccount.
+- Step 21 remains open: real Angular SSR/hydration and React hydrateRoot/StrictMode runs, controller mount from server HTML, actual package build and browser layout testing are not yet verified. GitHub and npm DNS unavailable in the execution environment; browser HTTP navigation blocked. No consumer changes, npm release or deployment. Next: continue independent branding/responsive implementation while retaining the hydration gate.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
