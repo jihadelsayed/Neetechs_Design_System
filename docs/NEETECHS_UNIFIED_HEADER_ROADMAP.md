@@ -217,6 +217,29 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - GitHub DNS still prevents a full checkout; the local environment lacks the repository Playwright npm dependencies. Steps 51–55 remain open for full API/package and browser verification. Progress remains 45/100; isolated success is evidence, not full gate completion. No runtime code changes, publication, deployment or app migration.
 - Next: steps 56–60 responsive/theme/RTL/SSR/package verification. Revisit all outstanding test gates before MyAccount migration.
 
+### Testing — Steps 56–60 partial verification and package fixes
+
+- Re-ran the 17 isolated unit tests against the same exact recovered source blobs from the preceding iteration: 17/17 passed. Local Node 22.16.0 and Chromium 144.0.7559.96 are available.
+- Six isolated Chromium document-parsing checks passed using actual Node-rendered header HTML: loading state, server/template equivalence, unique instance IDs and valid ARIA references with RTL, guest desktop/mobile account parity with hidden disclosures, inert hostile markup/URLs, and optional notification/preferences parity including RTL. These checks use setContent and do not mount the real controller or run framework hydration.
+- The actual mobile trigger and unified-header visibility media-query rules were checked in isolation at 320, 390, 768, 1024, 1025, 1280 and 1440px: all seven passed. Full stylesheet, overflow, density, touch, real theme and high-contrast verification remain open. Existing comprehensive responsive/material browser specifications are not executed.
+- Fixed two stale SSR browser assertions that expected a single login action despite intentional desktop/mobile parity; now verify two actions, exactly one in each surface, with panels initially hidden. Added an RTL notification/preference SSR case. These repository Playwright cases still require a full run.
+- Fixed a release-gate defect in scripts/check-package.mjs: the new PNG asset export was included in the consumer JS import probe. Asset exports are now verified through Node import.meta.resolve and file existence, not imported as JavaScript. The package smoke probe also checks the new root header functions and renders a header without browser globals. A local mock installed-package test confirms Node rejects PNG import with ERR_UNKNOWN_FILE_EXTENSION but resolves the asset successfully. This is not validation of the real tarball.
+- Local GitHub DNS resolution remains blocked. The actual package build, full test suite, pack/clean-consumer validation, Angular/React hydration and MyAccount migration remain unverified. No runtime production changes, version bump, publishing, deployment or new branches. Progress remains 45/100; steps 51–60 and 21 remain open.
+
+### Required full-checkout gate before MyAccount
+
+Run on an environment with repository and dependencies available, on main:
+
+```bash
+npm ci
+npm test
+npx playwright install chromium
+npm run test:browser
+npm run check:package
+```
+
+Use the repository's configured Playwright projects and install any additional browsers they require. If any check fails, repair the existing shared implementation, rerun the gate, and record actual results before using the local package in MyAccount. Do not publish an unverified package.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
