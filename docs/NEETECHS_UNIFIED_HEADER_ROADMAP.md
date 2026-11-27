@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (45/100 completed at source-implementation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (47/100 completed at source-implementation/documentation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -262,6 +262,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Cutover/rollback checklist committed to MyAccount (fb3b75a). Noted existing substring CV-route matching, independent body-scroll locks, localized logout endpoint and unsupported locale gaps as remaining verification items. Existing app shell and dependencies remain unchanged.
 - Steps 61–75 remain open because the verified package and full Angular/browser run are unavailable; local DNS still blocks git clone. Progress remains 45/100. Next: release preparation steps 76–80 without publishing, deploying or removing legacy files until the test gates pass.
 
+### Release — steps 76–80 preparation (manual)
+
+- Added canonical public unified-header guide (340862f), HTML/JavaScript integration example (277e712), README entry (8051d1d), manual release/rollback runbook (7103df1), and unreleased changelog (e5d15ba). Existing Angular 20 and React 18 reference adapters and their tests are linked; these are source references, not verified consumer builds.
+- Steps 76 and 77 complete at documentation/source level. Step 78 remains partial: source package.json, package-lock.json root and generated src/version.ts already agree on 0.3.0, so no speculative version bump was made. Confirm the actual npm registry versions and choose an available release version after verification.
+- Steps 79–80 remain open: full package gates, actual Angular/React and MyAccount pilot, manual publication and installation/deployment have not run. No GitHub Actions, branch creation, tags, package publication, consumer dependency changes or deployments.
+- Progress: 47/100 at source/documentation level, not a claim of verified production readiness. Before any application cutover, satisfy the outstanding package and MyAccount gates. Next: prepare consumer migration inventories and parity matrices for steps 81–85; do not activate unverified headers.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -354,8 +361,8 @@ Use the repository's configured Playwright projects and install any additional b
 
 ## Package release
 
-- [ ] 76. Update documentation
-- [ ] 77. Add Angular/React/HTML examples
+- [x] 76. Update documentation
+- [x] 77. Add Angular/React/HTML examples
 - [ ] 78. Update changelog/version
 - [ ] 79. Validate and manually publish package
 - [ ] 80. Install published version in MyAccount and verify deployment
