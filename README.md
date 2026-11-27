@@ -200,6 +200,15 @@ Then initialize appearance before rendering. Do not create a competing body-leve
 
 Do not import random component CSS files all over the app unless you are intentionally optimizing bundle size. For most Neetechs apps, one root import is cleaner.
 
+## Unified global header (development preview)
+
+The shared header implementation on main provides a framework-independent renderer,
+controller, account configuration, ecosystem navigation and appearance/language
+controls. See [the unified header guide](./docs/unified-header.md) for Angular,
+React and plain HTML examples and [the release runbook](./docs/unified-header-release.md)
+for required verification. Do not assume these APIs are already available in the
+published npm package.
+
 ## Basic button
 
 ```html
