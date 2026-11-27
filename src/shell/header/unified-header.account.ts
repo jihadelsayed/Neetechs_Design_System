@@ -36,6 +36,8 @@ export interface NtHeaderAccountOptions {
     readonly myProducts?: NtHeaderAccountDestination;
     readonly settings?: NtHeaderAccountDestination;
   };
+  /** Optional host-owned sign-out action. Never invoked by the configuration helper. */
+  readonly signOut?: { readonly label: string; readonly action: string; readonly disabled?: boolean };
   readonly fallbackAvatarUrl?: string;
   /** Email is optional in SSR markup; do not expose unless explicitly requested. */
   readonly showEmail?: boolean;
@@ -81,5 +83,6 @@ export function ntCreateHeaderAccount(snapshot: NtHeaderAccountSnapshot, options
     ...makeItem('account-products', labels.myProducts, destinations.myProducts, 'apps'),
     ...makeItem('account-settings', labels.settings, destinations.settings, 'settings'),
     ...(options.authenticatedItems ?? []),
+    ...(options.signOut && options.signOut.label.trim() && options.signOut.action.trim() ? [{ kind: 'action' as const, id: 'account-signout', label: options.signOut.label, action: options.signOut.action, icon: 'logout' as const, danger: true, ...(options.signOut.disabled === undefined ? {} : { disabled: options.signOut.disabled }) }] : []),
   ] };
 }
