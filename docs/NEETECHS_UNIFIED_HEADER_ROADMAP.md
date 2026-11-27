@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (30/100 completed at source-implementation level; shared icon, interaction, motion, layering and structured extension slots implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (35/100 completed at source-implementation level; optional ecosystem navigation and catalog switcher implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -183,6 +183,13 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Isolated icon registry strict TypeScript compilation passed; the exact local source Git blob matched 447b24c7d66de249201c2c40bfdc18d82c813ea5. Node assertions passed for all 12 supported icons and five rejected inputs (including prototype keys and malicious SVG strings). Added four unit tests and four Playwright cases; the repository's complete suites were not executed. Renderer/controller changes require full compile and browser regression validation. No consumer changes, publication or deployment.
 - Next: ecosystem navigation registry and shared product links (steps 36–40). Step 21 and all remaining validation gates remain open.
 
+### Shared functionality — Steps 36–40 ecosystem navigation
+
+- Added `src/shell/header/unified-header.ecosystem.ts` and package-root exports. The optional helper centralizes existing Tools, Products and Company destinations; Billing and the Products dropdown are explicitly opt-in.
+- The host supplies the already-filtered application catalog and localized labels. The shared helper creates independent stable entry IDs for Products and app switcher, marks the current app, and omits empty controls. Invalid IDs, blank labels, duplicate IDs, non-HTTPS destinations and embedded URL credentials are rejected. No permission decisions or backend requests are moved into UI.
+- Existing consumers are unchanged. A complete verified ecosystem application catalog, live destination checks, localization and adapter integration remain pending; the helper does not guess unknown domains or expose every app to every account. Billing uses the previously identified billing.neetechs.com destination.
+- Added five unit tests including shared renderer integration. Tests authored but not run in the full repository environment. No release or deployment. Next: account states, identity, account menu and settings destinations (steps 41–45).
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -226,11 +233,11 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 
 ## Shared functionality
 
-- [ ] 36. Centralize ecosystem navigation configuration separate from generic UI
-- [ ] 37. Implement Products navigation
-- [ ] 38. Implement Tools navigation
-- [ ] 39. Implement Billing navigation
-- [ ] 40. Implement app switcher
+- [x] 36. Centralize ecosystem navigation configuration separate from generic UI
+- [x] 37. Implement Products navigation
+- [x] 38. Implement Tools navigation
+- [x] 39. Implement Billing navigation
+- [x] 40. Implement app switcher
 - [ ] 41. Implement authenticated state
 - [ ] 42. Implement guest and loading states
 - [ ] 43. Implement avatar and name
