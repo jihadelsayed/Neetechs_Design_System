@@ -508,3 +508,74 @@
     backdrop-filter: none;
   }
 }
+
+
+/* Unified header interactions; existing site chrome remains untouched. */
+:is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) .nt-header__icon {
+  display: block;
+  inline-size: var(--nt-icon-size-md);
+  block-size: var(--nt-icon-size-md);
+  flex: 0 0 auto;
+}
+
+.nt-header[data-nt-header] .nt-header__control-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nt-header[data-nt-header] .nt-avatar__image {
+  position: absolute;
+  inset: 0;
+}
+
+.nt-header[data-nt-header] :is(.nt-navbar__panel, .nt-dropdown__content) {
+  z-index: var(--nt-z-dropdown);
+  min-inline-size: min(14rem, calc(100vw - var(--nt-space-4)));
+  max-inline-size: calc(100vw - var(--nt-space-4));
+  translate: var(--nt-header-panel-shift, 0px) 0;
+  overflow-wrap: anywhere;
+}
+
+.nt-header[data-nt-header] .nt-navbar__panel-link > .nt-header__icon {
+  align-self: flex-start;
+}
+
+.nt-header[data-nt-header] .nt-profile-menu__item[aria-pressed='true'] {
+  background: var(--nt-selection-bg);
+  color: var(--nt-selection-fg);
+  border-color: var(--nt-selection-border);
+}
+
+:is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) :is(button, a)[aria-disabled='true'] {
+  cursor: not-allowed;
+  color: var(--nt-text-disabled);
+}
+
+.nt-header[data-nt-header] :is(.nt-navbar__trigger, .nt-navbar__link, .nt-header__account, .nt-header__action),
+.nt-mobile-nav[data-nt-header-mobile] .nt-mobile-nav__item {
+  transition: var(--nt-transition-colors);
+}
+
+[data-nt-motion='reduced'] :is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) *,
+[data-nt-motion='reduced'] .nt-mobile-nav__overlay:has(+ .nt-mobile-nav[data-nt-header-mobile]) {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.nt-header[data-nt-header], .nt-mobile-nav[data-nt-header-mobile]) *,
+  .nt-mobile-nav__overlay:has(+ .nt-mobile-nav[data-nt-header-mobile]) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .nt-header[data-nt-header] .nt-profile-menu__item[aria-pressed='true'],
+  .nt-mobile-nav[data-nt-header-mobile] .nt-mobile-nav__item[aria-pressed='true'] {
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+}

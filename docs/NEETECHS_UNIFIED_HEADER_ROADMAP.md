@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (25/100 completed at source-implementation level; shared material, sticky layout, spacing and typography implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (30/100 completed at source-implementation level; shared icon, interaction, motion, layering and structured extension slots implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -174,6 +174,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Step 21 and the full build, responsive, accessibility and application integration gates remain open. No package release or application deployment.
 - Next: shared icons, hover/current states, motion, overlay layering and extension slots.
 
+### Phase 2 — Steps 31–35 interaction and extension contracts
+
+- Introduced a closed named SVG icon registry, decorative and inaccessible to the focus order; common appearance/language/apps/account/menu icons share the same source. Optional typed icons can be used for links/actions/groups.
+- Preserved existing hover and route-current styles; selected menu choices, disabled controls, reduced motion and forced-color selection styling are scoped to the unified header. Avatar image is positioned over the fallback.
+- Retained shared header/dropdown/drawer stacking tokens. Controller fits open panels within viewport horizontally on open/resize; actual consumer stacking contexts and narrow-layout overflow remain verification gates.
+- Added optional structured workspace and contextual action slots. They use the existing configuration and host callbacks in both desktop and mobile layouts, not arbitrary HTML. Framework-owned custom DOM/widget slots are not implemented; assess any real consumer that cannot be represented by typed entries before adopting.
+- Added four unit tests and four Playwright cases. They are authored, not executed in the package checkout. Do not interpret source implementation checkmarks as runtime verification. No consumer changes, publication or deployment.
+- Next: ecosystem navigation registry and shared product links (steps 36–40). Step 21 and all remaining validation gates remain open.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -209,11 +218,11 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 28. Implement sticky behavior
 - [x] 29. Use shared spacing/dimensions
 - [x] 30. Use shared typography
-- [ ] 31. Use shared icons
-- [ ] 32. Implement hover and current states
-- [ ] 33. Use shared motion tokens
-- [ ] 34. Use shared overlay layers
-- [ ] 35. Implement extension slots
+- [x] 31. Use shared icons
+- [x] 32. Implement hover and current states
+- [x] 33. Use shared motion tokens
+- [x] 34. Use shared overlay layers
+- [x] 35. Implement extension slots
 
 ## Shared functionality
 

@@ -42,8 +42,24 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
     return element;
   }
 
+  // Keep anchored panels within the viewport without changing logical alignment.
+  // The physical correction is derived from the actual bounding rect in both directions.
+  function fitPanel(panel: HTMLElement): void {
+    panel.style.removeProperty('--nt-header-panel-shift');
+    const width = doc.documentElement.clientWidth;
+    const rect = panel.getBoundingClientRect();
+    if (!width || !rect.width) return;
+    const shift = rect.left < 0 ? -rect.left : rect.right > width ? width - rect.right : 0;
+    if (shift) panel.style.setProperty('--nt-header-panel-shift', shift + 'px');
+  }
+
+  const onResize = (): void => {
+    for (const panel of root.querySelectorAll<HTMLElement>('.nt-navbar__panel:not([hidden]), .nt-dropdown__content:not([hidden])')) fitPanel(panel);
+  };
+
   function attach(): void {
-    navbar = ntCreateNavbar({ root: find('.nt-navbar'), onOpen: () => {
+    navbar = ntCreateNavbar({ root: find('.nt-navbar'), onOpen: (_trigger, panel) => {
+      fitPanel(panel);
       for (const menu of menus) menu.close();
       mobile?.close();
     } });
@@ -51,6 +67,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
       const panel = trigger.nextElementSibling as HTMLElement | null;
       if (!panel || panel.id !== trigger.getAttribute('aria-controls')) throw new Error('ntMountHeader: invalid disclosure.');
       const menu: NtAccountMenuController = ntCreateAccountMenu({ trigger, panel, onOpen: () => {
+        fitPanel(panel);
         navbar?.close();
         mobile?.close();
         for (const other of menus) if (other !== menu) other.close();
@@ -133,6 +150,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
     if (destroyed) return;
     destroyed = true;
     breakpoint?.removeEventListener('change', onBreakpointChange);
+    doc.defaultView?.removeEventListener('resize', onResize);
     root.removeEventListener('click', onClick);
     root.removeEventListener('error', onError, true);
     disposeBehaviors();
@@ -143,6 +161,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
   const initial = prepare(markup);
   mounted.add(root);
   breakpoint?.addEventListener('change', onBreakpointChange);
+  doc.defaultView?.addEventListener('resize', onResize);
   root.addEventListener('click', onClick);
   root.addEventListener('error', onError, true);
   try { install(initial); checkAvatars(); } catch (error) { destroy(); throw error; }

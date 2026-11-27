@@ -1,3 +1,5 @@
+import type { NtHeaderIcon } from './unified-header.icons.js';
+
 /** Framework-independent configuration for the Neetechs global header.
  * All labels and destinations are supplied by the application. No auth tokens,
  * permission decisions, router objects or raw HTML belong in this contract.
@@ -16,6 +18,7 @@ interface NtHeaderItemBase {
   readonly id: string;
   readonly label: string;
   readonly description?: string;
+  readonly icon?: NtHeaderIcon;
   readonly disabled?: boolean;
 }
 
@@ -79,6 +82,14 @@ export interface NtHeaderChoiceMenu {
   readonly choices: readonly NtHeaderChoice[];
 }
 
+/** Structured application extension slots; no raw HTML or executable configuration. */
+export interface NtHeaderSlots {
+  /** App-owned workspace selector, visible in desktop navigation and mobile drawer. */
+  readonly workspace?: NtHeaderGroup;
+  /** Additional app-owned links/actions, shown in desktop chrome and mobile drawer. */
+  readonly contextualActions?: readonly NtHeaderEntry[];
+}
+
 export interface NtHeaderConfig {
   /** Unique, stable within the document, identical on server and client. */
   readonly id: string;
@@ -91,6 +102,7 @@ export interface NtHeaderConfig {
   readonly language?: NtHeaderChoiceMenu;
   readonly appSwitcher?: NtHeaderGroup;
   readonly actions?: readonly NtHeaderEntry[];
+  readonly slots?: NtHeaderSlots;
   readonly presentation?: 'standard' | 'sticky' | 'embedded';
   readonly direction?: 'ltr' | 'rtl';
 }

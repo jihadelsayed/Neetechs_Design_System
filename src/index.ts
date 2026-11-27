@@ -19,6 +19,7 @@ export type {
   NtHeaderChoice,
   NtHeaderChoiceMenu,
   NtHeaderConfig,
+  NtHeaderSlots,
   NtHeaderActivation,
   NtHeaderNavigation,
   NtHeaderMountOptions,
@@ -30,3 +31,5 @@ export { ntRenderHeader } from './shell/header/unified-header.js';
 export { ntMountHeader } from './shell/header/unified-header.controller.js';
 
 export { ntCreateHeaderBrand, NT_HEADER_BRAND_NAME, NT_HEADER_LOGO_URL, type NtHeaderBrandOptions } from './shell/header/unified-header.brand.js';
+
+export { ntRenderHeaderIcon, type NtHeaderIcon } from './shell/header/unified-header.icons.js';
