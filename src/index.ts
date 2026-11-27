@@ -18,6 +18,7 @@ export type {
   NtHeaderLabels,
   NtHeaderChoice,
   NtHeaderChoiceMenu,
+  NtHeaderNotifications,
   NtHeaderConfig,
   NtHeaderSlots,
   NtHeaderActivation,
@@ -37,3 +38,5 @@ export { ntRenderHeaderIcon, type NtHeaderIcon } from './shell/header/unified-he
 export { NT_ECOSYSTEM_LINKS, ntCreateEcosystemNavigation, type NtEcosystemApp, type NtEcosystemNavigationOptions } from './shell/header/unified-header.ecosystem.js';
 
 export { ntCreateHeaderAccount, type NtHeaderAccountSnapshot, type NtHeaderIdentitySource, type NtHeaderAccountDestination, type NtHeaderAccountOptions } from './shell/header/unified-header.account.js';
+
+export { ntCreateHeaderPreference, type NtHeaderPreferenceOptions } from './shell/header/unified-header.preferences.js';
