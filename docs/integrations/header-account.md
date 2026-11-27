@@ -18,6 +18,14 @@ Map the existing display-name expression into displayName to retain the legacy o
 
 For Login and Sign Up, retain the existing goToAuth callbacks so language and normalized returnUrl are maintained. For My Account and My Products, derive links from the existing RuntimeConfigService and localized-path logic. For Settings, use an action that calls the existing Angular router with /settings/profile-privacy, or supply a fully localized browser href with an adapter that maps it correctly to the Angular base href. Do not double-prefix the language or use a root-relative unlocalized href inadvertently.
 
-Until step 46, authenticatedItems may carry the existing host-owned theme and logout action entries; the new helper does not invoke them. Verify mobile and desktop menu availability, sign-out, keyboard focus, guest/loading transitions, and the CV-preview header exclusion during the pilot.
+Use the optional signOut configuration with the existing LogoutService action ID. Do not duplicate logout in authenticatedItems. The shared controller emits the host action once per activation; the host owns session clearing, pending state and error handling. Use signOut.disabled while a logout request is pending. Existing theme actions may remain in authenticatedItems until the preference menu is adopted. Verify mobile and desktop menu availability, sign-out, keyboard focus, guest/loading transitions, and the CV-preview header exclusion during the pilot.
 
 No application is migrated by adding this helper.
+
+## Preferences and notifications
+
+Use ntCreateHeaderPreference for appearance and language. MyAccount currently supports light/dark and English/Swedish/Arabic; supply only supported choices. The action callback invokes ThemeStore or LanguageService; after the host confirms the change, supply a fresh config including selectedId and direction. Never guess a language, change storage or perform routing inside the header package.
+
+Optional notifications take a host-provided label, emptyLabel, items and unreadCount. Use a localized accessibleLabel for the full count; the visual badge caps at 99+. Omit the entire configuration if there is no notification provider. Do not place sensitive notification content in SSR HTML. The host owns fetching, read state, permissions and navigation. This is a summary UI, not a notification service.
+
+The mobile drawer includes existing account actions, preferences and notification entries. A verified guest sees guest actions; an authenticated user sees the current account name and authenticated actions. While loading, no account actions render. Reuse existing controller focus, modal and dismissal behavior. Verify actual drawer and desktop-menu behavior before deployment.
