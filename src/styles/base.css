@@ -1,4 +1,4 @@
-﻿:root {
+﻿:root:not([data-nt-theme]) {
   color-scheme: dark;
 }
 
