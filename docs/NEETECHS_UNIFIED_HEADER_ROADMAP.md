@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (53/100 completed at source-implementation/documentation and isolated controller-test level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (54/100 completed at source-implementation/documentation and isolated controller/SSR-test level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -313,6 +313,14 @@ Use the repository's configured Playwright projects and install any additional b
 - Nine isolated Chromium interaction scenarios passed: SSR node reuse/duplicate mount and ID rejection, menu coordination/Escape/action dispatch, cross-origin router callback exclusion, guest state update/cleanup/remount, LTR/RTL keyboard navigation, outside dismissal, mobile focus trap/close/navigation cleanup, resize drawer release, and touch open/action/close. Same-origin routing acceptance could not be checked on an originless fixture. The repository Playwright suite, real stylesheet and package build remain pending.
 - Added three regression tests to the actual fixture suite for LTR/RTL keyboard, mobile focus trap and touch (3fd8727). They have not run with the shipped CSS. Steps 52–55 complete at isolated behavior-test level only, progress 53/100; full browser verification remains open. No runtime code changes, publishing, application migration or deployment. Next: recover and verify actual CSS/tokens for responsive and theme tests (56–59).
 
+### Verification resumed — steps 56–60 responsive, theme and SSR
+
+- Found a confirmed source-gate failure: header.css used min-width: 64.001rem, rejected by the repository check-responsive.mjs documented scale. Replaced it with the exact complement of max-width: 64rem (cc7ea92). Applying the checker's actual width rule to header.css yielded one finding before and none after. Full repository responsive check not run.
+- Reproduced a native color-scheme cascade bug in Chromium: base.css :root dark rule loaded after themes overrides explicit light theme on the HTML root. Scoped the fallback to :root:not([data-nt-theme]) (8759fd3). This preserves the existing default dark and explicit dark/light/high-contrast selections.
+- Targeted Chromium fixture used relevant declarations/selectors recovered from actual header/theme/base/mobile-nav CSS, not the full shipped CSS graph. Explicit light regression passed, three theme color-scheme cases passed, seven viewport breakpoint/visibility cases passed (320, 390, 768, 1024, 1025, 1280, 1440), RTL logical drawer positioning passed, forced-colors blur removal passed. Added four real fixture regression tests (2e3a017), not run with full shipped CSS. Steps 56–58 remain partial pending real overflow, computed visual and full stylesheet tests.
+- Recovered Node-rendered authenticated HTML from exact compiled renderer and mounted it with exact compiled controller/dependencies in Chromium. Matching nodes reused; stale authenticated snapshot replaced by guest; no identity/logout remained; login present in desktop/mobile; account disclosure worked; destroy removed header. 1/1 isolated real SSR scenario passed in addition to prior 6 SSR document checks and 9 controller checks. Step 59 complete at isolated core level; framework SSR/hydration and full package browser suite remain open.
+- Reviewed root src/index.ts and confirmed all six header function re-exports plus source manifest root types/import, styles and logo asset paths. This is not a built package check. GitHub DNS still fails for local checkout; step 60 remains open. No publication, consumer activation or deployment. Progress 54/100, 46 open.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -382,7 +390,7 @@ Use the repository's configured Playwright projects and install any additional b
 - [ ] 56. Test breakpoints
 - [ ] 57. Test light/dark/high contrast
 - [ ] 58. Test RTL
-- [ ] 59. Test SSR/hydration/cleanup
+- [x] 59. Test SSR/hydration/cleanup (isolated Node SSR and actual core controller mount/cleanup passed; framework hydration remains open in steps 21 and 75)
 - [ ] 60. Build and validate local npm package
 
 ## MyAccount migration
