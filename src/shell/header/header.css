@@ -411,7 +411,8 @@
   cursor: not-allowed;
 }
 
-@media (min-width: 64.001rem) {
+/* Exact complement of the shared mobile breakpoint; no fractional gap. */
+@media not all and (max-width: 64rem) {
   .nt-header[data-nt-header] .nt-header__left { max-width: 30%; }
   .nt-header[data-nt-header] .nt-header__right { max-width: 50%; flex: 0 1 auto; }
   .nt-header[data-nt-header] .nt-header__extras { flex: 0 1 auto; }
