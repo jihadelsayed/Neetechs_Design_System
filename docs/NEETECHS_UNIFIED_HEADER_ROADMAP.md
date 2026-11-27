@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (47/100 completed at source-implementation/documentation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (48/100 completed at source-implementation/documentation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -291,6 +291,13 @@ Use the repository's configured Playwright projects and install any additional b
 - BrandKit/Ticket/Boost/Proof/Devices have root headers, but existing route maps, auth state, themes, native mobile dialog and locale behavior differ. Preserve actual navigation and app-specific behavior rather than replacing every app with a generic ecosystem menu.
 - Steps 91–95 remain open; Tracker eligibility, comprehensive active-app inventory and older/newer Angular adapter verification remain unresolved. No consumer changes, tests, dependency upgrades, publication or deployment in this wave. Progress remains 47/100. Next: final verification preparation (96–100), including anti-drift checks, cross-domain route verification and accurate remaining gate inventory. Do not mark unexecuted checks passed.
 
+### Final verification preparation — steps 96–100
+
+- Added browser-serializable anti-drift helper (2ec70d7) and integrated nine synthetic cases and a real shared-header fixture case into Playwright (788d0b4). Exact helper blob d89cb7cd38e47dea9c1586bf4049b0f189e17b8a passed 9/9 isolated Chromium 144.0.7559.96 cases via Python Playwright. The complete repository Playwright suite was not executed. Step 99 is complete at source/isolated-test level; consumer integration remains open.
+- Added final preparation ledger with recorded repository commits, test evidence, cross-domain authentication/route and visual acceptance criteria, release/deployment gates and rollback references (f59931d).
+- Steps 96–98 and 100 remain open: source audits and verification criteria are not real deployed-route, authentication or screenshot results. No package publication, application cutover or deployment. Source version remains 0.3.0; npm availability unverified. The roadmap has 48 checked source/documentation steps and 52 open.
+- All 100 steps have now been reviewed. Next action is the full package gate, not more speculative application migrations. Local git ls-remote still reports GitHub DNS resolution failure; run the gate from a network-enabled checkout of main and record actual results.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -412,5 +419,5 @@ Use the repository's configured Playwright projects and install any additional b
 - [ ] 96. Audit duplicate global headers
 - [ ] 97. Verify cross-domain auth and routing
 - [ ] 98. Verify visual consistency
-- [ ] 99. Add automated anti-drift checks
+- [x] 99. Add automated anti-drift checks
 - [ ] 100. Record final commits, tests, versions and deployments
