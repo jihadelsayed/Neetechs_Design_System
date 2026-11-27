@@ -269,6 +269,14 @@ Use the repository's configured Playwright projects and install any additional b
 - Steps 79–80 remain open: full package gates, actual Angular/React and MyAccount pilot, manual publication and installation/deployment have not run. No GitHub Actions, branch creation, tags, package publication, consumer dependency changes or deployments.
 - Progress: 47/100 at source/documentation level, not a claim of verified production readiness. Before any application cutover, satisfy the outstanding package and MyAccount gates. Next: prepare consumer migration inventories and parity matrices for steps 81–85; do not activate unverified headers.
 
+### Consumer wave 1 — steps 81–85 preparation
+
+- Re-read main package manifests, root shell and relevant header/navigation source for Frontend, Apply, Accounts, Billing and Tools. Recorded exact source blob baselines, route mappings, auth integration and app-specific acceptance criteria in docs/integrations/consumer-migration-81-85.md (65322a1).
+- Frontend, Apply and Billing share the same legacy Angular wrapper. Their host adapters differ: Frontend has localized internal site routes; Apply already owns workspace sidebar/navigation and has a separate locale service; Billing uses external ecosystem routes. Apply declares ^0.3.0 while Frontend/Billing/Tools declare 0.2.0. Accounts has no design-system dependency in its current manifest.
+- Accounts root renders only the router outlet and initializes CSRF. Retain auth-only pages; do not introduce a global header there. This is an explicit exclusion candidate, not a verified migration.
+- Tools main has an inactive role-aware React candidate under docs/unified-header/tools-unified-header.tsx (b87f446), preserving public, authenticated and staff navigation and existing sign-in/sign-out handlers. Candidate deliberately suppresses identity and restricted navigation during refresh/error; verify this behavior and the existing profile destination before activation. No actual React compile or test run.
+- All five steps remain open because the verified shared package, MyAccount pilot and actual consumer tests are outstanding. Progress stays 47/100. No application production code, dependency manifests, auth services, deployment or publication changed. Next: prepare Companies, Calendar, Resume, AI and Phone (86–90), preserving chat and workspace-specific controls.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
