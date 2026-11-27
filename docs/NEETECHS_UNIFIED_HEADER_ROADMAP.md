@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (49/100 completed at source-implementation/documentation and isolated type-gate level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (53/100 completed at source-implementation/documentation and isolated controller-test level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -306,6 +306,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Strictly compiled all seven pure modules with Node 22.16.0 and TypeScript 5.8.3; ran all five recovered header unit files using node --test. 27/27 passed, zero skipped, including brand, ecosystem, auth, optional features and deterministic/escaped SSR rendering. Step 52 remains partial because controller updates have not been tested in a real browser.
 - No runtime source changes were required. Controller/navigation/drawer dependency graph, full stylesheet, actual Playwright suite, root build and package validation still need the full checkout. No publishing, consumer cutover or deployment. Progress 49/100, 51 open.
 
+### Verification resumed — steps 52–55 actual controller interactions
+
+- Recovered eight exact main source files: unified-header.controller.ts 3b0ea5e844d457003db21803fd68884239bf133f, navigation.ts b7ec2d3c7291bb6eee25baa429cd81ca5af87021, drawer.ts 39045dcf7e680fd2ac3ff48606ccf2370827424d, direction.ts 7b83f5c2f589661cee09eef44f6fe5ab17044267, ids.ts 31738e3cbbdd8f6fdaf8bb3f5f1253cd8f1febb3, keyboard.ts 3e0171de1313629032dbeecfa515f9a5ce9c85b8, overlay.ts e67fb3cbafebc46b6670803e127443240862c8d1, focus-trap.ts 6bea3e6ba95b53b2e508fe10a100c640340d4ae9, plus types/index.ts 0367ad33856acb25fb88ee49ac81c3a15bede048. Each Git blob hash matched. Strict TypeScript 5.8.3 compilation of all header modules and this dependency graph passed.
+- Chromium initially blocked synthetic HTTP navigation (ERR_BLOCKED_BY_ADMINISTRATOR). Used in-memory HTML with import-map data URLs, changing only compiled import specifiers, not implementation logic. Minimal fixture CSS modeled the hidden attribute, mobile breakpoint and drawer visibility; not actual shipped CSS.
+- Nine isolated Chromium interaction scenarios passed: SSR node reuse/duplicate mount and ID rejection, menu coordination/Escape/action dispatch, cross-origin router callback exclusion, guest state update/cleanup/remount, LTR/RTL keyboard navigation, outside dismissal, mobile focus trap/close/navigation cleanup, resize drawer release, and touch open/action/close. Same-origin routing acceptance could not be checked on an originless fixture. The repository Playwright suite, real stylesheet and package build remain pending.
+- Added three regression tests to the actual fixture suite for LTR/RTL keyboard, mobile focus trap and touch (3fd8727). They have not run with the shipped CSS. Steps 52–55 complete at isolated behavior-test level only, progress 53/100; full browser verification remains open. No runtime code changes, publishing, application migration or deployment. Next: recover and verify actual CSS/tokens for responsive and theme tests (56–59).
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -368,10 +375,10 @@ Use the repository's configured Playwright projects and install any additional b
 ## Design system testing
 
 - [x] 51. Test typed public API (configured source type gate passed; installed root package export validation remains step 60)
-- [ ] 52. Test rendering and updates
-- [ ] 53. Test dropdown behavior
-- [ ] 54. Test keyboard and focus
-- [ ] 55. Test touch interactions
+- [x] 52. Test rendering and updates (isolated Chromium with exact controller/dependencies; full shipped CSS and package browser suite remain pending)
+- [x] 53. Test dropdown behavior (isolated Chromium with exact controller/dependencies; full shipped CSS and package browser suite remain pending)
+- [x] 54. Test keyboard and focus (isolated Chromium with exact controller/dependencies; full shipped CSS and package browser suite remain pending)
+- [x] 55. Test touch interactions (isolated Chromium with exact controller/dependencies; full shipped CSS and package browser suite remain pending)
 - [ ] 56. Test breakpoints
 - [ ] 57. Test light/dark/high contrast
 - [ ] 58. Test RTL
