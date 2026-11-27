@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (40/100 completed at source-implementation level; shared account snapshot and menu configuration implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (45/100 completed at source-implementation level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -199,6 +199,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - Added five unit tests for state isolation, identity, exact route preservation and escaping. Tests authored, not executed; local GitHub DNS resolution remains unavailable (git ls-remote failed). Full package/framework and actual account transition verification are pending. No npm publication or deployment.
 - Next: steps 46–50, host sign-out, appearance, language, optional notifications and mobile drawer. Keep the MyAccount migration and all test gates open.
 
+### Shared functionality — Steps 46–50 host actions and responsive parity
+
+- Added explicit optional signOut configuration to the account helper, emitted only for verified authenticated snapshots, with host-controlled disabled state. Existing controller dispatches the action; auth service owns actual sign-out and clearing identity. Do not duplicate the sign-out entry in authenticatedItems.
+- Added ntCreateHeaderPreference, exported from package root, for host-supported appearance and locale choices. Invalid or duplicate choice IDs are filtered, empty choices omit the control, and unknown current selection does not guess. Existing controller dispatches actions and host supplies updated selection and direction.
+- Added optional NtHeaderNotifications configuration and shared desktop/mobile summary with escaped entries and empty state, visual count capped at 99+, localized accessible summary, and bounded valid positive integer count. No notification fetching, mutation, polling or backend integration. Omit unsupported notification controls.
+- Mobile drawer now exposes current account actions in addition to product navigation, preferences and notifications. Loading never exposes guest or authenticated account entries. Uses the existing modal drawer and controller cleanup; desktop account disclosure remains accessible when the drawer is closed.
+- Added four unit tests and two browser tests. Updated account integration docs. Local git ls-remote again failed to resolve github.com. Full package compilation, unit/browser execution, real framework integration and mobile interaction verification remain open. No consumer changes, npm release or deployment.
+- Next: steps 51–60 design-system testing; keep all failed or unexecuted gates explicitly open. MyAccount migration follows a successful local package gate.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -252,11 +261,11 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 43. Implement avatar and name
 - [x] 44. Implement account menu
 - [x] 45. Implement MyAccount/settings links
-- [ ] 46. Delegate sign-out to auth adapter
-- [ ] 47. Integrate appearance options
-- [ ] 48. Integrate locale options
-- [ ] 49. Implement optional notification UI
-- [ ] 50. Implement mobile drawer
+- [x] 46. Delegate sign-out to auth adapter
+- [x] 47. Integrate appearance options
+- [x] 48. Integrate locale options
+- [x] 49. Implement optional notification UI
+- [x] 50. Implement mobile drawer
 
 ## Design system testing
 
