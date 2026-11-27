@@ -45,6 +45,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./assets/neetechs-logo.png": "./src/shell/header/assets/neetechs-logo.png",
     "./styles": "./src/index.css",
     "./styles.css": "./src/index.css",
     "./base.css": "./src/styles/index.css",

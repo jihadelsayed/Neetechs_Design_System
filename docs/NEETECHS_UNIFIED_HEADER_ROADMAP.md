@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (16/100 completed at source-implementation level; Angular and React reference adapters added; actual framework builds, integration, browser verification and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (18/100 completed at source-implementation level; shared brand asset and naming implemented; framework builds, integration and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -149,6 +149,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - SSR rule for consumers: supply the same stable instance ID and initial configuration on server and first client render. For unverified sessions use loading, not cached authenticated identity or guessed guest state. After verification, update the controller with a new immutable snapshot. Never embed session secrets or raw API HTML in header configuration. Angular adapter deliberately opts out of Angular hydration for its owned DOM; React requires matching initial snapshots. Verify real framework integration before changing MyAccount.
 - Step 21 remains open: real Angular SSR/hydration and React hydrateRoot/StrictMode runs, controller mount from server HTML, actual package build and browser layout testing are not yet verified. GitHub and npm DNS unavailable in the execution environment; browser HTTP navigation blocked. No consumer changes, npm release or deployment. Next: continue independent branding/responsive implementation while retaining the hydration gate.
 
+
+### Phase 2 — Steps 22–23 common branding (2026-11-27)
+
+- Copied the existing 128px PNG from Neetechs_Frontend/main/public/logo - 128.png to `src/shell/header/assets/neetechs-logo.png` without modification. Source and copied Git blob SHA: 3589b6aeede14161046c1a178e9206f08fba5e66. Added a package asset export pointing to the shipped src file.
+- Added `ntCreateHeaderBrand`, canonical name/logo URL constants and optional app suffix, subtitle, destination and local logo override. Desktop and mobile drawer now share escaped branding and the same validated logo markup. Explicit custom branding and text-only mode remain supported. Existing apps must opt into the helper during migration.
+- Strict TypeScript compilation of the actual renderer, helper and types passed. All 13 isolated Node unit tests passed (five new branding tests and eight existing renderer tests). Tested source blobs: helper 72e85228dc4c70bf84987e03e96c4873af7cd9f0; renderer 981766182ac0d2407279d107ff0d414d24104ae8; branding tests 1ac1fcfee9678722887f87f98d3e1d2e1005cbd7.
+- Default logo URL follows existing Frontend source; live URL availability, npm tarball asset export, actual app asset-copy configuration and visual layout still need verification. No consumer changed or deployment performed. Step 21 remains open.
+- Next: desktop navigation and responsive layout (steps 24–26), then shared visual styles.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -175,8 +184,8 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - [x] 19. Implement Angular adapter (Angular 20 reference source; actual Angular compilation, packaging and older-version compatibility pending)
 - [x] 20. Implement React adapter (React 18 reference source; actual framework compilation, packaging and integration tests pending)
 - [ ] 21. Implement SSR-safe rendering and hydration
-- [ ] 22. Implement brand logo
-- [ ] 23. Implement optional app name
+- [x] 22. Implement brand logo
+- [x] 23. Implement optional app name
 - [ ] 24. Implement desktop navigation
 - [ ] 25. Implement mobile responsive layout
 - [ ] 26. Implement tablet layout
