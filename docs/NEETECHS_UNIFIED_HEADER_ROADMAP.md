@@ -321,6 +321,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Recovered Node-rendered authenticated HTML from exact compiled renderer and mounted it with exact compiled controller/dependencies in Chromium. Matching nodes reused; stale authenticated snapshot replaced by guest; no identity/logout remained; login present in desktop/mobile; account disclosure worked; destroy removed header. 1/1 isolated real SSR scenario passed in addition to prior 6 SSR document checks and 9 controller checks. Step 59 complete at isolated core level; framework SSR/hydration and full package browser suite remain open.
 - Reviewed root src/index.ts and confirmed all six header function re-exports plus source manifest root types/import, styles and logo asset paths. This is not a built package check. GitHub DNS still fails for local checkout; step 60 remains open. No publication, consumer activation or deployment. Progress 54/100, 46 open.
 
+### Pilot prerequisite — MyAccount logout correction
+
+- Rechecked GitHub and npm DNS; complete checkout/dependency installation still unavailable. Reviewed candidate config, shared Angular reference, account and preference types against main. No actual Angular compile or activation.
+- Confirmed Accounts main login/signIn/logout sibling routes and sign-out component calling the server logout and consuming returnUrl. MyAccount frontend main now derives the correct sibling logout endpoint rather than /login/logout, and normalizes only the return pathname while preserving query/hash. Existing auth store cleanup remains immediate. Invalid endpoint fails closed with a warning that central logout is unconfirmed. No Accounts or Django/backend change.
+- MyAccount commits 9a58ba2 (pure helper), f05ed56 (existing LogoutService integration), 41055e2 (seven Jasmine regressions). Exact helper blob d11a7f18cadc224d4c3a44075c5bacf5dccd50f0 compiled under TypeScript 5.8.3 strict plus noImplicitReturns/noPropertyAccessFromIndexSignature/exactOptionalPropertyTypes and passed 7/7 isolated Node cases. Additional noUncheckedIndexedAccess check flagged an existing localized-path.ts issue; flag not enabled in consumer tsconfig, left untouched. Angular suite and actual server-side logout, redirect/localhost behavior still unverified.
+- Step 68 is partial, not completed; shared header remains inactive, package version unchanged, no deployment. Progress remains 54/100. Remaining primary gate: full package and actual consumer compile.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
