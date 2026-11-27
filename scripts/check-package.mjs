@@ -82,6 +82,7 @@ try {
   const exportMap = pkg.exports;
   let jsEntries = 0;
   let cssEntries = 0;
+  let assetEntries = 0;
 
   const resolveTarget = (target) => (typeof target === 'string' ? target : target.import);
 
@@ -125,6 +126,11 @@ try {
       continue;
     }
 
+    if (!/\.(?:mjs|cjs|js)$/.test(relativeTarget)) {
+      assetEntries += 1;
+      continue;
+    }
+
     jsEntries += 1;
     if (typeof target === 'object' && target.types && !existsSync(join(installed, target.types))) {
       fail(`export ${subpath} types → ${target.types} missing`);
@@ -134,14 +140,23 @@ try {
   // Import every JS entry through the consumer's own resolver (true package resolution).
   const probe = join(consumer, 'probe.mjs');
   const specifiers = Object.entries(exportMap)
-    .filter(([subpath, target]) => !subpath.includes('*') && !resolveTarget(target).endsWith('.css'))
+    .filter(([subpath, target]) => !subpath.includes('*') && /\.(?:mjs|cjs|js)$/.test(resolveTarget(target)))
     .map(([subpath]) => (subpath === '.' ? pkg.name : `${pkg.name}/${subpath.slice(2)}`));
+  const assetSpecifiers = Object.entries(exportMap)
+    .filter(([subpath, target]) => !subpath.includes('*') && !/\.(?:mjs|cjs|js|css)$/.test(resolveTarget(target)))
+    .map(([subpath]) => subpath === '.' ? pkg.name : `${pkg.name}/${subpath.slice(2)}`);
   writeFileSync(probe, [
+    "import { existsSync } from 'node:fs';",
+    "import { fileURLToPath } from 'node:url';",
     ...specifiers.map((specifier, index) => `import * as m${index} from '${specifier}';`),
     `const modules = [${specifiers.map((_, index) => `m${index}`).join(', ')}];`,
     // `./types` is type-only at runtime; every other entry must export values.
     `for (const [i, m] of modules.entries()) { if (Object.keys(m).length === 0 && ${JSON.stringify(specifiers)}[i] !== '${pkg.name}/types') throw new Error('empty module ' + i); }`,
     `if (m0.NEETECHS_UI_VERSION !== ${JSON.stringify(pkg.version)}) throw new Error('NEETECHS_UI_VERSION ' + m0.NEETECHS_UI_VERSION + ' != package.json ${pkg.version}');`,
+    `for (const specifier of ${JSON.stringify(assetSpecifiers)}) { if (!existsSync(fileURLToPath(import.meta.resolve(specifier)))) throw new Error('missing asset ' + specifier); }`,
+    "for (const name of ['ntRenderHeader','ntMountHeader','ntCreateHeaderBrand','ntCreateEcosystemNavigation','ntCreateHeaderAccount','ntCreateHeaderPreference']) { if (typeof m0[name] !== 'function') throw new Error('missing header API ' + name); }",
+    "const header = m0.ntRenderHeader({id:'package-smoke-header',brand:m0.ntCreateHeaderBrand({logoUrl:null}),navigation:[],labels:{primaryNavigation:'Primary',mobileNavigation:'Mobile',openNavigation:'Open',closeNavigation:'Close',account:'Account',accountLoading:'Loading'}});",
+    "if (!header.includes('data-nt-header')) throw new Error('header SSR smoke failed');",
     "console.log('ok');",
   ].join('\n'));
   try {
@@ -169,7 +184,7 @@ try {
   } else {
     console.log('Package validation passed.');
     console.log(`  Tarball: ${packed.filename} (${(packed.size / 1024).toFixed(1)} kB packed, ${packed.entryCount} files)`);
-    console.log(`  Exports verified: ${jsEntries} JS, ${cssEntries} CSS (+ wildcard patterns)`);
+    console.log(`  Exports verified: ${jsEntries} JS, ${cssEntries} CSS, ${assetEntries} assets (+ wildcard patterns)`);
     console.log('  Clean consumer install and import: ok');
   }
 } finally {
