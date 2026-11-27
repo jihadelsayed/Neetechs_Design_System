@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 started (13/100 completed; type contract implemented, runtime renderer and deployment pending).
+Status: Phase 1 remains open; Phase 2 in progress (14/100 completed; typed contract and pure renderer implemented, interactive mount and deployment pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -102,6 +102,15 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 - The type fixture is not yet wired into the package's default test script. Step 51 remains open for comprehensive public API testing. URL validation, escaping, lifecycle, extension slots, notification integration and all runtime behavior are pending. The full repository cannot be cloned in the current execution environment (GitHub DNS unavailable), so no full build, package tests, publication or deployment is claimed.
 - Next: implement the framework-independent renderer and runtime tests, preserving the existing CSS and behavior controllers. Keep remaining audit steps open until verified.
 
+
+### Phase 2 — pure markup renderer (2026-11-27)
+
+- Added `src/shell/header/unified-header.ts` (376a0ce), implementing `ntRenderHeader(config)`: one semantic header with shared site-chrome CSS, navigation groups, separate mobile drawer markup, branding, loading/guest/authenticated account views, optional appearance/language/app switcher/actions, sticky/embedded variants and direction.
+- Renderer escapes text and attributes, rejects executable and protocol-relative URL schemes, uses deterministic IDs and has no DOM access. The drawer and backdrop are siblings of the header, not inside its backdrop-filter stacking context.
+- Added `tests/unit/unified-header.test.mjs` (b05bf72) and additive package-root runtime export (0f83369). Isolated strict TypeScript 5.8.3 compilation and 8/8 Node 22 tests passed. Verified the exact renderer and unit test file Git blob hashes against GitHub: 2e05044e61f808cbe4d3302ed2a4a288829a6db1 and c5cb527150560f92eaf18d10b6504625528add1e. Isolated compilation used a structurally matching subset of the current header types, not the full package build.
+- Step 18 covers the pure renderer. Interactive mount/controller, menu coordination, route callbacks, avatar error handling, focus, hydration, responsive overflow, group active-state styling, optional feature accessibility and workspace slots are not complete; do not integrate or deploy yet. SSR/browser and comprehensive package test steps remain open. Full clone still blocked by GitHub DNS in the execution environment.
+- Next: implement and test the framework-independent client controller using the existing navigation behaviors, then validate framework adapters and MyAccount.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -124,7 +133,7 @@ Audit reads performed directly on GitHub main. Steps checked below refer only to
 
 - [x] 16. Create component directory
 - [x] 17. Define typed configuration interfaces
-- [ ] 18. Implement framework-independent renderer/component
+- [x] 18. Implement framework-independent renderer/component (pure renderer; client controller pending in subsequent behavior and hydration steps)
 - [ ] 19. Implement Angular adapter
 - [ ] 20. Implement React adapter
 - [ ] 21. Implement SSR-safe rendering and hydration
