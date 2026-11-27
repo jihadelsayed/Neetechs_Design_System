@@ -254,6 +254,14 @@ Use the repository's configured Playwright projects and install any additional b
 - Exact host mapper blob 3898ae2eb6b018910e5dd4f79b5ed44346a87e78 and localized-path blob eef8beed9e23d14954c598aa0b417e6950c210f5 compiled in strict TypeScript 5.8.3; eight isolated Node tests passed. Ten Jasmine cases are committed but not run with Angular. Full checkout remains blocked by DNS, so package and actual integration gates remain open.
 - Steps 61–75 remain open and progress remains 45/100. Next: shell/sidebar, CV preview and overlay compatibility review, route parity and rollback preparation (71–75). No publishing or deployment.
 
+### MyAccount — steps 71–75 shell and cutover preparation
+
+- Audited AppComponent, profile/Resume Studio, settings sidebar, right drawer host and route configuration on main. Both CV document modes intentionally omit global chrome; preserve the CV library and all page-specific headers, skip link, settings route outlet, footer and right drawer.
+- MyAccount main replaces stale starter-template AppComponent tests with four actual-shell regression cases (7efc0c7); tests use the Angular router and stub child services. No actual Angular run. Staged shell-cutover.scss (014e533) removes the candidate wrapper's sticky/stacking constraint while retaining the legacy path and isolates page content; validate local overlays before activation.
+- Isolated Chromium 144.0.7559.96 representative fixture reproduced the wrapper failure (header y=-400px at scroll 400), corrected it (y=0), and passed mobile drawer/backdrop layering, right drawer above navigation, unaffected legacy wrapper and desktop header/dropdown layering checks. Not a real consumer build.
+- Cutover/rollback checklist committed to MyAccount (fb3b75a). Noted existing substring CV-route matching, independent body-scroll locks, localized logout endpoint and unsupported locale gaps as remaining verification items. Existing app shell and dependencies remain unchanged.
+- Steps 61–75 remain open because the verified package and full Angular/browser run are unavailable; local DNS still blocks git clone. Progress remains 45/100. Next: release preparation steps 76–80 without publishing, deploying or removing legacy files until the test gates pass.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
