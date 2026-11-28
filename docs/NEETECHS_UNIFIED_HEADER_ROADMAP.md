@@ -355,6 +355,12 @@ Use the repository's configured Playwright projects and install any additional b
 - Independently matched all 16 recovered core TypeScript source blobs against current main, compiled actual header and behavior dependencies with strict options and declaration emission, packed and installed a reduced private 0.0.0-test package using a header-only entry facade and temporary manifest, and compiled the exact new consumer probe against installed declarations. Strict compilation and installed runtime SSR smoke passed. This is not the full design-system tarball and is not a release artifact.
 - GitHub checkout still fails DNS; a localhost-only Chromium fixture navigation also remains blocked by administrator policy. Full CSS graph, real package exports/declarations and Angular tests still require a network-enabled checkout. Steps 60/79 remain open; progress 54/100. No consumer runtime changes, publication, deployment or Actions.
 
+### Pilot verification — combined MyAccount snapshot and installed renderer
+
+- MyAccount main stages a pure package-dependent configuration factory (1293146), updates the inactive Angular candidate to delegate to it (81b0ada), and adds seven staged Jasmine cases (40ef192). No active imports, dependency change or cutover.
+- Exact factory blob 12c276321b878091618a77e4a38b70ac4edfde57 compiled with TypeScript 5.8.3 strict, noUncheckedIndexedAccess and exactOptionalPropertyTypes against the installed reduced header-only test package and existing host mapper/build helper. Seven isolated Node tests passed including 54 locale/theme/auth combinations and deterministic rendering. Initial CommonJS harness failed due to ESM-only export; ESM compilation and runtime passed with relative emitted import extensions adjusted for Node. Not a full Angular test; new Jasmine suite unexecuted.
+- GitHub DNS remains unavailable locally. Progress stays 54/100; complete production package, Angular build and MyAccount activation gates remain open. No backend change, publication or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
