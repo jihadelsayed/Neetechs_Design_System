@@ -197,3 +197,77 @@ for (const width of [1025, 1280, 1440]) {
     }
   }
 }
+
+async function prepareOffsetHeader(page, offset, direction) {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await load(page, 1280, direction);
+  await page.setViewportSize({ width: 1280, height: 500 });
+  await page.evaluate(({ offset, direction }) => {
+    const f = window.headerFixture;
+    f.host.style.display = 'block';
+    f.host.style.marginTop = offset + 'px';
+    document.querySelector('#main').style.minHeight = '2000px';
+    const items = Array.from({ length: 20 }, (_, i) => ({
+      kind: 'action', id: 'item-' + i, action: 'item-' + i, label: 'Action ' + i,
+    }));
+    f.controller.update({
+      ...f.config, direction, presentation: 'embedded',
+      account: { ...f.config.account, items },
+      navigation: [f.config.navigation[0], { ...f.config.navigation[1], children: items }],
+    });
+  }, { offset, direction });
+}
+
+for (const offset of [0, 100, 320]) {
+  for (const direction of ['ltr', 'rtl']) {
+    for (const name of ['account', 'nav-1']) {
+      test('offset disclosure fits ' + offset + ' ' + direction + ' ' + name, async ({ page }) => {
+        await prepareOffsetHeader(page, offset, direction);
+        await page.locator('#fixture-header-' + name + '-trigger').click();
+        const panel = page.locator('#fixture-header-' + name + '-panel');
+        await expect(panel).toBeVisible();
+        if (offset === 320) await expect(panel).toHaveAttribute('data-nt-header-panel-side', 'top');
+        else await expect(panel).not.toHaveAttribute('data-nt-header-panel-side', 'top');
+        expect(await panel.evaluate(el => {
+          const rect = el.getBoundingClientRect();
+          return rect.top >= -1 && rect.bottom <= innerHeight + 1 && el.scrollHeight > el.clientHeight;
+        })).toBe(true);
+        await panel.evaluate(el => { el.scrollTop = el.scrollHeight; });
+        const last = panel.locator('[data-nt-header-action="item-19"]');
+        expect(await last.evaluate(el => {
+          const rect = el.getBoundingClientRect();
+          return rect.top >= 0 && rect.bottom <= innerHeight + 1;
+        })).toBe(true);
+        await last.click();
+        await expect(panel).toBeHidden();
+        expect(await page.evaluate(() => window.headerFixture.actions.at(-1))).toEqual({ id: 'item-19', action: 'item-19' });
+      });
+    }
+  }
+}
+
+for (const name of ['account', 'nav-1']) {
+  test('open panel refits after height and page-scroll changes: ' + name, async ({ page }) => {
+    await prepareOffsetHeader(page, 100, 'ltr');
+    await page.locator('#fixture-header-' + name + '-trigger').click();
+    const panel = page.locator('#fixture-header-' + name + '-panel');
+    await expect(panel).not.toHaveAttribute('data-nt-header-panel-side', 'top');
+    await page.setViewportSize({ width: 1280, height: 220 });
+    await expect(panel).toHaveAttribute('data-nt-header-panel-side', 'top');
+    await page.setViewportSize({ width: 1280, height: 500 });
+    await expect(panel).not.toHaveAttribute('data-nt-header-panel-side', 'top');
+    await page.evaluate(() => {
+      window.headerFixture.host.style.marginTop = '320px';
+      window.dispatchEvent(new Event('resize'));
+    });
+    await expect(panel).toHaveAttribute('data-nt-header-panel-side', 'top');
+    await page.evaluate(() => window.scrollTo(0, 230));
+    await expect(panel).not.toHaveAttribute('data-nt-header-panel-side', 'top');
+    expect(await panel.evaluate(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.top >= -1 && rect.bottom <= innerHeight + 1;
+    })).toBe(true);
+    await panel.evaluate(el => { el.scrollTop = el.scrollHeight; });
+    await expect.poll(() => panel.evaluate(el => el.scrollTop)).toBeGreaterThan(0);
+  });
+}
