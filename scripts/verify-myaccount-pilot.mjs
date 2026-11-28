@@ -97,7 +97,9 @@ try {
     npm(account, 'run', 'build');
   });
   step('Install checked tarball and activate candidate in temporary copy', () => {
-    npm(account, 'install', '--no-save', '--package-lock=false', tarball);
+    npm(account, 'install', '--no-save', tarball);
+    const installed = JSON.parse(readFileSync(join(account, 'node_modules/@neetechs/ui/package.json'), 'utf8'));
+    if (installed.version !== version) throw new Error('Installed package version differs from validated tarball.');
     const dir = join(account, 'src/app/layouts/header');
     const staged = join(account, 'docs/unified-header');
     const wrapper = join(dir, 'header.component.ts');
