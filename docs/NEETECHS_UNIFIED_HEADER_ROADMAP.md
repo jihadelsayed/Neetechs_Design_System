@@ -361,6 +361,12 @@ Use the repository's configured Playwright projects and install any additional b
 - Exact factory blob 12c276321b878091618a77e4a38b70ac4edfde57 compiled with TypeScript 5.8.3 strict, noUncheckedIndexedAccess and exactOptionalPropertyTypes against the installed reduced header-only test package and existing host mapper/build helper. Seven isolated Node tests passed including 54 locale/theme/auth combinations and deterministic rendering. Initial CommonJS harness failed due to ESM-only export; ESM compilation and runtime passed with relative emitted import extensions adjusted for Node. Not a full Angular test; new Jasmine suite unexecuted.
 - GitHub DNS remains unavailable locally. Progress stays 54/100; complete production package, Angular build and MyAccount activation gates remain open. No backend change, publication or deployment.
 
+### Controller regression — external SSR ID collision
+
+- Reproduced in Chromium with the actual recovered controller: getElementById returned the existing SSR header, hiding a duplicate outside the host, and mount accepted the collision. Fixed prepare() to collect all occupied IDs outside the dedicated host, including the host itself, and check new template IDs against that set (d2717c2).
+- Exact locally compiled controller blob 7d77b8e326903318e54ca06111f9ab7cffc53fb1 matches main. Strict TypeScript compile passed; three new isolated Chromium scenarios passed (SSR collision, existing-control ID collision on update, new-control ID collision/recovery). Existing 9/9 isolated controller scenarios and 27/27 header unit tests passed. Added two repository Playwright regressions (2c31d0a), not executed through the full suite.
+- Changed snapshots with collisions are rejected before behavior disposal, preserving the existing mounted header. This is a controller correctness fix, not deployed-route verification. Full checkout still fails GitHub DNS, so steps 56–58, 60, 79 and consumer activation remain blocked; progress stays 54/100. No publication or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
