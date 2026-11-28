@@ -46,6 +46,25 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
   // The physical correction is derived from the actual bounding rect in both directions.
   function fitPanel(panel: HTMLElement): void {
     panel.style.removeProperty('--nt-header-panel-shift');
+    panel.style.removeProperty('--nt-header-panel-max-height');
+    delete panel.dataset.ntHeaderPanelSide;
+    // Use the untransformed containing block and computed anchor offset so
+    // entry animations do not distort available vertical space.
+    const parent = panel.offsetParent;
+    const view = doc.defaultView;
+    const height = doc.documentElement.clientHeight;
+    if (parent && view && height) {
+      const top = Number.parseFloat(view.getComputedStyle(panel).top);
+      if (Number.isFinite(top)) {
+        const anchorTop = parent.getBoundingClientRect().top + parent.clientTop;
+        const gap = Math.max(0, top - parent.clientHeight);
+        const below = Math.max(0, height - anchorTop - top - 8);
+        const above = Math.max(0, anchorTop - gap - 8);
+        const openAbove = panel.offsetHeight > below && above > below;
+        if (openAbove) panel.dataset.ntHeaderPanelSide = 'top';
+        panel.style.setProperty('--nt-header-panel-max-height', (openAbove ? above : below) + 'px');
+      }
+    }
     const width = doc.documentElement.clientWidth;
     const rect = panel.getBoundingClientRect();
     if (!width || !rect.width) return;
@@ -55,6 +74,12 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
 
   const onResize = (): void => {
     for (const panel of root.querySelectorAll<HTMLElement>('.nt-navbar__panel:not([hidden]), .nt-dropdown__content:not([hidden])')) fitPanel(panel);
+  };
+
+  const onScroll = (event: Event): void => {
+    // Scrolling within a disclosure must not reset its own height or position.
+    if (event.target instanceof Node && root.contains(event.target)) return;
+    onResize();
   };
 
   function attach(): void {
@@ -157,6 +182,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
     destroyed = true;
     breakpoint?.removeEventListener('change', onBreakpointChange);
     doc.defaultView?.removeEventListener('resize', onResize);
+    doc.removeEventListener('scroll', onScroll, true);
     root.removeEventListener('click', onClick);
     root.removeEventListener('error', onError, true);
     disposeBehaviors();
@@ -168,6 +194,7 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
   mounted.add(root);
   breakpoint?.addEventListener('change', onBreakpointChange);
   doc.defaultView?.addEventListener('resize', onResize);
+  doc.addEventListener('scroll', onScroll, true);
   root.addEventListener('click', onClick);
   root.addEventListener('error', onError, true);
   try { install(initial); checkAvatars(); } catch (error) { destroy(); throw error; }
