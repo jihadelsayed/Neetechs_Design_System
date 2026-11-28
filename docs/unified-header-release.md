@@ -14,13 +14,12 @@ npm ci
 npm test
 npx playwright install chromium
 npm run test:browser
-npm run check:package
-npm pack --dry-run
+npm run check:package -- --output-dir ../neetechs-release-artifacts
 ```
 
 Stop on any failing command. Install any other browsers required by the actual Playwright configuration. Record the tested commit, Node/npm versions, browser results, tarball size and package API report. Do not run check:api --update merely to silence missing exports. Review additions intentionally. The isolated checks recorded in the roadmap are not a replacement for these gates.
 
-Create the local tarball with npm pack only after the build and tests pass. Test the Angular and React adapters against that tarball; run MyAccount AOT, localization, SSR and browser regressions before release. Use a disposable checkout of main, not a new branch. Do not commit filesystem-based dependencies, tarballs or generated secrets.
+The package gate now retains the exact tarball it installed into a clean consumer, and prints its SHA-512 integrity. Keep that artifact outside the repository and do not run a second npm pack before publishing. The output directory must not already contain a tarball of the same version; the checker refuses to overwrite it. Test the Angular and React adapters against that tarball; run MyAccount AOT, localization, SSR and browser regressions before release. Use a disposable checkout of main, not a new branch. Do not commit filesystem-based dependencies, tarballs or generated secrets.
 
 ## 2. Confirm version and npm access
 
@@ -38,7 +37,7 @@ Source package.json, lockfile root and src/version.ts currently agree on 0.3.0. 
 Publish the exact locally validated tarball, not an untested rebuild. Replace the placeholder with its real filename:
 
 ```bash
-npm publish ./neetechs-ui-VERSION.tgz --access public --registry=https://registry.npmjs.org/
+npm publish ../neetechs-release-artifacts/neetechs-ui-VERSION.tgz --access public --registry=https://registry.npmjs.org/
 ```
 
 Follow npm's authentication prompts locally. Never put credentials or OTPs in documentation or commit them. Do not invoke semantic-release or a workflow as well; that can create competing releases. Record the published version and integrity with npm view, install it into a clean consumer and verify the six root header functions and CSS/asset exports. Confirm the release's source commit and update the release notes.
