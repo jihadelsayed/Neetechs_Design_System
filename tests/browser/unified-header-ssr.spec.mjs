@@ -132,3 +132,65 @@ test('SSR preserves optional notification and preference controls in RTL', async
   await expect(page.locator('#ssr-header')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('#ssr-header-mobile')).toHaveAttribute('dir', 'rtl');
 });
+
+test('SSR mount rejects an external duplicate ID even when server markup appears first', async ({ page }) => {
+  await page.goto('/tests/pages/unified-header.html');
+  await page.waitForFunction(() => Boolean(window.headerFixture));
+  const result = await page.evaluate(async ({ html, config }) => {
+    const { ntMountHeader } = await import('/dist/index.js');
+    window.headerFixture.controller.destroy();
+    const host = document.querySelector('#header-host');
+    host.innerHTML = html;
+    const duplicate = document.createElement('div');
+    duplicate.id = config.id;
+    document.body.append(duplicate);
+    const firstIsServerHeader = document.getElementById(config.id) === host.firstElementChild;
+    let rejected = false;
+    try {
+      ntMountHeader(host, config).destroy();
+    } catch (error) {
+      rejected = String(error).includes('duplicate document ID');
+    } finally {
+      duplicate.remove();
+    }
+    return { firstIsServerHeader, rejected };
+  }, { html: ntRenderHeader(authenticated), config: authenticated });
+  expect(result).toEqual({ firstIsServerHeader: true, rejected: true });
+});
+
+test('duplicate IDs reject changed snapshots without destroying the mounted header', async ({ page }) => {
+  await page.goto('/tests/pages/unified-header.html');
+  await page.waitForFunction(() => Boolean(window.headerFixture));
+  const result = await page.evaluate(async ({ html, config }) => {
+    const { ntMountHeader } = await import('/dist/index.js');
+    window.headerFixture.controller.destroy();
+    const host = document.querySelector('#header-host');
+    host.innerHTML = html;
+    const controller = ntMountHeader(host, config);
+    const before = host.firstElementChild;
+    const next = { ...config, notifications: { label: 'Notifications', emptyLabel: 'Nothing new', items: [] } };
+    const attempts = [
+      [config.id + '-account-trigger', { ...config, direction: 'rtl' }],
+      [config.id + '-notifications-trigger', next],
+    ];
+    const failures = [];
+    for (const [id, snapshot] of attempts) {
+      const duplicate = document.createElement('div');
+      duplicate.id = id;
+      document.body.append(duplicate);
+      let rejected = false;
+      try { controller.update(snapshot); }
+      catch (error) { rejected = String(error).includes('duplicate document ID'); }
+      finally { duplicate.remove(); }
+      failures.push({ rejected, unchanged: host.firstElementChild === before });
+    }
+    controller.update(next);
+    const recovered = Boolean(host.querySelector('#' + config.id + '-notifications-trigger'));
+    controller.destroy();
+    return { failures, recovered };
+  }, { html: ntRenderHeader(authenticated), config: authenticated });
+  expect(result).toEqual({
+    failures: [{ rejected: true, unchanged: true }, { rejected: true, unchanged: true }],
+    recovered: true,
+  });
+});
