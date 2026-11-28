@@ -341,6 +341,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Exact pure helper blob 975ff15309fa95b59719e755c7488abc7632e578 and build locale helper cda6bdc6796086cab4b9c65ca0dd0ff8f3bf30b5 compiled under TypeScript 5.8.3 strict with exactOptionalPropertyTypes, noUncheckedIndexedAccess, noImplicitReturns and noPropertyAccessFromIndexSignature. Six isolated Node groups passed, including 162 combinations of locale prefixes/document modes. Added two AppComponent cases, four pure Jasmine cases and four Angular router cases (22e19a3, ed5166a, 9dfaf4a); Angular suite not executed.
 - Steps 70–73 and 75 remain open pending actual localized build and Angular verification. Local GitHub DNS still fails and Angular dependency cache is absent. Progress remains 54/100. No shared header activation, package upgrade, backend change, publication or deployment.
 
+### Package gate — retain the exact tested artifact
+
+- Local GitHub and registry DNS still unavailable; no Angular dependency cache. Do not confuse synthetic-package results with the actual design-system release gate.
+- check-package.mjs now accepts --output-dir to retain the exact clean-consumer-tested tarball, checks its SHA-512 integrity against npm metadata, refuses overwrites, and retains nothing on a failed validation (7a20da8). Exact Git blob 318128363ab7b4b0a1ef127835a2bc426d36a122 verified locally. No publish action.
+- Actual npm pack/install exercised offline using a synthetic minimal manifest and recovered header JS: five scenarios passed (default check, retain/integrity, existing-file rejection, invalid arguments, missing CSS import rejection/no output). Added a standalone fixture regression test (bb89eda; blob 6d3e1c79acb6f9027837e7ba8d4c7864e840c1c4); exact committed test ran locally under Node 22.16.0/npm 10.9.2, 1/1 test passed with five scenarios. Windows/macOS and full repository suites not run.
+- Updated manual release runbook to publish only the retained checked artifact (8b0e273). Use npm run check:package -- --output-dir ../neetechs-release-artifacts after full tests. Step 60 and step 79 remain open until real package passes; progress unchanged at 54/100. No consumer or backend changes, no publication/deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
