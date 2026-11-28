@@ -2,6 +2,16 @@
 
 Status: release preparation. No publication, tag, consumer upgrade or deployment has been performed by this runbook. Use main; do not create branches or rely on GitHub Actions.
 
+## One-command local pilot
+
+Update both original repositories to current main and ensure they are clean. From the Design System checkout, run:
+
+```bash
+npm run verify:myaccount -- ../Neetechs_Myaccount
+```
+
+Use the actual MyAccount checkout path if it differs. The runner clones both exact local main commits into a temporary directory, runs the complete design-system and package gates, runs MyAccount baseline Angular tests and production build, installs the validated tarball without saving it to the manifest, activates the staged header only in the temporary copy, then runs candidate tests and the localized production build. It retains the temporary workspace and pilot-report.json, stops at the first failure, and prints their locations. It does not publish, deploy, commit or push; the original repositories are not modified. A successful automated run still requires manual browser, auth and SSR parity before real cutover. Use a machine with registry access, Node/npm, Git and Chromium runtime prerequisites.
+
 ## 1. Verify source and local package
 
 From a clean checkout of the design-system main:
