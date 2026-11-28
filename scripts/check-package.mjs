@@ -9,12 +9,22 @@
  * 6. Enforces a package-size budget.
  *
  * Assumes `npm run build` already ran (dist/ must be current).
+ * Optional: --output-dir <directory> retains the exact validated tarball.
+ * Never publishes or overwrites an existing artifact.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { constants, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+const args = process.argv.slice(2);
+if (args.length !== 0 && (args.length !== 2 || args[0] !== '--output-dir' || !args[1]?.trim() || args[1].startsWith('--'))) {
+  console.error('Usage: npm run check:package -- [--output-dir <directory>]');
+  process.exit(1);
+}
+const outputDir = args.length ? resolve(args[1]) : null;
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
@@ -182,6 +192,17 @@ try {
     for (const message of failures) console.error(`  - ${message}`);
     process.exitCode = 1;
   } else {
+    if (outputDir) {
+      const source = join(scratch, packed.filename);
+      const integrity = 'sha512-' + createHash('sha512').update(readFileSync(source)).digest('base64');
+      if (integrity !== packed.integrity) throw new Error('Validated tarball integrity does not match npm pack metadata');
+      mkdirSync(outputDir, { recursive: true });
+      const destination = join(outputDir, packed.filename);
+      // Do not overwrite a previously validated artifact of the same version.
+      copyFileSync(source, destination, constants.COPYFILE_EXCL);
+      console.log(`  Validated tarball retained: ${destination}`);
+      console.log(`  Integrity: ${integrity}`);
+    }
     console.log('Package validation passed.');
     console.log(`  Tarball: ${packed.filename} (${(packed.size / 1024).toFixed(1)} kB packed, ${packed.entryCount} files)`);
     console.log(`  Exports verified: ${jsEntries} JS, ${cssEntries} CSS, ${assetEntries} assets (+ wildcard patterns)`);
