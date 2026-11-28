@@ -334,6 +334,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Exact mapper and build-helper Git blobs 0a7d096824af40779fc220327340796216c6b193 and cda6bdc6796086cab4b9c65ca0dd0ff8f3bf30b5 compiled with strict TypeScript 5.8.3, exactOptionalPropertyTypes and noUncheckedIndexedAccess. 12/12 isolated Node test groups passed, including all 81 language-switch combinations and nine account destination sets. Seven Jasmine cases added (2b14c56), not run via Angular.
 - Step 70 remains partial: actual localized AOT builds, translations, direct legacy duplicate-locale routes, guard/Accounts end-to-end auth, and actual header integration are unverified. Local GitHub DNS failure persists and npm dependencies unavailable. Progress remains 54/100. No publication, deployment, new branch or Actions.
 
+### Pilot prerequisite — exact shell route ownership and legacy locale redirects
+
+- MyAccount main fixes substring-based CV document route detection using Angular Router.parseUrl and primary decoded path segments (92343bb, 47c911b). Exact CV preview/markdown routes still omit chrome; query/fragment and near-match URLs no longer trigger document mode. Existing shell/header/template/guards unchanged.
+- Extends legacy duplicate-locale matcher to all nine exact build slugs; strips consecutive leading locale prefixes in one redirect while keeping original UrlSegment metadata and existing query/fragment behavior (c6390bf, 0b1da82). Explicitly types the children map to avoid strict TypeScript union inference failure. Actual Angular redirect serialization and routing remain unverified.
+- Exact pure helper blob 975ff15309fa95b59719e755c7488abc7632e578 and build locale helper cda6bdc6796086cab4b9c65ca0dd0ff8f3bf30b5 compiled under TypeScript 5.8.3 strict with exactOptionalPropertyTypes, noUncheckedIndexedAccess, noImplicitReturns and noPropertyAccessFromIndexSignature. Six isolated Node groups passed, including 162 combinations of locale prefixes/document modes. Added two AppComponent cases, four pure Jasmine cases and four Angular router cases (22e19a3, ed5166a, 9dfaf4a); Angular suite not executed.
+- Steps 70–73 and 75 remain open pending actual localized build and Angular verification. Local GitHub DNS still fails and Angular dependency cache is absent. Progress remains 54/100. No shared header activation, package upgrade, backend change, publication or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
