@@ -165,3 +165,41 @@ test.describe('touch interaction', () => {
     await expect(drawer).toBeHidden();
   });
 });
+
+test('snapshot updates restore focus to the owning desktop disclosure', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 844 });
+  await load(page);
+  for (const [name, selector] of [
+    ['account', '[data-nt-header-action="logout"]'],
+    ['appearance', 'button'],
+    ['nav-1', 'a'],
+  ]) {
+    const trigger = page.locator('#fixture-header-' + name + '-trigger');
+    const panel = page.locator('#fixture-header-' + name + '-panel');
+    await trigger.click();
+    await panel.locator(selector).first().focus();
+    await page.evaluate(name => {
+      const f = window.headerFixture;
+      f.controller.update({ ...f.config, brand: { ...f.config.brand, appName: 'Updated ' + name } });
+    }, name);
+    await expect(panel).toBeHidden();
+    await expect(trigger).toBeFocused();
+  }
+});
+
+test('snapshot updates close mobile drawer, restore trigger focus and unlock background', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await load(page);
+  const trigger = page.locator('#fixture-header-mobile-trigger');
+  const drawer = page.locator('#fixture-header-mobile');
+  await trigger.click();
+  await drawer.locator('[data-nt-header-action="logout"]').focus();
+  await page.evaluate(() => {
+    const f = window.headerFixture;
+    f.controller.update({ ...f.config, brand: { ...f.config.brand, appName: 'Updated mobile' } });
+  });
+  await expect(drawer).toBeHidden();
+  await expect(trigger).toBeFocused();
+  expect(await page.locator('#main').evaluate(el => el.inert)).toBe(false);
+  expect(await page.evaluate(() => document.body.style.overflow)).not.toBe('hidden');
+});
