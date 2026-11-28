@@ -373,6 +373,12 @@ Use the repository's configured Playwright projects and install any additional b
 - Re-ran seven combined MyAccount config/renderer tests (7/7, 54 combinations); exact factory, mapper and locale source hashes match main. Step 62 complete at source/configuration level. Actual package and Angular cutover remain open. Re-ran 27/27 core unit tests and 6/6 isolated focus-update Chromium cases with the current controller source hash.
 - Local GitHub DNS still fails. Progress 55/100; no consumer runtime changes, npm release or deployment.
 
+### Responsive regression — short viewport disclosure menus
+
+- Confirmed two interacting source rules: dropdown.css sized panels relative to the full viewport and profile-menu.css later overrode overflow:auto with overflow:hidden. Unified header disclosure panels now explicitly allow scrolling and reserve the header height plus viewport spacing (ea30192; CSS blob 8d4d74c5b8e0a7a3c2b6c90dd6c442f5b06c6725). Legacy profile menus are unchanged.
+- Actual compiled header renderer/controller exercised in Chromium using an in-memory fixture with relevant declarations reconstructed from header, dropdown, profile-menu, avatar, reset, spacing and density styles. Eight viewport/direction cases (320x240, 390x300, 1280x240 and 1280x400; LTR/RTL) reproduced the hidden overflow and off-screen bottom before the fix, and all eight passed after it. Each menu contained 20 actions; scrolling to the last action, clicking it, closing the menu and single action callback were verified. At 320x240 the panel bottom changed from 268.5px to 220.5px.
+- Added eight full-suite Playwright regression cases (e768537). The full shipped CSS graph and real served browser suite remain unexecuted. The fix assumes a header near the top of the viewport; arbitrary embedded header placement still needs separate verification. GitHub clone continues to fail DNS. Steps 56–58 remain partial and progress stays 55/100. No consumer changes, publication or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
