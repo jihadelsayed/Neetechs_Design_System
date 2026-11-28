@@ -156,3 +156,44 @@ for (const [width, height] of [[320, 240], [390, 300], [1280, 240], [1280, 400]]
     });
   }
 }
+
+for (const width of [1025, 1280, 1440]) {
+  for (const direction of ['ltr', 'rtl']) {
+    for (const contextualAction of [false, true]) {
+      test('desktop disclosure controls fit ' + width + ' ' + direction + ' contextual=' + contextualAction, async ({ page }) => {
+        await load(page, width, direction);
+        await page.evaluate(({ direction, contextualAction }) => {
+          const f = window.headerFixture;
+          f.controller.update({
+            ...f.config, direction,
+            brand: { ...f.config.brand, appName: 'MyAccount Professional Workspace Long Title' },
+            account: { ...f.config.account, identity: { name: 'Very Long Account Holder Name With Many Words' } },
+            appearance: { ...f.config.appearance, label: 'Long appearance label' },
+            language: { label: 'Long language selection label', selectedId: 'en', choices: [{ id: 'en', label: 'English', action: 'english' }] },
+            appSwitcher: { kind: 'group', id: 'apps', label: 'Long applications label', children: [{ kind: 'link', id: 'billing-app', label: 'Billing', href: '/billing' }] },
+            actions: contextualAction ? [{ kind: 'action', id: 'context', action: 'context', label: 'Long contextual action label' }] : [],
+            notifications: { label: 'Long notification label', unreadCount: 99, items: [], emptyLabel: 'No new notifications' },
+          });
+        }, { direction, contextualAction });
+        const controls = page.locator('#fixture-header .nt-header__right button').filter({ visible: true });
+        expect(await controls.evaluateAll(elements => elements.every((el, i) => {
+          const a = el.getBoundingClientRect();
+          return el.scrollWidth <= el.clientWidth + 1 && elements.slice(i + 1).every(other => {
+            const b = other.getBoundingClientRect();
+            return Math.min(a.right, b.right) - Math.max(a.left, b.left) <= 1;
+          });
+        }))).toBe(true);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+        const notification = page.locator('#fixture-header-notifications-trigger');
+        await expect(notification).toHaveAccessibleName('Long notification label (99)');
+        await expect(notification.locator('.nt-header__notification-count')).toBeVisible();
+        if (width <= 1280) await expect(notification.locator('.nt-header__control-label')).toBeHidden();
+        else await expect(notification.locator('.nt-header__control-label')).toBeVisible();
+        await notification.click();
+        await expect(page.locator('#fixture-header-notifications-panel')).toBeVisible();
+        await page.keyboard.press('Escape');
+        await expect(notification).toBeFocused();
+      });
+    }
+  }
+}
