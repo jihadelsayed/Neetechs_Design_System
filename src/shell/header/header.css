@@ -417,6 +417,20 @@
   .nt-header[data-nt-header] .nt-header__right { max-width: 50%; flex: 0 1 auto; }
   .nt-header[data-nt-header] .nt-header__extras { flex: 0 1 auto; }
   .nt-header[data-nt-header] .nt-header__extras > * { flex: 0 1 auto; }
+
+  /* Narrow desktop: secondary disclosure icons and the avatar retain their
+   * accessible names while leaving room for navigation and contextual actions.
+   * Do not compress the notification badge into a neighboring control. */
+  @media (max-width: 80rem) {
+    .nt-header[data-nt-header] .nt-header__extras > .nt-dropdown {
+      flex: 0 0 auto;
+    }
+
+    .nt-header[data-nt-header] .nt-header__extras .nt-header__control-label,
+    .nt-header[data-nt-header] .nt-header__right > .nt-dropdown .nt-header__account-name {
+      display: none;
+    }
+  }
 }
 
 @media (max-width: 64rem) {
