@@ -116,3 +116,43 @@ test('RTL drawer anchors to the viewport inline start', async ({ page }) => {
   await expect(drawer).toBeVisible();
   expect(await drawer.evaluate(el => Math.abs(el.getBoundingClientRect().right - document.documentElement.clientWidth))).toBeLessThan(2);
 });
+
+for (const [width, height] of [[320, 240], [390, 300], [1280, 240], [1280, 400]]) {
+  for (const direction of ['ltr', 'rtl']) {
+    test('long account menu scrolls within ' + width + 'x' + height + ' ' + direction, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await load(page, width, direction);
+      await page.setViewportSize({ width, height });
+      await page.evaluate(dir => {
+        const f = window.headerFixture;
+        f.controller.update({
+          ...f.config, direction: dir,
+          account: {
+            ...f.config.account,
+            items: Array.from({ length: 20 }, (_, i) => ({
+              kind: 'action', id: 'item-' + i, action: 'item-' + i, label: 'Action ' + i,
+            })),
+          },
+        });
+      }, direction);
+      await page.locator('#fixture-header-account-trigger').click();
+      const panel = page.locator('#fixture-header-account-panel');
+      await expect(panel).toBeVisible();
+      await expect(panel).toHaveCSS('overflow-y', 'auto');
+      expect(await panel.evaluate(el => {
+        const rect = el.getBoundingClientRect();
+        return rect.top >= 0 && rect.bottom <= innerHeight + 1 && el.scrollHeight > el.clientHeight;
+      })).toBe(true);
+      await panel.evaluate(el => { el.scrollTop = el.scrollHeight; });
+      const last = panel.locator('[data-nt-header-action="item-19"]');
+      expect(await last.evaluate(el => {
+        const rect = el.getBoundingClientRect();
+        const bounds = el.closest('.nt-profile-menu').getBoundingClientRect();
+        return rect.top >= bounds.top && rect.bottom <= bounds.bottom + 1 && rect.bottom <= innerHeight + 1;
+      })).toBe(true);
+      await last.click();
+      await expect(panel).toBeHidden();
+      expect(await page.evaluate(() => window.headerFixture.actions.at(-1))).toEqual({ id: 'item-19', action: 'item-19' });
+    });
+  }
+}
