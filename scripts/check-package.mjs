@@ -7,6 +7,7 @@
  * 4. Resolves every public export from the consumer and imports the JS entries.
  * 5. Verifies every CSS export exists and that its @import graph resolves.
  * 6. Enforces a package-size budget.
+ * 7. Compiles a strict TypeScript consumer against the installed declarations.
  *
  * Assumes `npm run build` already ran (dist/ must be current).
  * Optional: --output-dir <directory> retains the exact validated tarball.
@@ -15,6 +16,7 @@
 import { execFileSync } from 'node:child_process';
 import { constants, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -176,6 +178,35 @@ try {
     fail(`consumer import failed: ${lines.find((line) => /Error/.test(line)) ?? lines.join(' ')}`);
   }
 
+  // Compile an actual consumer against installed package declarations, not src paths.
+  const typeProbe = join(consumer, 'probe.ts');
+  writeFileSync(typeProbe, [
+    "import { ntRenderHeader, ntMountHeader, ntCreateHeaderBrand, ntCreateEcosystemNavigation, ntCreateHeaderAccount, ntCreateHeaderPreference, type NtHeaderConfig, type NtHeaderController, type NtHeaderMountOptions } from '@neetechs/ui';",
+    "const labels = { primaryNavigation: 'Primary', mobileNavigation: 'Mobile', openNavigation: 'Open', closeNavigation: 'Close', account: 'Account', accountLoading: 'Loading' };",
+    "const config: NtHeaderConfig = { id: 'type-smoke-header', brand: ntCreateHeaderBrand({ logoUrl: null }), ...ntCreateEcosystemNavigation({ labels: { tools: 'Tools', products: 'Products', company: 'Company' } }), labels, account: ntCreateHeaderAccount({ state: 'loading' }, { labels: { account: 'Account', login: 'Login', signup: 'Sign up', myAccount: 'Profile', myProducts: 'Products', settings: 'Settings' }, destinations: {} }) };",
+    "const appearance = ntCreateHeaderPreference({ label: 'Appearance', selectedId: 'dark', choices: [{ id: 'dark', label: 'Dark', action: 'theme.dark' }] });",
+    "const next: NtHeaderConfig = { ...config, ...(appearance ? { appearance } : {}) };",
+    "const options: NtHeaderMountOptions = { onAction: ({ action }) => { const value: string = action; void value; }, onNavigate: ({ href }) => href.startsWith('/') };",
+    "const markup: string = ntRenderHeader(next);",
+    "declare const host: HTMLElement;",
+    "const controller: NtHeaderController = ntMountHeader(host, next, options);",
+    "controller.update(config); controller.closeMenus(); controller.destroy(); void markup;",
+    "// @ts-expect-error Invalid account state must not be accepted by the installed declarations.",
+    "ntRenderHeader({ ...config, account: { state: 'unknown' } });"
+].join('\n'));
+  try {
+    const tsc = createRequire(import.meta.url).resolve('typescript/bin/tsc');
+    execFileSync(process.execPath, [
+      tsc, '--noEmit', '--strict', '--noUncheckedIndexedAccess',
+      '--exactOptionalPropertyTypes', '--verbatimModuleSyntax', '--isolatedModules',
+      '--module', 'ESNext', '--moduleResolution', 'Bundler',
+      '--target', 'ES2022', '--lib', 'ES2022,DOM,DOM.Iterable', typeProbe,
+    ], { cwd: consumer, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (error) {
+    const detail = [error.stdout, error.stderr].filter(Boolean).join('\n').trim() || error.message;
+    fail('consumer TypeScript check failed: ' + detail);
+  }
+
   // Wildcard spot checks resolved by the consumer (Node conditions only apply to JS).
   for (const specifier of [`${pkg.name}/behaviors/dropdown`, `${pkg.name}/behaviors/navigation`]) {
     try {
@@ -206,7 +237,7 @@ try {
     console.log('Package validation passed.');
     console.log(`  Tarball: ${packed.filename} (${(packed.size / 1024).toFixed(1)} kB packed, ${packed.entryCount} files)`);
     console.log(`  Exports verified: ${jsEntries} JS, ${cssEntries} CSS, ${assetEntries} assets (+ wildcard patterns)`);
-    console.log('  Clean consumer install and import: ok');
+    console.log('  Clean consumer install, import and TypeScript: ok');
   }
 } finally {
   rmSync(scratch, { recursive: true, force: true });
