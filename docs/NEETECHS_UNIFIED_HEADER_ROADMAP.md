@@ -1,6 +1,6 @@
 # Neetechs unified global header — 100-step roadmap
 
-Status: Phase 1 remains open; Phase 2 in progress (54/100 completed at source-implementation/documentation and isolated controller/SSR-test level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
+Status: Phase 1 remains open; Phase 2 in progress (55/100 completed at source-implementation/documentation and isolated controller/SSR/pilot-config test level; host sign-out, preferences, notification summary and mobile drawer parity implemented; full package and framework verification pending).
 Updated: 2026-11-27. Work on existing main branches only. MyAccount is the pilot.
 
 ## Scope and safety gates
@@ -367,6 +367,12 @@ Use the repository's configured Playwright projects and install any additional b
 - Exact locally compiled controller blob 7d77b8e326903318e54ca06111f9ab7cffc53fb1 matches main. Strict TypeScript compile passed; three new isolated Chromium scenarios passed (SSR collision, existing-control ID collision on update, new-control ID collision/recovery). Existing 9/9 isolated controller scenarios and 27/27 header unit tests passed. Added two repository Playwright regressions (2c31d0a), not executed through the full suite.
 - Changed snapshots with collisions are rejected before behavior disposal, preserving the existing mounted header. This is a controller correctness fix, not deployed-route verification. Full checkout still fails GitHub DNS, so steps 56–58, 60, 79 and consumer activation remain blocked; progress stays 54/100. No publication or deployment.
 
+### Rollout baseline refresh and pilot configuration completion
+
+- Recorded exact main commits for the design system and 22 previously identified consumer candidates in docs/integrations/rollout-baselines.md (1dd1b20). GitHub name search found 46 Neetechs repositories; identified Ionic Fix, Sanity Studio, legacy React/MVC and Python trading dashboard as additional scope decisions. Active deployment status and remaining legacy audits are unverified; steps 1, 2, 10 and 13 stay open.
+- Re-ran seven combined MyAccount config/renderer tests (7/7, 54 combinations); exact factory, mapper and locale source hashes match main. Step 62 complete at source/configuration level. Actual package and Angular cutover remain open. Re-ran 27/27 core unit tests and 6/6 isolated focus-update Chromium cases with the current controller source hash.
+- Local GitHub DNS still fails. Progress 55/100; no consumer runtime changes, npm release or deployment.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
@@ -442,7 +448,7 @@ Use the repository's configured Playwright projects and install any additional b
 ## MyAccount migration
 
 - [ ] 61. Install local package
-- [ ] 62. Create MyAccount adapter configuration
+- [x] 62. Create MyAccount adapter configuration (staged factory compiled and verified against the installed reduced header package; live Angular integration remains open)
 - [ ] 63. Integrate with Angular shell
 - [ ] 64. Replace desktop rendering
 - [ ] 65. Replace mobile rendering
