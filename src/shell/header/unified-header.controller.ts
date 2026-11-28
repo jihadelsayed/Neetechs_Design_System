@@ -185,15 +185,23 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
       const hadFocus = Boolean(active && root.contains(active));
       const focusId = active?.id;
       const itemId = active?.dataset.ntHeaderItem;
+      // A snapshot update closes disclosures and the mobile drawer. If focus
+      // was inside one, return it to that surface's controlling button.
+      const panel = active?.closest<HTMLElement>('.nt-dropdown__content, .nt-navbar__panel, [data-nt-header-mobile]');
+      const ownerId = panel?.id ? Array.from(root.querySelectorAll<HTMLElement>('[aria-controls]')).find(el => el.getAttribute('aria-controls') === panel.id)?.id : undefined;
       disposeBehaviors();
       try {
         install(template);
         markup = nextMarkup;
         checkAvatars();
         if (hadFocus) {
-          const candidate = Array.from(root.querySelectorAll<HTMLElement>('[id], [data-nt-header-item]')).find(el => ((focusId && el.id === focusId) || (itemId !== undefined && el.dataset.ntHeaderItem === itemId)) && !el.closest('[hidden]') && !el.hasAttribute('disabled') && el.getClientRects().length > 0);
-          const fallback = Array.from(root.querySelectorAll<HTMLElement>('.nt-header__brand[href], .nt-header__mobile-trigger, .nt-header__account')).find(el => el.getClientRects().length > 0);
-          (candidate ?? fallback)?.focus({ preventScroll: true });
+          const usable = (el: HTMLElement): boolean => !el.closest('[hidden], [inert]') && !el.hasAttribute('disabled') && el.getAttribute('aria-disabled') !== 'true' && el.getClientRects().length > 0;
+          const candidates = Array.from(root.querySelectorAll<HTMLElement>('[id], [data-nt-header-item]')).filter(usable);
+          const owner = ownerId ? candidates.find(el => el.id === ownerId) : undefined;
+          const candidate = candidates.find(el => (focusId && el.id === focusId) || (itemId !== undefined && el.dataset.ntHeaderItem === itemId));
+          const mobileTrigger = root.querySelector<HTMLElement>('.nt-header__mobile-trigger');
+          const fallback = mobileTrigger && usable(mobileTrigger) ? mobileTrigger : Array.from(root.querySelectorAll<HTMLElement>('.nt-header__brand[href], .nt-header__account')).find(usable);
+          (owner ?? candidate ?? fallback)?.focus({ preventScroll: true });
         }
       } catch (error) { destroy(); throw error; }
     },
