@@ -80,9 +80,15 @@ export function ntMountHeader(root: HTMLElement, config: NtHeaderConfig, options
   function prepare(html: string): HTMLTemplateElement {
     const template = doc.createElement('template');
     template.innerHTML = html;
+    // getElementById only returns the first match, so existing SSR markup can
+    // hide a second matching ID outside the host. Check all external IDs.
+    const occupied = new Set<string>();
+    for (const existing of doc.querySelectorAll('[id]')) {
+      if (existing === root || !root.contains(existing)) occupied.add(existing.id);
+    }
     for (const element of template.content.querySelectorAll('[id]')) {
-      const existing = doc.getElementById(element.id);
-      if (existing && (existing === root || !root.contains(existing))) throw new Error('ntMountHeader: duplicate document ID: ' + element.id);
+      if (occupied.has(element.id)) throw new Error('ntMountHeader: duplicate document ID: ' + element.id);
+      occupied.add(element.id);
     }
     return template;
   }
