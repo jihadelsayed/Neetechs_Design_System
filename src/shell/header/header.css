@@ -553,12 +553,21 @@
   overflow-wrap: anywhere;
 }
 
-/* The profile-menu stylesheet loads after dropdown.css and otherwise hides
- * scrolling. Reserve the header's height so long disclosure menus stay
- * reachable in short viewports, including landscape phones. */
+/* The controller measures available space at the actual trigger position.
+ * Keep the original viewport-based cap when no measurement is available. */
+.nt-header[data-nt-header] :is(.nt-navbar__panel, .nt-dropdown__content)[data-nt-header-panel-side='top'] {
+  top: auto;
+  bottom: calc(100% + var(--nt-space-2));
+}
+
+.nt-header[data-nt-header] .nt-navbar__panel {
+  max-block-size: min(32rem, calc(100dvh - var(--nt-header-height) - var(--nt-space-4)), var(--nt-header-panel-max-height, 100dvh));
+}
+
+/* profile-menu.css otherwise overrides the dropdown's scrolling. */
 .nt-header[data-nt-header] .nt-dropdown__content.nt-profile-menu {
   overflow: auto;
-  max-block-size: min(28rem, calc(100dvh - var(--nt-header-height) - var(--nt-space-4)));
+  max-block-size: min(28rem, calc(100dvh - var(--nt-header-height) - var(--nt-space-4)), var(--nt-header-panel-max-height, 100dvh));
 }
 
 .nt-header[data-nt-header] .nt-navbar__panel-link > .nt-header__icon {
