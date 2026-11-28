@@ -539,6 +539,14 @@
   overflow-wrap: anywhere;
 }
 
+/* The profile-menu stylesheet loads after dropdown.css and otherwise hides
+ * scrolling. Reserve the header's height so long disclosure menus stay
+ * reachable in short viewports, including landscape phones. */
+.nt-header[data-nt-header] .nt-dropdown__content.nt-profile-menu {
+  overflow: auto;
+  max-block-size: min(28rem, calc(100dvh - var(--nt-header-height) - var(--nt-space-4)));
+}
+
 .nt-header[data-nt-header] .nt-navbar__panel-link > .nt-header__icon {
   align-self: flex-start;
 }
