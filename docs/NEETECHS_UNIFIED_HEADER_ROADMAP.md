@@ -348,6 +348,13 @@ Use the repository's configured Playwright projects and install any additional b
 - Actual npm pack/install exercised offline using a synthetic minimal manifest and recovered header JS: five scenarios passed (default check, retain/integrity, existing-file rejection, invalid arguments, missing CSS import rejection/no output). Added a standalone fixture regression test (bb89eda; blob 6d3e1c79acb6f9027837e7ba8d4c7864e840c1c4); exact committed test ran locally under Node 22.16.0/npm 10.9.2, 1/1 test passed with five scenarios. Windows/macOS and full repository suites not run.
 - Updated manual release runbook to publish only the retained checked artifact (8b0e273). Use npm run check:package -- --output-dir ../neetechs-release-artifacts after full tests. Step 60 and step 79 remain open until real package passes; progress unchanged at 54/100. No consumer or backend changes, no publication/deployment.
 
+### Package gate — installed public TypeScript contract
+
+- Added strict consumer compilation to the actual package checker (7334be0), before validated artifact retention. The compiler comes from the repository's installed TypeScript dev dependency; the probe resolves the installed root package in a clean consumer, exercises six header functions, config/controller/callback types, and verifies rejection of an invalid account state. No source-path fallback or declaration skipping.
+- Extended the existing synthetic npm regression to reject a package with broken declarations and withhold output (9350ac9). Exact committed checker/test blobs 154c2a3136412b3a2579e17649f3aaec1eb73f33 and 774e5f5ac56576f997354299b56e351025ff12e3 matched local files. Node 22.16.0/npm 10.9.2/TypeScript 5.8.3: 1/1 regression test passed, six scenarios, including corrupt declarations. Re-ran 27 recovered core unit tests: 27/27 passed.
+- Independently matched all 16 recovered core TypeScript source blobs against current main, compiled actual header and behavior dependencies with strict options and declaration emission, packed and installed a reduced private 0.0.0-test package using a header-only entry facade and temporary manifest, and compiled the exact new consumer probe against installed declarations. Strict compilation and installed runtime SSR smoke passed. This is not the full design-system tarball and is not a release artifact.
+- GitHub checkout still fails DNS; a localhost-only Chromium fixture navigation also remains blocked by administrator policy. Full CSS graph, real package exports/declarations and Angular tests still require a network-enabled checkout. Steps 60/79 remain open; progress 54/100. No consumer runtime changes, publication, deployment or Actions.
+
 ## Audit and architecture
 
 - [ ] 1. Read current main branches and record baselines
